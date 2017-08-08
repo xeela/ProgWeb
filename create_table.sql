@@ -1,4 +1,4 @@
-﻿create database mysql_prog_web;
+create database mysql_prog_web;
 
 use mysql_prog_web;
 
@@ -86,7 +86,10 @@ PRIMARY KEY (ID),
 FOREIGN KEY (ID_PRODUCT) REFERENCES PRODUCTS (ID),
 FOREIGN KEY (ID_CREATOR) REFERENCES USERS (ID));
 
-
+#------------------------------------------------------------------------------
+#4 aree geografiche, ognuna con 5 città
+#5 citta, ognuna con 10 negozi. 
+#per ogni città almeno 20 recensioni 
 
 
 

@@ -13,8 +13,8 @@ insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_C
 insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("apple Store","negozio di prodotti apple","apple.com",1,6,6); 
 insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("apple Store","negozio di prodotti apple","apple.com",1,6,6); 
 insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("apple Store","negozio di prodotti apple","apple.com",1,6,6);
-insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("game Stop","negozio di videogiochi","gamestop.it",1,6,6);
-insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("game Stop","negozio di videogiochi","gamestop.it",1,6,6);
+insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("game stop","negozio di videogiochi","gamestop.it",1,6,6);
+insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("game stop","negozio di videogiochi","gamestop.it",1,6,6);
 insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("mediaworld","negozio di elettronica ed elettrodomestici","mediaworld.it",1,6,6);
 insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("euronics","negozio di elettronica ed elettrodomestici","euronics.it",1,6,6);
 insert into shops (NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR) values ("bose","negozio di prodotti audio bose","bose.it",1,6,6);
