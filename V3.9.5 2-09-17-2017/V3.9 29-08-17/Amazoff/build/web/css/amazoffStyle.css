@@ -1,0 +1,84 @@
+.bodyStyle
+{ }
+
+.searchBar
+{ }
+
+.menuBar
+{
+    margin-top: 10px;
+}
+
+/* stile di "marigne" top */
+.tmargin
+{
+    margin-top: 10px;
+}
+
+/* stile della galleria img */
+.galleria{
+    margin-top: 10px
+}
+
+/* non va, dovrebbe essere per posizionare testo in centro a div */
+.prova {
+     position: absolute;
+    top: 50%;
+    vertical-align: middle;
+}
+
+.dropdownUtente
+{ }
+
+/* stile del button che compare quando si scrolla la pagina, e che permette di tornare in cima */
+#btnTop {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: red; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+}
+
+#btnAcquista {
+    display: block; /* visible by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    left: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: orange; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+}
+
+/* rimuovo da tutti i tag a lo stile di default */
+a, a:visited, a:hover, a:active {
+  color: inherit;
+}
+
+/* permette di creare dei div contenenti N righe di testo */
+.text {
+  position: relative;
+  font-size: 14px;
+  color: black;
+  font-family: sans-serif;
+}
+
+.text-concat {
+  position: relative;
+  display: inline-block;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 3.6em; /* (Number of lines you want visible) * (line-height) */
+  line-height: 1.2em;
+}
