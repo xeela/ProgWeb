@@ -90,15 +90,12 @@
                                     <div class="btn-group">
                                         <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
-                                               String userType = "";
-                                                String fname = "", lname = "";
+                                                String userType = "";
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
                                                     userType = (session.getAttribute("categoria_user")).toString();
-                                                    fname = (session.getAttribute("fname")).toString();
-                                                    lname = (session.getAttribute("lname")).toString();
                                             %>
-                                            <%= fname + " " + lname %>
+                                            <%= user %>
                                             <% 
                                                 }catch(Exception ex){
                                             %>
@@ -170,10 +167,6 @@
                                         <a href=".jsp" class="list-group-item">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Rimborso / Anomalia
-                                        </a>
-                                        <a href=".jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Diventa venditore
                                         </a>
                                         <a href="/Amazoff/ServletLogout" class="list-group-item active">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>

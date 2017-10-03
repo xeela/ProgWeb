@@ -22,7 +22,7 @@
 
 /* non va, dovrebbe essere per posizionare testo in centro a div */
 .prova {
-    position: absolute;
+     position: absolute;
     top: 50%;
     vertical-align: middle;
 }

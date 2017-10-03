@@ -106,7 +106,48 @@
                                                 }
                                              %>
                                         </a>      
-                                        
+                                            <!-- menu a tendina con le azioni che può fare l'utente -->
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <%
+                                                    if(userType.equals("0")) // registrato
+                                                    {
+                                                        %>
+                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href=".jsp">Rimborso / Anomalia</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                        <%
+                                                    }
+                                                    else if(userType.equals("1")) // venditore
+                                                    {
+                                                        %>
+                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href=".jsp">Notifiche</a></li>
+                                                        <li><a href=".jsp">Negozio</a></li>
+                                                        <li><a href=".jsp">Gestisci prodotti</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                        <%
+                                                    }
+                                                    else if(userType.equals("2")) //admin
+                                                    {
+                                                        %>
+                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href=".jsp">Notifiche</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                        <%
+                                                    }
+                                                    else { %>
+                                                        <li><a href="loginPage.jsp">Accedi</a></li>
+                                                        <li><a href="loginPage.jsp">Registrati</a></li>
+                                                   <% }
+                                                %>
+                                                
+                                            </ul> 
                                     </div>
                                 </div>
                                 
@@ -151,75 +192,29 @@
                             </div>
                             
                         </div>
-                </div>                                    
-         
-                <!-- tabella di 2 righe, con 3 colonne, che mostrano 6 prodotti -->
-                <div class='tmargin'>
-                    <div class="page">
-                          <ul class="list-group">
-                               <%
-                                    if(userType.equals("0")) // registrato
-                                    { %>
-                                        <a href="userPage.jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Profilo
-                                        </a>
-                                        <a href=".jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Rimborso / Anomalia
-                                        </a>
-                                        <a href="/Amazoff/ServletLogout" class="list-group-item active">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Esci
-                                        </a>
-                                                       
-                                        <%
-                                    }
-                                    else if(userType.equals("1")) // venditore
-                                    { %>
-                                        <a href="userPage.jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Profilo
-                                        </a>
-                                        <a href=".jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Notifiche
-                                        </a>
-                                        <a href=".jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Negozio
-                                        </a>
-                                        <a href=".jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Gestisci prodotti
-                                        </a>
-                                        <a href="/Amazoff/ServletLogout" class="list-group-item active">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Esci
-                                        </a>
-                                      <%
-                                    }
-                                    else if(userType.equals("2")) //admin
-                                    { %>
-                                        <a href="userPage.jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Profilo
-                                        </a>
-                                        <a href=".jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Notifiche
-                                        </a>
-                                        <a href="/Amazoff/ServletLogout" class="list-group-item active">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Esci
-                                        </a>
-                                      <%
-                                    }
-                                 %>
-                          </ul>   
-                    </div>
                 </div>
-            
+                
+                <!-- form per l'upload di un nuovo prodotto -->
+                <div>
+                    <FORM ENCTYPE='multipart/form-data'
+                    method='POST' action='ServletAddProduct'/>
+                    <p>Nome Prodotto</p>  <input type="text" name="nome"/>
+                    <br></br>
+                    <p>Descrizione</p>  <input type="text" name="descrizione"/>
+                    <br></br>
+                    <p>Categoria</p>
+                    <select name="categoria">
+                    <option value="categoria1"> Categoria 1 </option>
+                    <option value="categoria2"> Categoria 2 </option>
+                    <option value="categoria3"> Categoria 3 </option>
+                    </select>
+                    <br></br>
+                    <INPUT TYPE='file' NAME='productPic'/>
+                    <br></br>
+                    <INPUT TYPE='submit' VALUE='Aggiungi prodotto'/>
+                    </FORM>
+                </div>
+           
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
@@ -231,7 +226,7 @@
             </div>
                                                 
             <!-- barra bianca a dx -->
-            <div class="hidden-xs col-lg-1"></div>
+            <div class="hidden-xs col-lg-1"></div>                                    
         </div>
             
             

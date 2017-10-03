@@ -55,11 +55,10 @@ public class ServletLogin extends HttpServlet {
             String categoriaUser = "";  // = 0, utente registrato
                                        // = 1, utente venditore
                                        // = 2, utente admin
-            String fname = "", lname = "";
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name FROM users WHERE username = '" + userReceived + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT pass, userType FROM users WHERE username = '" + userReceived + "';", connection);
                 
                 if(results.isAfterLast()) //se non c'è un utente con quel nome
                 {
@@ -73,8 +72,6 @@ public class ServletLogin extends HttpServlet {
                 while (results.next()) {
                     dbPwd = results.getString(1);
                     categoriaUser = results.getString(2);
-                    fname = results.getString(3); 
-                    lname = results.getString(4); 
                 }
                 
                 connection.close();
@@ -82,11 +79,8 @@ public class ServletLogin extends HttpServlet {
                 if(dbPwd.equals(pwdReceived)) //Allora la password è giusta
                 {
                     HttpSession session = request.getSession();
-                    // memorizzo nella sessione, il nome, cognome, username e tipo di utente, in modo da utilizzare questi dati nelle altre pagine
                     session.setAttribute("user", userReceived);
                     session.setAttribute("categoria_user", categoriaUser);
-                    session.setAttribute("fname", fname);
-                    session.setAttribute("lname", lname);
                     session.setAttribute("errorMessage", Errors.resetError);
                     response.sendRedirect(request.getContextPath() + "/");
                     
@@ -95,7 +89,7 @@ public class ServletLogin extends HttpServlet {
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.wrongPassword);
-                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp?p=e1"); // OSS: e1 stà per errore 1.
+                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp");
                 } 
                     
             }
