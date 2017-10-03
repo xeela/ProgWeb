@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Fra/Desktop/PROG.%20WEB/PROGETTO/V3.9%2029-08-17-2017/V3.9%2029-08-17/Amazoff/web/css/amazoffStyle.css</file>
-            <file>file:/C:/Users/Fra/Desktop/PROG.%20WEB/PROGETTO/V3.9%2029-08-17-2017/V3.9%2029-08-17/Amazoff/web/index.jsp</file>
-            <file>file:/C:/Users/Fra/Desktop/PROG.%20WEB/PROGETTO/V3.9%2029-08-17-2017/V3.9%2029-08-17/Amazoff/web/productPage.jsp</file>
-            <file>file:/C:/Users/Fra/Desktop/PROG.%20WEB/PROGETTO/V3.9%2029-08-17-2017/V3.9%2029-08-17/Amazoff/web/userPage.jsp</file>
-            <file>file:/C:/Users/Fra/Desktop/PROG.%20WEB/PROGETTO/V3.9%2029-08-17-2017/V3.9%2029-08-17/Amazoff/web/searchPage.jsp</file>
-            <file>file:/C:/Users/Fra/Desktop/PROG.%20WEB/PROGETTO/V3.9%2029-08-17-2017/V3.9%2029-08-17/Amazoff/web/shopping-cartPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/loginPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/sellNewProduct.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletFindProduct.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAddProduct.java</file>
         </group>
     </open-files>
 </project-private>

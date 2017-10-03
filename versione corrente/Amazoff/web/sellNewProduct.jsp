@@ -196,24 +196,23 @@
                 
                 <!-- form per l'upload di un nuovo prodotto -->
                 <div>
-                    <FORM ENCTYPE='multipart/form-data'
-                    method='POST' action='ServletAddProduct'/>
-                    <p>Nome Prodotto</p>  <input type="text" name="nome"/>
-                    <br></br>
-                    <p>Descrizione</p>  <input type="text" name="descrizione"/>
-                    <br></br>
-                    <p>Prezzo</p> <input type="number" name="prezzo"/>
-                    <br/>
-                    <p>Categoria</p>
-                    <select name="categoria">
-                    <option value="categoria1"> Categoria 1 </option>
-                    <option value="categoria2"> Categoria 2 </option>
-                    <option value="categoria3"> Categoria 3 </option>
-                    </select>
-                    <br></br>
-                    <INPUT TYPE='file' NAME='productPic'/>
-                    <br></br>
-                    <INPUT TYPE='submit' VALUE='Aggiungi prodotto'/>
+                    <FORM ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct'>
+                        <p>Nome Prodotto</p>  <input type="text" name="nome"/>
+                        <br></br>
+                        <p>Descrizione</p>  <input type="text" name="descrizione"/>
+                        <br></br>
+                        <p>Prezzo</p> <input type="number" name="prezzo"/>
+                        <br/>
+                        <p>Categoria</p>
+                        <select name="categoria">
+                        <option value="categoria1"> Categoria 1 </option>
+                        <option value="categoria2"> Categoria 2 </option>
+                        <option value="categoria3"> Categoria 3 </option>
+                        </select>
+                        <br></br>
+                        <INPUT TYPE='file' NAME='productPic'/>
+                        <br></br>
+                        <INPUT TYPE='submit' VALUE='Aggiungi prodotto'/>
                     </FORM>
                 </div>
            

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,13 +20,16 @@ import javax.servlet.http.HttpSession;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import java.sql.PreparedStatement;
+import javax.servlet.annotation.MultipartConfig;
 /**
  *
  * @author Davide
  */
+@MultipartConfig
 public class ServletAddProduct extends HttpServlet {
     private String dirName;
     
+    //Prende la directory di upload dal file web.xml
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         // read the uploadDir from the servlet parameters
@@ -50,18 +52,15 @@ public class ServletAddProduct extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String userReceived = (String) request.getSession().getAttribute("user");
-            String categoriaReceived = request.getParameter("categoria");
-            String nomeReceived = request.getParameter("nome");
-            String descrizioneReceived = request.getParameter("descrizione");
-            String prezzoReceived = request.getParameter("prezzo");
-            String nomeFotoReceived = request.getParameter("productPic");
 
+            //prendi il file e salvalo sul server
             MultipartRequest multi = new MultipartRequest(request, getServletContext().getRealPath(dirName), 10*1024*1024, "ISO-8859-1", new DefaultFileRenamePolicy());
 
-           //Connessione al Database
-            //String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
-            //String db_user = "root";
-            //String db_pwd = "root";
+            String categoriaReceived = multi.getParameter("categoria");
+            String nomeReceived = multi.getParameter("nome");
+            String descrizioneReceived = multi.getParameter("descrizione");
+            String prezzoReceived = multi.getParameter("prezzo");
+            String nomeFotoReceived = multi.getFilesystemName("productPic");
             
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
