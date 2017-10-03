@@ -202,6 +202,8 @@
                     <br></br>
                     <p>Descrizione</p>  <input type="text" name="descrizione"/>
                     <br></br>
+                    <p>Prezzo</p> <input type="number" name="prezzo"/>
+                    <br/>
                     <p>Categoria</p>
                     <select name="categoria">
                     <option value="categoria1"> Categoria 1 </option>

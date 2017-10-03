@@ -90,15 +90,31 @@ public class MyDatabaseManager {
     }
     
     static public PreparedStatement EseguiStatement(String query, Connection connection) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(query); 
+        PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS); 
         ps.executeUpdate();
-        
-        connection.close();
+
         return ps;
     }
     
     //Query usate spesso
-    
+    static public int GetID_Shop(String utente) throws SQLException
+    {
+        int idshop = -1;
+        //per ora una persona può avere solo un negozio, altrimenti non so quale prende (l'ultimo creato, in teoria)
+        Connection connection = CreateConnection();
+        ResultSet userIDres = MyDatabaseManager.EseguiQuery("SELECT id FROM users WHERE username = '" + utente + "';", connection);
+        int userID = 0;
+        while(userIDres.next())
+            userID = userIDres.getInt(1);
+        
+        ResultSet results = MyDatabaseManager.EseguiQuery("SELECT DISTINCT shops.id FROM shops, users WHERE shops.id_creator = " + userID + ";", connection);
+        while(results.next()) {
+            idshop = results.getInt(1);
+        }
+        connection.close();
+        
+        return idshop;
+    }
     //ESEMPIO
     static public String GetChosenDriversList(String username, String currentGp) throws SQLException
     {

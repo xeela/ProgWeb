@@ -127,6 +127,7 @@
                                                         <li><a href="userPage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
+                                                        <li><a href="sellnewProduct.jsp">Vendi Prodotto</a></li>
                                                         <li><a href=".jsp">Gestisci prodotti</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>

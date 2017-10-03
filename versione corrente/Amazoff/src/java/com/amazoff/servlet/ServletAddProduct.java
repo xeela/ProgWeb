@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import java.sql.PreparedStatement;
 /**
  *
  * @author Davide
@@ -48,11 +49,14 @@ public class ServletAddProduct extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userReceived = request.getParameter("username");
+            String userReceived = (String) request.getSession().getAttribute("user");
             String categoriaReceived = request.getParameter("categoria");
             String nomeReceived = request.getParameter("nome");
             String descrizioneReceived = request.getParameter("descrizione");
-            String fotoReceived = request.getParameter("productPic");
+            String prezzoReceived = request.getParameter("prezzo");
+            String nomeFotoReceived = request.getParameter("productPic");
+
+            MultipartRequest multi = new MultipartRequest(request, getServletContext().getRealPath(dirName), 10*1024*1024, "ISO-8859-1", new DefaultFileRenamePolicy());
 
            //Connessione al Database
             //String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
@@ -63,13 +67,33 @@ public class ServletAddProduct extends HttpServlet {
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
-        
+                 
             //Chiedi roba al db
-            MultipartRequest multi = new MultipartRequest(request, getServletContext().getRealPath(dirName), 10*1024*1024, "ISO-8859-1", new DefaultFileRenamePolicy());
-
             if(MyDatabaseManager.cpds != null)
             {
+                int id_shop = MyDatabaseManager.GetID_Shop(userReceived);
                 Connection connection = MyDatabaseManager.CreateConnection();
+                
+                //aggiungi alla tabella products il prodotto
+                PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO products (name, description, price, id_shop) VALUES (" 
+                            + "'" + nomeReceived + "', "
+                            + "'" + descrizioneReceived + "', "
+                            + "" + prezzoReceived + ", "
+                            + id_shop + ");", connection);
+                //ottieni l'ID del prodotto appena aggiunto
+                int productID = -1;
+                ResultSet idProdottoRS = ps.getGeneratedKeys();
+                if(idProdottoRS.next())
+                    productID = idProdottoRS.getInt(1);
+                
+                //aggiungi il nome della foto alla tabella pictures
+                PreparedStatement ps2 = MyDatabaseManager.EseguiStatement("INSERT INTO pictures (path, id_product) VALUES ("
+                            + "'" + nomeFotoReceived + "', "
+                            + productID + ");", connection);
+                
+                connection.close();
+                
+                response.sendRedirect(request.getContextPath() + "/");
             }
             else
             {
