@@ -19,39 +19,20 @@
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         <script type="text/javascript">
             var jsonProdotti;
-<<<<<<< HEAD
             function LogJson() {
                 jsonProdotti = ${jsonProdotti};
                 console.log(jsonProdotti);
-=======
-            var searchedProduct = null;
-            function LogJson() {
-                jsonProdotti = ${jsonProdotti};
-                console.log(jsonProdotti);
-                RiempiBarraRicerca();
->>>>>>> francescs
                 AggiungiProdotti();
             }
             
             function AggiungiProdotti() {
                 var toAdd = "";
-<<<<<<< HEAD
                 for(var i = 0; i < jsonProdotti.products.length; i++)
                 {
                     toAdd += "<div class=\"row panel panel-default\">";
                     toAdd += "<a href=\"productPage.jsp?id=id_oggetto\" id=\"id_oggetto\">";
                     toAdd += "<div class=\"col-xs-4 col-sm-3 col-md-2\"  style=\"background-color: green; margin: 0 0 0 0;\">";
                     toAdd += "immagine";
-=======
-                
-                //alert("-" + searchedProduct);
-                for(var i = 0; i < jsonProdotti.products.length; i++)
-                {
-                    toAdd += "<div class=\"row\">";
-                    toAdd += "<a href=\"productPage.jsp?id=id_oggetto\" id=\"id_oggetto\">";
-                    toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
-                    toAdd += "   <img src=\"images/img1.jpg\" style=\"max-height: 100px; \" alt=\"...\">";
->>>>>>> francescs
                     toAdd += "</div>";
                     toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
                     toAdd += "<p id=\"nome+\" >" + jsonProdotti.products[i].name + "</p>";
@@ -60,34 +41,18 @@
                     toAdd += "<p id=\"linkmappa\" >Vedi su mappa</p>";
                     toAdd += "<p id=\"prezzo+\">Prezzo: " + jsonProdotti.products[i].price + "</p>";
                     toAdd += "<p id=\"venditore+\" >Nome venditore <a href=\"url_venditore.html\">Negozio</a></p>";       
-<<<<<<< HEAD
 
-=======
->>>>>>> francescs
                     toAdd += "</div>";
                     toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1\" >";
                     toAdd += "<span class=\"prova glyphicon glyphicon-chevron-right\"></span>";
                     toAdd += "</div>";
-<<<<<<< HEAD
                     toAdd += "</a>";
                     toAdd += "</div>";
-=======
-                    toAdd += "</div><hr>";
->>>>>>> francescs
                 }
                 
                 $("#zonaProdotti").html(toAdd);
             }
             
-<<<<<<< HEAD
-=======
-            function RiempiBarraRicerca()
-            {
-                searchedProduct = jsonProdotti.searched;
-                $("#txtCerca").val(searchedProduct);
-            }
-            
->>>>>>> francescs
             // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
             function cercaProdotto(txt)
             {
@@ -137,14 +102,10 @@
                                 
                                 <input id="txtCerca" type="text" 
                                        class="form-control" aria-label="..." 
-<<<<<<< HEAD
                                        placeholder="Cosa vuoi cercare?"
                                        value="<%
                                            if(request.getParameter("p") != null)
                                                out.println(request.getParameter("p")); %>" <!-- Se ho ricevuto un paramentro in GET, inserisco il valore nella barra di ricera -->
-=======
-                                       placeholder="Cosa vuoi cercare?" ><!-- Se ho ricevuto un paramentro in GET, inserisco il valore nella barra di ricera -->
->>>>>>> francescs
 
                                 
                                 <div class="input-group-btn">
@@ -165,7 +126,6 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-<<<<<<< HEAD
                                         <a href="paginaUtenteDaCreare.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 String userType = "";
@@ -174,19 +134,6 @@
                                                     userType = (session.getAttribute("categoria_user")).toString();
                                             %>
                                             <%= user %>
-=======
-                                        <a href="userPage.jsp.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
-                                            <% 
-                                                String userType = "";
-                                                String fname = "", lname = "";
-                                                try {
-                                                    String user = (session.getAttribute("user")).toString();
-                                                    userType = (session.getAttribute("categoria_user")).toString();
-                                                    fname = (session.getAttribute("fname")).toString();
-                                                    lname = (session.getAttribute("lname")).toString();
-                                            %>
-                                            <%= fname + " " + lname %>
->>>>>>> francescs
                                             <% 
                                                 }catch(Exception ex){
                                             %>
@@ -208,10 +155,6 @@
                                                         %>
                                                         <li><a href="userPage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Rimborso / Anomalia</a></li>
-<<<<<<< HEAD
-=======
-                                                        <li><a href=".jsp">Diventa venditore</a></li>
->>>>>>> francescs
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
@@ -222,10 +165,6 @@
                                                         <li><a href="userPage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
-<<<<<<< HEAD
-=======
-                                                        <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
->>>>>>> francescs
                                                         <li><a href=".jsp">Gestisci prodotti</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -345,7 +284,6 @@
 
                                 </div>
                                 <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" -->
-<<<<<<< HEAD
                                     <span class="prova glyphicon glyphicon-chevron-right"></span>
                                 </div>
                         </a>
@@ -356,17 +294,6 @@
                                 <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; margin: 0 0 0 0;">
                                     <!-- <img src="images/doge.jpg" alt="" > -->
                                     immagine
-=======
-                                    <span  class="glyphicon glyphicon-chevron-right"></span>
-                                </div>
-                        </a>
-                       <hr>
-                   </div>
-                   <div class="row panel panel-default">
-                        <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                <div class="thumbnail col-xs-4 col-sm-3 col-md-2" style="min-height:100px; ">
-                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
->>>>>>> francescs
                                 </div>
                                 <div class="col-xs-8 col-sm-7 col-md-9">
                                     <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
@@ -384,14 +311,9 @@
                    </div>
                    <div class="row panel panel-default" style="background-color: aqua;">
                          <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-<<<<<<< HEAD
                                 <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; margin: 0 0 0 0;">
                                     <!-- <img src="images/doge.jpg" alt="" > -->
                                     immagine
-=======
-                                <div class="thumbnail col-xs-4 col-sm-3 col-md-2" style="min-height:100px; ">
-                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
->>>>>>> francescs
                                 </div>
                                 <div class="col-xs-8 col-sm-7 col-md-9">
                                     <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
@@ -441,10 +363,6 @@
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }
-<<<<<<< HEAD
-=======
-           
->>>>>>> francescs
             
         </script>
     </body>
