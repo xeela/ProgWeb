@@ -23,13 +23,14 @@
             function LogJson() {
                 jsonProdotti = ${jsonProdotti};
                 console.log(jsonProdotti);
+                RiempiBarraRicerca();
                 AggiungiProdotti();
             }
             
             function AggiungiProdotti() {
                 var toAdd = "";
-                searchedProduct = jsonProdotti.searched;
-                alert("-" + searchedProduct);
+                
+                //alert("-" + searchedProduct);
                 for(var i = 0; i < jsonProdotti.products.length; i++)
                 {
                     toAdd += "<div class=\"row\">";
@@ -52,6 +53,12 @@
                 }
                 
                 $("#zonaProdotti").html(toAdd);
+            }
+            
+            function RiempiBarraRicerca()
+            {
+                searchedProduct = jsonProdotti.searched;
+                $("#txtCerca").val(searchedProduct);
             }
             
             // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
