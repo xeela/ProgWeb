@@ -129,14 +129,17 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="paginaUtenteDaCreare.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="userPage.jsp.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 String userType = "";
+                                                String fname = "", lname = "";
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
                                                     userType = (session.getAttribute("categoria_user")).toString();
+                                                    fname = (session.getAttribute("fname")).toString();
+                                                    lname = (session.getAttribute("lname")).toString();
                                             %>
-                                            <%= user %>
+                                            <%= fname + " " + lname %>
                                             <% 
                                                 }catch(Exception ex){
                                             %>
@@ -158,6 +161,7 @@
                                                         %>
                                                         <li><a href="userPage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Rimborso / Anomalia</a></li>
+                                                        <li><a href=".jsp">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
@@ -168,6 +172,7 @@
                                                         <li><a href="userPage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
+                                                        <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
                                                         <li><a href=".jsp">Gestisci prodotti</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>

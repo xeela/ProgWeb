@@ -36,13 +36,13 @@
                         <!-- barra con: login/registrati, cerca, carrello -->
                         <div class="logo col-xs-12 col-lg-1">
                             <div class="row">
-                                <div class="col-xs-8 col-lg-10"><a href="index.jsp">LOGO</a></div>
+                                <div class="col-xs-6 col-lg-10"><a href="index.jsp">Amazoff</a></div>
                                 <div class="col-xs-2 hidden-lg" style="text-align: right"> 
                                     <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
                                     <% 
                                             try {
                                                     String user = (session.getAttribute("user")).toString();
-   
+                                                    
                                                 }catch(Exception ex){
                                             %>
                                                 <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
@@ -52,33 +52,49 @@
                                 
                                 
                                 </div>
-                                             <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+                                <div class="col-xs-2 hidden-lg" style="text-align: right; visibility: 
+                                <% 
+                                    String userType = "";
+                                    try {
+                                            userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <%= "visible" %>
+                                                <%
+                                            }else { %><%= "hidden" %><% }
+                                        }catch(Exception ex){ %><%= "hidden" %><%  }
+                                %> ">
+                                   <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam></a> 11</span>
+                                </div>
+                                <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                             </div>
                         </div>
                         <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
-                            <div class="input-group">
-                                
-                                <div class="input-group-btn">
-                                  <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
-                                  <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
-                                    <li><a href="#">Vicinanza</a></li>
-                                    <li><a href="#">Prezzo</a></li>
-                                    <li><a href="#">Recensione</a></li>
-                                  </ul>
-                                </div>
-                                
-                                <input id="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-                                
-                                <div class="input-group-btn">
-                                  <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Scegli categoria<span class="caret"></span></button>
-                                  <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
-                                    <li><a href="#">Categoria</a></li>
-                                    <li><a href="#">Oggetto</a></li>
-                                    <li><a href="#">Venditore</a></li>
-                                  </ul>
-                                  <a class="btn btn-default" type="button" onclick="cercaProdotto('txtCerca')">Cerca</a> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
-                                </div><!-- /btn-group --> 
+                            <div>
+                                <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
+                                    <div class="input-group-btn">
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
+                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
+                                        <li><a href="#">Vicinanza</a></li>
+                                        <li><a href="#">Prezzo</a></li>
+                                        <li><a href="#">Recensione</a></li>
+                                      </ul>
+                                    </div>
+
+                                    <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
+
+                                    <div class="input-group-btn">
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Scegli categoria<span class="caret"></span></button>
+                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
+                                        <li><a href="#">Categoria</a></li>
+                                        <li><a href="#">Oggetto</a></li>
+                                        <li><a href="#">Venditore</a></li>
+                                      </ul>
+                                      <a class="btn btn-default" type="submit">Cerca</a> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
+                                    </div><!-- /btn-group --> 
+                                </form>
                             </div><!-- /input-group -->
                         </div>                     
                         
@@ -90,12 +106,15 @@
                                     <div class="btn-group">
                                         <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
-                                                String userType = "";
+                                                userType = "";
+                                                String fname = "", lname = "";
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
                                                     userType = (session.getAttribute("categoria_user")).toString();
+                                                    fname = (session.getAttribute("fname")).toString();
+                                                    lname = (session.getAttribute("lname")).toString();
                                             %>
-                                            <%= user %>
+                                            <%= fname + " " + lname %>
                                             <% 
                                                 }catch(Exception ex){
                                             %>
@@ -117,6 +136,7 @@
                                                         %>
                                                         <li><a href="userPage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Rimborso / Anomalia</a></li>
+                                                        <li><a href=".jsp">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
@@ -125,9 +145,9 @@
                                                     {
                                                         %>
                                                         <li><a href="userPage.jsp">Profilo</a></li>
-                                                        <li><a href=".jsp">Notifiche</a></li>
+                                                        <li><a href="notificationPage.jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
-                                                        <li><a href="sellnewProduct.jsp">Vendi Prodotto</a></li>
+                                                        <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
                                                         <li><a href=".jsp">Gestisci prodotti</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -137,7 +157,7 @@
                                                     {
                                                         %>
                                                         <li><a href="userPage.jsp">Profilo</a></li>
-                                                        <li><a href=".jsp">Notifiche</a></li>
+                                                        <li><a href="notificationPage.jsp">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
@@ -152,7 +172,24 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-lg-4">
+                                <div class="col-lg-3" style="visibility: 
+                                     <% try {
+                                            //userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <%= "visible" %>
+                                                <%
+                                            }else { %><%= "hidden" %><% }
+                                        }catch(Exception ex){ %><%= "hidden" %><%  }
+                                %> ">
+                                   <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
+                                       <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
+                                    </a>
+                                </div>
+                                                
+                                                
+                                <div class="col-lg-2">
                                    <a href="shopping-cartPage.jsp" type="button" class="btn btn-default btn-md">
                                         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                                     </a>
@@ -211,19 +248,28 @@
 
                           <div class="item active">
                             <img src="images/img1.jpg" alt="Chania">
-                            <div class="carousel-caption">
+                            <!--<div class="carousel-caption">
                               <h3>Chania</h3>
                               <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
-                            </div>
+                            </div>-->
                           </div>
 
                           <div class="item">
                             <img src="images/img2.jpg" alt="Chania">
-                            <div class="carousel-caption">
+                            <!--<div class="carousel-caption">
                               <h3>Chania</h3>
                               <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
-                            </div>
+                            </div>-->
                           </div>
+                            
+                            <div class="item">
+                            <img src="images/img3.jpg" alt="Chania">
+                            <!--<div class="carousel-caption">
+                              <h3>Chania</h3>
+                              <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
+                            </div>-->
+                          </div>
+                            
                         </div>
 
                         <!-- Left and right controls -->
@@ -253,7 +299,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-4">
                               <div class="thumbnail">
                                 <img src="images/doge.jpg" alt="...">
                                 <div class="caption">
@@ -263,7 +309,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-4">
                               <div class="thumbnail">
                                 <img src="images/doge.jpg" alt="...">
                                 <div class="caption">
@@ -273,8 +319,7 @@
                                 </div>
                               </div>
                             </div>
-
-                            <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-4">
                               <div class="thumbnail">
                                 <img src="images/doge.jpg" alt="...">
                                 <div class="caption">
@@ -284,7 +329,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-4">
                               <div class="thumbnail">
                                 <img src="images/doge.jpg" alt="...">
                                 <div class="caption">
@@ -294,7 +339,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-4">
                               <div class="thumbnail">
                                 <img src="images/doge.jpg" alt="...">
                                 <div class="caption">
@@ -303,7 +348,8 @@
                                   <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
                                 </div>
                               </div>
-                            </div> 
+                            </div>
+                        
                     </div>
                 </div>
            
@@ -344,7 +390,8 @@
             // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
             function cercaProdotto(txt)
             {
-                window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
+                document.getElementById("formSearch").action = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value
+                //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
             }
         </script>
     </body>

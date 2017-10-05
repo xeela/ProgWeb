@@ -200,7 +200,14 @@
                             <p class="tmargin">Password dimenticata? 
                                 <a data-toggle="modal" data-target="#modalPasswordReset">Ripristina</a>
                             </p>
-                        </form>                        
+                        </form> 
+                        <!-- div che visualizza il messaggio di errore durante il login -->
+                        <div class="alert alert-danger alert-dismissible"                              
+                             style="<% if(request.getParameter("p") == null)
+                                               out.println("visibility: hidden");  %>" id="alertRegistrati" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Errore!</strong> L'email o la password non sono corrette. Riprova.
+                        </div>
                     </div>
                 </div>
             </div> 

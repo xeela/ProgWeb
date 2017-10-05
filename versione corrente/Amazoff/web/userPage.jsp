@@ -90,12 +90,15 @@
                                     <div class="btn-group">
                                         <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
-                                                String userType = "";
+                                               String userType = "";
+                                                String fname = "", lname = "";
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
                                                     userType = (session.getAttribute("categoria_user")).toString();
+                                                    fname = (session.getAttribute("fname")).toString();
+                                                    lname = (session.getAttribute("lname")).toString();
                                             %>
-                                            <%= user %>
+                                            <%= fname + " " + lname %>
                                             <% 
                                                 }catch(Exception ex){
                                             %>
@@ -168,6 +171,10 @@
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Rimborso / Anomalia
                                         </a>
+                                        <a href=".jsp" class="list-group-item">
+                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                                          Diventa venditore
+                                        </a>
                                         <a href="/Amazoff/ServletLogout" class="list-group-item active">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Esci
@@ -188,6 +195,10 @@
                                         <a href=".jsp" class="list-group-item">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Negozio
+                                        </a>
+                                        <a href="sellNewProduct.jsp" class="list-group-item">
+                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                                          Vendi prodotto
                                         </a>
                                         <a href=".jsp" class="list-group-item">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
