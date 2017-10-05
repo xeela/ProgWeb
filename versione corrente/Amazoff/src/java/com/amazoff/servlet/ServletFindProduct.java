@@ -38,7 +38,7 @@ public class ServletFindProduct extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String userReceived = request.getParameter("username");
-            String productReceived = request.getParameter("txtCerca");
+            String productReceived = request.getParameter("p");
 
            //Connessione al Database
             //String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
@@ -68,9 +68,7 @@ public class ServletFindProduct extends HttpServlet {
                 
                 //aggiungo i prodotti al json
                 boolean isFirstTime = true;
-                jsonObj += "{";
-                jsonObj        += "\"searched\": \"" + productReceived + "\",";
-                jsonObj        += "\"products\":[";
+                jsonObj += "{\"products\":[";
                 while (results.next()) {
                     if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
                         jsonObj += ", ";
