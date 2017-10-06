@@ -37,7 +37,7 @@ public class ServletFindProduct extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userReceived = request.getParameter("username");
+            String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
             String productReceived = request.getParameter("txtCerca");
 
            //Connessione al Database
@@ -55,7 +55,7 @@ public class ServletFindProduct extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price FROM products WHERE name = '" + productReceived + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + productReceived + "';", connection);
                 
                 if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
                 {
@@ -77,7 +77,7 @@ public class ServletFindProduct extends HttpServlet {
                     isFirstTime = false;
                     
                     jsonObj += "{";
-                
+                    jsonObj += "\"id\": \"" + results.getString(4) + "\",";
                     jsonObj += "\"name\": \"" + results.getString(1) + "\",";
                     jsonObj += "\"description\": \"" + results.getString(2) + "\",";
                     jsonObj += "\"price\": \"" + results.getString(3) + "\"";

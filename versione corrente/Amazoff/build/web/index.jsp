@@ -24,7 +24,7 @@
     </head>
     <body class="bodyStyle">
        
-        <div class="container-fluid">
+        <div class="container-fluid tmargin">
             
             
             <!-- barra bianca a sx -->
@@ -52,7 +52,8 @@
                                 
                                 
                                 </div>
-                                <div class="col-xs-2 hidden-lg" style="text-align: right; visibility: 
+                                 
+                                <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                                 <% 
                                     String userType = "";
                                     try {
@@ -60,13 +61,13 @@
                                             if(userType.equals("1") || userType.equals("2"))
                                             {
                                                 %>
-                                                <%= "visible" %>
+                                                <div class="col-xs-2 hidden-lg" style="text-align: right;">
+                                                    <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
+                                                 </div>
                                                 <%
-                                            }else { %><%= "hidden" %><% }
-                                        }catch(Exception ex){ %><%= "hidden" %><%  }
-                                %> ">
-                                   <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam></a> 11</span>
-                                </div>
+                                            }
+                                        }catch(Exception ex){   }
+                                %> 
                                 <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                             </div>
                         </div>
@@ -92,7 +93,7 @@
                                         <li><a href="#">Oggetto</a></li>
                                         <li><a href="#">Venditore</a></li>
                                       </ul>
-                                      <a class="btn btn-default" type="submit">Cerca</a> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
+                                      <button class="btn btn-default" type="submit">Cerca</button> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
                                     </div><!-- /btn-group --> 
                                 </form>
                             </div><!-- /input-group -->
@@ -172,21 +173,21 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-lg-3" style="visibility: 
+                                <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                                      <% try {
                                             //userType = (session.getAttribute("categoria_user")).toString();
                                             if(userType.equals("1") || userType.equals("2"))
                                             {
                                                 %>
-                                                <%= "visible" %>
+                                                <div class="col-lg-3">
+                                                    <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
+                                                        <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
+                                                     </a>
+                                                 </div> 
                                                 <%
-                                            }else { %><%= "hidden" %><% }
-                                        }catch(Exception ex){ %><%= "hidden" %><%  }
-                                %> ">
-                                   <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
-                                       <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-                                    </a>
-                                </div>
+                                            }
+                                        }catch(Exception ex){  }
+                                   %> 
                                                 
                                                 
                                 <div class="col-lg-2">

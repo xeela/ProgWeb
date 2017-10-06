@@ -33,8 +33,9 @@
                 //alert("-" + searchedProduct);
                 for(var i = 0; i < jsonProdotti.products.length; i++)
                 {
+                    // OSS: id inserito è sbagliato, anche se arriva giusto dal 
                     toAdd += "<div class=\"row\">";
-                    toAdd += "<a href=\"productPage.jsp?id=id_oggetto\" id=\"id_oggetto\">";
+                    toAdd += "<a href=\"productPage.jsp?id=" + jsonProdotti.products[i].id + "\" id=\""+ jsonProdotti.products[i].id +"\">";
                     toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
                     toAdd += "   <img src=\"images/img1.jpg\" style=\"max-height: 100px; \" alt=\"...\">";
                     toAdd += "</div>";
@@ -72,7 +73,7 @@
     </head>
     <body class="bodyStyle" onload="LogJson()">
             
-        <div class="container-fluid">
+        <div class="container-fluid tmargin">
             
             
             <!-- barra bianca a sx -->
@@ -85,13 +86,13 @@
                         <!-- barra con: login/registrati, cerca, carrello -->
                         <div class="logo col-xs-12 col-lg-1">
                             <div class="row">
-                                <div class="col-xs-8 col-lg-10"><a href="index.jsp">LOGO</a></div>
+                                <div class="col-xs-6 col-lg-10"><a href="index.jsp">Amazoff</a></div>
                                 <div class="col-xs-2 hidden-lg" style="text-align: right"> 
-                                    <a style="none" href="paginaUtenteDaCreare.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
+                                    <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
                                     <% 
                                             try {
                                                     String user = (session.getAttribute("user")).toString();
-   
+                                                    
                                                 }catch(Exception ex){
                                             %>
                                                 <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
@@ -101,27 +102,50 @@
                                 
                                 
                                 </div>
+                                 
+                                <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                <% 
+                                    String userType = "";
+                                    try {
+                                            userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <div class="col-xs-2 hidden-lg" style="text-align: right;">
+                                                    <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
+                                                 </div>
+                                                <%
+                                            }
+                                        }catch(Exception ex){   }
+                                %> 
                                 <div class="col-xs-2 hidden-lg" style="text-align: right"> <a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                             </div>
                         </div>
                         <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
-                            <div class="input-group">
-                                
-                                <input id="txtCerca" type="text" 
-                                       class="form-control" aria-label="..." 
-                                       placeholder="Cosa vuoi cercare?" ><!-- Se ho ricevuto un paramentro in GET, inserisco il valore nella barra di ricera -->
+                            <div>
+                                <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
+                                    <div class="input-group-btn">
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
+                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
+                                        <li><a href="#">Vicinanza</a></li>
+                                        <li><a href="#">Prezzo</a></li>
+                                        <li><a href="#">Recensione</a></li>
+                                      </ul>
+                                    </div>
 
-                                
-                                <div class="input-group-btn">
-                                  <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Scegli categoria<span class="caret"></span></button>
-                                  <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
-                                    <li><a href="#">Prodotto</a></li>
-                                    <li><a href="#">Categoria</a></li>
-                                    <li><a href="#">Luogo</a></li>
-                                  </ul>
-                                  <button class="btn btn-default" type="button" onclick="cercaProdotto('txtCerca')">Cerca</button>
-                                </div><!-- /btn-group --> 
+                                    <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
+
+                                    <div class="input-group-btn">
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Scegli categoria<span class="caret"></span></button>
+                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
+                                        <li><a href="#">Categoria</a></li>
+                                        <li><a href="#">Oggetto</a></li>
+                                        <li><a href="#">Venditore</a></li>
+                                      </ul>
+                                      <button class="btn btn-default" type="submit">Cerca</button> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
+                                    </div><!-- /btn-group --> 
+                                </form>
                             </div><!-- /input-group -->
                         </div>                     
                         
@@ -133,7 +157,7 @@
                                     <div class="btn-group">
                                         <a href="userPage.jsp.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
-                                                String userType = "";
+                                                userType = "";
                                                 String fname = "", lname = "";
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
@@ -198,8 +222,24 @@
                                             </ul> 
                                     </div>
                                 </div>
+                                                
+                                <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                     <% try {
+                                            //userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <div class="col-lg-3">
+                                                    <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
+                                                        <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
+                                                     </a>
+                                                 </div> 
+                                                <%
+                                            }
+                                        }catch(Exception ex){  }
+                                   %>
                                 
-                                <div class="col-lg-4">
+                                <div class="col-lg-2">
                                    <a href="shopping-cartPage.jsp" type="button" class="btn btn-default btn-md">
                                         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                                     </a>
@@ -278,14 +318,15 @@
                  
                <!-- corpo della pagina contenente i risultati della ricerca -->
                <div class="tmargin col-xs-12 col-sm-10" id="zonaProdotti">
+                   <!-- LAYOUT 
                    <div class="row panel panel-default">         
                         <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
                                 <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; ">
-                                    <!-- <img src="images/doge.jpg" alt="" > -->
+                                    <!-- <img src="images/doge.jpg" alt="" > --
                                     immagine
                                 </div>
                                 <div class="col-xs-8 col-sm-7 col-md-9">
-                                    <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
+                                    <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto--
                                     <p id="stelle+">Voto totale</p>
                                     <p id="recensioni+" >#num recensioni</p>
                                     <p id="linkmappa" >Vedi su mappa</p>
@@ -293,50 +334,13 @@
                                     <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
 
                                 </div>
-                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" -->
+                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" --
                                     <span  class="glyphicon glyphicon-chevron-right"></span>
                                 </div>
                         </a>
                        <hr>
-                   </div>
-                   <div class="row panel panel-default">
-                        <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                <div class="thumbnail col-xs-4 col-sm-3 col-md-2" style="min-height:100px; ">
-                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
-                                </div>
-                                <div class="col-xs-8 col-sm-7 col-md-9">
-                                    <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
-                                    <p id="stelle+">Voto totale</p>
-                                    <p id="recensioni+" >#num recensioni</p>
-                                    <p id="linkmappa" >Vedi su mappa</p>
-                                    <p id="prezzo+">Prezzo</p>
-                                    <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
-
-                                </div>
-                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <span class="prova glyphicon glyphicon-chevron-right"></span>
-                                </div>
-                        </a>
-                   </div>
-                   <div class="row panel panel-default" style="background-color: aqua;">
-                         <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                <div class="thumbnail col-xs-4 col-sm-3 col-md-2" style="min-height:100px; ">
-                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
-                                </div>
-                                <div class="col-xs-8 col-sm-7 col-md-9">
-                                    <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
-                                    <p id="stelle+">Voto totale</p>
-                                    <p id="recensioni+" >#num recensioni</p>
-                                    <p id="linkmappa" >Vedi su mappa</p>
-                                    <p id="prezzo+">Prezzo</p>
-                                    <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
-
-                                </div>
-                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <span class="prova glyphicon glyphicon-chevron-right"></span>
-                                </div>
-                        </a>
-                   </div>
+                   </div> -->
+                   
                 </div> 
                
                 <!-- back to top button -->
