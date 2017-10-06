@@ -25,7 +25,7 @@
     </head>
     <body class="bodyStyle">
        
-        <div class="container-fluid">
+        <div class="container-fluid tmargin">
             
             <!-- barra bianca a sx -->
             <div class="hidden-xs col-lg-1"></div>
@@ -36,9 +36,9 @@
                         <!-- barra con: login/registrati, cerca, carrello -->
                         <div class="logo col-xs-12 col-lg-1">
                             <div class="row">
-                                <div class="col-xs-8 col-lg-10"><a href="index.jsp">LOGO</a></div>
-                                <div class="col-xs-4 hidden-lg" style="text-align: right"> 
-                                    <a style="none" href="paginaUtenteDaCreare.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
+                                <div class="col-xs-7 col-lg-10"><a href="index.jsp">Amazoff</a></div>
+                                <div class="col-xs-2 hidden-lg" style="text-align: right"> 
+                                    <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
                                     <% 
                                             try {
                                                     String user = (session.getAttribute("user")).toString();
@@ -52,32 +52,49 @@
                                 
                                 
                                 </div>
-                            </div>
+
+                                <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                <% 
+                                    String userType = "";
+                                    try {
+                                            userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <div class="col-xs-3 hidden-lg" style="text-align: right;">
+                                                    <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
+                                                 </div>
+                                                <%
+                                            }
+                                        }catch(Exception ex){   }
+                                %> 
+                                </div>
                         </div>
                         <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
-                            <div class="input-group">
-                                
-                                <div class="input-group-btn">
-                                  <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
-                                  <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
-                                    <li><a href="#">Vicinanza</a></li>
-                                    <li><a href="#">Prezzo</a></li>
-                                    <li><a href="#">Recensione</a></li>
-                                  </ul>
-                                </div>
-                                
-                                <input id="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-                                
-                                <div class="input-group-btn">
-                                  <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Scegli categoria<span class="caret"></span></button>
-                                  <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
-                                    <li><a href="#">Categoria</a></li>
-                                    <li><a href="#">Oggetto</a></li>
-                                    <li><a href="#">Venditore</a></li>
-                                  </ul>
-                                  <a class="btn btn-default" type="button" onclick="cercaProdotto('txtCerca')">Cerca</a> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
-                                </div><!-- /btn-group --> 
+                            <div>
+                                <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
+                                    <div class="input-group-btn">
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
+                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
+                                        <li><a href="#">Vicinanza</a></li>
+                                        <li><a href="#">Prezzo</a></li>
+                                        <li><a href="#">Recensione</a></li>
+                                      </ul>
+                                    </div>
+
+                                    <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
+
+                                    <div class="input-group-btn">
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Scegli categoria<span class="caret"></span></button>
+                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
+                                        <li><a href="#">Categoria</a></li>
+                                        <li><a href="#">Oggetto</a></li>
+                                        <li><a href="#">Venditore</a></li>
+                                      </ul>
+                                      <button class="btn btn-default" type="submit">Cerca</button> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
+                                    </div><!-- /btn-group --> 
+                                </form>
                             </div><!-- /input-group -->
                         </div>                     
                         
@@ -85,11 +102,16 @@
                         <div class="hidden-xs hidden-sm hidden-md col-lg-4">
                         
                             <div class="row">                                
-                                <div class="dropdownUtente col-lg-10" >
+                                <div class="dropdownUtente col-lg-8" >
                                     <div class="btn-group">
                                         <a href="paginaUtenteDaCreare.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
+<<<<<<< HEAD
                                                 String userType = "";
+=======
+                                                userType = "";
+                                                String fname = "", lname = "";
+>>>>>>> francescs
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
                                                     userType = (session.getAttribute("categoria_user")).toString();
@@ -149,13 +171,28 @@
                                             </ul> 
                                     </div>
                                 </div>
-
+                                <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                     <% try {
+                                            //userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <div class="col-lg-3">
+                                                    <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
+                                                        <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
+                                                     </a>
+                                                 </div> 
+                                                <%
+                                            }
+                                        }catch(Exception ex){  }
+                                   %>                
                             </div>
                         </div>
                             
                         
                 </div>
   
+<<<<<<< HEAD
                 <div class="row tmargin">
                     <div class="col-12">
                         <div class=" panel panel-default">
@@ -164,6 +201,14 @@
                                     <div class="col-xs-4 col-lg-3"  style="background-color: green;">
                                         <!-- <img src="images/doge.jpg" alt="" > -->
                                         immagine
+=======
+                <div class="tmargin">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
+                                    <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
+                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
+>>>>>>> francescs
                                     </div>
                                     <div class="col-xs-8 col-lg-6">
 
@@ -179,10 +224,10 @@
                                 </a>
                                 <div class="col-xs-12 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
                                     <div >
-                                        <button class="btn btn-primary col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <p class="btn col-lg-3" id="numProduct+idlettodaldb">1</p>
-                                        <button class="btn btn-danger col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
-                                        <button class="btn btn-warning col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
+                                        <button class="btn btn-primary col-xs-4 col-sm-2 col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
+                                        <p class="btn col-xs-3 col-sm-2 col-lg-3" id="numProduct+idlettodaldb">1</p>
+                                        <button class="btn btn-danger col-xs-4 col-sm-2 col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
+                                        <button class="btn btn-warning col-xs-11 col-sm-2 col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
                                     </div>
                                  </div>
                         
@@ -210,10 +255,10 @@
                                 </a>
                                 <div class="col-xs-12 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
                                     <div >
-                                        <button class="btn btn-primary col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <p class="btn col-lg-3" id="numProduct+idlettodaldb">1</p>
-                                        <button class="btn btn-danger col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
-                                        <button class="btn btn-warning col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
+                                        <button class="btn btn-primary col-xs-4 col-sm-2 col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
+                                        <p class="btn col-xs-3 col-sm-2 col-lg-3" id="numProduct+idlettodaldb">1</p>
+                                        <button class="btn btn-danger col-xs-4 col-sm-2 col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
+                                        <button class="btn btn-warning col-xs-11 col-sm-2 col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
                                     </div>
                                  </div>
                         
@@ -241,10 +286,10 @@
                                 </a>
                                 <div class="col-xs-12 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
                                     <div >
-                                        <button class="btn btn-primary col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <p class="btn col-lg-3" id="numProduct+idlettodaldb">1</p>
-                                        <button class="btn btn-danger col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
-                                        <button class="btn btn-warning col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
+                                        <button class="btn btn-primary col-xs-4 col-sm-2 col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
+                                        <p class="btn col-xs-3 col-sm-2 col-lg-3" id="numProduct+idlettodaldb">1</p>
+                                        <button class="btn btn-danger col-xs-4 col-sm-2 col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
+                                        <button class="btn btn-warning col-xs-11 col-sm-2 col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
                                     </div>
                                  </div>
                         
@@ -259,10 +304,10 @@
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                <!-- footer -->
+                <!-- footer -- ROMPE TUTTO
                 <footer style="background-color: red">
                     <p>&copy; Company 2017</p>
-                </footer>
+                </footer> -->
             
             </div>
             <!-- barra bianca a dx -->

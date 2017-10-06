@@ -24,7 +24,7 @@
     </head>
     <body class="bodyStyle">
        
-        <div class="container-fluid">
+        <div class="container-fluid tmargin">
             
             
             <!-- barra bianca a sx -->
@@ -52,11 +52,32 @@
                                 
                                 
                                 </div>
+<<<<<<< HEAD
                                              <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+=======
+                                 
+                                <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                <% 
+                                    String userType = "";
+                                    try {
+                                            userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <div class="col-xs-2 hidden-lg" style="text-align: right;">
+                                                    <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
+                                                 </div>
+                                                <%
+                                            }
+                                        }catch(Exception ex){   }
+                                %> 
+                                <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+>>>>>>> francescs
                             </div>
                         </div>
                         <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
+<<<<<<< HEAD
                             <div class="input-group">
                                 
                                 <div class="input-group-btn">
@@ -79,6 +100,31 @@
                                   </ul>
                                   <a class="btn btn-default" type="button" onclick="cercaProdotto('txtCerca')">Cerca</a> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
                                 </div><!-- /btn-group --> 
+=======
+                            <div>
+                                <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
+                                    <div class="input-group-btn">
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
+                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
+                                        <li><a href="#">Vicinanza</a></li>
+                                        <li><a href="#">Prezzo</a></li>
+                                        <li><a href="#">Recensione</a></li>
+                                      </ul>
+                                    </div>
+
+                                    <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
+
+                                    <div class="input-group-btn">
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Scegli categoria<span class="caret"></span></button>
+                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
+                                        <li><a href="#">Categoria</a></li>
+                                        <li><a href="#">Oggetto</a></li>
+                                        <li><a href="#">Venditore</a></li>
+                                      </ul>
+                                      <button class="btn btn-default" type="submit">Cerca</button> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
+                                    </div><!-- /btn-group --> 
+                                </form>
+>>>>>>> francescs
                             </div><!-- /input-group -->
                         </div>                     
                         
@@ -152,7 +198,28 @@
                                     </div>
                                 </div>
                                 
+<<<<<<< HEAD
                                 <div class="col-lg-4">
+=======
+                                <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                     <% try {
+                                            //userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <div class="col-lg-3">
+                                                    <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
+                                                        <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
+                                                     </a>
+                                                 </div> 
+                                                <%
+                                            }
+                                        }catch(Exception ex){  }
+                                   %> 
+                                                
+                                                
+                                <div class="col-lg-2">
+>>>>>>> francescs
                                    <a href="shopping-cartPage.jsp" type="button" class="btn btn-default btn-md">
                                         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                                     </a>

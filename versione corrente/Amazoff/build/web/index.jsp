@@ -24,7 +24,6 @@
     </head>
     <body class="bodyStyle">
        
-        <div class="container-fluid">
         <div class="container-fluid tmargin">
             
             
@@ -53,7 +52,9 @@
                                 
                                 
                                 </div>
+<<<<<<< HEAD
                                              <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+=======
                                  
                                 <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                                 <% 
@@ -71,10 +72,12 @@
                                         }catch(Exception ex){   }
                                 %> 
                                 <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+>>>>>>> francescs
                             </div>
                         </div>
                         <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
+<<<<<<< HEAD
                             <div class="input-group">
                                 
                                 <div class="input-group-btn">
@@ -97,6 +100,7 @@
                                   </ul>
                                   <a class="btn btn-default" type="button" onclick="cercaProdotto('txtCerca')">Cerca</a> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
                                 </div><!-- /btn-group --> 
+=======
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
                                     <div class="input-group-btn">
@@ -120,6 +124,7 @@
                                       <button class="btn btn-default" type="submit">Cerca</button> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
                                     </div><!-- /btn-group --> 
                                 </form>
+>>>>>>> francescs
                             </div><!-- /input-group -->
                         </div>                     
                         
@@ -193,7 +198,9 @@
                                     </div>
                                 </div>
                                 
+<<<<<<< HEAD
                                 <div class="col-lg-4">
+=======
                                 <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                                      <% try {
                                             //userType = (session.getAttribute("categoria_user")).toString();
@@ -212,6 +219,7 @@
                                                 
                                                 
                                 <div class="col-lg-2">
+>>>>>>> francescs
                                    <a href="shopping-cartPage.jsp" type="button" class="btn btn-default btn-md">
                                         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                                     </a>
