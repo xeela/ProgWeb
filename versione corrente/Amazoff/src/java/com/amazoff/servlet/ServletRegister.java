@@ -67,7 +67,7 @@ public class ServletRegister extends HttpServlet {
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM users WHERE username = '" + userReceived + "';", connection);
                 
                 while (results.next()) {
-                    dbName = results.getString(1);
+                    dbName = results.getString(4); // 4 = colonna della tab users contenente gli username
                 }
                 
                 connection.close();
@@ -76,7 +76,7 @@ public class ServletRegister extends HttpServlet {
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameTaken);
-                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp");
+                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp?p=e2");
                 }
                 else
                 {
@@ -96,6 +96,9 @@ public class ServletRegister extends HttpServlet {
                     //Prosegui con la pagina corretta
                     HttpSession session = request.getSession();
                     session.setAttribute("user", userReceived);
+                    session.setAttribute("categoria_user", "0");
+                    session.setAttribute("fname", nameReceived);
+                    session.setAttribute("lname", surnameReceived);                    
                     session.setAttribute("errorMessage", Errors.resetError);
                     response.sendRedirect(request.getContextPath() + "/");
                     //request.getRequestDispatcher("/GestioneSquadra").forward(request, response);

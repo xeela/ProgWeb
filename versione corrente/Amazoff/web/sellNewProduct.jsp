@@ -135,7 +135,7 @@
                                                     if(userType.equals("0")) // registrato
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Rimborso / Anomalia</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -144,7 +144,7 @@
                                                     else if(userType.equals("1")) // venditore
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
                                                         <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
@@ -156,7 +156,7 @@
                                                     else if(userType.equals("2")) //admin
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -232,25 +232,37 @@
                 </div>
                 
                 <!-- form per l'upload di un nuovo prodotto -->
-                <div>
-                    <FORM ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct'>
-                        <p>Nome Prodotto</p>  <input type="text" name="nome"/>
-                        <br></br>
-                        <p>Descrizione</p>  <input type="text" name="descrizione"/>
-                        <br></br>
-                        <p>Prezzo</p> <input type="number" name="prezzo"/>
-                        <br/>
-                        <p>Categoria</p>
-                        <select name="categoria">
-                        <option value="categoria1"> Categoria 1 </option>
-                        <option value="categoria2"> Categoria 2 </option>
-                        <option value="categoria3"> Categoria 3 </option>
-                        </select>
-                        <br></br>
-                        <INPUT TYPE='file' NAME='productPic'/>
-                        <br></br>
-                        <INPUT TYPE='submit' VALUE='Aggiungi prodotto'/>
-                    </FORM>
+                <div class="tmargin">
+                    <form ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct' >
+                        <div class="form-group">
+                            <input name="nome" type="text" class="form-control" placeholder="Nome Prodotto" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="form-group">
+                            <input name="descrizione" type="text" class="form-control" placeholder="Descrizione" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="form-group">
+                            <input name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1">
+                        </div>
+                        
+                        <div class="dropdown form-group">
+                            <button  class="btn btn-default dropdown-toggle" type="button" id="ddCategoria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              Categoria <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" name="categoria" aria-labelledby="ddCategoria">
+                              <li><a href="#" value="categoria1"> Categoria 1</a></li>
+                              <li><a href="#" value="categoria2"> Categoria 2</a></li>
+                              <li><a href="#" value="categoria3"> Categoria 3</a></li>
+                              <li role="separator" class="divider"></li>
+                              <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </div> 
+                        <div class="form-group">
+                            <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="form-group">
+                            <input TYPE='submit' NAME='productPic' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
+                        </div>
+                    </form>
                 </div>
            
                 <!-- back to top button -->

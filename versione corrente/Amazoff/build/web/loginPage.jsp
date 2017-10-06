@@ -156,6 +156,8 @@
                     return false;
 		});
             }*/
+    
+            console.log("- <%=request.getParameter("p") %>" );
         </script>
         
     </head>
@@ -202,7 +204,7 @@
                             </p>
                         </form> 
                         <!-- div che visualizza il messaggio di errore durante il login -->
-                        <% if(request.getParameter("p") != null) { %>
+                        <% if(request.getParameter("p") != null && request.getParameter("p").equals("e1")) { %>
                             <div class="alert alert-danger alert-dismissible" id="alertRegistrati" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <strong>Errore!</strong> L'email o la password non sono corrette. Riprova.
@@ -264,7 +266,14 @@
                         </div>
                     </form>
                     <div class="alert alert-danger alert-dismissible" style="visibility: hidden" id="alertRegistrati" role="alert">
-                        <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+                        
+                        <!-- div che visualizza il messaggio di errore durante il login -->
+                        <% if(request.getParameter("p") != null && request.getParameter("p").equals("e2")) { %>
+                            <script>MostraErrore("L'username è già in uso. Selezionane un altro e riprovare.");</script>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                
+                        <% } %>
+                        
                     </div>
                 </div>
             </div>

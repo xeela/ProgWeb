@@ -177,19 +177,19 @@
                 <div class="col-lg-12">
                     <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletUpdateProfile" method="POST" onsubmit="return HashPasswordRegister();">
                         
-                        <div>
+                        <div class="form-group">
                             <input id="mailRegister" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
                         </div>
-                        <div>
+                        <div class="form-group">
                             <input id="usernameRegister" type="text" name="username" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
                         </div>
-                        <div>
+                        <div class="form-group">
                             <input id="nameRegister" type="text" name="name" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
-                        </div>
-                        <div>
+                        </div class="form-group">
+                        <div class="form-group">
                             <input id="surnameRegister" type="text" name="surname" class="form-control" placeholder="Cognome" aria-describedby="sizing-addon2">
                         </div>
-                        <div class="input-group">
+                        <div class="form-group input-group">
                             <input id="oldpassword" type="password"  class="form-control" placeholder="Vecchia password" aria-describedby="sizing-addon2">
                             <span class="input-group-btn">
                                 <a id="btnoldPassword" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('oldpassword')">
@@ -197,7 +197,7 @@
                                 </a>
                             </span>
                         </div>
-                        <div class="input-group">
+                        <div class="form-group input-group">
                             <input id="pwdRegister" type="password" name="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
                             <span class="input-group-btn">
                                 <a id="btnpwdRegister" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('pwdRegister')">
@@ -205,7 +205,7 @@
                                 </a>
                             </span>
                         </div>
-                        <div class="input-group">
+                        <div class="form-group input-group">
                             <input id="pwdRegisterConfirm" type="password" class="form-control" placeholder="Ripeti password" aria-describedby="sizing-addon2">
                             <input id="hashedPassword" type="hidden" name="hashedPassword" value="pigreco" />
                             <span class="input-group-btn">
@@ -215,9 +215,9 @@
                             </span>
                         </div>
                         
-                        <div class="tmargin">
+                        <div class="form-group tmargin">
                             <button id="btnRegistrati" class="btn btn-default" >Aggiorna dati</button>
-                            <button type="button" class="btn btn-danger">Annulla</button>
+                            <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
                         </div>
                     </form>
                     <div class="alert alert-danger alert-dismissible" style="visibility: hidden" id="alertRegistrati" role="alert">

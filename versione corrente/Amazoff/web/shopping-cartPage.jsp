@@ -134,7 +134,7 @@
                                                     if(userType.equals("0")) // registrato
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Rimborso / Anomalia</a></li>
                                                         <li><a href=".jsp">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
@@ -144,7 +144,7 @@
                                                     else if(userType.equals("1")) // venditore
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
                                                         <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
@@ -156,7 +156,7 @@
                                                     else if(userType.equals("2")) //admin
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>

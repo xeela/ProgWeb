@@ -29,15 +29,15 @@
             
             function AggiungiProdotti() {
                 var toAdd = "";
-                
-                //alert("-" + searchedProduct);
+
                 for(var i = 0; i < jsonProdotti.products.length; i++)
                 {
                     // OSS: id inserito è sbagliato, anche se arriva giusto dal 
                     toAdd += "<div class=\"row\">";
                     toAdd += "<a href=\"productPage.jsp?id=" + jsonProdotti.products[i].id + "\" id=\""+ jsonProdotti.products[i].id +"\">";
                     toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
-                    toAdd += "   <img src=\"images/img1.jpg\" style=\"max-height: 100px; \" alt=\"...\">";
+                    var s = jsonProdotti.products[i].pictures[0].path;
+                    toAdd += "   <img src=\""+ jsonProdotti.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
                     toAdd += "</div>";
                     toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
                     toAdd += "<p id=\"nome+\" >" + jsonProdotti.products[i].name + "</p>";
@@ -185,7 +185,7 @@
                                                     if(userType.equals("0")) // registrato
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Rimborso / Anomalia</a></li>
                                                         <li><a href=".jsp">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
@@ -195,7 +195,7 @@
                                                     else if(userType.equals("1")) // venditore
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
                                                         <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
@@ -207,7 +207,7 @@
                                                     else if(userType.equals("2")) //admin
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp">Profilo</a></li>
+                                                        <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>

@@ -164,7 +164,7 @@
                                <%
                                     if(userType.equals("0")) // registrato
                                     { %>
-                                        <a href="userPage.jsp" class="list-group-item">
+                                        <a href="profilePage.jsp" class="list-group-item">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Profilo
                                         </a>
@@ -185,7 +185,7 @@
                                     }
                                     else if(userType.equals("1")) // venditore
                                     { %>
-                                        <a href="userPage.jsp" class="list-group-item">
+                                        <a href="profilePage.jsp" class="list-group-item">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Profilo
                                         </a>
@@ -213,7 +213,7 @@
                                     }
                                     else if(userType.equals("2")) //admin
                                     { %>
-                                        <a href="userPage.jsp" class="list-group-item">
+                                        <a href="profilePage.jsp" class="list-group-item">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Profilo
                                         </a>
