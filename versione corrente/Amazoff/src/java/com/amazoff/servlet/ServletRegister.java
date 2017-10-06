@@ -83,14 +83,14 @@ public class ServletRegister extends HttpServlet {
                     connection = MyDatabaseManager.CreateConnection();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date date = new Date();
-                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO users(first_name, last_name, username, pass, registration_date, email) " + 
+                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO users(first_name, last_name, username, pass, registration_date, email, usertype) " + 
                                                         "VALUES (" + 
                                                         "'" + nameReceived + "', " + 
                                                         "'" + surnameReceived + "', " + 
                                                         "'" + userReceived + "', " + 
                                                         "'" + pwdReceived + "', " + 
                                                         "'" + dateFormat.format(date) + "', " +
-                                                        "'" + emailReceived + "');", connection);
+                                                        "'" + emailReceived + "', 0);", connection);
                     
                     connection.close();
                     //Prosegui con la pagina corretta

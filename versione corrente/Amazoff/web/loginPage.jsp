@@ -196,11 +196,18 @@
                             </div>
                             <br/>
                             <button class="btn btn-default" type="submit">Accedi</button>
-                            <button type="button" class="btn btn-danger">Annulla</button>    
+                            <a href="index.jsp" class="btn btn-danger">Annulla</a>    
                             <p class="tmargin">Password dimenticata? 
-                                <a data-toggle="modal" data-target="#modalPasswordReset">Ripristina</a>
+                                <a href="" style="color: blue" data-toggle="modal" data-target="#modalPasswordReset">Ripristina</a>
                             </p>
-                        </form>                        
+                        </form> 
+                        <!-- div che visualizza il messaggio di errore durante il login -->
+                        <% if(request.getParameter("p") != null) { %>
+                            <div class="alert alert-danger alert-dismissible" id="alertRegistrati" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Errore!</strong> L'email o la password non sono corrette. Riprova.
+                            </div>
+                        <% } %>
                     </div>
                 </div>
             </div> 
@@ -248,12 +255,12 @@
                         </div>
                         <div class="tmargin">
                             <input type="checkbox" id="cbCondizioni" aria-label="..." onclick="statoTerminiCondizioni()"> Conferma di aver letto e accettato le 
-                            <a data-toggle="modal" data-target="#modalCondizioni">condizioni <span class="glyphicon glyphicon-info-sign"></span> </a>
+                            <a href="" style="color: blue" data-toggle="modal" data-target="#modalCondizioni">condizioni <span class="glyphicon glyphicon-info-sign"></span> </a>
                         </div>
                         
                         <div class="tmargin">
                             <button id="btnRegistrati" class="btn btn-default" disabled="true" title="Accetta le condizioni per continuare" >Registrati</button>
-                            <button type="button" class="btn btn-danger">Annulla</button>
+                            <a href="index.jsp" class="btn btn-danger">Annulla</a>
                         </div>
                     </form>
                     <div class="alert alert-danger alert-dismissible" style="visibility: hidden" id="alertRegistrati" role="alert">
