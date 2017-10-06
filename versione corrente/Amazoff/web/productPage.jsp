@@ -151,12 +151,8 @@
                                     <div class="btn-group">
                                         <a href="paginaUtenteDaCreare.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
-<<<<<<< HEAD
-                                                String userType = "";
-=======
                                                 userType = "";
                                                 String fname = "", lname = "";
->>>>>>> francescs
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
                                                     userType = (session.getAttribute("categoria_user")).toString();

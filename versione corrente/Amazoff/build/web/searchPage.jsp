@@ -29,18 +29,10 @@
                 var toAdd = "";
                 for(var i = 0; i < jsonProdotti.products.length; i++)
                 {
-<<<<<<< HEAD
-                    toAdd += "<div class=\"row panel panel-default\">";
-                    toAdd += "<a href=\"productPage.jsp?id=id_oggetto\" id=\"id_oggetto\">";
-                    toAdd += "<div class=\"col-xs-4 col-sm-3 col-md-2\"  style=\"background-color: green; margin: 0 0 0 0;\">";
-                    toAdd += "immagine";
-=======
-                    // OSS: id inserito è sbagliato, anche se arriva giusto dal 
                     toAdd += "<div class=\"row\">";
                     toAdd += "<a href=\"productPage.jsp?id=" + jsonProdotti.products[i].id + "\" id=\""+ jsonProdotti.products[i].id +"\">";
                     toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
                     toAdd += "   <img src=\"images/img1.jpg\" style=\"max-height: 100px; \" alt=\"...\">";
->>>>>>> francescs
                     toAdd += "</div>";
                     toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
                     toAdd += "<p id=\"nome+\" >" + jsonProdotti.products[i].name + "</p>";
@@ -122,16 +114,6 @@
                         </div>
                         <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
-<<<<<<< HEAD
-                            <div class="input-group">
-                                
-                                <input id="txtCerca" type="text" 
-                                       class="form-control" aria-label="..." 
-                                       placeholder="Cosa vuoi cercare?"
-                                       value="<%
-                                           if(request.getParameter("p") != null)
-                                               out.println(request.getParameter("p")); %>" <!-- Se ho ricevuto un paramentro in GET, inserisco il valore nella barra di ricera -->
-=======
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
                                     <div class="input-group-btn">
@@ -142,7 +124,6 @@
                                         <li><a href="#">Recensione</a></li>
                                       </ul>
                                     </div>
->>>>>>> francescs
 
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
 
@@ -167,12 +148,9 @@
                                     <div class="btn-group">
                                         <a href="paginaUtenteDaCreare.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
-<<<<<<< HEAD
-                                                String userType = "";
-=======
+
                                                 userType = "";
                                                 String fname = "", lname = "";
->>>>>>> francescs
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
                                                     userType = (session.getAttribute("categoria_user")).toString();
@@ -344,62 +322,14 @@
                                     <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
 
                                 </div>
-<<<<<<< HEAD
-                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" -->
+
+                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" --
                                     <span class="prova glyphicon glyphicon-chevron-right"></span>
                                 </div>
                         </a>
                        
-                   </div>
-                   <div class="row panel panel-default">
-                        <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; margin: 0 0 0 0;">
-                                    <!-- <img src="images/doge.jpg" alt="" > -->
-                                    immagine
-                                </div>
-                                <div class="col-xs-8 col-sm-7 col-md-9">
-                                    <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
-                                    <p id="stelle+">Voto totale</p>
-                                    <p id="recensioni+" >#num recensioni</p>
-                                    <p id="linkmappa" >Vedi su mappa</p>
-                                    <p id="prezzo+">Prezzo</p>
-                                    <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
-
-                                </div>
-                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <span class="prova glyphicon glyphicon-chevron-right"></span>
-                                </div>
-                        </a>
-                   </div>
-                   <div class="row panel panel-default" style="background-color: aqua;">
-                         <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; margin: 0 0 0 0;">
-                                    <!-- <img src="images/doge.jpg" alt="" > -->
-                                    immagine
-                                </div>
-                                <div class="col-xs-8 col-sm-7 col-md-9">
-                                    <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
-                                    <p id="stelle+">Voto totale</p>
-                                    <p id="recensioni+" >#num recensioni</p>
-                                    <p id="linkmappa" >Vedi su mappa</p>
-                                    <p id="prezzo+">Prezzo</p>
-                                    <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
-
-                                </div>
-                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <span class="prova glyphicon glyphicon-chevron-right"></span>
-                                </div>
-                        </a>
-                   </div>
-=======
-                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" --
-                                    <span  class="glyphicon glyphicon-chevron-right"></span>
-                                </div>
-                        </a>
-                       <hr>
-                   </div> -->
+                   </div>-->
                    
->>>>>>> francescs
                 </div> 
                
                 <!-- back to top button -->

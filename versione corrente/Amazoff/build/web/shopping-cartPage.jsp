@@ -106,12 +106,9 @@
                                     <div class="btn-group">
                                         <a href="paginaUtenteDaCreare.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
-<<<<<<< HEAD
-                                                String userType = "";
-=======
                                                 userType = "";
                                                 String fname = "", lname = "";
->>>>>>> francescs
+
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
                                                     userType = (session.getAttribute("categoria_user")).toString();
@@ -192,23 +189,12 @@
                         
                 </div>
   
-<<<<<<< HEAD
-                <div class="row tmargin">
-                    <div class="col-12">
-                        <div class=" panel panel-default">
-                            <div class="panel-body">
-                                <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                    <div class="col-xs-4 col-lg-3"  style="background-color: green;">
-                                        <!-- <img src="images/doge.jpg" alt="" > -->
-                                        immagine
-=======
                 <div class="tmargin">
                     <div class="col-xs-12">
                         <div class="row">
                             <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
                                     <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
                                         <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
->>>>>>> francescs
                                     </div>
                                     <div class="col-xs-8 col-lg-6">
 
