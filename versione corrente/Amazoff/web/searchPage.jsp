@@ -36,8 +36,7 @@
                     toAdd += "<div class=\"row\">";
                     toAdd += "<a href=\"productPage.jsp?id=" + jsonProdotti.products[i].id + "\" id=\""+ jsonProdotti.products[i].id +"\">";
                     toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
-                    var s = jsonProdotti.products[i].pictures[0].path;
-                    toAdd += "   <img src=\""+ jsonProdotti.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
+                    toAdd += "   <img src=\"UploadedImages/"+ jsonProdotti.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
                     toAdd += "</div>";
                     toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
                     toAdd += "<p id=\"nome+\" >" + jsonProdotti.products[i].name + "</p>";

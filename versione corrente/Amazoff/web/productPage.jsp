@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         
         <script type="text/javascript">
-        <!--    var jsonProdotti;
+        <!--    var jsonProdotti; -->
             function LogJson() {
                 jsonProdotti = ${jsonProdotti};
                 console.log(jsonProdotti);
@@ -58,7 +58,7 @@
             function cercaProdotto(txt)
             {
                 window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-            } -->
+            } 
             
        
             
