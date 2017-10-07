@@ -17,6 +17,9 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
         <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
+        <script type="text/javascript" src="js/search-autocomplete.js"></script>
         
         <link rel="stylesheet" href="css/amazoffStyle.css">
         
@@ -83,16 +86,13 @@
                                         <li><a href="#">Recensione</a></li>
                                       </ul>
                                     </div>
-
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
 
                                     <div class="input-group-btn">
-                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Scegli categoria<span class="caret"></span></button>
-                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
-                                        <li><a href="#">Categoria</a></li>
-                                        <li><a href="#">Oggetto</a></li>
-                                        <li><a href="#">Venditore</a></li>
-                                      </ul>
+                                    <select class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search_category">Select category<span class="caret"></span></button>
+                                        <option value="product">Product</option>
+                                        <option value="seller">Seller</option>
+                                    </select>
                                       <button class="btn btn-default" type="submit">Cerca</button> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
                                     </div><!-- /btn-group --> 
                                 </form>
