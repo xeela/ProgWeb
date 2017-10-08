@@ -75,8 +75,8 @@ public class ServletAddProduct extends HttpServlet {
                 
                 //aggiungi alla tabella products il prodotto
                 PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO products (name, description, price, id_shop) VALUES (" 
-                            + "'" + nomeReceived + "', "
-                            + "'" + descrizioneReceived + "', "
+                            + "'" + MyDatabaseManager.EscapeCharacters(nomeReceived) + "', "
+                            + "'" + MyDatabaseManager.EscapeCharacters(descrizioneReceived) + "', "
                             + "" + prezzoReceived + ", "
                             + id_shop + ");", connection);
                 //ottieni l'ID del prodotto appena aggiunto
@@ -87,7 +87,7 @@ public class ServletAddProduct extends HttpServlet {
                 
                 //aggiungi il nome della foto alla tabella pictures
                 PreparedStatement ps2 = MyDatabaseManager.EseguiStatement("INSERT INTO pictures (path, id_product) VALUES ("
-                            + "'" + nomeFotoReceived + "', "
+                            + "'" + MyDatabaseManager.EscapeCharacters(nomeFotoReceived) + "', "
                             + productID + ");", connection);
                 
                 connection.close();
@@ -102,7 +102,11 @@ public class ServletAddProduct extends HttpServlet {
             }
         }
         catch(Exception ex)
-        {return;}
+        {
+            HttpSession session = request.getSession();
+            MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletFindProduct", ex.toString());
+            return;
+        }
         /*catch (SQLException ex) {
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);

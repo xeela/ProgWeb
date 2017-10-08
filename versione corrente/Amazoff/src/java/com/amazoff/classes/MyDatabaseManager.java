@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import com.mchange.v2.c3p0.*;
 import java.beans.PropertyVetoException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,7 +104,7 @@ public class MyDatabaseManager {
         int idshop = -1;
         //per ora una persona può avere solo un negozio, altrimenti non so quale prende (l'ultimo creato, in teoria)
         Connection connection = CreateConnection();
-        ResultSet userIDres = MyDatabaseManager.EseguiQuery("SELECT id FROM users WHERE username = '" + utente + "';", connection);
+        ResultSet userIDres = MyDatabaseManager.EseguiQuery("SELECT id FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(utente) + "';", connection);
         int userID = 0;
         while(userIDres.next())
             userID = userIDres.getInt(1);
@@ -115,25 +117,32 @@ public class MyDatabaseManager {
         
         return idshop;
     }
-    //ESEMPIO
-    static public String GetChosenDriversList(String username, String currentGp) throws SQLException
+    
+    static public void LogError(String user, String servletName, String message)
     {
-        Connection connection = CreateConnection();
-        String tmpChosenDriversList = "";
-        ResultSet results = MyDatabaseManager.EseguiQuery("SELECT nome_pilota, cognome_pilota, scuderia, prezzo, punti FROM scelte_piloti, piloti WHERE username = '" + username + "' AND nome_gara = '" + currentGp + "' AND nome_pilota = nome AND cognome_pilota = cognome", connection);
-        while (results.next()) {
-            String name = results.getString(1);
-            String surname = results.getString(2);
-            String team = results.getString(3);
-            String price = results.getString(4);
-            String points = results.getString(5);
-            tmpChosenDriversList += ("|" + name + ";" 
-                                        + surname + ";"
-                                        + team + ";"
-                                        + price + ";"
-                                        + points );
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+     
+        try {
+            Connection connection = CreateConnection();
+            
+            PreparedStatement ps = EseguiStatement("INSERT INTO errors(user, message, servlet, date) VALUES ("
+                    + "'" + MyDatabaseManager.EscapeCharacters(user) + "', "
+                    + "'" + MyDatabaseManager.EscapeCharacters(message) + "', "
+                    + "'" + MyDatabaseManager.EscapeCharacters(servletName) + "', "
+                    + "'" + dateFormat.format(date) + "');", connection);
+            
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(MyDatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        connection.close();
-        return tmpChosenDriversList;
+        
+    }
+    
+    //Helpers
+    
+    static public String EscapeCharacters(String msg)
+    {
+        return msg.replace("'", "\\\'");
     }
 }
