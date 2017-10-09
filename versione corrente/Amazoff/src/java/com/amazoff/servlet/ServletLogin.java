@@ -59,7 +59,7 @@ public class ServletLogin extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name FROM users WHERE username = '" + userReceived + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
                 
                 if(results.isAfterLast()) //se non c'è un utente con quel nome
                 {
@@ -106,6 +106,7 @@ public class ServletLogin extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
             }
         }catch (SQLException ex) {
+            MyDatabaseManager.LogError(request.getParameter("username"), "ServletLogin", ex.toString());
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore

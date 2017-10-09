@@ -58,7 +58,7 @@ public class ServletFindProduct extends HttpServlet {
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + productReceived + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "';", connection);
                 
                 if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
                 {
@@ -136,6 +136,7 @@ public class ServletFindProduct extends HttpServlet {
             }
         }catch (SQLException ex) {
             HttpSession session = request.getSession();
+            MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletFindProduct", ex.toString());
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
         }

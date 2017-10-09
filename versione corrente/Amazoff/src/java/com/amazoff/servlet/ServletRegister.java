@@ -64,7 +64,7 @@ public class ServletRegister extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM users WHERE username = '" + userReceived + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
                 
                 while (results.next()) {
                     dbName = results.getString(4); // 4 = colonna della tab users contenente gli username
@@ -85,12 +85,12 @@ public class ServletRegister extends HttpServlet {
                     Date date = new Date();
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO users(first_name, last_name, username, pass, registration_date, email, usertype) " + 
                                                         "VALUES (" + 
-                                                        "'" + nameReceived + "', " + 
-                                                        "'" + surnameReceived + "', " + 
-                                                        "'" + userReceived + "', " + 
-                                                        "'" + pwdReceived + "', " + 
+                                                        "'" + MyDatabaseManager.EscapeCharacters(nameReceived) + "', " + 
+                                                        "'" + MyDatabaseManager.EscapeCharacters(surnameReceived) + "', " + 
+                                                        "'" + MyDatabaseManager.EscapeCharacters(userReceived) + "', " + 
+                                                        "'" + MyDatabaseManager.EscapeCharacters(pwdReceived) + "', " + 
                                                         "'" + dateFormat.format(date) + "', " +
-                                                        "'" + emailReceived + "', 0);", connection);
+                                                        "'" + MyDatabaseManager.EscapeCharacters(emailReceived) + "', 0);", connection);
                     
                     connection.close();
                     //Prosegui con la pagina corretta
@@ -112,6 +112,7 @@ public class ServletRegister extends HttpServlet {
             }
             
         }catch (SQLException ex) {
+            MyDatabaseManager.LogError(request.getParameter("username"), "ServletRegister", ex.toString());
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/");
