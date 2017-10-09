@@ -20,6 +20,10 @@
             </param-value>
         </init-param>
     </servlet>
+    <servlet>
+        <servlet-name>ServletPopulateProductPage</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletPopulateProductPage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>ServletAddProduct</servlet-name>
         <url-pattern>/ServletAddProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPopulateProductPage</servlet-name>
+        <url-pattern>/ServletPopulateProductPage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

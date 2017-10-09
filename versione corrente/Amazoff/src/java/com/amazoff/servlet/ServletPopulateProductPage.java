@@ -12,8 +12,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +20,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author DVD_01
+ * @author Fra
  */
 public class ServletPopulateProductPage extends HttpServlet {
 
@@ -39,25 +37,11 @@ public class ServletPopulateProductPage extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
             String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
-            String id_prodotto = request.getParameter("id");
+            String idReceived = request.getParameter("id");
             
-            
-             HttpSession session = request.getSession();  
-             session.setAttribute("id_prodotto", id_prodotto);
-             response.sendRedirect(request.getContextPath() + "/productPage.jsp");   
-
-
-
-
-            //String productReceived = request.getParameter("txtCerca");
-
-           //Connessione al Database
-            //String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
-            //String db_user = "root";
-            //String db_pwd = "root";
-            
-            /*if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
@@ -68,7 +52,7 @@ public class ServletPopulateProductPage extends HttpServlet {
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + productReceived + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM products WHERE id = '" + idReceived + "';", connection);
                 
                 if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
                 {
@@ -81,28 +65,26 @@ public class ServletPopulateProductPage extends HttpServlet {
                                
                 
                 //aggiungo i prodotti al json
-                boolean isFirstTime = true, isFirstTimeImg = true;
+                boolean isFirstTime = true, isFirstTimeImg = true, isFirstReview = true;
                 jsonObj += "{";
-                jsonObj        += "\"searched\": \"" + productReceived + "\",";
-                jsonObj        += "\"products\":[";
+                jsonObj += "\"result\":[";
                 while (results.next()) {
                     if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
                         jsonObj += ", ";
                     isFirstTime = false;
                     
                     jsonObj += "{";
-                    jsonObj += "\"id\": \"" + results.getString(4) + "\",";
-                    jsonObj += "\"name\": \"" + results.getString(1) + "\",";
-                    jsonObj += "\"description\": \"" + results.getString(2) + "\",";
-                    jsonObj += "\"price\": \"" + results.getString(3) + "\",";
+                    jsonObj += "\"id\": \"" + results.getString(1) + "\",";
+                    jsonObj += "\"name\": \"" + results.getString(2) + "\",";
+                    jsonObj += "\"description\": \"" + results.getString(3) + "\",";
+                    jsonObj += "\"price\": \"" + results.getString(4) + "\",";
+                    jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
                     
-                     // in base al prodotto, ricavo il path delle img a lui associate
-                    // TO DO:::::::: String s = productPictures(results.getString(4));
-                    
+                     // in base al prodotto, ricavo il path delle img a lui associate                    
                     //------ TMP --------
-                    ResultSet results2 = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(4) + ";", connection);
+                    ResultSet resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(1) + ";", connection);
                 
-                    if(results2.isAfterLast()) //se non ci sono img per quel prodotto, allora:
+                    if(resultsPictures.isAfterLast()) //se non ci sono img per quel prodotto, allora:
                     {
                         HttpSession session = request.getSession();
                         session.setAttribute("errorMessage", Errors.noProductFound);
@@ -110,16 +92,51 @@ public class ServletPopulateProductPage extends HttpServlet {
                         connection.close();
                         return;
                     }
-                    jsonObj        += "\"pictures\":[";
+                    jsonObj += "\"pictures\":[";
                     // altrimenti
-                    while (results2.next()) {
+                    while (resultsPictures.next()) {
                         if(!isFirstTimeImg)            //metto la virgola prima dell'oggetto solo se non è il primo
                             jsonObj += ", ";
                         isFirstTimeImg = false; 
                         
                         jsonObj += "{";
-                        jsonObj += "\"id\": \"" + results2.getString(1) + "\",";
-                        jsonObj += "\"path\": \"" + results2.getString(2) + "\"";
+                        jsonObj += "\"id\": \"" + resultsPictures.getString(1) + "\",";
+                        jsonObj += "\"path\": \"" + resultsPictures.getString(2) + "\"";
+                        jsonObj += "}";
+                    }
+                    isFirstTimeImg = true;
+                    jsonObj += "],";
+                    
+                    //------ FINE TMP --------
+                    
+                    //------ TMP --------
+                    ResultSet resultsReviews = MyDatabaseManager.EseguiQuery("SELECT * FROM reviews WHERE id_product = " + results.getString(1) + ";", connection);
+                
+                    if(resultsReviews.isAfterLast()) //se non ci sono img per quel prodotto, allora:
+                    {
+                        HttpSession session = request.getSession();
+                        session.setAttribute("errorMessage", Errors.noProductFound);
+                        response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
+                        connection.close();
+                        return;
+                    }
+                    jsonObj += "\"reviews\":[";
+                    // altrimenti
+                    while (resultsReviews.next()) {
+                        if(!isFirstReview)            //metto la virgola prima dell'oggetto solo se non è il primo
+                            jsonObj += ", ";
+                        isFirstReview = false; 
+                        
+                        jsonObj += "{";
+                        jsonObj += "\"id\": \"" + resultsReviews.getString(1) + "\",";
+                        jsonObj += "\"global_value\": \"" + resultsReviews.getString(2) + "\",";
+                        jsonObj += "\"quality\": \"" + resultsReviews.getString(3) + "\",";
+                        jsonObj += "\"service\": \"" + resultsReviews.getString(4) + "\",";
+                        jsonObj += "\"value_for_money\": \"" + resultsReviews.getString(5) + "\",";
+                        jsonObj += "\"name\": \"" + resultsReviews.getString(6) + "\",";
+                        jsonObj += "\"description\": \"" + resultsReviews.getString(7) + "\",";
+                        jsonObj += "\"date_creation\": \"" + resultsReviews.getString(8) + "\",";
+                        jsonObj += "\"id_creator\": \"" + resultsReviews.getString(10) + "\"";
                         jsonObj += "}";
                     }
                     isFirstTimeImg = true;
@@ -136,21 +153,21 @@ public class ServletPopulateProductPage extends HttpServlet {
                 
                 HttpSession session = request.getSession();  
                 session.setAttribute("jsonProdotti", jsonObj);
-                response.sendRedirect(request.getContextPath() + "/searchPage.jsp"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/productPage.jsp"); //TODO: Gestire meglio l'errore
             }
             else
             {
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
-            }*/
-            
-            
+            }
+        }catch (SQLException ex) {
+            HttpSession session = request.getSession();
+            session.setAttribute("errorMessage", Errors.dbQuery);
+            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
         }
-        //TODO: Gestire meglio l'errore
     }
-    
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
