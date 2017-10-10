@@ -106,7 +106,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 userType = "";
                                                 String fname = "", lname = "";

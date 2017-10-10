@@ -170,11 +170,12 @@
             </div>
             
            
-            <!-- REGISTRATI -->
+            <!-- FORM CREDENZIALI -->
             <div class="col-12" >
                 <div class="row" >
-                <div class="col-lg-12"><h3 style="text-align: center">Aggiorna le tue credenziali:</h3></div>
-                <div class="col-lg-12">
+                <div class="col-md-3 col-lg-3"></div>
+                <div class="col-md-6 col-lg-6" style="text-align: center">
+                    <h3 style="text-align: center">Aggiorna le tue credenziali:</h3>
                     <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletUpdateProfile" method="POST" onsubmit="return HashPasswordRegister();">
                         
                         <div class="form-group">

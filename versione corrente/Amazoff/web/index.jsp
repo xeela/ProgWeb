@@ -105,7 +105,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 userType = "";
                                                 String user = "", fname = "", lname = "";
@@ -394,6 +394,7 @@
                 document.getElementById("formSearch").action = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value
                 //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
             }
+            
         </script>
     </body>
 </html>

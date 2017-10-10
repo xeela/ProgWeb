@@ -15,9 +15,9 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
         <script src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        <!--<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script> rompe il carousel-->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
-        <script type="text/javascript" src="js/search-autocomplete.js"></script>
+        <script type="text/javascript" src="js/search-autocomplete.js"></script> 
         
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         
@@ -26,9 +26,9 @@
             function LogJson() {
                 jsonProdotto = ${jsonProdotti};
                 console.log(jsonProdotto);
-                PopolaCarousel();
                 PopulateData();
                 PopolaReviews();
+                PopolaCarousel();
             }
             
             function PopolaReviews() {
@@ -81,15 +81,17 @@
                     else 
                         toAdd += "<div class=\"item\" data-slide-number=\""+i+"\">";
                         
+                    /* NON  VA 
                     toAddMiniature += "<div class=\"col-md-4\">";
                     toAddMiniature += "<a class=\"thumbnail\" id=\"carousel-selector-"+i+"\">";
-                    toAddMiniature += "<img src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";
-                    
+                    toAddMiniature += "<img src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";                                      
+                   */
+                  
                     toAdd += "<img src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></div>";
                 }     
                 
                 $("#div_carousel").html(toAdd);
-                $("#div_carousel_miniature").html(toAddMiniature);
+                //$("#div_carousel_miniature").html(toAddMiniature);
             }    
             
         </script> 
@@ -177,7 +179,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="userPage.jsp.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 userType = "";
                                                 String fname = "", lname = "";
@@ -353,7 +355,7 @@
                                             <div class="carousel slide" id="myCarousel">
                                                 <!-- Carousel items -->
                                                 <div class="carousel-inner" id="div_carousel">
-
+                                                    
                                                 </div><!-- Carousel nav -->
                                                 <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                                                     <span class="glyphicon glyphicon-chevron-left"></span>                                       
@@ -375,7 +377,13 @@
                                 <div class="hidden-xs hidden-sm" id="slider-thumbs">
                                     <!-- Bottom switcher of slider -->
                                     <div style="list-style:none;" id="div_carousel_miniature">
+                                            <div class="col-md-4">
+                                                <a class="thumbnail" id="carousel-selector-0"><img src="http://placehold.it/170x100&text=one"></a>
+                                            </div>
 
+                                            <div class="col-md-4">
+                                                <a class="thumbnail" id="carousel-selector-1"><img src="http://placehold.it/170x100"></a>
+                                            </div> 
                                     </div>                 
                                 </div>
                             </div>
@@ -481,8 +489,13 @@
             }
  
             <!-- CODICE per la gestione del CAROUSEL delle immagini -->
+            $("#myCarousel").carousel({
+                interval: 5000
+            });
+            
                //Handles the carousel thumbnails
                $('[id^=carousel-selector-]').click( function(){
+               
                     var id = this.id.substr(this.id.lastIndexOf("-") + 1);
                     var id = parseInt(id);
                     $("#myCarousel").carousel(id);
