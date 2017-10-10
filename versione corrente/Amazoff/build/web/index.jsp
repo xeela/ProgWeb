@@ -39,7 +39,9 @@
                         <!-- barra con: login/registrati, cerca, carrello -->
                         <div class="logo col-xs-12 col-lg-1">
                             <div class="row">
-                                <div class="col-xs-6 col-lg-10"><a href="index.jsp">Amazoff</a></div>
+                                <div class="col-xs-6 col-lg-10"><a href="index.jsp">
+                                        <img src="images/logo/logo.png" alt="Amazoff"/>
+                                    </a></div>
                                 <div class="col-xs-2 hidden-lg" style="text-align: right"> 
                                     <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
                                     <% 
