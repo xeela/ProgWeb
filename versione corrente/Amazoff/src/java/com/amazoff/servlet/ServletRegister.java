@@ -76,7 +76,7 @@ public class ServletRegister extends HttpServlet {
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameTaken);
-                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp?p=e2");
+                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp");
                 }
                 else
                 {

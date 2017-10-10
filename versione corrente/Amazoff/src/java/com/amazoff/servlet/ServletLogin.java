@@ -95,7 +95,7 @@ public class ServletLogin extends HttpServlet {
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.wrongPassword);
-                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp?p=e1"); // OSS: e1 stà per errore 1.
+                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp"); // OSS: e1 stà per errore 1.
                 } 
                     
             }
