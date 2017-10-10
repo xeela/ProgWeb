@@ -1,15 +1,15 @@
-.imgResize{
-  width: auto;
-  height: auto;
-  min-height: 200px;
-  max-height: 200px;
-}
-
 .bodyStyle
 { }
 
 .searchBar
 { }
+
+
+.logo2 
+{
+    height: auto;
+    max-width:125%;
+}
 
 .menuBar
 {
