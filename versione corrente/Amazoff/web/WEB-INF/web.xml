@@ -12,6 +12,7 @@
         <url-pattern>/userPage.jsp</url-pattern>
         <url-pattern>/createShop_1.jsp</url-pattern>
     </filter-mapping>
+    
     <filter>
         <filter-name>IndexPageFilter</filter-name>
         <filter-class>com.amazoff.filters.IndexPageFilter</filter-class>
@@ -20,6 +21,8 @@
         <filter-name>IndexPageFilter</filter-name>
         <url-pattern>/index.jsp</url-pattern>
     </filter-mapping>
+    
+    
     <!-- SERVLET -->
     <servlet>
         <servlet-name>ServletLogin</servlet-name>
@@ -46,8 +49,8 @@
         <servlet-class>com.amazoff.servlet.ServletPopulateProductPage</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletIndexProducts</servlet-name>
-        <servlet-class>com.amazoff.servlet.ServletIndexProducts</servlet-class>
+        <servlet-name>ServletPopulateIndex</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletPopulateIndex</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
@@ -82,8 +85,8 @@
         <url-pattern>/ServletPopulateProductPage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ServletIndexProducts</servlet-name>
-        <url-pattern>/ServletIndexProducts</url-pattern>
+        <servlet-name>ServletPopulateIndex</servlet-name>
+        <url-pattern>/ServletPopulateIndex</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

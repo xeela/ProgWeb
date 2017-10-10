@@ -99,8 +99,9 @@ public class IndexPageFilter implements Filter {
             throws IOException, ServletException {
               
         HttpSession session = ((HttpServletRequest) request).getSession();
-        if(session.getAttribute("jsonProdottiIndex") == null) {
-            ((HttpServletResponse)response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/ServletIndexProducts");       
+        if(session.getAttribute("isPopulated") == "false") {
+            session.setAttribute("isPopulated", "true");
+            ((HttpServletResponse)response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/ServletPopulateIndex");       
         }
         else {
             chain.doFilter(request, response);
