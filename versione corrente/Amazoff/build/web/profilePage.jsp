@@ -165,9 +165,6 @@
         </nav> 
                
         <div class="container-fluid">
-            <div class="row" style="text-align: center">
-                LOGO BELLO DI Amazoff 
-            </div>
             <div class="col-xs-6 col-lg-10"><a href="index.jsp">
                                         <img src="images/logo/logo.png" alt="Amazoff"/>
                                     </a></div>
