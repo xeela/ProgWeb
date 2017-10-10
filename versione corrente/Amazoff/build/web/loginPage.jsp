@@ -168,6 +168,9 @@
         <div class="container-fluid">
             <div class="row" style="text-align: center">
                 LOGO BELLO DI Amazoff 
+                <div class="col-xs-6 col-lg-12">
+                                        <img src="images/logo/logo.png" alt="Amazoff"/>
+                                    </div>
             </div>
             
             <!-- LOGIN -->
