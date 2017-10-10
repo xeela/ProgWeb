@@ -160,13 +160,13 @@
         
     </head>
     <body>        
-        <nav class="navbar navbar-light bg-faded">
+        <!--<nav class="navbar navbar-light bg-faded">
             <a class="navbar-brand" href="index.jsp"><span class="glyphicon glyphicon-home"></span> Torna alla Home </a>
-        </nav> 
+        </nav> -->
                
         <div class="container-fluid">
-            <div class="col-xs-6 col-lg-10"><a href="index.jsp">
-                                        <img src="images/logo/logo.png" alt="Amazoff"/>
+            <div class="col-xs-6 col-lg-12"><a href="index.jsp">
+                                        <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
                                     </a></div>
             
            
