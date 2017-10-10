@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Fra
  */
-public class ServletPopulateProductPage extends HttpServlet {
+public class ServletIndexProducts extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +37,7 @@ public class ServletPopulateProductPage extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
-            String idReceived = request.getParameter("id");
-            
+
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
@@ -52,7 +49,7 @@ public class ServletPopulateProductPage extends HttpServlet {
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM products WHERE id = '" + idReceived + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products ORDER BY id DESC LIMIT 6;", connection);
                 
                 if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
                 {
@@ -65,26 +62,28 @@ public class ServletPopulateProductPage extends HttpServlet {
                                
                 
                 //aggiungo i prodotti al json
-                boolean isFirstTime = true, isFirstTimeImg = true, isFirstReview = true;
+                boolean isFirstTime = true, isFirstTimeImg = true;
                 jsonObj += "{";
-                jsonObj += "\"result\":[";
+                jsonObj        += "\"searched\": \"" + "" + "\",";
+                jsonObj        += "\"products\":[";
                 while (results.next()) {
                     if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
                         jsonObj += ", ";
                     isFirstTime = false;
                     
                     jsonObj += "{";
-                    jsonObj += "\"id\": \"" + results.getString(1) + "\",";
-                    jsonObj += "\"name\": \"" + results.getString(2) + "\",";
-                    jsonObj += "\"description\": \"" + results.getString(3) + "\",";
-                    jsonObj += "\"price\": \"" + results.getString(4) + "\",";
-                    jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
+                    jsonObj += "\"id\": \"" + results.getString(4) + "\",";
+                    jsonObj += "\"name\": \"" + results.getString(1) + "\",";
+                    jsonObj += "\"description\": \"" + results.getString(2) + "\",";
+                    jsonObj += "\"price\": \"" + results.getString(3) + "\",";
                     
-                     // in base al prodotto, ricavo il path delle img a lui associate                    
+                     // in base al prodotto, ricavo il path delle img a lui associate
+                    // TO DO:::::::: String s = productPictures(results.getString(4));
+                    
                     //------ TMP --------
-                    ResultSet resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(1) + ";", connection);
+                    ResultSet results2 = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(4) + ";", connection);
                 
-                    if(resultsPictures.isAfterLast()) //se non ci sono img per quel prodotto, allora:
+                    if(results2.isAfterLast()) //se non ci sono img per quel prodotto, allora:
                     {
                         HttpSession session = request.getSession();
                         session.setAttribute("errorMessage", Errors.noProductFound);
@@ -92,51 +91,16 @@ public class ServletPopulateProductPage extends HttpServlet {
                         connection.close();
                         return;
                     }
-                    jsonObj += "\"pictures\":[";
-                    // altrimenti
-                    while (resultsPictures.next()) {
+                    jsonObj        += "\"pictures\":[";
+                    // altrimenti   
+                    while (results2.next()) {
                         if(!isFirstTimeImg)            //metto la virgola prima dell'oggetto solo se non è il primo
                             jsonObj += ", ";
                         isFirstTimeImg = false; 
                         
                         jsonObj += "{";
-                        jsonObj += "\"id\": \"" + resultsPictures.getString(1) + "\",";
-                        jsonObj += "\"path\": \"" + resultsPictures.getString(2) + "\"";
-                        jsonObj += "}";
-                    }
-                    isFirstTimeImg = true;
-                    jsonObj += "],";
-                    
-                    //------ FINE TMP --------
-                    
-                    //------ TMP --------
-                    ResultSet resultsReviews = MyDatabaseManager.EseguiQuery("SELECT * FROM reviews WHERE id_product = " + results.getString(1) + ";", connection);
-                
-                    if(resultsReviews.isAfterLast()) //se non ci sono img per quel prodotto, allora:
-                    {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("errorMessage", Errors.noProductFound);
-                        response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                        connection.close();
-                        return;
-                    }
-                    jsonObj += "\"reviews\":[";
-                    // altrimenti
-                    while (resultsReviews.next()) {
-                        if(!isFirstReview)            //metto la virgola prima dell'oggetto solo se non è il primo
-                            jsonObj += ", ";
-                        isFirstReview = false; 
-                        
-                        jsonObj += "{";
-                        jsonObj += "\"id\": \"" + resultsReviews.getString(1) + "\",";
-                        jsonObj += "\"global_value\": \"" + resultsReviews.getString(2) + "\",";
-                        jsonObj += "\"quality\": \"" + resultsReviews.getString(3) + "\",";
-                        jsonObj += "\"service\": \"" + resultsReviews.getString(4) + "\",";
-                        jsonObj += "\"value_for_money\": \"" + resultsReviews.getString(5) + "\",";
-                        jsonObj += "\"name\": \"" + resultsReviews.getString(6) + "\",";
-                        jsonObj += "\"description\": \"" + resultsReviews.getString(7) + "\",";
-                        jsonObj += "\"date_creation\": \"" + resultsReviews.getString(8) + "\",";
-                        jsonObj += "\"id_creator\": \"" + resultsReviews.getString(10) + "\"";
+                        jsonObj += "\"id\": \"" + results2.getString(1) + "\",";
+                        jsonObj += "\"path\": \"" + results2.getString(2) + "\"";
                         jsonObj += "}";
                     }
                     isFirstTimeImg = true;
@@ -152,8 +116,8 @@ public class ServletPopulateProductPage extends HttpServlet {
                 connection.close();
                 
                 HttpSession session = request.getSession();  
-                session.setAttribute("jsonProdotti", jsonObj);
-                response.sendRedirect(request.getContextPath() + "/productPage.jsp"); //TODO: Gestire meglio l'errore
+                session.setAttribute("jsonProdottiIndex", jsonObj);
+                response.sendRedirect(request.getContextPath() + "/index.jsp"); //TODO: Gestire meglio l'errore
             }
             else
             {
@@ -163,6 +127,7 @@ public class ServletPopulateProductPage extends HttpServlet {
             }
         }catch (SQLException ex) {
             HttpSession session = request.getSession();
+            MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletIndexProducts", ex.toString());
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
         }

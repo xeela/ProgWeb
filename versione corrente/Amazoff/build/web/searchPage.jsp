@@ -32,27 +32,28 @@
             
             function AggiungiProdotti() {
                 var toAdd = "";
-
+                var id_oggetto = -1
+                
                 for(var i = 0; i < jsonProdotti.products.length; i++)
                 {
-                    // OSS: id inserito è sbagliato, anche se arriva giusto dal 
+                    id_oggetto = jsonProdotti.products[i].id;
                     toAdd += "<div class=\"row\">";
-                    toAdd += "<a href=\"productPage.jsp?id=" + jsonProdotti.products[i].id + "\" id=\""+ jsonProdotti.products[i].id +"\">";
+                    toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id="+id_oggetto+"\" id=\"form"+id_oggetto+"\" onclick=\"$('#form"+id_oggetto+"').submit();\"> ";
                     toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
                     toAdd += "   <img src=\"UploadedImages/"+ jsonProdotti.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
                     toAdd += "</div>";
                     toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
-                    toAdd += "<p id=\"nome+\" >" + jsonProdotti.products[i].name + "</p>";
-                    toAdd += "<p id=\"stelle+\">Voto totale</p>";
-                    toAdd += "<p id=\"recensioni+\" >#num recensioni</p>";
-                    toAdd += "<p id=\"linkmappa\" >Vedi su mappa</p>";
-                    toAdd += "<p id=\"prezzo+\">Prezzo: " + jsonProdotti.products[i].price + "</p>";
-                    toAdd += "<p id=\"venditore+\" >Nome venditore <a href=\"url_venditore.html\">Negozio</a></p>";       
+                    toAdd += "<p name=\"nome"+id_oggetto+"\" >" + jsonProdotti.products[i].name + "</p>";
+                    toAdd += "<p name=\"stelle"+id_oggetto+"\">Voto totale</p>";
+                    toAdd += "<p name=\"recensioni"+id_oggetto+"\" >#num recensioni</p>";
+                    toAdd += "<p name=\"linkmappa"+id_oggetto+"\" >Vedi su mappa</p>";
+                    toAdd += "<p name=\"prezzo"+id_oggetto+"\">Prezzo: " + jsonProdotti.products[i].price + "</p>";
+                    toAdd += "<p name=\"venditore"+id_oggetto+"\" >Nome venditore <a href=\"url_venditore.html\">Negozio</a></p>";       
                     toAdd += "</div>";
                     toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1\" >";
                     toAdd += "<span class=\"prova glyphicon glyphicon-chevron-right\"></span>";
                     toAdd += "</div>";
-                    toAdd += "</div><hr>";
+                    toAdd += "</form><hr>";
                 }
                 
                 $("#zonaProdotti").html(toAdd);
@@ -64,11 +65,11 @@
                 $("#txtCerca").val(searchedProduct);
             }
             
-            // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
+            /*// dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
             function cercaProdotto(txt)
             {
                 window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-            }
+            }*/
             
         </script>
         <title>Amazoff</title>
@@ -88,7 +89,9 @@
                         <!-- barra con: login/registrati, cerca, carrello -->
                         <div class="logo col-xs-12 col-lg-1">
                             <div class="row">
-                                <div class="col-xs-6 col-lg-10"><a href="index.jsp">Amazoff</a></div>
+                                <div class="col-xs-6 col-lg-10"><a href="index.jsp">
+                                        <img src="images/logo/logo.png" alt="Amazoff"/>
+                                    </a></div>
                                 <div class="col-xs-2 hidden-lg" style="text-align: right"> 
                                     <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
                                     <% 
@@ -155,7 +158,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="userPage.jsp.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 userType = "";
                                                 String fname = "", lname = "";
@@ -318,9 +321,9 @@
                  
                <!-- corpo della pagina contenente i risultati della ricerca -->
                <div class="tmargin col-xs-12 col-sm-10" id="zonaProdotti">
-                   <!-- LAYOUT 
-                   <div class="row panel panel-default">         
-                        <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
+                   <!-- LAYOUT --
+                   <div class="row panel panel-default">      
+                        <form method="post" action="/Amazoff/ServletPopulateProductPage" id="formid_oggetto" onclick="$('#formid_oggetto').submit();">
                                 <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; ">
                                     <!-- <img src="images/doge.jpg" alt="" > --
                                     immagine
@@ -334,10 +337,10 @@
                                     <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
 
                                 </div>
-                                <div class="hidden-xs col-sm-2 col-md-1" > <!-- style="background-color: aqua; position: absolute;" --
+                                <div class="hidden-xs col-sm-2 col-md-1" > 
                                     <span  class="glyphicon glyphicon-chevron-right"></span>
                                 </div>
-                        </a>
+                        </form>
                        <hr>
                    </div> -->
                    

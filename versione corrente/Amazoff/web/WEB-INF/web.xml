@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <!-- FILTER -->
+    <filter>
+        <filter-name>NotLoggedFilter</filter-name>
+        <filter-class>com.amazoff.filters.NotLoggedFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>NotLoggedFilter</filter-name>
+        <url-pattern>/sellNewProduct.jsp</url-pattern>
+        <url-pattern>/profilePage.jsp</url-pattern>
+        <url-pattern>/userPage.jsp</url-pattern>
+        <url-pattern>/createShop_1.jsp</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>IndexPageFilter</filter-name>
+        <filter-class>com.amazoff.filters.IndexPageFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>IndexPageFilter</filter-name>
+        <url-pattern>/index.jsp</url-pattern>
+    </filter-mapping>
+    <!-- SERVLET -->
     <servlet>
         <servlet-name>ServletLogin</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletLogin</servlet-class>
@@ -19,6 +40,14 @@
                 /UploadedImages
             </param-value>
         </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletPopulateProductPage</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletPopulateProductPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletIndexProducts</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletIndexProducts</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
@@ -47,6 +76,14 @@
     <servlet-mapping>
         <servlet-name>ServletAddProduct</servlet-name>
         <url-pattern>/ServletAddProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPopulateProductPage</servlet-name>
+        <url-pattern>/ServletPopulateProductPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletIndexProducts</servlet-name>
+        <url-pattern>/ServletIndexProducts</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

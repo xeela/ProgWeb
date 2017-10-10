@@ -15,55 +15,84 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
         <script src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        <!--<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script> rompe il carousel-->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
-        <script type="text/javascript" src="js/search-autocomplete.js"></script>
+        <script type="text/javascript" src="js/search-autocomplete.js"></script> 
         
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         
         <script type="text/javascript">
-        <!--    var jsonProdotti; -->
+            var jsonProdotto;
             function LogJson() {
-                jsonProdotti = ${jsonProdotti};
-                console.log(jsonProdotti);
-                AggiungiProdotti();
+                jsonProdotto = ${jsonProdotti};
+                console.log(jsonProdotto);
+                PopulateData();
+                PopolaReviews();
+                PopolaCarousel();
             }
             
-            function AggiungiProdotti() {
+            function PopolaReviews() {
                 var toAdd = "";
-                for(var i = 0; i < jsonProdotti.products.length; i++)
-                {
-                    toAdd += "<div class=\"row panel panel-default\">";
-                    toAdd += "<a href=\"productPage.jsp?id=id_oggetto\" id=\"id_oggetto\">";
-                    toAdd += "<div class=\"col-xs-4 col-sm-3 col-md-2\"  style=\"background-color: green; margin: 0 0 0 0;\">";
-                    toAdd += "immagine";
-                    toAdd += "</div>";
-                    toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
-                    toAdd += "<p id=\"nome+\" >" + jsonProdotti.products[i].name + "</p>";
-                    toAdd += "<p id=\"stelle+\">Voto totale</p>";
-                    toAdd += "<p id=\"recensioni+\" >#num recensioni</p>";
-                    toAdd += "<p id=\"linkmappa\" >Vedi su mappa</p>";
-                    toAdd += "<p id=\"prezzo+\">Prezzo: " + jsonProdotti.products[i].price + "</p>";
-                    toAdd += "<p id=\"venditore+\" >Nome venditore <a href=\"url_venditore.html\">Negozio</a></p>";       
-
-                    toAdd += "</div>";
-                    toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1\" >";
-                    toAdd += "<span class=\"prova glyphicon glyphicon-chevron-right\"></span>";
-                    toAdd += "</div>";
-                    toAdd += "</a>";
-                    toAdd += "</div>";
-                }
                 
-                $("#zonaProdotti").html(toAdd);
+                for (var i = 0; i < jsonProdotto.result[0].reviews.length; i++)
+                {
+                    toAdd += "<div class=\"row panel panel-default\"> ";        
+                    toAdd += "         <div class=\"col-lg-12\">";
+                    toAdd += "             <div class=\"col-xs-12 col-lg-2\" style=\"background-color: aqua\" >";
+                    // TODO: cambiare il tipo di stella in base al numero di stelle tot (global value)
+                    /*toAdd += "                 <span class=\"glyphicon glyphicon-star\"></span> ";
+                    toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
+                    toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
+                    toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
+                    toAdd += "                  <span class=\"glyphicon glyphicon-star-empty\"></span> ";*/
+                    toAdd += " global_value: "+jsonProdotto.result[0].reviews[i].global_value;
+                    toAdd += "             </div>";
+                    toAdd += "             <p >"+jsonProdotto.result[0].reviews[i].description+"</p>";
+                    toAdd += "         </div>";
+                    toAdd += "    </div>";
+                }     
+                
+                $("#div_reviews").html(toAdd);
+            }            
+       
+            function PopulateData()
+            {
+                var toAdd = "";
+                var id_product = jsonProdotto.result.id;
+                
+                toAdd += "<p name=\"nome\">"+jsonProdotto.result[0].name+"</p>";
+                toAdd += "<p name=\"stelle\"></p>";
+                toAdd += "<p name=\"recensioni\" >#num recensioni</p>";
+                toAdd += "<p name=\"linkmappa\" >Vedi su mappa</p>";
+                toAdd += "<p name=\"prezzo\">"+jsonProdotto.result[0].price+"</p>";
+                toAdd += "<p name=\"venditore\" >Nome venditore <a href=\"url_venditore.html\">Negozio id:"+jsonProdotto.result[0].id_shop+"</a></p>";                             
+                toAdd += "<button class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</button></div>";
+            
+                $("#div_dati").html(toAdd);
             }
             
-            // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
-            function cercaProdotto(txt)
-            {
-                window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-            } 
-            
-       
+            function PopolaCarousel() {
+                var toAdd = "", toAddMiniature = "";
+                
+                for (var i = 0; i < jsonProdotto.result[0].pictures.length; i++)
+                {
+                    if(i == 0) 
+                        toAdd += "<div class=\"active item\" data-slide-number=\"0\">";
+                    else 
+                        toAdd += "<div class=\"item\" data-slide-number=\""+i+"\">";
+                        
+                    /* NON  VA 
+                    toAddMiniature += "<div class=\"col-md-4\">";
+                    toAddMiniature += "<a class=\"thumbnail\" id=\"carousel-selector-"+i+"\">";
+                    toAddMiniature += "<img src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";                                      
+                   */
+                  
+                    toAdd += "<img src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></div>";
+                }     
+                
+                $("#div_carousel").html(toAdd);
+                //$("#div_carousel_miniature").html(toAddMiniature);
+            }    
             
         </script> 
         <title>Amazoff</title>
@@ -83,7 +112,9 @@
                         <!-- barra con: login/registrati, cerca, carrello -->
                         <div class="logo col-xs-12 col-lg-1">
                             <div class="row">
-                                <div class="col-xs-6 col-lg-10"><a href="index.jsp">Amazoff</a></div>
+                                <div class="col-xs-6 col-lg-10"><a href="index.jsp">
+                                        <img src="images/logo/logo.png" alt="Amazoff"/>
+                                    </a></div>
                                 <div class="col-xs-2 hidden-lg" style="text-align: right"> 
                                     <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
                                     <% 
@@ -150,7 +181,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="userPage.jsp.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 userType = "";
                                                 String fname = "", lname = "";
@@ -325,16 +356,8 @@
                                         <div class="col-lg-12" id="carousel-bounding-box">
                                             <div class="carousel slide" id="myCarousel">
                                                 <!-- Carousel items -->
-                                                <div class="carousel-inner">
-                                                    <div class="active item" data-slide-number="0">
-                                                    <img src="http://placehold.it/770x300&text=one"></div>
-
-                                                    <div class="item" data-slide-number="1">
-                                                    <img src="http://placehold.it/770x300&text=two"></div>
-
-                                                    <div class="item" data-slide-number="2">
-                                                    <img src="images/img3.jpg"></div>
-
+                                                <div class="carousel-inner" id="div_carousel">
+                                                    
                                                 </div><!-- Carousel nav -->
                                                 <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                                                     <span class="glyphicon glyphicon-chevron-left"></span>                                       
@@ -355,90 +378,85 @@
                             <div class="row tmargin">
                                 <div class="hidden-xs hidden-sm" id="slider-thumbs">
                                     <!-- Bottom switcher of slider -->
-                                    <div style="list-style:none;" >
+                                    <div style="list-style:none;" id="div_carousel_miniature">
                                             <div class="col-md-4">
                                                 <a class="thumbnail" id="carousel-selector-0"><img src="http://placehold.it/170x100&text=one"></a>
                                             </div>
 
                                             <div class="col-md-4">
-                                                <a class="thumbnail" id="carousel-selector-1"><img src="http://placehold.it/170x100&text=two"></a>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <a class="thumbnail" id="carousel-selector-2"><img src="images/img3.jpg"></a>
-                                            </div>
-
-
+                                                <a class="thumbnail" id="carousel-selector-1"><img src="http://placehold.it/170x100"></a>
+                                            </div> 
                                     </div>                 
                                 </div>
                             </div>
                         </div>                       
                         
-                        <div class="col-xs-12 col-md-5 col-lg-6">
-                            <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
-                            <p id="stelle+">Voto totale</p>
-                            <p id="recensioni+" >#num recensioni</p>
-                            <p id="linkmappa" >Vedi su mappa</p>
-                            <p id="prezzo+">Prezzo</p>
-                            <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
+                        <div class="col-xs-12 col-md-5 col-lg-6" id="div_dati">
+                            <p name="nome" ></p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
+                            <p name="stelle">Voto totale</p>
+                            <p name="recensioni" >#num recensioni</p>
+                            <p name="linkmappa" >Vedi su mappa</p>
+                            <p name="prezzo">Prezzo</p>
+                            <p name="venditore" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
                             <button class="btn btn-warning"><span class="glyphicon glyphicon-shopping-cart"></span> Aggiungi al carrello</button>
                         </div>
                    </div>
                    
-                   <!-- div contenente: recensione -->
-                   <div class="row panel panel-default">         
-                        <div class="col-lg-12">
-                            <div style="background-color: aqua" >
-                                <span class="glyphicon glyphicon-star"></span>  
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span> 
-                            </div>
-                            
-                            <!-- div con testo espandibile, contenente la recensione -->
-                            <div class="panel-group" role="tablist" aria-multiselectable="true">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a purus at felis viverra congue. Duis quis cursus ligul
-                                <div id="collapseOne" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                    Nunc pretium lacus sed dui tincidunt, eu luctus nisl viverra. Donec pretium congue sapien, nec efficitur risus egestas ut. Nam condimentum massa dolor. Suspendisse luctus non leo vehicula sagittis. Etiam placerat enim non mauris sodales, ut euismod elit sodales. Phasellus commodo at tellus non interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque porttitor justo non lorem lacinia, non tempor tortor bibendum. Mauris viverra magna vitae cursus imperdiet. Aliquam vehicula mi felis, in varius elit consectetur eget. Morbi neque elit, blandit in varius vitae, suscipit in nunc. Ut interdum ante eu ornare ultricies. Nam maximus faucibus porta.In hac habitasse platea dictumst. In tempus massa nec ipsum fringilla, quis elementum tellus euismod. Morbi quis metus sit amet eros semper mattis vel a sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas ullamcorper tincidunt sapien, eget maximus felis condimentum quis. Ut in semper nunc. Donec at magna lorem. Mauris dignissim justo vitae quam bibendum egestas.Vestibulum tellus neque, porttitor in placerat eget, posuere at mi. In eget tincidunt augue. Nulla elementum ornare urna. Donec id iaculis est, vel ultricies tortor. Curabitur sagittis tempus turpis in mattis. Donec ut tempus justo, vitae pharetra velit. Pellentesque ac luctus mi. Donec efficitur elementum leo, sed venenatis mauris facilisis sed. Fusce sed vulputate nunc, vitae egestas enim. Suspendisse rhoncus risus vitae ipsum hendrerit mollis. Proin ut justo justo. Cras lacinia lorem posuere laoreet finibus. Donec justo purus, consectetur lobortis volutpat vel, sodales venenatis ligula. Etiam eget interdum magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent cursus, nunc quis cursus vulputate, magna libero scelerisque lacus, vel gravida arcu mauris vitae neque. Ut eu eleifend lorem, quis feugiat arcu. Nullam condimentum faucibus tortor, ut posuere velit pellentesque nec. Praesent finibus iaculis ultrices. Etiam dolor ante, posuere vitae ex et, finibus fermentum ante. Cras eu rutrum diam. Nullam sed rutrum risus, et iaculis risus. Aenean ut nisi sagittis nibh pulvinar rhoncus ac a nunc. Suspendisse et lorem in nunc sollicitudin egestas feugiat in mi. Nam ut tellus sodales, pellentesque mi et, faucibus arcu. Proin posuere, ipsum vel pretium porta, lorem lacus finibus risus, viverra iaculis lacus massa vitae velit. Vivamus at tincidunt metus, eu interdum metus. Phasellus dolor erat, varius eu mi vel, suscipit molestie sapien. Sed fringilla dui vitae elit commodo condimentum. Phasellus consectetur enim orci, eget mattis dolor hendrerit nec. Sed tincidunt cursus ipsum, rhoncus venenatis lacus. Mauris porttitor quam nunc, id ultricies nibh euismod quis. Nam pulvinar turpis sem, quis luctus nunc ullamcorper vitae. Vestibulum nunc diam, finibus id pretium a, placerat vitae ligula. Suspendisse tristique massa vel aliquet aliquam. Vivamus euismod diam id dui pellentesque pulvinar. Ut tincidunt varius libero sit amet aliquam. Aliquam at justo nec lorem mollis euismod sit amet id erat.
-                                </div> 
-                                <a data-toggle="collapse" data-parent="#accordion"
-                                        href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <span class="glyphicon glyphicon-option-horizontal"></span>
-                                </a>
-                            </div>                          
-                            
+                   <div id="div_reviews">
+                        <!-- div contenente: recensione -->
+                        <div class="row panel panel-default">         
+                             <div class="col-lg-12">
+                                 <div style="background-color: aqua" >
+                                     <span class="glyphicon glyphicon-star"></span>  
+                                     <span class="glyphicon glyphicon-star"></span>
+                                     <span class="glyphicon glyphicon-star"></span>
+                                     <span class="glyphicon glyphicon-star"></span>
+                                     <span class="glyphicon glyphicon-star-empty"></span> 
+                                 </div>
+
+                                 <!-- div con testo espandibile, contenente la recensione -->
+                                 <div class="panel-group" role="tablist" aria-multiselectable="true">
+                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a purus at felis viverra congue. Duis quis cursus ligul
+                                     <div id="collapseOne" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                         Nunc pretium lacus sed dui tincidunt, eu luctus nisl viverra. Donec pretium congue sapien, nec efficitur risus egestas ut. Nam condimentum massa dolor. Suspendisse luctus non leo vehicula sagittis. Etiam placerat enim non mauris sodales, ut euismod elit sodales. Phasellus commodo at tellus non interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque porttitor justo non lorem lacinia, non tempor tortor bibendum. Mauris viverra magna vitae cursus imperdiet. Aliquam vehicula mi felis, in varius elit consectetur eget. Morbi neque elit, blandit in varius vitae, suscipit in nunc. Ut interdum ante eu ornare ultricies. Nam maximus faucibus porta.In hac habitasse platea dictumst. In tempus massa nec ipsum fringilla, quis elementum tellus euismod. Morbi quis metus sit amet eros semper mattis vel a sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas ullamcorper tincidunt sapien, eget maximus felis condimentum quis. Ut in semper nunc. Donec at magna lorem. Mauris dignissim justo vitae quam bibendum egestas.Vestibulum tellus neque, porttitor in placerat eget, posuere at mi. In eget tincidunt augue. Nulla elementum ornare urna. Donec id iaculis est, vel ultricies tortor. Curabitur sagittis tempus turpis in mattis. Donec ut tempus justo, vitae pharetra velit. Pellentesque ac luctus mi. Donec efficitur elementum leo, sed venenatis mauris facilisis sed. Fusce sed vulputate nunc, vitae egestas enim. Suspendisse rhoncus risus vitae ipsum hendrerit mollis. Proin ut justo justo. Cras lacinia lorem posuere laoreet finibus. Donec justo purus, consectetur lobortis volutpat vel, sodales venenatis ligula. Etiam eget interdum magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent cursus, nunc quis cursus vulputate, magna libero scelerisque lacus, vel gravida arcu mauris vitae neque. Ut eu eleifend lorem, quis feugiat arcu. Nullam condimentum faucibus tortor, ut posuere velit pellentesque nec. Praesent finibus iaculis ultrices. Etiam dolor ante, posuere vitae ex et, finibus fermentum ante. Cras eu rutrum diam. Nullam sed rutrum risus, et iaculis risus. Aenean ut nisi sagittis nibh pulvinar rhoncus ac a nunc. Suspendisse et lorem in nunc sollicitudin egestas feugiat in mi. Nam ut tellus sodales, pellentesque mi et, faucibus arcu. Proin posuere, ipsum vel pretium porta, lorem lacus finibus risus, viverra iaculis lacus massa vitae velit. Vivamus at tincidunt metus, eu interdum metus. Phasellus dolor erat, varius eu mi vel, suscipit molestie sapien. Sed fringilla dui vitae elit commodo condimentum. Phasellus consectetur enim orci, eget mattis dolor hendrerit nec. Sed tincidunt cursus ipsum, rhoncus venenatis lacus. Mauris porttitor quam nunc, id ultricies nibh euismod quis. Nam pulvinar turpis sem, quis luctus nunc ullamcorper vitae. Vestibulum nunc diam, finibus id pretium a, placerat vitae ligula. Suspendisse tristique massa vel aliquet aliquam. Vivamus euismod diam id dui pellentesque pulvinar. Ut tincidunt varius libero sit amet aliquam. Aliquam at justo nec lorem mollis euismod sit amet id erat.
+                                     </div> 
+                                     <a data-toggle="collapse" data-parent="#accordion"
+                                             href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                         <span class="glyphicon glyphicon-option-horizontal"></span>
+                                     </a>
+                                 </div>                          
+
+                             </div>
                         </div>
-                   </div>
-                   
-                   <div class="row panel panel-default">         
-                        <div class="col-lg-12">
-                            <div class="col-xs-12 col-lg-2" style="background-color: aqua" >
-                                <span class="glyphicon glyphicon-star"></span>  
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span> 
-                            </div>
-                            <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
-                       
+
+                        <div class="row panel panel-default">         
+                             <div class="col-lg-12">
+                                 <div class="col-xs-12 col-lg-2" style="background-color: aqua" >
+                                     <span class="glyphicon glyphicon-star"></span>  
+                                     <span class="glyphicon glyphicon-star-empty"></span>
+                                     <span class="glyphicon glyphicon-star-empty"></span>
+                                     <span class="glyphicon glyphicon-star-empty"></span>
+                                     <span class="glyphicon glyphicon-star-empty"></span> 
+                                 </div>
+                                 <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
+
+                             </div>
                         </div>
-                   </div>
-                   
-                   <div class="row panel panel-default">         
-                        <div class="col-lg-12">
-                            <div class="col-xs-12 col-lg-2" style="background-color: aqua" >
-                                <span class="glyphicon glyphicon-star"></span>  
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span> 
-                            </div>
-                            <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
-                       
+
+                        <div class="row panel panel-default">         
+                             <div class="col-lg-12">
+                                 <div class="col-xs-12 col-lg-2" style="background-color: aqua" >
+                                     <span class="glyphicon glyphicon-star"></span>  
+                                     <span class="glyphicon glyphicon-star"></span>
+                                     <span class="glyphicon glyphicon-star-empty"></span>
+                                     <span class="glyphicon glyphicon-star-empty"></span>
+                                     <span class="glyphicon glyphicon-star-empty"></span> 
+                                 </div>
+                                 <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
+
+                             </div>
                         </div>
-                   </div>
-                </div>                    
+                    </div>                    
                           
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
@@ -471,19 +489,20 @@
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }
-            
-                  $('#myCarousel').carousel({
-                interval: 5000
-        });
  
-        <!-- CODICE per la gestione del CAROUSEL delle immagini -->
-           //Handles the carousel thumbnails
-           $('[id^=carousel-selector-]').click( function(){
-                var id = this.id.substr(this.id.lastIndexOf("-") + 1);
-                var id = parseInt(id);
-                $('#myCarousel').carousel(id);
+            <!-- CODICE per la gestione del CAROUSEL delle immagini -->
+            $("#myCarousel").carousel({
+                interval: 5000
             });
-        // FINE carousel
+            
+               //Handles the carousel thumbnails
+               $('[id^=carousel-selector-]').click( function(){
+               
+                    var id = this.id.substr(this.id.lastIndexOf("-") + 1);
+                    var id = parseInt(id);
+                    $("#myCarousel").carousel(id);
+                });
+               // FINE carousel
         
         </script>
     </body>

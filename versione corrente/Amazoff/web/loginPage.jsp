@@ -157,7 +157,6 @@
 		});
             }*/
     
-            console.log("- <%=request.getParameter("p") %>" );
         </script>
         
     </head>
@@ -168,7 +167,9 @@
                
         <div class="container-fluid">
             <div class="row" style="text-align: center">
-                LOGO BELLO DI Amazoff 
+                <div class="col-xs-6 col-lg-12">
+                                        <img src="images/logo/logo.png" alt="Amazoff"/>
+                                    </div>
             </div>
             
             <!-- LOGIN -->
@@ -204,12 +205,15 @@
                             </p>
                         </form> 
                         <!-- div che visualizza il messaggio di errore durante il login -->
-                        <% if(request.getParameter("p") != null && request.getParameter("p").equals("e1")) { %>
+                        <% 
+                            if(session.getAttribute("errorMessage") != null) { %>
                             <div class="alert alert-danger alert-dismissible" id="alertRegistrati" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <strong>Errore!</strong> L'email o la password non sono corrette. Riprova.
+                                <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
                             </div>
-                        <% } %>
+                        <% } 
+                            session.setAttribute("errorMessage", null);
+                        %>
                     </div>
                 </div>
             </div> 
@@ -268,11 +272,15 @@
                     <div class="alert alert-danger alert-dismissible" style="visibility: hidden" id="alertRegistrati" role="alert">
                         
                         <!-- div che visualizza il messaggio di errore durante il login -->
-                        <% if(request.getParameter("p") != null && request.getParameter("p").equals("e2")) { %>
-                            <script>MostraErrore("L'username è già in uso. Selezionane un altro e riprovare.");</script>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                
-                        <% } %>
+                        <% 
+                            if(session.getAttribute("errorMessage") != null) { %>
+                            <div class="alert alert-danger alert-dismissible" id="alertRegistrati" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
+                            </div>
+                        <% } 
+                            session.setAttribute("errorMessage", null);
+                        %>
                         
                     </div>
                 </div>
