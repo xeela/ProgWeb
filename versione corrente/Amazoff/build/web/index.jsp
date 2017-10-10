@@ -11,8 +11,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="js/popper.js"></script>
-        <script src="js/popper-utils.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
@@ -24,8 +22,48 @@
         <link rel="stylesheet" href="css/amazoffStyle.css">
         
         <title>Amazoff</title>
+        <script type="text/javascript">
+            var jsonProdotti;
+            var searchedProduct = null;
+            function LogJson() {
+                jsonProdotti = ${jsonProdottiIndex};
+                console.log(jsonProdotti);
+                RiempiBarraRicerca();
+                AggiungiProdotti();
+            }
+            
+            function AggiungiProdotti() {
+                var toAdd = "";
+                var id_oggetto = -1
+                
+                for(var i = 0; i < jsonProdotti.products.length; i++)
+                {
+                    id_oggetto = jsonProdotti.products[i].id;
+                    
+                    toAdd += "<div class=\"col-sm-6 col-md-4\">";
+                    toAdd += "<div class=\"thumbnail\">";
+                    toAdd += "<img class=\"imgResize\" src=\"UploadedImages/"+ jsonProdotti.products[i].pictures[0].path + "\" alt=\"...\">";
+                    toAdd += "<div class=\"caption\">";
+                    toAdd += "<h3>" + jsonProdotti.products[i].name + "</h3>";
+                    toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
+                    toAdd += "<p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"#\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
+                    toAdd += "</div>";
+                    toAdd += "</div>";
+                    toAdd += "</div>";
+                }
+                
+                $("#zonaProdotti").html(toAdd);
+            }
+            
+            function RiempiBarraRicerca()
+            {
+                searchedProduct = jsonProdotti.searched;
+                $("#txtCerca").val(searchedProduct);
+            }
+        </script>
+            
     </head>
-    <body class="bodyStyle">
+    <body class="bodyStyle" onload="LogJson()">
        
         <div class="container-fluid tmargin">
             
@@ -291,67 +329,7 @@
          
                 <!-- tabella di 2 righe, con 3 colonne, che mostrano 6 prodotti -->
                 <div class="row">
-                    <div class="page">
-                            <div class="col-sm-6 col-md-4">
-                              <div class="thumbnail">
-                                <img src="images/doge.jpg" alt="...">
-                                <div class="caption">
-                                  <h3>Prodotto Bello</h3>
-                                  <p>Descrizione bella</p>
-                                  <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                                </div>
-                              </div>
-                            </div>
-                        <div class="col-sm-6 col-md-4">
-                              <div class="thumbnail">
-                                <img src="images/doge.jpg" alt="...">
-                                <div class="caption">
-                                  <h3>Prodotto Bello</h3>
-                                  <p>Descrizione bella</p>
-                                  <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                                </div>
-                              </div>
-                            </div>
-                        <div class="col-sm-6 col-md-4">
-                              <div class="thumbnail">
-                                <img src="images/doge.jpg" alt="...">
-                                <div class="caption">
-                                  <h3>Prodotto Bello</h3>
-                                  <p>Descrizione bella</p>
-                                  <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                                </div>
-                              </div>
-                            </div>
-                        <div class="col-sm-6 col-md-4">
-                              <div class="thumbnail">
-                                <img src="images/doge.jpg" alt="...">
-                                <div class="caption">
-                                  <h3>Prodotto Bello</h3>
-                                  <p>Descrizione bella</p>
-                                  <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                                </div>
-                              </div>
-                            </div>
-                        <div class="col-sm-6 col-md-4">
-                              <div class="thumbnail">
-                                <img src="images/doge.jpg" alt="...">
-                                <div class="caption">
-                                  <h3>Prodotto Bello</h3>
-                                  <p>Descrizione bella</p>
-                                  <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                                </div>
-                              </div>
-                            </div>
-                        <div class="col-sm-6 col-md-4">
-                              <div class="thumbnail">
-                                <img src="images/doge.jpg" alt="...">
-                                <div class="caption">
-                                  <h3>Prodotto Bello</h3>
-                                  <p>Descrizione bella</p>
-                                  <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                                </div>
-                              </div>
-                            </div>
+                    <div class="page" id="zonaProdotti">
                         
                     </div>
                 </div>
