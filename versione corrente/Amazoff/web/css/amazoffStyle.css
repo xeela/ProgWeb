@@ -1,3 +1,21 @@
+.darkBody
+{
+    background-color:#333333;
+    color:#ffffff;
+}
+
+.darkPanel
+{
+    border-color:#191919;
+    background-color: #444444;
+    color: #ffffff;
+}
+
+.whiteText
+{
+    color:#eeeeee;
+}
+
 .bodyStyle
 { }
 

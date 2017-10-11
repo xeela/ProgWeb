@@ -22,7 +22,7 @@
         
         <title>Amazoff</title>
     </head>
-    <body class="bodyStyle">
+    <body class="bodyStyle darkBody">
         
         
         <!-- TODO: 1. aggiungere un bottone per la sezione NOTIFICHE, per l'utente venditore -->
@@ -366,66 +366,67 @@
                 <div class="row">
                 <div class="page">
                         <div class="col-sm-6 col-md-4">
-                          <div class="thumbnail">
+                          <div class="thumbnail darkPanel">
                             <img src="images/doge.jpg" alt="...">
                             <div class="caption">
-                              <h3>Prodotto Bello</h3>
-                              <p>Descrizione bella</p>
+                              <h3 class="whiteText"> Prodotto Bello</h3>
+                              <p class="whiteText">Descrizione bella</p>
                               <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-6 col-md-4">
-                          <div class="thumbnail">
+                                               
+                    <div class="col-sm-6 col-md-4">
+                          <div class="thumbnail darkPanel">
                             <img src="images/doge.jpg" alt="...">
                             <div class="caption">
-                              <h3>Prodotto Bello</h3>
-                              <p>Descrizione bella</p>
+                              <h3 class="whiteText"> Prodotto Bello</h3>
+                              <p class="whiteText">Descrizione bella</p>
+                              <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
+                            </div>
+                          </div>
+                        </div>                        
+                    <div class="col-sm-6 col-md-4">
+                          <div class="thumbnail darkPanel">
+                            <img src="images/doge.jpg" alt="...">
+                            <div class="caption">
+                              <h3 class="whiteText"> Prodotto Bello</h3>
+                              <p class="whiteText">Descrizione bella</p>
+                              <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
+                            </div>
+                          </div>
+                        </div>                        
+                        <div class="col-sm-6 col-md-4">
+                          <div class="thumbnail darkPanel">
+                            <img src="images/doge.jpg" alt="...">
+                            <div class="caption">
+                              <h3 class="whiteText"> Prodotto Bello</h3>
+                              <p class="whiteText">Descrizione bella</p>
+                              <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
+                            </div>
+                          </div>
+                        </div>                        
+                        <div class="col-sm-6 col-md-4">
+                          <div class="thumbnail darkPanel">
+                            <img src="images/doge.jpg" alt="...">
+                            <div class="caption">
+                              <h3 class="whiteText"> Prodotto Bello</h3>
+                              <p class="whiteText">Descrizione bella</p>
+                              <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
+                            </div>
+                          </div>
+                        </div>                        
+                        <div class="col-sm-6 col-md-4">
+                          <div class="thumbnail darkPanel">
+                            <img src="images/doge.jpg" alt="...">
+                            <div class="caption">
+                              <h3 class="whiteText"> Prodotto Bello</h3>
+                              <p class="whiteText">Descrizione bella</p>
                               <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-6 col-md-4">
-                          <div class="thumbnail">
-                            <img src="images/doge.jpg" alt="...">
-                            <div class="caption">
-                              <h3>Prodotto Bello</h3>
-                              <p>Descrizione bella</p>
-                              <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="col-sm-6 col-md-4">
-                          <div class="thumbnail">
-                            <img src="images/doge.jpg" alt="...">
-                            <div class="caption">
-                              <h3>Prodotto Bello</h3>
-                              <p>Descrizione bella</p>
-                              <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                          <div class="thumbnail">
-                            <img src="images/doge.jpg" alt="...">
-                            <div class="caption">
-                              <h3>Prodotto Bello</h3>
-                              <p>Descrizione bella</p>
-                              <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                          <div class="thumbnail">
-                            <img src="images/doge.jpg" alt="...">
-                            <div class="caption">
-                              <h3>Prodotto Bello</h3>
-                              <p>Descrizione bella</p>
-                              <p><a href="#" class="btn btn-primary" role="button">Vedi prodotto</a> <a href="#" class="btn btn-default" role="button">Aggiungi al carrello</a></p>
-                            </div>
-                          </div>
-                        </div> 
+                        
                 </div>
             </div>
             
