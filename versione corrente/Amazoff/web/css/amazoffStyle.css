@@ -4,6 +4,12 @@
 .searchBar
 { }
 
+.imgResize{ 
+  width: auto; 
+  height: auto; 
+  min-height: 200px; 
+  max-height: 200px; 
+} 
 
 .logo2 
 {
