@@ -92,7 +92,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-6" >
                                     <div class="dropdown">
-                                        <a href="paginaUtenteDaCreare.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 try {
                                                     String user = (session.getAttribute("user")).toString();
@@ -143,7 +143,7 @@
                                             </div>
                                             <div class="navbar-header col-xs-4">
                                                 <p class="navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
-                                                    Filtri <span class="caret"></span>
+                                                    <span class="glyphicon glyphicon-filter"></span>
                                                 </p>
                                                 <ul class="dropdown-menu dropdown-menu-right col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
                                                   <li><a href="#">Prodotto</a></li>

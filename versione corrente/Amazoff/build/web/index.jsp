@@ -77,41 +77,46 @@
                         <!-- barra con: login/registrati, cerca, carrello -->
                         <div class="logo col-xs-12 col-lg-1">
                             <div class="row">
-                                <div class="col-xs-6 col-lg-12"><a href="index.jsp">
+                                <div class="col-xs-5 col-lg-12">
+                                    <a href="index.jsp">
                                         <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
-                                    </a></div>
-                                <div class="col-xs-2 hidden-lg" style="text-align: right"> 
-                                    <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
-                                    <% 
-                                            try {
-                                                    String user = (session.getAttribute("user")).toString();
-                                                    
-                                                }catch(Exception ex){
-                                            %>
-                                                <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
-                                            <%
-                                                }
-                                             %>
-                                
-                                
+                                    </a>
                                 </div>
-                                 
-                                <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                                <% 
-                                    String userType = "";
-                                    try {
-                                            userType = (session.getAttribute("categoria_user")).toString();
-                                            if(userType.equals("1") || userType.equals("2"))
-                                            {
+                                <div class="col-xs-7 hidden-lg">
+                                    <div class="col-xs-2 hidden-lg"> 
+                                        <a class="dropdown iconSize" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
+                                        <% 
+                                                try {
+                                                        String user = (session.getAttribute("user")).toString();
+
+                                                    }catch(Exception ex){
                                                 %>
-                                                <div class="col-xs-2 hidden-lg" style="text-align: right;">
-                                                    <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
-                                                 </div>
+                                                    <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
                                                 <%
-                                            }
-                                        }catch(Exception ex){   }
-                                %> 
-                                <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+                                                    }
+                                                 %>
+
+
+                                    </div>
+
+                                    <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                    <% 
+                                        String userType = "";
+                                        try {
+                                                userType = (session.getAttribute("categoria_user")).toString();
+                                                if(userType.equals("1") || userType.equals("2"))
+                                                {
+                                                    %>
+                                                    <div class="col-xs-6 hidden-lg">
+                                                        <span class="badge iconSize"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
+                                                     </div>
+                                                    <%
+                                                }
+                                            }catch(Exception ex){   }
+                                    %> 
+                                    <div class="col-xs-2 hidden-lg iconSize" ><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+
+                                </div>
                             </div>
                         </div>
                         <!-- SEARCH BAR -->
@@ -119,7 +124,7 @@
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
                                     <div class="input-group-btn">
-                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-filter"></span></button>
                                       <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
                                         <li><a href="#">Vicinanza</a></li>
                                         <li><a href="#">Prezzo</a></li>
@@ -145,7 +150,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 userType = "";
                                                 String user = "", fname = "", lname = "";
@@ -175,7 +180,8 @@
                                                     if(userType.equals("0")) // registrato
                                                     {
                                                         %>
-                                                        <li><a href="profilePage.jsp">Profilo</a></li>
+                                                        <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
+                                                        <li><a href="userPage.jsp?v=Profile&a=active">Profilo</a></li>
                                                         <li><a href=".jsp">Rimborso / Anomalia</a></li>
                                                         <li><a href="createShop_1.jsp">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
@@ -185,7 +191,7 @@
                                                     else if(userType.equals("1")) // venditore
                                                     {
                                                         %>
-                                                        <li><a href="profilePage.jsp">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile&a=active">Profilo</a></li>
                                                         <li><a href="notificationPage.jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
                                                         <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
@@ -197,7 +203,7 @@
                                                     else if(userType.equals("2")) //admin
                                                     {
                                                         %>
-                                                        <li><a href="profilePage.jsp">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile&a=active">Profilo</a></li>
                                                         <li><a href="notificationPage.jsp">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -277,15 +283,15 @@
                 <div class="row galleria">
                     <div class="col-lg-12">
                     <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                        <!-- Indicators -->
+                        <!-- Indicators --
                         <ol class="carousel-indicators">
                           <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                           <li data-target="#myCarousel" data-slide-to="1"></li>
                           <li data-target="#myCarousel" data-slide-to="2"></li>
-                        </ol>
+                        </ol>-->
 
                         <!-- Wrapper for slides -->
-                        <div class="carousel-inner" role="listbox" style="background-color: aqua">
+                        <div class="carousel-inner hidden-xs" role="listbox">
 
                           <div class="item active">
                             <img src="images/img1.jpg" alt="Chania">
@@ -297,18 +303,10 @@
 
                           <div class="item">
                             <img src="images/img2.jpg" alt="Chania">
-                            <!--<div class="carousel-caption">
-                              <h3>Chania</h3>
-                              <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
-                            </div>-->
                           </div>
                             
                             <div class="item">
                             <img src="images/img3.jpg" alt="Chania">
-                            <!--<div class="carousel-caption">
-                              <h3>Chania</h3>
-                              <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
-                            </div>-->
                           </div>
                             
                         </div>

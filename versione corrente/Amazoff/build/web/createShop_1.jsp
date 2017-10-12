@@ -178,7 +178,7 @@
                             <div class="input-group">
                                 
                                 <div class="input-group-btn">
-                                  <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
+                                  <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-filter"></span></button>
                                   <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
                                     <li><a href="#">Vicinanza</a></li>
                                     <li><a href="#">Prezzo</a></li>
@@ -206,7 +206,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 String userType = "";
                                                 try {

@@ -35,9 +35,11 @@
     max-width:125%;
 }
 
-.menuBar
+.iconSize
 {
-    margin-top: 10px;
+    font-size: 1.3em;
+    margin:auto; 
+    text-align:center;
 }
 
 /* stile di "marigne" top */

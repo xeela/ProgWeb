@@ -191,7 +191,7 @@
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
                                     <div class="input-group-btn">
-                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-filter"></span></button>
                                       <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
                                         <li><a href="#">Vicinanza</a></li>
                                         <li><a href="#">Prezzo</a></li>
@@ -218,7 +218,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                String userType = "";
                                                 String fname = "", lname = "";
@@ -291,15 +291,15 @@
                     <div class="page">
                           <ul class="list-group">
                               <div class="list-group-item">  
-                                    <div  role="tablist" aria-multiselectable="true">
+                                    <div id="profile" role="tablist" aria-multiselectable="true">
                                                     Profilo 
                                                     <a data-toggle="collapse" data-parent="#accordion"
-                                                            href="#collapseOne" aria-expanded="true" 
-                                                            aria-controls="collapseOne" >
+                                                            href="#collapseProfile" aria-expanded="true" 
+                                                            aria-controls="collapseProfile" >
                                                         <span class='glyphicon glyphicon-option-vertical'></span>
                                                     </a>
                                                     
-                                                    <div id="collapseOne" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                                    <div id="collapseProfile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                                         <div class="row">
                                                             <div class="col-lg-3"></div>
                                                             <div class="col-lg-6">
@@ -461,7 +461,7 @@
                                     </div>
                                     <% } %>
                                     
-                                    <a href="/Amazoff/ServletLogout" class="list-group-item active">
+                                    <a id="esci" href="/Amazoff/ServletLogout" class="list-group-item active">
                                         <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                         Esci
                                     </a>
@@ -503,12 +503,19 @@
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }
-            
-            // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
-            function cercaProdotto(txt)
-            {
-                window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-            }
+                       
+              <% // se viene passato alla pagina il valore a=active, rende visibile la riga relativa al valore v
+                // --> dice sempre null 
+                String s = request.getParameter("a").toString();
+                
+                if(request.getParameter("a") != null && request.getParameter("v") != null)
+                {
+                    %>
+                        $('#collapse<%=request.getParameter("v")%>').addClass('in');
+                    <%
+                }
+            %>
+                
         </script>
     </body>
 </html>
