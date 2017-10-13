@@ -167,9 +167,9 @@
                
         <div class="container-fluid">
             <div class="row" style="text-align: center">
-                <div class="col-xs-6 col-lg-12">
-                                        <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
-                                    </div>
+                <div class="col-lg-12">
+                    <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
+                </div>
             </div>
             
             <!-- LOGIN -->

@@ -84,10 +84,10 @@
                     /* NON  VA 
                     toAddMiniature += "<div class=\"col-md-4\">";
                     toAddMiniature += "<a class=\"thumbnail\" id=\"carousel-selector-"+i+"\">";
-                    toAddMiniature += "<img src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";                                      
+                    toAddMiniature += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";                                      
                    */
                   
-                    toAdd += "<img src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></div>";
+                    toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></div>";
                 }     
                 
                 $("#div_carousel").html(toAdd);

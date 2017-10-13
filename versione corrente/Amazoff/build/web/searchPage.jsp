@@ -37,10 +37,10 @@
                 for(var i = 0; i < jsonProdotti.products.length; i++)
                 {
                     id_oggetto = jsonProdotti.products[i].id;
-                    toAdd += "<div class=\"row\">";
+                    toAdd += "<div class=\"row \">";
                     toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id="+id_oggetto+"\" id=\"form"+id_oggetto+"\" onclick=\"$('#form"+id_oggetto+"').submit();\"> ";
-                    toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
-                    toAdd += "   <img src=\"UploadedImages/"+ jsonProdotti.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
+                    toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" >";
+                    toAdd += "   <img class=\"imgCenter\"src=\"UploadedImages/"+ jsonProdotti.products[i].pictures[0].path + "\"  alt=\"...\">";
                     toAdd += "</div>";
                     toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
                     toAdd += "<p name=\"nome"+id_oggetto+"\" >" + jsonProdotti.products[i].name + "</p>";
@@ -50,10 +50,11 @@
                     toAdd += "<p name=\"prezzo"+id_oggetto+"\">Prezzo: " + jsonProdotti.products[i].price + "</p>";
                     toAdd += "<p name=\"venditore"+id_oggetto+"\" >Nome venditore <a href=\"url_venditore.html\">Negozio</a></p>";       
                     toAdd += "</div>";
-                    toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1\" >";
-                    toAdd += "<span class=\"prova glyphicon glyphicon-chevron-right\"></span>";
+                    toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1 \" >";
+                    toAdd += "<span class=\"glyphicon glyphicon-chevron-right\"></span>";
                     toAdd += "</div>";
-                    toAdd += "</form><hr>";
+                    toAdd += "</form>";
+                    toAdd += "</div><hr>";
                 }
                 
                 $("#zonaProdotti").html(toAdd);

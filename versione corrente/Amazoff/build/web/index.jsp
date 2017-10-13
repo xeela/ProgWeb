@@ -75,30 +75,34 @@
                 
                 <div class="row" > <!-- style="position: fixed; z-index: 999;" -->
                         <!-- barra con: login/registrati, cerca, carrello -->
-                        <div class="logo col-xs-12 col-lg-1">
+                        <div class="logo col-xs-12 col-lg-1"  >
                             <div class="row">
-                                <div class="col-xs-5 col-lg-12">
+                                <div class="col-xs-5 col-lg-12" >
                                     <a href="index.jsp">
                                         <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
                                     </a>
                                 </div>
-                                <div class="col-xs-7 hidden-lg">
-                                    <div class="col-xs-2 hidden-lg"> 
-                                        <a class="dropdown iconSize" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
-                                        <% 
+                                <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
+                                    <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
+                                        <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
+                                            <spam class="glyphicon glyphicon-user"> 
+                                                <% 
                                                 try {
                                                         String user = (session.getAttribute("user")).toString();
 
                                                     }catch(Exception ex){
                                                 %>
-                                                    <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
+                                                 Accedi 
+                                                 <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
+
                                                 <%
                                                     }
                                                  %>
-
-
+                                            </spam>
+                                        </a>
                                     </div>
 
+                                    <div class="col-xs-6 hidden-lg">
                                     <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                                     <% 
                                         String userType = "";
@@ -107,14 +111,18 @@
                                                 if(userType.equals("1") || userType.equals("2"))
                                                 {
                                                     %>
-                                                    <div class="col-xs-6 hidden-lg">
-                                                        <span class="badge iconSize"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
-                                                     </div>
+                                                        <span class="badge iconSize imgCenter"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
                                                     <%
                                                 }
                                             }catch(Exception ex){   }
                                     %> 
-                                    <div class="col-xs-2 hidden-lg iconSize" ><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+                                    </div>                    
+                                                        
+                                    <div class="col-xs-3 hidden-lg iconSize imgCenter" >
+                                        <a href="shopping-cartPage.jsp">
+                                            <spam class="glyphicon glyphicon-shopping-cart"></spam>
+                                        </a>
+                                    </div>
 
                                 </div>
                             </div>
@@ -124,25 +132,43 @@
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
                                     <div class="input-group-btn">
-                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-filter"></span></button>
-                                      <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
-                                        <li><a href="#">Vicinanza</a></li>
-                                        <li><a href="#">Prezzo</a></li>
-                                        <li><a href="#">Recensione</a></li>
-                                      </ul>
+                                        <!-- <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="glyphicon glyphicon-filter"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
+                                          <li><a href="#">Vicinanza</a></li>
+                                          <li><a href="#">Prezzo</a></li>
+                                          <li><a href="#">Recensione</a></li>
+                                        </ul> -->
+                                        
+                                        <div role="tablist" aria-multiselectable="true">
+                                            <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
+                                                            href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
+                                                            aria-controls="collapseFilter" >
+                                                <span class="glyphicon glyphicon-filter"></span>
+                                            </a>
+                                        </div>
                                     </div>
+                                    
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
 
                                     <div class="input-group-btn">
-                                    <select class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search_category">Select category<span class="caret"></span></button>
-                                        <option value="product">Product</option>
-                                        <option value="seller">Seller</option>
-                                    </select>
-                                      <button class="btn btn-default" type="submit">Cerca</button> <!-- **** onclick è temporaneo, andrà sostituito con la chiamanta alla servlet che genera la pagina search in base al dato passato -->
+                                        <!--<select class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search_category">Select category<span class="caret"></span></button>
+                                            <option value="product">Product</option>
+                                            <option value="seller">Seller</option>
+                                        </select>-->
+                                            <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
+                                                            href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
+                                                            aria-controls="collapseFilter" >
+                                                Scegli categoria<span class="caret"></span>
+                                            </a>
+
+                                        <button class="btn btn-default" type="submit">Cerca</button>
                                     </div><!-- /btn-group --> 
                                 </form>
+                                   
                             </div><!-- /input-group -->
-                        </div>                     
+                        </div> 
                         
                         <!-- button: accedi/registrati e carrello per PC -->
                         <div class="hidden-xs hidden-sm hidden-md col-lg-4">
@@ -170,7 +196,11 @@
                                             <%
                                                 }
                                              %>
-                                        </a>      
+                                        </a> 
+                                        
+                                        
+                                        
+                                        
                                             <!-- menu a tendina con le azioni che può fare l'utente -->
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                               <span class="caret"></span>
@@ -183,7 +213,7 @@
                                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
                                                         <li><a href="userPage.jsp?v=Profile&a=active">Profilo</a></li>
                                                         <li><a href=".jsp">Rimborso / Anomalia</a></li>
-                                                        <li><a href="createShop_1.jsp">Diventa venditore</a></li>
+                                                        <li><a href="userPage.jsp?v=CreateShop&a=active">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
@@ -194,7 +224,7 @@
                                                         <li><a href="userPage.jsp?v=Profile&a=active">Profilo</a></li>
                                                         <li><a href="notificationPage.jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
-                                                        <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
+                                                        <li><a href="userPage.jsp?v=SellProduct&a=active">Vendi Prodotto</a></li>
                                                         <li><a href=".jsp">Gestisci prodotti</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -243,7 +273,36 @@
                                 </div>
                             </div>
                         </div>
-                            
+                                   
+                        <!-- DIV FILTRI e CATEGORIE -->
+                        <div class="hidden-xs col-sm-12 col-md-12 col-lg-12">
+                        <div id="collapseFilter" class="panel-collapse collapse out" >
+                            <div class="row">
+                                <div class="col-sm-6 col-lg-6" >
+                                    <h3 class="alignCenter">Filtri</h3>
+                                    <hr>
+                                    <ul class="no_dots"> 
+                                        <li><a href="#"><input type="checkbox" value="vicinanza"> Vicinanza</a>
+                                        </li>
+                                        <li><a href="#"><input type="checkbox" value="prezzo"> Prezzo</a>
+                                        </li>
+                                        <li><a href="#"><input type="checkbox" value="recensione"> Recensione</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-sm-6 col-lg-6" style="border-left: #8c8c8c solid; ">
+                                    <h3 class="alignCenter">Categorie</h3>
+                                    <hr>
+                                    <ul class="no_dots"> 
+                                        <li><a href="#"><input type="checkbox" value="categoria"> Categoria</a></li>
+                                        <li><a href="#"><input type="checkbox" value="oggetto"> Oggetto</a></li>
+                                        <li><a href="#"><input type="checkbox" value="venditore"> Venditore</a></li>
+                                    </ul>
+                                </div>
+                            </div>  
+                        </div>
+                        </div>
+
+                        <!-- DIV FILTRI e CATEGORIE SU XS -->
                         <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
                             <div class="menuBar">
                                 <nav class="navbar navbar-default">
@@ -251,23 +310,23 @@
                                         <div class="row">
                                       
                                             <div class="navbar-header col-xs-8">
-                                                <p class="navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                                     Scegli categoria <span class="caret"></span>
-                                                </p>
+                                                </a>
                                                 <ul class="dropdown-menu dropdown-menu-left col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
-                                                    <li><a href="#">Categoria</a></li>
-                                                    <li><a href="#">Oggetto</a></li>
-                                                    <li><a href="#">Venditore</a></li>
+                                                    <li><a href="#"><input type="checkbox" value="categoria"> Categoria</a></li>
+                                                    <li><a href="#"><input type="checkbox" value="oggetto"> Oggetto</a></li>
+                                                    <li><a href="#"><input type="checkbox" value="venditore"> Venditore</a></li>
                                                 </ul>
                                             </div>
                                             <div class="navbar-header col-xs-4">
-                                                <p class="navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                                     Filtri <span class="caret"></span>
-                                                </p>
+                                                </a>
                                                 <ul class="dropdown-menu dropdown-menu-right col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
-                                                    <li><a href="#">Vicinanza</a></li>
-                                                    <li><a href="#">Prezzo</a></li>
-                                                    <li><a href="#">Recensione</a></li>
+                                                    <li> <a href="#"><input type="checkbox" value="vicinanza"> Vicinanza</a></li>
+                                                    <li> <a href="#"><input type="checkbox" value="prezzo"> Prezzo</a></li>
+                                                    <li> <a href="#"><input type="checkbox" value="recensione"> Recensione</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -280,7 +339,7 @@
                 </div>
                      
                 <!-- carousel -->
-                <div class="row galleria">
+                <div class="panel row tmargin hidden-xs">
                     <div class="col-lg-12">
                     <div id="myCarousel" class="carousel slide" data-ride="carousel">
                         <!-- Indicators --
@@ -291,7 +350,7 @@
                         </ol>-->
 
                         <!-- Wrapper for slides -->
-                        <div class="carousel-inner hidden-xs" role="listbox">
+                        <div class="carousel-inner" role="listbox">
 
                           <div class="item active">
                             <img src="images/img1.jpg" alt="Chania">
