@@ -84,10 +84,10 @@
                     /* NON  VA 
                     toAddMiniature += "<div class=\"col-md-4\">";
                     toAddMiniature += "<a class=\"thumbnail\" id=\"carousel-selector-"+i+"\">";
-                    toAddMiniature += "<img src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";                                      
+                    toAddMiniature += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";                                      
                    */
                   
-                    toAdd += "<img src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></div>";
+                    toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></div>";
                 }     
                 
                 $("#div_carousel").html(toAdd);
@@ -154,7 +154,7 @@
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
                                     <div class="input-group-btn">
-                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-filter"></span></button>
                                       <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
                                         <li><a href="#">Vicinanza</a></li>
                                         <li><a href="#">Prezzo</a></li>
@@ -181,7 +181,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 userType = "";
                                                 String fname = "", lname = "";

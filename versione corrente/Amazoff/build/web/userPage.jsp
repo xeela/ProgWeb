@@ -20,11 +20,15 @@
         <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDofgdH-2Rk2JWl1U_ZWs-yi2gq_U25txY&callback=initMap"></script> 
+
         
         <link rel="stylesheet" href="css/amazoffStyle.css">
         
         <title>Amazoff</title>
-                <script type="text/javascript">
+        
+        <!-- script gestione sezione "PROFILO" -->
+        <script type="text/javascript">
             var condizioniAccettate = false;
             
             function MostraErrore(text)
@@ -150,6 +154,109 @@
                 }
             }
         </script>
+        
+        <!-- script gestione sezione "DIVENTA VENDITORE" -->
+        <script>
+            function show_hide_pass(txtID)
+            {
+                // ottendo il type dell'oggetto
+                var tipo = $("#"+txtID).attr('type')
+                
+                if(tipo === "password") {
+                    $("#"+txtID).prop('type', 'text');
+                    // cambio l'icona presente sul bottone e il suo title
+                    $("#btn"+txtID).prop('title', 'Nascondi password');
+                    $("#span"+txtID).prop('class', 'glyphicon glyphicon-eye-close');
+                }
+                else {
+                    $("#"+txtID).prop('type', 'password');
+                    // cambio l'icona presente sul bottone e il suo title
+                    $("#btn"+txtID).prop('title', 'Mostra password');
+                    $("#span"+txtID).prop('class', 'glyphicon glyphicon-eye-open');
+                }
+                
+                console.log($("#"+txtID).attr('type'));
+            }
+            
+            var geocoder = new google.maps.Geocoder();
+            var latLng = new google.maps.LatLng(41.9, 12.5);
+            function geocodePosition(pos) {
+              geocoder.geocode({
+                latLng: pos
+              }, function(responses) {
+                if (responses && responses.length > 0) {
+                  updateMarkerAddress(responses[0].formatted_address);
+                } else {
+                  updateMarkerAddress('Cannot determine address at this location.');
+                }
+              });
+            }
+
+            function updateMarkerStatus(str) {
+              document.getElementById('markerStatus').innerHTML = str;
+            }
+
+            function updateMarkerPosition(latLng) {
+
+              document.getElementById('info').innerHTML = [
+                latLng.lat(),
+                latLng.lng()
+              ].join(', ');
+            }
+
+            function updateMarkerAddress(str) {
+              document.getElementById('address').innerHTML = str;
+            }
+            function sendCoordinates(){
+            //    alert([
+            //    latLng.lat(),
+            //    latLng.lng()
+            //  ].join(';'));
+                document.getElementById('info2').value = [
+                latLng.lat(),
+                latLng.lng()
+              ].join(';');
+            }
+            function initialize() {
+              latLng = new google.maps.LatLng(41.9, 12.5);
+              var map = new google.maps.Map(document.getElementById('mapCanvas'), {
+                zoom: 5,
+                center: latLng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+              });
+              var marker = new google.maps.Marker({
+                position: latLng,
+                title: 'Point A',
+                map: map,
+                draggable: true
+              });
+
+              // Update current position info.
+              updateMarkerPosition(latLng);
+              geocodePosition(latLng);
+
+              // Add dragging event listeners.
+              google.maps.event.addListener(marker, 'dragstart', function() {
+                updateMarkerAddress('Dragging...');
+              });
+
+              google.maps.event.addListener(marker, 'drag', function() {
+                updateMarkerStatus('Dragging...');
+                updateMarkerPosition(marker.getPosition());
+              });
+
+              google.maps.event.addListener(marker, 'dragend', function() {
+                updateMarkerStatus('Drag ended');
+                geocodePosition(marker.getPosition());
+              });
+              //add listener that gets triggered when the form submits
+
+
+            }
+
+            // Onload handler to fire off the app.
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>    
     </head>
     <body class="bodyStyle">
        
@@ -191,7 +298,7 @@
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
                                     <div class="input-group-btn">
-                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-filter"></span></button>
                                       <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
                                         <li><a href="#">Vicinanza</a></li>
                                         <li><a href="#">Prezzo</a></li>
@@ -218,7 +325,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                String userType = "";
                                                 String fname = "", lname = "";
@@ -291,15 +398,15 @@
                     <div class="page">
                           <ul class="list-group">
                               <div class="list-group-item">  
-                                    <div  role="tablist" aria-multiselectable="true">
+                                    <div id="profile" role="tablist" aria-multiselectable="true">
                                                     Profilo 
                                                     <a data-toggle="collapse" data-parent="#accordion"
-                                                            href="#collapseOne" aria-expanded="true" 
-                                                            aria-controls="collapseOne" >
+                                                            href="#collapseProfile" aria-expanded="true" 
+                                                            aria-controls="collapseProfile" >
                                                         <span class='glyphicon glyphicon-option-vertical'></span>
                                                     </a>
                                                     
-                                                    <div id="collapseOne" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                                    <div id="collapseProfile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                                         <div class="row">
                                                             <div class="col-lg-3"></div>
                                                             <div class="col-lg-6">
@@ -362,10 +469,51 @@
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Rimborso / Anomalia
                                         </a>
-                                        <a href=".jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Diventa venditore
-                                        </a>
+                                        
+                                        <div class="list-group-item">  
+                                        <div id="profile" role="tablist" aria-multiselectable="true">
+                                                        Crea Negozio 
+                                                        <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="#collapseCreateShop" aria-expanded="true" 
+                                                                aria-controls="collapseCreateShop" >
+                                                            <span class='glyphicon glyphicon-option-vertical'></span>
+                                                        </a>
+
+                                                        <div id="collapseCreateShop" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                                            <div class="row">
+                                                                <div class="col-lg-3"></div>
+                                                                <div class="col-lg-6">
+                                                                    <h3 class="alignCenter">Inserisci Dati Negozio:</h3>
+                                                                    <FORM id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
+                                                                        <p>Nome</p>  <input type="text" name="nome" placeholder="Nome"/>
+                                                                        <br></br>
+                                                                        <p>Descrizione</p>  <input type="text" name="descrizione" placeholder="Descrizione negozio"/>
+                                                                        <br></br>
+                                                                        <p>Website</p> <input type="url" name="website" placeholder="URL"/>
+                                                                        <br/>
+
+                                                                        <br/>
+                                                                        <div id="mapCanvas"></div>
+                                                                        <div id="infoPanel">
+                                                                          <b>Marker status:</b>
+                                                                          <div id="markerStatus"><i>Click and drag the marker.</i></div>
+                                                                          <b>Current position:</b>
+                                                                          <div id="info"></div>
+                                                                          <b>Closest matching address:</b>
+                                                                          <div id="address"></div>
+                                                                        </div>
+                                                                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <!--soluzione temporanea, forse :> -->
+                                                                        <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
+
+                                                                        <input type="hidden" name="coordinate" id="info2"></input>
+                                                                        <INPUT TYPE='submit' VALUE='Crea Negozio' />
+
+                                                                    </FORM>
+                                                                </div>
+                                                            </div>
+                                                        </div>                                                  
+                                        </div>
+                                    </div>
                                                        
                                         <%
                                     }
@@ -375,18 +523,87 @@
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Profilo
                                         </a> -->
-                                        <a href=".jsp" class="list-group-item">
-                                          <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                          Notifiche
-                                        </a>
+                                        <div class="list-group-item">
+                                            <div role="tablist" aria-multiselectable="true">
+                                                        Notifiche TMP 
+                                                        <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="#collapseTwo" aria-expanded="true" 
+                                                                aria-controls="collapseTwo" >
+                                                            <span class='glyphicon glyphicon-option-vertical'></span>
+                                                        </a>
+
+                                                        <div id="collapseTwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                                            <div class="row">
+                                                                <div class="col-lg-3"></div>
+                                                                <div class="col-lg-6">
+                                                                    <h3 class="alignCenter">Notifiche</h3>
+                                                                </div>    
+                                                            </div>
+                                                        </div>                                                  
+                                                </div>
+                                        </div>
                                         <a href=".jsp" class="list-group-item">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Negozio
                                         </a>
+                                        
+                                        
                                         <a href="sellNewProduct.jsp" class="list-group-item">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Vendi prodotto
                                         </a>
+                                        <div class="list-group-item">
+                                            <div role="tablist" aria-multiselectable="true">
+                                                        Vendi prodotto 
+                                                        <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="#collapseSellProduct" aria-expanded="true" 
+                                                                aria-controls="collapseSellProduct" >
+                                                            <span class='glyphicon glyphicon-option-vertical'></span>
+                                                        </a>
+
+                                                        <div id="collapseSellProduct" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                                            <div class="row">
+                                                                <div class="col-lg-3"></div>
+                                                                <div class="col-lg-6">
+                                                                    <h3 class="alignCenter">Cosa vuoi vendere?</h3>
+                                                                    <form ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct' >
+                                                                        <div class="form-group">
+                                                                            <input name="nome" type="text" class="form-control" placeholder="Nome Prodotto" aria-describedby="basic-addon1">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <input name="descrizione" type="text" class="form-control" placeholder="Descrizione" aria-describedby="basic-addon1">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <input name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1">
+                                                                        </div>
+
+                                                                        <div class="dropdown form-group">
+                                                                            <button  class="btn btn-default dropdown-toggle" type="button" id="ddCategoria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                              Categoria <span class="caret"></span>
+                                                                            </button>
+                                                                            <ul class="dropdown-menu" name="categoria" aria-labelledby="ddCategoria">
+                                                                              <li><a href="#" value="categoria1"> Categoria 1</a></li>
+                                                                              <li><a href="#" value="categoria2"> Categoria 2</a></li>
+                                                                              <li><a href="#" value="categoria3"> Categoria 3</a></li>
+                                                                              <li role="separator" class="divider"></li>
+                                                                              <li><a href="#">Separated link</a></li>
+                                                                            </ul>
+                                                                        </div> 
+                                                                        <div class="form-group">
+                                                                            <input TYPE='file' NAME='productPic1' class="btn btn-default form-control" aria-describedby="basic-addon1">
+                                                                            Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <input TYPE='submit' NAME='productPic' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
+                                                                        </div>
+                                                                    </form>
+                                                                </div>    
+                                                            </div>
+                                                        </div>                                                  
+                                                </div>
+                                        </div>
+                                        
+                                        
                                         <a href=".jsp" class="list-group-item">
                                           <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                           Gestisci prodotti
@@ -395,73 +612,28 @@
                                     }
                                     else if(userType.equals("2")) //admin
                                     { %>
-                                    <div class="list-group-item">
-                                        <div role="tablist" aria-multiselectable="true">
-                                                    Notifiche TMP 
-                                                    <a data-toggle="collapse" data-parent="#accordion"
-                                                            href="#collapseTwo" aria-expanded="true" 
-                                                            aria-controls="collapseTwo" >
-                                                        <span class='glyphicon glyphicon-option-vertical'></span>
-                                                    </a>
-                                                    
-                                                    <div id="collapseTwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                                        <div class="row">
-                                                            <div class="col-lg-3"></div>
-                                                            <div class="col-lg-6">
-                                                                <h3 style="text-align: center">Aggiorna le tue credenziali:</h3>
-                                                                <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletUpdateProfile" method="POST" onsubmit="return HashPasswordRegister();">
+                                        <div class="list-group-item">
+                                            <div role="tablist" aria-multiselectable="true">
+                                                        Notifiche TMP 
+                                                        <a data-toggle="collapse" data-parent="#accordion"
+                                                                href="#collapseTwo" aria-expanded="true" 
+                                                                aria-controls="collapseTwo" >
+                                                            <span class='glyphicon glyphicon-option-vertical'></span>
+                                                        </a>
 
-                                                                    <div class="form-group">
-                                                                        <input id="mailRegister" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <input id="usernameRegister" type="text" name="username" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <input id="nameRegister" type="text" name="name" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
-                                                                    </div class="form-group">
-                                                                    <div class="form-group">
-                                                                        <input id="surnameRegister" type="text" name="surname" class="form-control" placeholder="Cognome" aria-describedby="sizing-addon2">
-                                                                    </div>
-                                                                    <div class="form-group input-group">
-                                                                        <input id="oldpassword" type="password"  class="form-control" placeholder="Vecchia password" aria-describedby="sizing-addon2">
-                                                                        <span class="input-group-btn">
-                                                                            <a id="btnoldPassword" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('oldpassword')">
-                                                                                <span id="spanoldpassword" class="glyphicon glyphicon-eye-open"></span>
-                                                                            </a>
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="form-group input-group">
-                                                                        <input id="pwdRegister" type="password" name="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
-                                                                        <span class="input-group-btn">
-                                                                            <a id="btnpwdRegister" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('pwdRegister')">
-                                                                                <span id="spanpwdRegister" class="glyphicon glyphicon-eye-open"></span>
-                                                                            </a>
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="form-group input-group">
-                                                                        <input id="pwdRegisterConfirm" type="password" class="form-control" placeholder="Ripeti password" aria-describedby="sizing-addon2">
-                                                                        <input id="hashedPassword" type="hidden" name="hashedPassword" value="pigreco" />
-                                                                        <span class="input-group-btn">
-                                                                            <a id="btnpwdRegisterConfirm" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('pwdRegisterConfirm')">
-                                                                                <span id="spanpwdRegisterConfirm" class="glyphicon glyphicon-eye-open"></span>
-                                                                            </a>
-                                                                        </span>
-                                                                    </div>
-
-                                                                    <div class="form-group tmargin">
-                                                                        <button id="btnRegistrati" class="btn btn-default" >Aggiorna dati</button>
-                                                                        <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
-                                                                    </div>
-                                                                </form>
+                                                        <div id="collapseTwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                                            <div class="row">
+                                                                <div class="col-lg-3"></div>
+                                                                <div class="col-lg-6">
+                                                                    <h3 class="alignCenter">Notifiche</h3>
+                                                                </div>    
                                                             </div>
-                                                        </div>
-                                                    </div>                                                  
-                                            </div>
-                                    </div>
+                                                        </div>                                                  
+                                                </div>
+                                        </div>
                                     <% } %>
                                     
-                                    <a href="/Amazoff/ServletLogout" class="list-group-item active">
+                                    <a id="esci" href="/Amazoff/ServletLogout" class="list-group-item active">
                                         <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                         Esci
                                     </a>
@@ -503,12 +675,19 @@
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }
-            
-            // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
-            function cercaProdotto(txt)
-            {
-                window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-            }
+                       
+              <% // se viene passato alla pagina il valore a=active, rende visibile la riga relativa al valore v
+                // --> dice sempre null 
+                String s = request.getParameter("a").toString();
+                
+                if(request.getParameter("a") != null && request.getParameter("v") != null)
+                {
+                    %>
+                        $('#collapse<%=request.getParameter("v")%>').addClass('in');
+                    <%
+                }
+            %>
+                
         </script>
     </body>
 </html>

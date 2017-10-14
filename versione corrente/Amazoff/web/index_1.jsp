@@ -11,8 +11,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="js/popper.js"></script>
-        <script src="js/popper-utils.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
@@ -24,8 +22,48 @@
         <link rel="stylesheet" href="css/amazoffStyle.css">
         
         <title>Amazoff</title>
+        <script type="text/javascript">
+            var jsonProdotti;
+            var searchedProduct = null;
+            function LogJson() {
+                jsonProdotti = ${jsonProdottiIndex};
+                console.log(jsonProdotti);
+                RiempiBarraRicerca();
+                AggiungiProdotti();
+            }
+            
+            function AggiungiProdotti() {
+                var toAdd = "";
+                var id_oggetto = -1
+                
+                for(var i = 0; i < jsonProdotti.products.length; i++)
+                {
+                    id_oggetto = jsonProdotti.products[i].id;
+                    
+                    toAdd += "<div class=\"col-sm-6 col-md-4\">";
+                    toAdd += "<div class=\"thumbnail\">";
+                    toAdd += "<img class=\"imgResize\" src=\"UploadedImages/"+ jsonProdotti.products[i].pictures[0].path + "\" alt=\"...\">";
+                    toAdd += "<div class=\"caption\">";
+                    toAdd += "<h3>" + jsonProdotti.products[i].name + "</h3>";
+                    toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
+                    toAdd += "<p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"#\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
+                    toAdd += "</div>";
+                    toAdd += "</div>";
+                    toAdd += "</div>";
+                }
+                
+                $("#zonaProdotti").html(toAdd);
+            }
+            
+            function RiempiBarraRicerca()
+            {
+                searchedProduct = jsonProdotti.searched;
+                $("#txtCerca").val(searchedProduct);
+            }
+        </script>
+            
     </head>
-    <body class="bodyStyle">
+    <body class="bodyStyle" onload="LogJson()">
        
         <div class="container-fluid tmargin">
             
@@ -40,7 +78,7 @@
                         <div class="logo col-xs-12 col-lg-1">
                             <div class="row">
                                 <div class="col-xs-6 col-lg-12"><a href="index.jsp">
-                                        <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
+                                        <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
                                     </a></div>
                                 <div class="col-xs-2 hidden-lg" style="text-align: right"> 
                                     <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
@@ -67,7 +105,7 @@
                                             {
                                                 %>
                                                 <div class="col-xs-2 hidden-lg" style="text-align: right;">
-                                                    <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
+                                                    <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
                                                  </div>
                                                 <%
                                             }
@@ -81,14 +119,13 @@
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
                                     <div class="input-group-btn">
-                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-filter"></span></button>
+                                      <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filtri <span class="caret"></span></button>
                                       <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
                                         <li><a href="#">Vicinanza</a></li>
                                         <li><a href="#">Prezzo</a></li>
                                         <li><a href="#">Recensione</a></li>
                                       </ul>
                                     </div>
-
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
 
                                     <div class="input-group-btn">
@@ -108,12 +145,12 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="profilePage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 userType = "";
-                                                String fname = "", lname = "";
+                                                String user = "", fname = "", lname = "";
                                                 try {
-                                                    String user = (session.getAttribute("user")).toString();
+                                                    //user = (session.getAttribute("user")).toString();
                                                     userType = (session.getAttribute("categoria_user")).toString();
                                                     fname = (session.getAttribute("fname")).toString();
                                                     lname = (session.getAttribute("lname")).toString();
@@ -140,6 +177,7 @@
                                                         %>
                                                         <li><a href="profilePage.jsp">Profilo</a></li>
                                                         <li><a href=".jsp">Rimborso / Anomalia</a></li>
+                                                        <li><a href="createShop_1.jsp">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
@@ -148,7 +186,7 @@
                                                     {
                                                         %>
                                                         <li><a href="profilePage.jsp">Profilo</a></li>
-                                                        <li><a href=".jsp">Notifiche</a></li>
+                                                        <li><a href="notificationPage.jsp">Notifiche</a></li>
                                                         <li><a href=".jsp">Negozio</a></li>
                                                         <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
                                                         <li><a href=".jsp">Gestisci prodotti</a></li>
@@ -160,7 +198,7 @@
                                                     {
                                                         %>
                                                         <li><a href="profilePage.jsp">Profilo</a></li>
-                                                        <li><a href=".jsp">Notifiche</a></li>
+                                                        <li><a href="notificationPage.jsp">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
@@ -174,7 +212,7 @@
                                             </ul> 
                                     </div>
                                 </div>
-                                                
+                                
                                 <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                                      <% try {
                                             //userType = (session.getAttribute("categoria_user")).toString();
@@ -189,8 +227,9 @@
                                                 <%
                                             }
                                         }catch(Exception ex){  }
-                                   %>
-                                
+                                   %> 
+                                                
+                                                
                                 <div class="col-lg-2">
                                    <a href="shopping-cartPage.jsp" type="button" class="btn btn-default btn-md">
                                         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
@@ -233,39 +272,66 @@
                             
                         </div>
                 </div>
-                
-                <!-- form per l'upload di un nuovo prodotto -->
-                <div class="tmargin">
-                    <form ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct' >
-                        <div class="form-group">
-                            <input name="nome" type="text" class="form-control" placeholder="Nome Prodotto" aria-describedby="basic-addon1">
+                     
+                <!-- carousel -->
+                <div class="row galleria">
+                    <div class="col-lg-12">
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                          <li data-target="#myCarousel" data-slide-to="1"></li>
+                          <li data-target="#myCarousel" data-slide-to="2"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox" style="background-color: aqua">
+
+                          <div class="item active">
+                            <img src="images/img1.jpg" alt="Chania">
+                            <!--<div class="carousel-caption">
+                              <h3>Chania</h3>
+                              <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
+                            </div>-->
+                          </div>
+
+                          <div class="item">
+                            <img src="images/img2.jpg" alt="Chania">
+                            <!--<div class="carousel-caption">
+                              <h3>Chania</h3>
+                              <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
+                            </div>-->
+                          </div>
+                            
+                            <div class="item">
+                            <img src="images/img3.jpg" alt="Chania">
+                            <!--<div class="carousel-caption">
+                              <h3>Chania</h3>
+                              <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
+                            </div>-->
+                          </div>
+                            
                         </div>
-                        <div class="form-group">
-                            <input name="descrizione" type="text" class="form-control" placeholder="Descrizione" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="form-group">
-                            <input name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1">
-                        </div>
+
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control col-lg-2" href="#myCarousel" role="button" data-slide="prev">
+                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control col-lg-2" href="#myCarousel" role="button" data-slide="next">
+                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    </div>
+                </div>
+                                    
+         
+                <!-- tabella di 2 righe, con 3 colonne, che mostrano 6 prodotti -->
+                <div class="row">
+                    <div class="page" id="zonaProdotti">
                         
-                        <div class="dropdown form-group">
-                            <button  class="btn btn-default dropdown-toggle" type="button" id="ddCategoria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                              Categoria <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" name="categoria" aria-labelledby="ddCategoria">
-                              <li><a href="#" value="categoria1"> Categoria 1</a></li>
-                              <li><a href="#" value="categoria2"> Categoria 2</a></li>
-                              <li><a href="#" value="categoria3"> Categoria 3</a></li>
-                              <li role="separator" class="divider"></li>
-                              <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div> 
-                        <div class="form-group">
-                            <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="form-group">
-                            <input TYPE='submit' NAME='productPic' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
-                        </div>
-                    </form>
+                    </div>
                 </div>
            
                 <!-- back to top button -->
@@ -305,8 +371,10 @@
             // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
             function cercaProdotto(txt)
             {
-                window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
+                document.getElementById("formSearch").action = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value
+                //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
             }
+            
         </script>
     </body>
 </html>
