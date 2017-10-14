@@ -1,6 +1,6 @@
 $(function(){	
   var products = [
-     'agenda',
+     'aventador',
      'bilancia',
      'cuffie',
      'drone',

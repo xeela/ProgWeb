@@ -18,59 +18,11 @@
         <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
+        <script type="text/javascript" src="js/json_sort.js"></script>
         
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         <script type="text/javascript">
-            var jsonProdotti;
-            var searchedProduct = null;
-            function LogJson() {
-                jsonProdotti = ${jsonProdotti};
-                console.log(jsonProdotti);
-                RiempiBarraRicerca();
-                AggiungiProdotti();
-            }
-            
-            function AggiungiProdotti() {
-                var toAdd = "";
-                var id_oggetto = -1
-                
-                for(var i = 0; i < jsonProdotti.products.length; i++)
-                {
-                    id_oggetto = jsonProdotti.products[i].id;
-                    toAdd += "<div class=\"row\">";
-                    toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id="+id_oggetto+"\" id=\"form"+id_oggetto+"\" onclick=\"$('#form"+id_oggetto+"').submit();\"> ";
-                    toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
-                    toAdd += "   <img src=\"UploadedImages/"+ jsonProdotti.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
-                    toAdd += "</div>";
-                    toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
-                    toAdd += "<p name=\"nome"+id_oggetto+"\" >" + jsonProdotti.products[i].name + "</p>";
-                    toAdd += "<p name=\"stelle"+id_oggetto+"\">Voto totale</p>";
-                    toAdd += "<p name=\"recensioni"+id_oggetto+"\" >#num recensioni</p>";
-                    toAdd += "<p name=\"linkmappa"+id_oggetto+"\" >Vedi su mappa</p>";
-                    toAdd += "<p name=\"prezzo"+id_oggetto+"\">Prezzo: " + jsonProdotti.products[i].price + "</p>";
-                    toAdd += "<p name=\"venditore"+id_oggetto+"\" >Nome venditore <a href=\"url_venditore.html\">Negozio</a></p>";       
-                    toAdd += "</div>";
-                    toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1\" >";
-                    toAdd += "<span class=\"prova glyphicon glyphicon-chevron-right\"></span>";
-                    toAdd += "</div>";
-                    toAdd += "</form><hr>";
-                }
-                
-                $("#zonaProdotti").html(toAdd);
-            }
-            
-            function RiempiBarraRicerca()
-            {
-                searchedProduct = jsonProdotti.searched;
-                $("#txtCerca").val(searchedProduct);
-            }
-            
-            /*// dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
-            function cercaProdotto(txt)
-            {
-                window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-            }*/
-            
+            var jsonProdotti = ${jsonProdotti};
         </script>
         <title>Amazoff</title>
     </head>
@@ -270,11 +222,11 @@
                                         <button class="list-group-item dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                           Ordina per <span class="caret"></span>
                                         </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                          <li><a href="#">Prezzo: crescente</a></li>
-                                          <li><a href="#">Prezzo: decrescente</a></li>
-                                          <li><a href="#">Recensione: crescente</a></li>
-                                          <li><a href="#">Recensione: decrescente</a></li>
+                                        <ul id="sorting" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                          <li id="price_asc"><a href="#">Prezzo: crescente</a></li>
+                                          <li id="price_desc"><a href="#">Prezzo: decrescente</a></li>
+                                          <li id="review_asc"><a href="#">Recensione: crescente</a></li>
+                                          <li id="review_desc"><a href="#">Recensione: decrescente</a></li>
                                         </ul>
                                     </div>
                                     <!-- Filtra -->
@@ -308,12 +260,12 @@
                     </table>
                     
                     <table class="table table-hover">
-                        <tbody>
+                        <tbody id="sorting">
                             <tr><th>Ordina per:</th></tr>
-                            <tr><td><a href="#">Costo: crescente</a></td></tr>
-                            <tr><td><a href="#">Costo: decrescente</a></td></tr>
-                            <tr><td><a href="#">Recensione: crescente</a></td></tr>
-                            <tr><td><a href="#">Recensione: decrescente</a></td></tr>
+                            <tr><td id="price_asc"><a href="#">Costo: crescente</a></td></tr>
+                            <tr><td id="price_desc"><a href="#">Costo: decrescente</a></td></tr>
+                            <tr><td id="review_desc"><a href="#">Recensione: crescente</a></td></tr>
+                            <tr><td id="review_desc"><a href="#">Recensione: decrescente</a></td></tr>
                         </tbody>
                     </table>
                     
