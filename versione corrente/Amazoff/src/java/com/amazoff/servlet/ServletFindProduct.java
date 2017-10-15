@@ -12,8 +12,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,11 +39,6 @@ public class ServletFindProduct extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
             String productReceived = request.getParameter("txtCerca");
-
-           //Connessione al Database
-            //String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
-            //String db_user = "root";
-            //String db_pwd = "root";
             
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
@@ -71,61 +64,13 @@ public class ServletFindProduct extends HttpServlet {
                                
                 
                 //aggiungo i prodotti al json
-                boolean isFirstTime = true, isFirstTimeImg = true;
-                jsonObj += "{";
-                jsonObj        += "\"searched\": \"" + productReceived + "\",";
-                jsonObj        += "\"products\":[";
-                while (results.next()) {
-                    if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
-                        jsonObj += ", ";
-                    isFirstTime = false;
-                    
-                    jsonObj += "{";
-                    jsonObj += "\"id\": \"" + results.getString(4) + "\",";
-                    jsonObj += "\"name\": \"" + results.getString(1) + "\",";
-                    jsonObj += "\"description\": \"" + results.getString(2) + "\",";
-                    jsonObj += "\"price\": \"" + results.getString(3) + "\",";
-                    
-                     // in base al prodotto, ricavo il path delle img a lui associate
-                    // TO DO:::::::: String s = productPictures(results.getString(4));
-                    
-                    //------ TMP --------
-                    ResultSet results2 = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(4) + ";", connection);
-                
-                    if(results2.isAfterLast()) //se non ci sono img per quel prodotto, allora:
-                    {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("errorMessage", Errors.noProductFound);
-                        response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                        connection.close();
-                        return;
-                    }
-                    jsonObj        += "\"pictures\":[";
-                    // altrimenti
-                    while (results2.next()) {
-                        if(!isFirstTimeImg)            //metto la virgola prima dell'oggetto solo se non è il primo
-                            jsonObj += ", ";
-                        isFirstTimeImg = false; 
-                        
-                        jsonObj += "{";
-                        jsonObj += "\"id\": \"" + results2.getString(1) + "\",";
-                        jsonObj += "\"path\": \"" + results2.getString(2) + "\"";
-                        jsonObj += "}";
-                    }
-                    isFirstTimeImg = true;
-                    jsonObj += "]";
-                    
-                    //------ FINE TMP --------
-                    
-                    
-                    jsonObj += "}";
-                }
-                jsonObj += "]}";
+                jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                 
                 connection.close();
                 
                 HttpSession session = request.getSession();  
                 session.setAttribute("jsonProdotti", jsonObj);
+                session.setAttribute("searchedProduct", productReceived);
                 response.sendRedirect(request.getContextPath() + "/searchPage.jsp"); //TODO: Gestire meglio l'errore
             }
             else

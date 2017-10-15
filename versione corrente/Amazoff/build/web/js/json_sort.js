@@ -1,5 +1,3 @@
-var searchedProduct = null;
-
 function LogJson() {
     console.log(jsonProdotti);
     RiempiBarraRicerca();
@@ -7,8 +5,7 @@ function LogJson() {
 }
 
 function RiempiBarraRicerca() {
-    searchedProduct = jsonProdotti.searched;
-    $("#txtCerca").val(searchedProduct);
+    $("#txtCerca").val(productSearched);
 }
 
 $(function () {

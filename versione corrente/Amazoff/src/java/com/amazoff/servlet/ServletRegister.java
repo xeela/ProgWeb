@@ -10,8 +10,6 @@ import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -81,15 +79,13 @@ public class ServletRegister extends HttpServlet {
                 else
                 {
                     connection = MyDatabaseManager.CreateConnection();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date date = new Date();
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO users(first_name, last_name, username, pass, registration_date, email, usertype) " + 
                                                         "VALUES (" + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(nameReceived) + "', " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(surnameReceived) + "', " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(userReceived) + "', " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(pwdReceived) + "', " + 
-                                                        "'" + dateFormat.format(date) + "', " +
+                                                        "'" + MyDatabaseManager.GetCurrentDate() + "', " +
                                                         "'" + MyDatabaseManager.EscapeCharacters(emailReceived) + "', 0);", connection);
                     
                     connection.close();

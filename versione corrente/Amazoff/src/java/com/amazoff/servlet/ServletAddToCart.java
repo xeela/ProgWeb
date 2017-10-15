@@ -10,6 +10,7 @@ import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -20,9 +21,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Fra
+ * @author DVD_01
  */
-public class ServletIndexProducts extends HttpServlet {
+public class ServletAddToCart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,48 +38,50 @@ public class ServletIndexProducts extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession();
+            String productReceived = request.getParameter("productID");
 
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
-        
+
             //Chiedi roba al db
             String jsonObj = "";
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products ORDER BY id DESC LIMIT 6;", connection);
-                
-                if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                if(session.getAttribute("user") != null)
                 {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("errorMessage", Errors.noProductFound);
-                    response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                    connection.close();
-                    return;
+                    // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
+                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED) VALUES ("
+                                                                            + session.getAttribute("userID") + ", " 
+                                                                            + productReceived + ", "
+                                                                            + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);
+
+                    //Crea il json per il carrello
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
+                    + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
+                    jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                    
                 }
-                               
-                
-                //aggiungo i prodotti al json
-                jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                else
+                {
+                    //SALVA NEL COOKIE, DA FARE
+                }
                 
                 connection.close();
-                
-                HttpSession session = request.getSession();  
-                session.setAttribute("jsonProdottiIndex", jsonObj);
-                response.sendRedirect(request.getContextPath() + "/index.jsp"); //TODO: Gestire meglio l'errore
+                session.setAttribute("shoppingCartProducts", jsonObj);
+                response.sendRedirect(request.getContextPath() + "/shopping-cartPage.jsp");
             }
             else
             {
-                HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
             }
         }catch (SQLException ex) {
             HttpSession session = request.getSession();
-            MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletIndexProducts", ex.toString());
+            MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletAddToCart", ex.toString());
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
         }

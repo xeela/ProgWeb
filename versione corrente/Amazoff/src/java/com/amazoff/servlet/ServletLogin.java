@@ -51,6 +51,7 @@ public class ServletLogin extends HttpServlet {
             }
         
             //Chiedi roba al db
+            String userID = "";
             String dbPwd = "";
             String categoriaUser = "";  // = 0, utente registrato
                                        // = 1, utente venditore
@@ -59,7 +60,7 @@ public class ServletLogin extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
                 
                 if(results.isAfterLast()) //se non c'è un utente con quel nome
                 {
@@ -75,6 +76,7 @@ public class ServletLogin extends HttpServlet {
                     categoriaUser = results.getString(2);
                     fname = results.getString(3); 
                     lname = results.getString(4); 
+                    userID = results.getString(5);
                 }
                 
                 connection.close();
@@ -84,6 +86,7 @@ public class ServletLogin extends HttpServlet {
                     HttpSession session = request.getSession();
                     // memorizzo nella sessione, il nome, cognome, username e tipo di utente, in modo da utilizzare questi dati nelle altre pagine
                     session.setAttribute("user", userReceived);
+                    session.setAttribute("userID", userID);
                     session.setAttribute("categoria_user", categoriaUser);
                     session.setAttribute("fname", fname);
                     session.setAttribute("lname", lname);
