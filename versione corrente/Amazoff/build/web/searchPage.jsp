@@ -24,6 +24,7 @@
         <script type="text/javascript">
             var productSearched = "${searchedProduct}";
             var jsonProdotti = ${jsonProdotti};
+            var jsonNotifiche = ${jsonNotifiche};
         </script>
         <title>Amazoff</title>
     </head>

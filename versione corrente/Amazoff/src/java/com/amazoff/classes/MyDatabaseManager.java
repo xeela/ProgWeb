@@ -1,7 +1,6 @@
 package com.amazoff.classes;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,13 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpSession;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -105,10 +97,7 @@ public class MyDatabaseManager {
         int idshop = -1;
         //per ora una persona può avere solo un negozio, altrimenti non so quale prende (l'ultimo creato, in teoria)
         Connection connection = CreateConnection();
-        ResultSet userIDres = MyDatabaseManager.EseguiQuery("SELECT id FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(utente) + "';", connection);
-        int userID = 0;
-        while(userIDres.next())
-            userID = userIDres.getInt(1);
+        int userID = GetID_User(utente);
         
         ResultSet results = MyDatabaseManager.EseguiQuery("SELECT DISTINCT shops.id FROM shops, users WHERE shops.id_creator = " + userID + ";", connection);
         while(results.next()) {
@@ -117,6 +106,17 @@ public class MyDatabaseManager {
         connection.close();
         
         return idshop;
+    }
+    
+    static public int GetID_User(String utente) throws SQLException
+    {
+        Connection connection = CreateConnection();
+        ResultSet userIDres = MyDatabaseManager.EseguiQuery("SELECT id FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(utente) + "';", connection);
+        int userID = 0;
+        while(userIDres.next())
+            userID = userIDres.getInt(1);
+        connection.close();
+        return userID;
     }
     
     static public String GetJsonOfProductsInSet(ResultSet results, Connection connection) throws SQLException

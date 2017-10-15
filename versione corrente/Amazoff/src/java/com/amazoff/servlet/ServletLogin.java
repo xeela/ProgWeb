@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
+import com.amazoff.classes.Notifications;
 import java.sql.Connection;
 
 /**
@@ -79,8 +80,6 @@ public class ServletLogin extends HttpServlet {
                     userID = results.getString(5);
                 }
                 
-                connection.close();
-                
                 if(dbPwd.equals(pwdReceived)) //Allora la password è giusta
                 {
                     HttpSession session = request.getSession();
@@ -91,6 +90,9 @@ public class ServletLogin extends HttpServlet {
                     session.setAttribute("fname", fname);
                     session.setAttribute("lname", lname);
                     session.setAttribute("errorMessage", Errors.resetError);
+                    //TMP
+                    Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
+                    //END TMP
                     response.sendRedirect(request.getContextPath() + "/");
                     
                 }
@@ -100,6 +102,8 @@ public class ServletLogin extends HttpServlet {
                     session.setAttribute("errorMessage", Errors.wrongPassword);
                     response.sendRedirect(request.getContextPath() + "/loginPage.jsp"); // OSS: e1 stà per errore 1.
                 } 
+                
+                connection.close();
                     
             }
             else

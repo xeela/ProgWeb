@@ -7,6 +7,7 @@ package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
+import com.amazoff.classes.Notifications;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -66,11 +67,13 @@ public class ServletFindProduct extends HttpServlet {
                 //aggiungo i prodotti al json
                 jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                 
-                connection.close();
-                
                 HttpSession session = request.getSession();  
+                session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
                 session.setAttribute("jsonProdotti", jsonObj);
                 session.setAttribute("searchedProduct", productReceived);
+                
+                connection.close();
+                
                 response.sendRedirect(request.getContextPath() + "/searchPage.jsp"); //TODO: Gestire meglio l'errore
             }
             else

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
+import com.amazoff.classes.Notifications;
 import java.sql.Connection;
 
 /**
@@ -88,9 +89,15 @@ public class ServletRegister extends HttpServlet {
                                                         "'" + MyDatabaseManager.GetCurrentDate() + "', " +
                                                         "'" + MyDatabaseManager.EscapeCharacters(emailReceived) + "', 0);", connection);
                     
+                    String userID = String.valueOf(MyDatabaseManager.GetID_User(userReceived));
+                    
+                    Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
+                    
+                    
                     connection.close();
                     //Prosegui con la pagina corretta
                     HttpSession session = request.getSession();
+                    session.setAttribute("userID", userID);
                     session.setAttribute("user", userReceived);
                     session.setAttribute("categoria_user", "0");
                     session.setAttribute("fname", nameReceived);
