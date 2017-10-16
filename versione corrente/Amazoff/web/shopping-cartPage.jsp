@@ -222,16 +222,36 @@
 
                                         </div>
                                     
-                                 <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
-                                    </div>   
+                                <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
+                                </div>   
                                 <div class="col-xs-8 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <div >
-                                        <button class="btn btn-primary col-xs-4 col-sm-2 col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <p class="btn col-xs-3 col-sm-2 col-lg-3" id="numProduct+idlettodaldb">1</p>
-                                        <button class="btn btn-danger col-xs-4 col-sm-2 col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
-                                        <button class="btn btn-warning col-xs-11 col-sm-2 col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
+                                        <button class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></button>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <div class="row">
+                            <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
+                                    <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
+                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
                                     </div>
-                                 </div>
+                                        <div class="col-xs-8 col-md-5 col-lg-6">
+
+                                            <div class="row">
+                                                <p id="nome+" class="col-lg-12" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
+
+                                                <p id="stelle+" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni+" >#num recensioni</p>
+                                                <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
+                                                <h5 class="col-lg-12" id="prezzo+">Prezzo</h5>                               
+                                            </div>                        
+
+                                        </div>
+                                    
+                                <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
+                                </div>   
+                                <div class="col-xs-8 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
+                                        <button class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></button>
+                                </div>
                             </a>
                         </div>
                         
@@ -253,47 +273,14 @@
                                         </div>
                                     
                                  <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
-                                    </div>   
+                                </div>   
                                 <div class="col-xs-8 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <div >
-                                        <button class="btn btn-primary col-xs-4 col-sm-2 col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <p class="btn col-xs-3 col-sm-2 col-lg-3" id="numProduct+idlettodaldb">1</p>
-                                        <button class="btn btn-danger col-xs-4 col-sm-2 col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
-                                        <button class="btn btn-warning col-xs-11 col-sm-2 col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
-                                    </div>
-                                 </div>
+                                        <button class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></button>
+                                </div>
                             </a>
                         </div>
                         
-                        <div class="row">
-                            <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                    <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
-                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
-                                    </div>
-                                        <div class="col-xs-8 col-md-5 col-lg-6">
-
-                                            <div class="row">
-                                                <p id="nome+" class="col-lg-12" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
-
-                                                <p id="stelle+" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni+" >#num recensioni</p>
-                                                <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
-                                                <h5 class="col-lg-12" id="prezzo+">Prezzo</h5>                               
-                                            </div>                        
-
-                                        </div>
-                                    
-                                 <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
-                                    </div>   
-                                <div class="col-xs-8 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <div >
-                                        <button class="btn btn-primary col-xs-4 col-sm-2 col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <p class="btn col-xs-3 col-sm-2 col-lg-3" id="numProduct+idlettodaldb">1</p>
-                                        <button class="btn btn-danger col-xs-4 col-sm-2 col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
-                                        <button class="btn btn-warning col-xs-11 col-sm-2 col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
-                                    </div>
-                                 </div>
-                            </a>
-                        </div>
+                        
                     </div>                                                                    
                 </div>                          
                                              
