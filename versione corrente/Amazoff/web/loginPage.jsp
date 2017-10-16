@@ -9,13 +9,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/sjcl.js" ></script>
         <link rel="stylesheet" href="css/amazoffStyle.css">
-       
+        
         <script type="text/javascript">
             var condizioniAccettate = false;
             
@@ -142,41 +141,22 @@
                 }
             }
             
-            function checkEmail(id)
+            // chiamata ajax
+            /*function checkEmailExists(mail)
             {
-                var email = $("#" + id).val();
-                $("#mailFieldIcon").html("<i class=\"fa fa-spinner fa-spin\"></i>");
-                $.post('ServletAjax', {
-                        _email : email
-                }, function(data) {
-                        // --> alert("RISP: "+ data);
-                        if(data == "true")
-                            $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-ok\"></span>");
-                        else
-                            $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
-                
+                $.post("ElaboraDati.php?operazione=checkEmail", 
+		{  
+                    _mail : mail,
+		},
+		function(data)
+		{
+                    alert(data);
+                    return true;
                 }).fail(function () {
-                    $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+                    return false;
 		});
-            }
-            
-            function checkUsername(id)
-            {
-                var user = $("#" + id).val();
-                $("#usernameFieldIcon").html("<i class=\"fa fa-spinner fa-spin\"></i>");
-                $.post('ServletAjaxUsername', {
-                        _user : user
-                }, function(data) {
-                        // --> alert("RISP: "+ data);
-                        if(data == "true")
-                            $("#usernameFieldIcon").html("<span class=\"glyphicon glyphicon-ok\"></span>");
-                        else
-                            $("#usernameFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
-                
-                }).fail(function () {
-                    $("#usernameFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
-		});
-            }
+            }*/
+    
         </script>
         
     </head>
@@ -249,14 +229,12 @@
                 <div class="col-xs-12 col-lg-12"><h3 style="text-align: center">Registrati:</h3></div>
                 <div class="col-xs-12 col-lg-12">
                     <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletRegister" method="POST" onsubmit="return HashPasswordRegister();">
-
-                        <div class="input-group">
-                            <input id="mailRegister" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2" onblur="checkEmail('mailRegister')">
-                            <span class="input-group-addon" id="mailFieldIcon"><span class="glyphicon glyphicon-envelope"></span></span>
+                        
+                        <div>
+                            <input id="mailRegister" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
                         </div>
-                        <div class="input-group">
-                            <input id="usernameRegister" type="text" name="username" class="form-control" placeholder="Username" aria-describedby="sizing-addon2" onblur="checkUsername('usernameRegister')">
-                            <span class="input-group-addon" id="usernameFieldIcon"><span class="glyphicon glyphicon-user"></span></span>
+                        <div>
+                            <input id="usernameRegister" type="text" name="username" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
                         </div>
                         <div>
                             <input id="nameRegister" type="text" name="name" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
@@ -384,7 +362,5 @@
                 </div>
             </div>
         </div>
-        
-       
     </body>
 </html>
