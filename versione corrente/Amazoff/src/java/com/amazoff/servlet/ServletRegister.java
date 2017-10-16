@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
 import java.sql.Connection;
+import java.util.UUID; // per il generatore di stringhe random
 
 /**
  *
@@ -83,14 +84,15 @@ public class ServletRegister extends HttpServlet {
                     connection = MyDatabaseManager.CreateConnection();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date date = new Date();
-                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO users(first_name, last_name, username, pass, registration_date, email, usertype) " + 
+                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO users(first_name, last_name, username, pass, registration_date, email, usertype, passrecupero) " + 
                                                         "VALUES (" + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(nameReceived) + "', " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(surnameReceived) + "', " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(userReceived) + "', " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(pwdReceived) + "', " + 
                                                         "'" + dateFormat.format(date) + "', " +
-                                                        "'" + MyDatabaseManager.EscapeCharacters(emailReceived) + "', 0);", connection);
+                                                        "'" + MyDatabaseManager.EscapeCharacters(emailReceived) + "', 0," +
+                                                        "'" + generateString()+ "');", connection);
                     
                     connection.close();
                     //Prosegui con la pagina corretta
@@ -100,7 +102,7 @@ public class ServletRegister extends HttpServlet {
                     session.setAttribute("fname", nameReceived);
                     session.setAttribute("lname", surnameReceived);                    
                     session.setAttribute("errorMessage", Errors.resetError);
-                    response.sendRedirect(request.getContextPath() + "/");
+                    response.sendRedirect(request.getContextPath() + "/afterRegistration.jsp");
                     //request.getRequestDispatcher("/GestioneSquadra").forward(request, response);
                 }
             }
@@ -117,6 +119,29 @@ public class ServletRegister extends HttpServlet {
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/");
         }           
+    }
+    
+    private static String generateString() {
+        int x = 0;
+        for (int i = 0; i < 99999; i++) {
+            if(UUID.randomUUID().toString().contains("\'"))
+                x++;
+        }
+        for (int i = 0; i < 99999; i++) {
+            if(UUID.randomUUID().toString().contains("\'"))
+                x++;
+        }
+        for (int i = 0; i < 99999; i++) {
+            if(UUID.randomUUID().toString().contains("\'"))
+                x++;
+        }
+        for (int i = 0; i < 99999; i++) {
+            if(UUID.randomUUID().toString().contains("\'"))
+                x++;
+        }
+        int c = x;
+        String uuid = UUID.randomUUID().toString();
+        return uuid;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
