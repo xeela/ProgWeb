@@ -22,14 +22,15 @@
         
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         <script type="text/javascript">
+            var productSearched = "${searchedProduct}";
             var jsonProdotti = ${jsonProdotti};
+            var jsonNotifiche = ${jsonNotifiche};
         </script>
         <title>Amazoff</title>
     </head>
     <body class="bodyStyle" onload="LogJson()">
             
         <div class="container-fluid tmargin">
-            
             
             <!-- barra bianca a sx -->
             <div class="hidden-xs col-lg-1"></div>

@@ -62,56 +62,7 @@ public class ServletIndexProducts extends HttpServlet {
                                
                 
                 //aggiungo i prodotti al json
-                boolean isFirstTime = true, isFirstTimeImg = true;
-                jsonObj += "{";
-                jsonObj        += "\"searched\": \"" + "" + "\",";
-                jsonObj        += "\"products\":[";
-                while (results.next()) {
-                    if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
-                        jsonObj += ", ";
-                    isFirstTime = false;
-                    
-                    jsonObj += "{";
-                    jsonObj += "\"id\": \"" + results.getString(4) + "\",";
-                    jsonObj += "\"name\": \"" + results.getString(1) + "\",";
-                    jsonObj += "\"description\": \"" + results.getString(2) + "\",";
-                    jsonObj += "\"price\": \"" + results.getString(3) + "\",";
-                    
-                     // in base al prodotto, ricavo il path delle img a lui associate
-                    // TO DO:::::::: String s = productPictures(results.getString(4));
-                    
-                    //------ TMP --------
-                    ResultSet results2 = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(4) + ";", connection);
-                
-                    if(results2.isAfterLast()) //se non ci sono img per quel prodotto, allora:
-                    {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("errorMessage", Errors.noProductFound);
-                        response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                        connection.close();
-                        return;
-                    }
-                    jsonObj        += "\"pictures\":[";
-                    // altrimenti   
-                    while (results2.next()) {
-                        if(!isFirstTimeImg)            //metto la virgola prima dell'oggetto solo se non è il primo
-                            jsonObj += ", ";
-                        isFirstTimeImg = false; 
-                        
-                        jsonObj += "{";
-                        jsonObj += "\"id\": \"" + results2.getString(1) + "\",";
-                        jsonObj += "\"path\": \"" + results2.getString(2) + "\"";
-                        jsonObj += "}";
-                    }
-                    isFirstTimeImg = true;
-                    jsonObj += "]";
-                    
-                    //------ FINE TMP --------
-                    
-                    
-                    jsonObj += "}";
-                }
-                jsonObj += "]}";
+                jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                 
                 connection.close();
                 

@@ -1,14 +1,12 @@
-var searchedProduct = null;
-
 function LogJson() {
     console.log(jsonProdotti);
+    console.log(jsonNotifiche);
     RiempiBarraRicerca();
     AggiungiProdotti();
 }
 
 function RiempiBarraRicerca() {
-    searchedProduct = jsonProdotti.searched;
-    $("#txtCerca").val(searchedProduct);
+    $("#txtCerca").val(productSearched);
 }
 
 $(function () {

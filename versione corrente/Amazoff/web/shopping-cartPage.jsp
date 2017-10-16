@@ -21,12 +21,20 @@
         <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
+        <script type="text/javascript" src="js/json_sort.js"></script>
         
         <link rel="stylesheet" href="css/amazoffStyle.css">
+        <script type="text/javascript">
+            function LogCart()
+            {
+                var cart = ${shoppingCartProducts};
+                console.log(cart);
+            }
+        </script>
         
         <title>Amazoff</title>
     </head>
-    <body class="bodyStyle">
+    <body class="bodyStyle" onload="LogCart()">
        
         <div class="container-fluid tmargin">
             

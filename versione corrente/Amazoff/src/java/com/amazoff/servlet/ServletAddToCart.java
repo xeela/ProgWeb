@@ -5,8 +5,12 @@
  */
 package com.amazoff.servlet;
 
+import com.amazoff.classes.Errors;
+import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -14,16 +18,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import com.amazoff.classes.Errors;
-import com.amazoff.classes.MyDatabaseManager;
-import com.amazoff.classes.Notifications;
-import java.sql.Connection;
 
 /**
  *
- * @author Davide
+ * @author DVD_01
  */
-public class ServletLogin extends HttpServlet {
+public class ServletAddToCart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,83 +38,50 @@ public class ServletLogin extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userReceived = request.getParameter("username");
-            String pwdReceived = request.getParameter("hashedPassword");
+            HttpSession session = request.getSession();
+            String productReceived = request.getParameter("productID");
 
-           //Connessione al Database
-            //String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
-            //String db_user = "root";
-            //String db_pwd = "root";
-            
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
-        
+
             //Chiedi roba al db
-            String userID = "";
-            String dbPwd = "";
-            String categoriaUser = "";  // = 0, utente registrato
-                                       // = 1, utente venditore
-                                       // = 2, utente admin
-            String fname = "", lname = "";
+            String jsonObj = "";
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
-                
-                if(results.isAfterLast()) //se non c'è un utente con quel nome
+                if(session.getAttribute("user") != null)
                 {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("errorMessage", Errors.usernameDoesntExist);
-                    response.sendRedirect(request.getContextPath() + "/");
-                    connection.close();
-                    return;
-                }
-                
-                while (results.next()) {
-                    dbPwd = results.getString(1);
-                    categoriaUser = results.getString(2);
-                    fname = results.getString(3); 
-                    lname = results.getString(4); 
-                    userID = results.getString(5);
-                }
-                
-                if(dbPwd.equals(pwdReceived)) //Allora la password è giusta
-                {
-                    HttpSession session = request.getSession();
-                    // memorizzo nella sessione, il nome, cognome, username e tipo di utente, in modo da utilizzare questi dati nelle altre pagine
-                    session.setAttribute("user", userReceived);
-                    session.setAttribute("userID", userID);
-                    session.setAttribute("categoria_user", categoriaUser);
-                    session.setAttribute("fname", fname);
-                    session.setAttribute("lname", lname);
-                    session.setAttribute("errorMessage", Errors.resetError);
-                    //TMP
-                    Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
-                    //END TMP
-                    response.sendRedirect(request.getContextPath() + "/");
+                    // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
+                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED) VALUES ("
+                                                                            + session.getAttribute("userID") + ", " 
+                                                                            + productReceived + ", "
+                                                                            + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);
+
+                    //Crea il json per il carrello
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
+                    + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
+                    jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                     
                 }
-                else //la password è sbagliata
+                else
                 {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("errorMessage", Errors.wrongPassword);
-                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp"); // OSS: e1 stà per errore 1.
-                } 
+                    //SALVA NEL COOKIE, DA FARE
+                }
                 
                 connection.close();
-                    
+                session.setAttribute("shoppingCartProducts", jsonObj);
+                response.sendRedirect(request.getContextPath() + "/shopping-cartPage.jsp");
             }
             else
             {
-                HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
             }
         }catch (SQLException ex) {
-            MyDatabaseManager.LogError(request.getParameter("username"), "ServletLogin", ex.toString());
             HttpSession session = request.getSession();
+            MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletAddToCart", ex.toString());
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
         }
