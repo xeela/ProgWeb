@@ -67,8 +67,18 @@ public class ServletFindProduct extends HttpServlet {
                 //aggiungo i prodotti al json
                 jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                 
-                HttpSession session = request.getSession();  
-                session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
+                HttpSession session = request.getSession();
+                /*// crasha se non sei loggato, perchè non riesce a trovare l'attributo userID...
+                String userID = session.getAttribute("userID").toString();
+                session.setAttribute("jsonNotifiche",Notifications.GetJson(userID, connection));
+                */
+                // TMP
+                try 
+                {
+                    String userID = session.getAttribute("userID").toString();
+                    session.setAttribute("jsonNotifiche",Notifications.GetJson(userID, connection));
+                }catch(Exception e) {}
+                
                 session.setAttribute("jsonProdotti", jsonObj);
                 session.setAttribute("searchedProduct", productReceived);
                 

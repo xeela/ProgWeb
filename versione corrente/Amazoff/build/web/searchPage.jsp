@@ -24,7 +24,7 @@
         <script type="text/javascript">
             var productSearched = "${searchedProduct}";
             var jsonProdotti = ${jsonProdotti};
-            var jsonNotifiche = ${jsonNotifiche};
+            var jsonNotifichee = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
         </script>
         <title>Amazoff</title>
     </head>
