@@ -21,6 +21,12 @@
   max-width: 18ch;
 }
 
+.btnpaga
+{
+    border: 0px;
+    border-radius: 25px;
+}
+
 .bodyStyle
 { }
 

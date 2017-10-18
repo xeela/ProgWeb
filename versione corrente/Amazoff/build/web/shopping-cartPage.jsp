@@ -77,14 +77,24 @@
                 // rimuovo l'elemento dal vettore json di dati
                 cart.products.splice(indexElement,1);
                 
-                // salva la modifica sul DB
-                /* ..... */
+                // salva la modifica sul DB. Chiamata Ajax
+                $.post('ServletAjaxCarrello?op=...', {
+                        _idProdotto : idElement
+                }, function(data) {
+                        // --> alert("RISP: "+ data);
+                        if(data == "true") {
+                           alert("Elemeento rimosso correttamente.");
+                            AggiungiProdotti(cart);
+                        }   
+                        else {
+                            alert("Errore durante la rimozione dell'oggetto.");
+                        }
                 
-                // TMP
-                AggiungiProdotti(cart);
-                
-                
+                }).fail(function () {
+		});
+            
             }
+           
             
         </script>
         
@@ -290,7 +300,7 @@
                 </div>                          
                                              
                 <!-- button che porta alla pagina fittizia di pagamento -->
-                <button id="btnAcquista" class="col-lg-1" title="Procedi con l'acquisto."><a href="payPage.jsp" style="text-decoration: none">Paga <i class="fa fa-credit-card"></i><a></button>
+                <button id="btnAcquista" class="col-lg-1 btnpaga" title="Procedi con l'acquisto."><a href="payPage.jsp" style="text-decoration: none">Paga <i class="fa fa-credit-card"></i><a></button>
 
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
