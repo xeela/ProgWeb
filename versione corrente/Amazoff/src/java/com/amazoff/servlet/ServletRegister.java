@@ -10,8 +10,6 @@ import java.io.PrintWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
+import com.amazoff.classes.Notifications;
 import java.sql.Connection;
+import java.util.UUID;
 
 /**
  *
@@ -81,26 +81,31 @@ public class ServletRegister extends HttpServlet {
                 else
                 {
                     connection = MyDatabaseManager.CreateConnection();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date date = new Date();
-                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO users(first_name, last_name, username, pass, registration_date, email, usertype) " + 
+                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO users(first_name, last_name, username, pass, registration_date, email, usertype, passrecupero) " + 
                                                         "VALUES (" + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(nameReceived) + "', " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(surnameReceived) + "', " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(userReceived) + "', " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(pwdReceived) + "', " + 
-                                                        "'" + dateFormat.format(date) + "', " +
-                                                        "'" + MyDatabaseManager.EscapeCharacters(emailReceived) + "', 0);", connection);
+                                                        "'" + MyDatabaseManager.GetCurrentDate() + "', " +
+                                                        "'" + MyDatabaseManager.EscapeCharacters(emailReceived) + "', 0," + 
+                                                        "'" + generateString() +"' );", connection);
+                    
+                    String userID = String.valueOf(MyDatabaseManager.GetID_User(userReceived));
+                    
+                    Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
+                    
                     
                     connection.close();
                     //Prosegui con la pagina corretta
                     HttpSession session = request.getSession();
+                    session.setAttribute("userID", userID);
                     session.setAttribute("user", userReceived);
                     session.setAttribute("categoria_user", "0");
                     session.setAttribute("fname", nameReceived);
                     session.setAttribute("lname", surnameReceived);                    
                     session.setAttribute("errorMessage", Errors.resetError);
-                    response.sendRedirect(request.getContextPath() + "/");
+                    response.sendRedirect(request.getContextPath() + "/afterRegistration.jsp");
                     //request.getRequestDispatcher("/GestioneSquadra").forward(request, response);
                 }
             }
@@ -117,6 +122,12 @@ public class ServletRegister extends HttpServlet {
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/");
         }           
+    }
+    
+    private static String generateString() {
+        
+        String uuid = UUID.randomUUID().toString();
+        return uuid;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

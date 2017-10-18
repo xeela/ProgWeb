@@ -21,12 +21,76 @@
         <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
+        <script type="text/javascript" src="js/json_sort.js"></script>
         
         <link rel="stylesheet" href="css/amazoffStyle.css">
+        <script type="text/javascript">
+            var cart;
+            function LogCart()
+            {
+                // oss: se non si aggiunge un oggetto dalla home, anche se shoppingCartProducts conterrebbe valori, non vengono trovati
+                cart = ${shoppingCartProducts};
+                console.log(cart);
+                AggiungiProdotti(cart);
+            }
+            
+            // funzione che dovrà essere spostata nel file json_sort.js
+            function AggiungiProdotti(cart)
+            {
+                var toAdd = "";
+                var id_oggetto = -1
+
+                $("#zonaProdotti").html(toAdd);
+
+                // visualizzo i prodotti del carrello, da quello aggiunto più di recente al più vecchio
+                for (var i = cart.products.length - 1; i >= 0; i--)
+                {
+                    id_oggetto = cart.products[i].id;
+                    toAdd += "<div class=\"row\">";
+                    toAdd += "        <a href=\"ServletPopulateProductPage?id="+id_oggetto+"\" id=\""+id_oggetto+"\">";
+                    toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                    toAdd += "                    <img src=\"UploadedImages/"+cart.products[i].pictures[0].path+"\" style=\"max-height: 100px; \" alt=\"...\">";
+                    toAdd += "                </div>";
+                    toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
+                    toAdd += "                        <div class=\"row\">";
+                    toAdd += "                            <p id=\"nome"+id_oggetto+"\" class=\"col-lg-12\" >"+cart.products[i].name+"</p>";
+                    toAdd += "                            <p id=\"stelle"+id_oggetto+"\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni"+id_oggetto+"\" >#num recensioni</p>";
+                    toAdd += "                            <p id=\"linkmappa"+id_oggetto+"\" class=\"col-xs-12 col-lg-3\">Vedi su mappa</p> <a href=\"url_venditore.html\" class=\"col-xs-12 col-lg-3\">Negozio</a>";
+                    toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo"+id_oggetto+"\">Prezzo: "+cart.products[i].price+" €</h5>";                         
+                    toAdd += "                        </div>";                     
+                    toAdd += "                   </div>";
+                    toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                    toAdd += "            </div>";
+                    toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >"; 
+                    toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart("+i+","+id_oggetto+")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+                    toAdd += "            </div>";
+                    toAdd += "        </a>";
+                    toAdd += "</div>";
+                }
+
+                $("#zonaProdotti").html(toAdd);
+                
+            }
+            
+            function removeFromCart(indexElement, idElement)
+            {
+                // rimuovo l'elemento dal vettore json di dati
+                cart.products.splice(indexElement,1);
+                
+                // salva la modifica sul DB
+                /* ..... */
+                
+                // TMP
+                AggiungiProdotti(cart);
+                
+                
+            }
+            
+        </script>
         
         <title>Amazoff</title>
     </head>
-    <body class="bodyStyle">
+    <body class="bodyStyle" onload="LogCart()">
        
         <div class="container-fluid tmargin">
             
@@ -196,8 +260,8 @@
                 </div>
   
                 <div class="tmargin">
-                    <div class="col-xs-12">
-                        <div class="row">
+                    <div class="col-xs-12" id="zonaProdotti">
+                        <!--<div class="row">
                             <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
                                     <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
                                         <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
@@ -205,7 +269,7 @@
                                         <div class="col-xs-8 col-md-5 col-lg-6">
 
                                             <div class="row">
-                                                <p id="nome+" class="col-lg-12" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
+                                                <p id="nome+" class="col-lg-12" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto--
 
                                                 <p id="stelle+" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni+" >#num recensioni</p>
                                                 <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
@@ -214,83 +278,19 @@
 
                                         </div>
                                     
-                                 <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
-                                    </div>   
-                                <div class="col-xs-8 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <div >
-                                        <button class="btn btn-primary col-xs-4 col-sm-2 col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <p class="btn col-xs-3 col-sm-2 col-lg-3" id="numProduct+idlettodaldb">1</p>
-                                        <button class="btn btn-danger col-xs-4 col-sm-2 col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
-                                        <button class="btn btn-warning col-xs-11 col-sm-2 col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
-                                    </div>
-                                 </div>
+                                <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
+                                </div>   
+                                <div class="col-xs-8 col-md-3 col-lg-2" > 
+                                        <button class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></button>
+                                </div>
                             </a>
-                        </div>
+                        </div> -->
                         
-                        <div class="row">
-                            <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                    <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
-                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
-                                    </div>
-                                        <div class="col-xs-8 col-md-5 col-lg-6">
-
-                                            <div class="row">
-                                                <p id="nome+" class="col-lg-12" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
-
-                                                <p id="stelle+" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni+" >#num recensioni</p>
-                                                <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
-                                                <h5 class="col-lg-12" id="prezzo+">Prezzo</h5>                               
-                                            </div>                        
-
-                                        </div>
-                                    
-                                 <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
-                                    </div>   
-                                <div class="col-xs-8 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <div >
-                                        <button class="btn btn-primary col-xs-4 col-sm-2 col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <p class="btn col-xs-3 col-sm-2 col-lg-3" id="numProduct+idlettodaldb">1</p>
-                                        <button class="btn btn-danger col-xs-4 col-sm-2 col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
-                                        <button class="btn btn-warning col-xs-11 col-sm-2 col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
-                                    </div>
-                                 </div>
-                            </a>
-                        </div>
-                        
-                        <div class="row">
-                            <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                    <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
-                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
-                                    </div>
-                                        <div class="col-xs-8 col-md-5 col-lg-6">
-
-                                            <div class="row">
-                                                <p id="nome+" class="col-lg-12" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
-
-                                                <p id="stelle+" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni+" >#num recensioni</p>
-                                                <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
-                                                <h5 class="col-lg-12" id="prezzo+">Prezzo</h5>                               
-                                            </div>                        
-
-                                        </div>
-                                    
-                                 <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
-                                    </div>   
-                                <div class="col-xs-8 col-md-3 col-lg-2" > <!-- style="background-color: aqua; position: absolute;" -->
-                                    <div >
-                                        <button class="btn btn-primary col-xs-4 col-sm-2 col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
-                                        <p class="btn col-xs-3 col-sm-2 col-lg-3" id="numProduct+idlettodaldb">1</p>
-                                        <button class="btn btn-danger col-xs-4 col-sm-2 col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
-                                        <button class="btn btn-warning col-xs-11 col-sm-2 col-lg-3"><span class="glyphicon glyphicon-trash"></span></button>
-                                    </div>
-                                 </div>
-                            </a>
-                        </div>
                     </div>                                                                    
                 </div>                          
                                              
                 <!-- button che porta alla pagina fittizia di pagamento -->
-                <button id="btnAcquista" class="col-xs-4 col-lg-1" title="Procedi con l'acquisto."><a href="payPage.jsp" style="text-decoration: none">Paga <i class="fa fa-credit-card"></i><a></button>
+                <button id="btnAcquista" class="col-lg-1" title="Procedi con l'acquisto."><a href="payPage.jsp" style="text-decoration: none">Paga <i class="fa fa-credit-card"></i><a></button>
 
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>

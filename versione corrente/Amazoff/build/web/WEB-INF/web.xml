@@ -49,6 +49,18 @@
         <servlet-name>ServletIndexProducts</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletIndexProducts</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletAddToCart</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletAddToCart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAjax</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletAjax</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAjaxUsername</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletAjaxUsername</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -84,6 +96,18 @@
     <servlet-mapping>
         <servlet-name>ServletIndexProducts</servlet-name>
         <url-pattern>/ServletIndexProducts</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAddToCart</servlet-name>
+        <url-pattern>/ServletAddToCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAjax</servlet-name>
+        <url-pattern>/ServletAjax</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAjaxUsername</servlet-name>
+        <url-pattern>/ServletAjaxUsername</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

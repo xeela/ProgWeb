@@ -66,7 +66,7 @@
                 toAdd += "<p name=\"linkmappa\" >Vedi su mappa</p>";
                 toAdd += "<p name=\"prezzo\">"+jsonProdotto.result[0].price+"</p>";
                 toAdd += "<p name=\"venditore\" >Nome venditore <a href=\"url_venditore.html\">Negozio id:"+jsonProdotto.result[0].id_shop+"</a></p>";                             
-                toAdd += "<button class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</button></div>";
+                toAdd += "<a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotto.result[0].id + "\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</a></div>";
             
                 $("#div_dati").html(toAdd);
             }

@@ -153,7 +153,7 @@ public class ServletPopulateProductPage extends HttpServlet {
                 
                 HttpSession session = request.getSession();  
                 session.setAttribute("jsonProdotti", jsonObj);
-                response.sendRedirect(request.getContextPath() + "/productPage.jsp"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/productPage.jsp?id="+idReceived+""); //TODO: Gestire meglio l'errore
             }
             else
             {

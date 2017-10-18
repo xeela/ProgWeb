@@ -1,14 +1,12 @@
-var searchedProduct = null;
-
 function LogJson() {
     console.log(jsonProdotti);
+    //console.log(jsonNotifiche);
     RiempiBarraRicerca();
     AggiungiProdotti();
 }
 
 function RiempiBarraRicerca() {
-    searchedProduct = jsonProdotti.searched;
-    $("#txtCerca").val(searchedProduct);
+    $("#txtCerca").val(productSearched);
 }
 
 $(function () {
@@ -66,7 +64,7 @@ function AggiungiProdotti() {
         toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1\" >";
         toAdd += "<span class=\"prova glyphicon glyphicon-chevron-right\"></span>";
         toAdd += "</div>";
-        toAdd += "</form><hr>";
+        toAdd += "</div></form><hr>";
     }
 
     $("#zonaProdotti").html(toAdd);

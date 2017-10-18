@@ -46,7 +46,7 @@
                     toAdd += "<div class=\"caption\">";
                     toAdd += "<h3>" + jsonProdotti.products[i].name + "</h3>";
                     toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
-                    toAdd += "<p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"#\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
+                    toAdd += "<p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotti.products[i].id + "\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
                     toAdd += "</div>";
                     toAdd += "</div>";
                     toAdd += "</div>";
@@ -176,7 +176,7 @@
                             <div class="row">                                
                                 <div class="dropdownUtente col-lg-7" >
                                     <div class="btn-group">
-                                        <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                        <a href="userPage.jsp" class="btn btn-default maxlength" type="button" id="btnAccediRegistrati" >
                                             <% 
                                                 userType = "";
                                                 String user = "", fname = "", lname = "";
