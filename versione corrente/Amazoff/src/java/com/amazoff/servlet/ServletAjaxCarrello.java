@@ -18,18 +18,28 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Fra
+ * @author Gianluca
  */
-public class ServletAjax extends HttpServlet {
+public class ServletAjaxCarrello extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
+           
         }
     }
 
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,10 +52,8 @@ public class ServletAjax extends HttpServlet {
         String risposta = "-1";
         try (PrintWriter out = response.getWriter()) {
             ResultSet results;
-            String operazione = request.getParameter("op");
             
-            String emailReceived = request.getParameter("_email");
-            String usernameReceived = request.getParameter("_user");
+            String idProductReceived = request.getParameter("_idProdotto");
 
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
@@ -56,16 +64,9 @@ public class ServletAjax extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                switch(operazione) {
-                    case "email":
-                        
-                        results = MyDatabaseManager.EseguiQuery("SELECT email FROM users WHERE email = '" + MyDatabaseManager.EscapeCharacters(emailReceived) + "';", connection);
-                        break;
-                    default: results = MyDatabaseManager.EseguiQuery("SELECT username FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(usernameReceived) + "';", connection);
-                        break;
-                }
-
-
+    
+                results = MyDatabaseManager.EseguiQuery("DELETE FROM cart WHERE id_product = " + MyDatabaseManager.EscapeCharacters(idProductReceived)+ ";", connection);
+                
                 if(results.isAfterLast()) //NON SO QUANDO CI ENTRA. se non c'è un utente con quel nome --> ritorno TRUE
                 {
                     risposta = "true";

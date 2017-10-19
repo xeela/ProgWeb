@@ -61,6 +61,10 @@
         <servlet-name>ServletAjaxUsername</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletAjaxUsername</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletAjaxCarrello</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletAjaxCarrello</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -108,6 +112,10 @@
     <servlet-mapping>
         <servlet-name>ServletAjaxUsername</servlet-name>
         <url-pattern>/ServletAjaxUsername</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAjaxCarrello</servlet-name>
+        <url-pattern>/ServletAjaxCarrello</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

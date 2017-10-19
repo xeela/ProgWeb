@@ -147,14 +147,18 @@
             {
                 var email = $("#" + id).val();
                 $("#mailFieldIcon").html("<i class=\"fa fa-spinner fa-spin\"></i>");
-                $.post('ServletAjax', {
+                $.post('ServletAjax?op=email', {
                         _email : email
                 }, function(data) {
                         // --> alert("RISP: "+ data);
-                        if(data == "true")
+                        if(data == "true") {
                             $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-ok\"></span>");
-                        else
+                            document.getElementById("mailRegister").style.backgroundColor = "#80ff80";
+                        }   
+                        else {
+                            document.getElementById("mailRegister").style.backgroundColor = "#ff9999";
                             $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+                        }
                 
                 }).fail(function () {
                     $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
@@ -165,7 +169,7 @@
             {
                 var user = $("#" + id).val();
                 $("#usernameFieldIcon").html("<i class=\"fa fa-spinner fa-spin\"></i>");
-                $.post('ServletAjaxUsername', {
+                $.post('ServletAjax?op=username', {
                         _user : user
                 }, function(data) {
                         // --> alert("RISP: "+ data);
