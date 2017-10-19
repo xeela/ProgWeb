@@ -502,37 +502,43 @@
                                     </a>
 
                                     <div id="collapseCreateShop" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="row">
-                                            <div class="col-lg-3"></div>
-                                            <div class="col-lg-6">
-                                                <h3 class="alignCenter">Inserisci Dati Negozio:</h3>
-                                                <FORM id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
-                                                    <p>Nome</p>  <input type="text" name="nome" placeholder="Nome"/>
-                                                    <br></br>
-                                                    <p>Descrizione</p>  <input type="text" name="descrizione" placeholder="Descrizione negozio"/>
-                                                    <br></br>
-                                                    <p>Website</p> <input type="url" name="website" placeholder="URL"/>
-                                                    <br/>
+                                        
+                                            
+                                            <FORM id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
+                                                <div class="row">
+                                                        <br/>
+                                                        <div class="col-sm-4 col-sm-offset-2">
+                                                        <h3 class="">Inserisci Dati Negozio</h3>
+                                                        <p>Nome</p>  <input type="text" name="nome" placeholder="..." class="col-lg-10"/>
+                                                        <br></br>
+                                                        <p>Descrizione</p>  <input type="text" name="descrizione" placeholder="..." class="col-lg-10"/>
+                                                        <br></br>
+                                                        <p>Website</p> <input type="url" name="website" placeholder="URL" class="col-lg-10"/>
+                                                        <br/>
 
-                                                    <br/>
-                                                    <div id="mapCanvas"></div>
-                                                    <div id="infoPanel">
-                                                        <b>Marker status:</b>
-                                                        <div id="markerStatus"><i>Click and drag the marker.</i></div>
-                                                        <b>Current position:</b>
-                                                        <div id="info"></div>
-                                                        <b>Closest matching address:</b>
-                                                        <div id="address"></div>
+                                                        <br/>
+                                                    </div>   
+                                                    <div class="col-lg-6 col-md-6 col-sm-6  ">
+                                                        <h3 class="alignLeft">Posizione Geografica</h3>
+                                                        <div id="mapCanvas" class="col-sm-6 " style="max-width: 100%" ></div>
+                                                         <!--<div id="infoPanel" >
+                                                           <b>Marker status:</b>
+                                                            <div id="markerStatus"><i>Click and drag the marker.</i></div>
+                                                            <b>Current position:</b>
+                                                            <div id="info"></div>
+                                                            <b>Closest matching address:</b>
+                                                            <div id="address"></div>
+                                                        </div>-->
+                                                        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <!--soluzione temporanea, forse :> -->
+                                                        <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
+
+                                                        <input type="hidden" name="coordinate" id="info2"></input>
                                                     </div>
-                                                    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <!--soluzione temporanea, forse :> -->
-                                                    <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
-
-                                                    <input type="hidden" name="coordinate" id="info2"></input>
-                                                    <INPUT TYPE='submit' VALUE='Crea Negozio' />
-
-                                                </FORM>
-                                            </div>
-                                        </div>
+                                                    <br/><br/><br/>
+                                                    <INPUT TYPE='submit' VALUE='Crea Negozio' class="col-lg-3 col-lg-offset-4" />
+                                                </div>
+                                            </FORM>
+                                            
                                     </div>                                                  
                                 </div>
                             </div>
