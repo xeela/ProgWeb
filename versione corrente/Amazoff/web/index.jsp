@@ -11,11 +11,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
         <script src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        
+        <!-- non va piu il popover 
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script> -->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
         
@@ -111,7 +115,13 @@
                                                 if(userType.equals("1") || userType.equals("2"))
                                                 {
                                                     %>
-                                                        <span class="badge iconSize imgCenter"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
+                                                        <a href="notificationPage.jsp">
+                                                        <span class="badge iconSize imgCenter" id="totNotifiche"> 
+                                                            <spam class="glyphicon glyphicon-inbox"></spam>
+                                                            11
+                                                        </span>
+                                                    </a>
+
                                                     <%
                                                 }
                                             }catch(Exception ex){   }
@@ -197,10 +207,6 @@
                                                 }
                                              %>
                                         </a> 
-                                        
-                                        
-                                        
-                                        
                                             <!-- menu a tendina con le azioni che può fare l'utente -->
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                               <span class="caret"></span>
@@ -258,7 +264,11 @@
                                                 <div class="col-lg-3">
                                                     <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
                                                         <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-                                                     </a>
+                                                     </a> 
+                                                    
+<!-- prova ok  <button class="btn " title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="<div>This <b>is</b> your div content</div>">
+  Popover on bottom
+</button> -->
                                                  </div> 
                                                 <%
                                             }
@@ -430,6 +440,11 @@
                 //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
             }
             
+            // gestione POPOVER button notifiche
+            /* prova ok $(document).ready(function(){
+                $('[data-toggle="popover"]').attr('data-content','<a href=\"\">HTML</a><b>Aggiunto</b> da <i>funzione</i>.');
+                $('[data-toggle="popover"]').popover();   
+            }); */
         </script>
     </body>
 </html>

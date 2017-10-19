@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+////////////////////////////////////// QUESTO CODICE NON è PIù UTILIZZATO. VIENE UTILIZZATA LA SERVLETAJAX.
 /**
  *
  * @author Fra
