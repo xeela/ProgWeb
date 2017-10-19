@@ -4,6 +4,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <file>file:/E:/DATI/UNIVERSITA/Sito%20Web/ProgWeb/versione%20corrente/Amazoff/web/userPage.jsp</file>
             <file>file:/E:/DATI/UNIVERSITA/Sito%20Web/ProgWeb/versione%20corrente/Amazoff/web/createShop_1.jsp</file>
             <file>file:/E:/DATI/UNIVERSITA/Sito%20Web/ProgWeb/versione%20corrente/Amazoff/web/index.jsp</file>
@@ -12,6 +13,15 @@
             <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/web/index.jsp</file>
             <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/web/searchPage.jsp</file>
 >>>>>>> 424a313ef5fadc083c77934127c19fb55afda781
+=======
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/index.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/productPage.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/userPage.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/js/search-autocomplete.js</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/sellNewProduct.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/profilePage.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/shopping-cartPage.jsp</file>
+>>>>>>> parent of f160bd5... Modifica stile UserPage
         </group>
     </open-files>
 </project-private>
