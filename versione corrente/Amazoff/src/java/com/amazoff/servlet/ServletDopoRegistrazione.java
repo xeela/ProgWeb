@@ -5,25 +5,25 @@
  */
 package com.amazoff.servlet;
 
+import com.amazoff.classes.Errors;
+import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import com.amazoff.classes.Errors;
-import com.amazoff.classes.MyDatabaseManager;
-import com.amazoff.classes.Notifications;
-import java.sql.Connection;
 
 /**
  *
  * @author Davide
  */
-public class ServletLogin extends HttpServlet {
+public class ServletDopoRegistrazione extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,13 +38,16 @@ public class ServletLogin extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userReceived = request.getParameter("username");
-            String pwdReceived = request.getParameter("hashedPassword");
-
-           //Connessione al Database
-            //String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
-            //String db_user = "root";
-            //String db_pwd = "root";
+            String paese = request.getParameter("paese");
+            String indirizzo = request.getParameter("indirizzo");
+            String citta = request.getParameter("citta");
+            String provincia = request.getParameter("provincia");
+            String cap = request.getParameter("cap");
+            
+            String intestatario = request.getParameter("intestatario");
+            String numeroCarta = request.getParameter("numerocarta");
+            String meseScadenza = request.getParameter("mesescadenza");
+            String annoScadenza = request.getParameter("annoscadenza");
             
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
@@ -52,59 +55,31 @@ public class ServletLogin extends HttpServlet {
             }
         
             //Chiedi roba al db
-            String userID = "";
-            String dbPwd = "";
-            String categoriaUser = "";  // = 0, utente registrato
-                                       // = 1, utente venditore
-                                       // = 2, utente admin
-            String fname = "", lname = "";
             if(MyDatabaseManager.cpds != null)
             {
+                HttpSession session = request.getSession();
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
                 
-                if(results.isAfterLast()) //se non c'è un utente con quel nome
-                {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("errorMessage", Errors.usernameDoesntExist);
-                    response.sendRedirect(request.getContextPath() + "/");
-                    connection.close();
-                    return;
-                }
+                MyDatabaseManager.EseguiStatement("INSERT INTO user_addresses(ID_UTENTE, TOWN, CITY, ADDRESS, PROVINCE, POSTAL_CODE)"
+                        + " VALUES("
+                        + session.getAttribute("userID") + ","
+                        + "'" + paese + "',"
+                        + "'" + citta + "',"
+                        + "'" + indirizzo + "',"
+                        + "'" + provincia + "',"
+                        + "'" + cap + "');", connection);
                 
-                while (results.next()) {
-                    dbPwd = results.getString(1);
-                    categoriaUser = results.getString(2);
-                    fname = results.getString(3); 
-                    lname = results.getString(4); 
-                    userID = results.getString(5);
-                }
-                
-                if(dbPwd.equals(pwdReceived)) //Allora la password è giusta
-                {
-                    HttpSession session = request.getSession();
-                    // memorizzo nella sessione, il nome, cognome, username e tipo di utente, in modo da utilizzare questi dati nelle altre pagine
-                    session.setAttribute("user", userReceived);
-                    session.setAttribute("userID", userID);
-                    session.setAttribute("categoria_user", categoriaUser);
-                    session.setAttribute("fname", fname);
-                    session.setAttribute("lname", lname);
-                    session.setAttribute("errorMessage", Errors.resetError);
-                    //TMP
-                    //Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
-                    //END TMP
-                    response.sendRedirect(request.getContextPath() + "/");
-                    
-                }
-                else //la password è sbagliata
-                {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("errorMessage", Errors.wrongPassword);
-                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp"); // OSS: e1 stà per errore 1.
-                } 
+                MyDatabaseManager.EseguiStatement("INSERT INTO creditcards(ID_UTENTE, OWNER, CARD_NUMBER, EXP_MONTH, EXP_YEAR)"
+                        + " VALUES("
+                        + session.getAttribute("userID") + ","
+                        + "'" + intestatario + "',"
+                        + "'" + numeroCarta + "',"
+                        + "'" + meseScadenza + "',"
+                        + "'" + annoScadenza + "');", connection);
                 
                 connection.close();
-                    
+                
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
             }
             else
             {
@@ -112,8 +87,9 @@ public class ServletLogin extends HttpServlet {
                 session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
             }
-        }catch (SQLException ex) {
-            MyDatabaseManager.LogError(request.getParameter("username"), "ServletLogin", ex.toString());
+        }
+        catch (SQLException ex) {
+            MyDatabaseManager.LogError(request.getParameter("username"), "ServletDopoRegistrazione", ex.toString());
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore

@@ -137,7 +137,7 @@
                     </div>
   
                     <div class="col-xs-12">
-                        <form class="form-group" id="LoginForm" name="FormIndirizzo" action="...." method="POST" onsubmit="return checkDati();">
+                        <form class="form-group" id="LoginForm" name="FormIndirizzo" action="ServletDopoRegistrazione" method="POST" onsubmit="return checkDati();">
                                 <input name="paese" type="text" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
                                 <input name="indirizzo" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
                                 <input name="citta" type="text" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
@@ -150,7 +150,7 @@
                                 <div style="align: left">Data di scadenza</div>
                                 <div>
                                     <div class="dropdown" style="display: inline-block">
-                                        <select class="btn btn-default dropdown-toggle" type="button" >
+                                        <select name="mesescadenza" class="btn btn-default dropdown-toggle" type="button" >
                                           <%
                                                 String codice = "";
                                                 for (int i = 1; i <= 12; i++)
@@ -164,11 +164,11 @@
                                     <div class="dropdown" style="display: inline-block;align: rigth ">
                                         
                                         
-                                        <select class="btn btn-default dropdown-toggle" type="button" >
+                                        <select name="annoscadenza" class="btn btn-default dropdown-toggle" type="button" >
                                             <%
                                                 codice = "";
-                                                int year = new java.util.Date().getYear() + 1900;
-                                                for (int i = year; i >= 1980; i--)
+                                                int year = new java.util.Date().getYear() + 1900 + 15;
+                                                for (int i = 2017; i <= year; i++)
                                                 {
                                                     codice += "<option value=\""+i+"\">"+i+"</li>";
                                                 }
