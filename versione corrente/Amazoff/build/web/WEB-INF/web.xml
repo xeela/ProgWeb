@@ -69,6 +69,10 @@
         <servlet-name>ServletNotifiche</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletNotifiche</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletDopoRegistrazione</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletDopoRegistrazione</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -124,6 +128,10 @@
     <servlet-mapping>
         <servlet-name>ServletNotifiche</servlet-name>
         <url-pattern>/ServletNotifiche</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletDopoRegistrazione</servlet-name>
+        <url-pattern>/ServletDopoRegistrazione</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

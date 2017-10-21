@@ -47,10 +47,6 @@ public class ServletRegister extends HttpServlet {
             String emailReceived = request.getParameter("email");
             String userReceived = request.getParameter("username");
             String pwdReceived = request.getParameter("hashedPassword");
-           
-            /*String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
-            String db_user = "root";
-            String db_pwd = "root";*/
             
             //Connection connection = null;
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
