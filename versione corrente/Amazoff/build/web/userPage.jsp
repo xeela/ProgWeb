@@ -321,7 +321,7 @@
                         <div class="row">                                
                             <div class="dropdownUtente col-lg-7" >
                                 <div class="btn-group">
-                                    <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                    <a href="userPage.jsp" class="btn btn-default maxlength dotsEndSentence" type="button" id="btnAccediRegistrati" >
                                         <%
                                             String userType = "";
                                             String fname = "", lname = "";
@@ -577,7 +577,7 @@
                                 <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                 Vendi prodotto
                             </a>
-                            <div class="list-group-item">
+                            <div id="vendiProdotto" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Vendi prodotto 
                                     <a data-toggle="collapse" data-parent="#accordion"
@@ -658,7 +658,7 @@
                             <% } %>
 
                             <a id="esci" href="/Amazoff/ServletLogout" class="list-group-item active">
-                                <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                                <span class="badge"><span class='glyphicon glyphicon-log-out'></span></span>
                                 Esci
                             </a>
 

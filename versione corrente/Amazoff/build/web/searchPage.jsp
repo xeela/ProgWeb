@@ -11,11 +11,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
         <script src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        
+        <!--Se lo lascio non va il POPOVER per le notifiche
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>-->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
         <script type="text/javascript" src="js/json_sort.js"></script>
@@ -24,7 +27,9 @@
         <script type="text/javascript">
             var productSearched = "${searchedProduct}";
             var jsonProdotti = ${jsonProdotti};
-            //var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
+            var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
+            console.log(jsonNotifiche);
+            
         </script>
         <title>Amazoff</title>
     </head>
@@ -61,21 +66,28 @@
 
                             </div>
 
-                            <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                            <%
-                                String userType = "";
-                                try {
-                                    userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("1") || userType.equals("2")) {
-                            %>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right;">
-                                <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
+                            <div class="col-xs-6 hidden-lg">
+                                    <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                    <% 
+                                        String userType = "";
+                                        try {
+                                                userType = (session.getAttribute("categoria_user")).toString();
+                                                if(userType.equals("1") || userType.equals("2"))
+                                                {
+                                                    %>
+                                                        <a href="notificationPage.jsp">
+                                                        <span class="badge iconSize imgCenter" id="totNotifiche"> 
+                                                            <spam class="glyphicon glyphicon-inbox"></spam>
+                                                            11
+                                                        </span>
+                                                    </a>
+
+                                                    <%
+                                                }
+                                            }catch(Exception ex){   }
+                                    %> 
                             </div>
-                            <%
-                                    }
-                                } catch (Exception ex) {
-                                }
-                            %> 
+                                    
                             <div class="col-xs-2 hidden-lg" style="text-align: right"> <a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                         </div>
                     </div>
@@ -127,7 +139,7 @@
                         <div class="row">                                
                             <div class="dropdownUtente col-lg-7" >
                                 <div class="btn-group">
-                                    <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                    <a href="userPage.jsp" class="btn btn-default maxlength dotsEndSentence" type="button" id="btnAccediRegistrati" >
                                         <%
                                             userType = "";
                                             String fname = "", lname = "";
@@ -193,20 +205,24 @@
                             </div>
 
                             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                            <% try {
-                                    //userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("1") || userType.equals("2")) {
-                            %>
-                            <div class="col-lg-3">
-                                <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
-                                    <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-                                </a>
-                            </div> 
-                            <%
-                                    }
-                                } catch (Exception ex) {
-                                }
-                            %>
+                                     <% try {
+                                            //userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <div class="col-lg-3">
+                                                    <!-- <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
+                                                        <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
+                                                     </a> --> 
+                                                    
+<button class="btn " title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
+  <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
+</button>
+                                                 </div> 
+                                                <%
+                                            }
+                                        }catch(Exception ex){  }
+                                   %> 
 
                             <div class="col-lg-2">
                                 <a href="shopping-cartPage.jsp" type="button" class="btn btn-default btn-md">
@@ -369,8 +385,66 @@
             document.body.scrollTop = 0; // For Chrome, Safari and Opera 
             document.documentElement.scrollTop = 0; // For IE and Firefox
         }
+        
+        // crea l'html per il button delle notifiche
+        function inserisciNotifiche()
+        {
+            console.log(jsonNotifiche);
+            var toAdd = "";
+            var notificheVisualizzate = 0;
+            for (var i = jsonNotifiche.notifications.length - 1; i >= 0 && notificheVisualizzate < 5; i--)
+            {
+               toAdd += "<a href=\"userPage.jsp?..." + jsonNotifiche.notifications[i].id + "\">";
+               toAdd += "<p>";
+               switch(jsonNotifiche.notifications[i].type)
+               {
+                    case "0": toAdd += "<span class=\"glyphicon glyphicon-user\"></span>"; break;
+                    case "1": toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>"; break;
+                    default: break;
+               }
+            
+                if(jsonNotifiche.notifications[i].already_read === "1") {
+                   //toAdd += "<p style=\"color: red\">";
+                   toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+               }
+               else
+                   toAdd += "</p>";
+               
+                toAdd += "<div class=\"dotsEndSentence\">"+ jsonNotifiche.notifications[i].description +"</div>";
+                toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
+                toAdd += "</a><hr>";
+                
+                notificheVisualizzate++;
+            }
+            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&a=active\">Vedi tutte</a></div>";
+            return toAdd;
+        }
 
-
+        // gestione POPOVER button notifiche
+        $(document).ready(function(){
+                $('[data-toggle="popover"]').attr('data-content',inserisciNotifiche());
+                $('[data-toggle="popover"]').popover({
+                    container : 'body'
+                });
+        }); 
+        
+        function baseStyle()
+        {
+            var toAdd = "";
+            toAdd += "<a href=\"\"><p style=\"color: red\"><span class=\"glyphicon glyphicon-user\"><span>";
+            toAdd += " <b>NEW!</b> </p>";
+            toAdd += "<div class=\"dotsEndSentence\">Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down</div>";
+            toAdd += "<div>Notfication date</div></a><hr>";
+            
+            toAdd += "<a href=\"\"><p style=\"\"><span class=\"glyphicon glyphicon-user\"><span>";
+            toAdd += "</p>";
+            toAdd += "<div class=\"dotsEndSentence\">Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down</div>";
+            toAdd += "<div>Notfication date</div></a><hr>";
+            
+            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&a=active\">Vedi tutte</a></div>";
+            
+            return toAdd;
+        }
     </script>
 </body>
 </html>

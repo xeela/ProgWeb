@@ -9,6 +9,7 @@ import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -51,9 +52,9 @@ public class ServletAjaxCarrello extends HttpServlet {
             throws ServletException, IOException {
         String risposta = "-1";
         try (PrintWriter out = response.getWriter()) {
-            ResultSet results;
             
             String idProductReceived = request.getParameter("_idProdotto");
+            String idUser = request.getParameter("_idUser");
 
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
@@ -65,18 +66,9 @@ public class ServletAjaxCarrello extends HttpServlet {
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
     
-                results = MyDatabaseManager.EseguiQuery("DELETE FROM cart WHERE id_product = " + MyDatabaseManager.EscapeCharacters(idProductReceived)+ ";", connection);
+                PreparedStatement result = MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = "+ idUser +"  AND  id_product = " + MyDatabaseManager.EscapeCharacters(idProductReceived)+ ";", connection);
                 
-                if(results.isAfterLast()) //NON SO QUANDO CI ENTRA. se non c'è un utente con quel nome --> ritorno TRUE
-                {
-                    risposta = "true";
-                }
-                else {
-                    risposta = "true";
-                    while (results.next()) { // se esiste un utente con quella email, ritorno FALSE
-                        risposta = "false";
-                    }
-                }
+                risposta = "true";
                 connection.close();
             }
             else  // ritorno FALSE, c'è stato un errore
@@ -94,7 +86,6 @@ public class ServletAjaxCarrello extends HttpServlet {
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
         }	
-        
     }
 
     @Override
