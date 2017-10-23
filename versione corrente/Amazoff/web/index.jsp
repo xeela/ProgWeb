@@ -217,9 +217,9 @@
                                                     {
                                                         %>
                                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
-                                                        <li><a href="userPage.jsp?v=Profile&a=active">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
-                                                        <li><a href="userPage.jsp?v=CreateShop&a=active">Diventa venditore</a></li>
+                                                        <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
@@ -227,21 +227,21 @@
                                                     else if(userType.equals("1")) // venditore
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp?v=Profile&a=active">Profilo</a></li>
-                                                        <li><a href="notificationPage.jsp">Notifiche</a></li>
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&i=tutte">Notifiche</a></li>
                                                         <li><a href="userPage.jsp">Negozio</a></li>
-                                                        <li><a href="userPage.jsp#vendiProdotto?v=SellProduct&a=active">Vendi Prodotto</a></li>
-                                                        <li><a href="userPage.jsp">Gestisci prodotti</a></li>
+                                                        <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
+                                                        <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                        <li><a href="userPage_prova_href.jsp#esci">Prova HREF</a></li>
+                                                        <li><a href="userPage.jsp?v=parametrov&a=parametroa#esci">Prova HREF</a></li>
                                                         <%
                                                     }
                                                     else if(userType.equals("2")) //admin
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp?v=Profile&a=active">Profilo</a></li>
-                                                        <li><a href="userPage.jsp">Notifiche</a></li>
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&i=tutte">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%

@@ -165,42 +165,46 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <%
-                                            if (userType.equals("0")) // registrato
-                                            {
-                                        %>
-                                        <li><a href="profilePage.jsp">Profilo</a></li>
-                                        <li><a href=".jsp">Rimborso / Anomalia</a></li>
-                                        <li><a href=".jsp">Diventa venditore</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                            <%
-                                            } else if (userType.equals("1")) // venditore
-                                            {
-                                            %>
-                                        <li><a href="profilePage.jsp">Profilo</a></li>
-                                        <li><a href=".jsp">Notifiche</a></li>
-                                        <li><a href=".jsp">Negozio</a></li>
-                                        <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
-                                        <li><a href=".jsp">Gestisci prodotti</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                            <%
-                                            } else if (userType.equals("2")) //admin
-                                            {
-                                            %>
-                                        <li><a href="profilePage.jsp">Profilo</a></li>
-                                        <li><a href=".jsp">Notifiche</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                            <%
-                                            } else { %>
-                                        <li><a href="loginPage.jsp">Accedi</a></li>
-                                        <li><a href="loginPage.jsp">Registrati</a></li>
-                                            <% }
-                                            %>
-
-                                    </ul> 
+                                                <%
+                                                    if(userType.equals("0")) // registrato
+                                                    {
+                                                        %>
+                                                        <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
+                                                        <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                        <%
+                                                    }
+                                                    else if(userType.equals("1")) // venditore
+                                                    {
+                                                        %>
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&i=tutte">Notifiche</a></li>
+                                                        <li><a href="userPage.jsp">Negozio</a></li>
+                                                        <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
+                                                        <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                        <%
+                                                    }
+                                                    else if(userType.equals("2")) //admin
+                                                    {
+                                                        %>
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&i=tutte">Notifiche</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                        <%
+                                                    }
+                                                    else { %>
+                                                        <li><a href="loginPage.jsp">Accedi</a></li>
+                                                        <li><a href="loginPage.jsp">Registrati</a></li>
+                                                   <% }
+                                                %>
+                                                
+                                    </ul>  
                                 </div>
                             </div>
 
@@ -210,14 +214,10 @@
                                             if(userType.equals("1") || userType.equals("2"))
                                             {
                                                 %>
-                                                <div class="col-lg-3">
-                                                    <!-- <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
-                                                        <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-                                                     </a> --> 
-                                                    
-<button class="btn " title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
-  <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-</button>
+                                                <div class="col-lg-3">                                                    
+                                                    <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
+                                                      <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
+                                                    </button>   
                                                  </div> 
                                                 <%
                                             }
@@ -390,11 +390,12 @@
         function inserisciNotifiche()
         {
             console.log(jsonNotifiche);
-            var toAdd = "";
-            var notificheVisualizzate = 0;
-            for (var i = jsonNotifiche.notifications.length - 1; i >= 0 && notificheVisualizzate < 5; i--)
+            var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
+            var idNotifica;
+            for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
             {
-               toAdd += "<a href=\"userPage.jsp?..." + jsonNotifiche.notifications[i].id + "\">";
+                idNotifica = jsonNotifiche.notifications[i].id;
+               toAdd += "<a href=\"userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "\">";
                toAdd += "<p>";
                switch(jsonNotifiche.notifications[i].type)
                {
@@ -411,23 +412,16 @@
                    toAdd += "</p>";
                
                 toAdd += "<div class=\"dotsEndSentence\">"+ jsonNotifiche.notifications[i].description +"</div>";
-                toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
+                // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
                 toAdd += "</a><hr>";
                 
-                notificheVisualizzate++;
             }
-            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&a=active\">Vedi tutte</a></div>";
+            toAdd += "</div>";
+            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&i=tutte#notifiche\">Vedi tutte</a></div>";
+
             return toAdd;
         }
 
-        // gestione POPOVER button notifiche
-        $(document).ready(function(){
-                $('[data-toggle="popover"]').attr('data-content',inserisciNotifiche());
-                $('[data-toggle="popover"]').popover({
-                    container : 'body'
-                });
-        }); 
-        
         function baseStyle()
         {
             var toAdd = "";
@@ -441,10 +435,19 @@
             toAdd += "<div class=\"dotsEndSentence\">Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down</div>";
             toAdd += "<div>Notfication date</div></a><hr>";
             
-            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&a=active\">Vedi tutte</a></div>";
+            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&i=tutte\">Vedi tutte</a></div>";
             
             return toAdd;
         }
+        
+        // gestione POPOVER button notifiche
+        $(document).ready(function(){
+                $('[data-toggle="popover"]').attr('data-content',inserisciNotifiche());
+                $('[data-toggle="popover"]').popover({
+                    container : 'body'
+                });
+        }); 
+        
     </script>
 </body>
 </html>
