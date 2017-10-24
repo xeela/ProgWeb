@@ -733,16 +733,25 @@
                         }
             %>
                 
-            <% if(request.getParameter("v") != null && request.getParameter("i") != null) { %>
+            <% if(request.getParameter("v") != null && request.getParameter("notificationId") != null) { %>
                 var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
                 console.log(jsonNotifiche);
                 $("#div_notifiche").html(inserisciNotifiche());
-                
-            <% } 
-                if(request.getParameter("i") != "tutte") {
-            %>
-                   $('#collapse<%=request.getParameter("i")%>').addClass('in'); 
+                var idNotifica = <%=request.getParameter("notificationId") %>;
             <% } %>
+            
+            
+            
+                
+            // chiamata ajax per settare la notifica cliccata come "LETTA"
+            $.post('ServletAjaxNotifiche', {
+                        idNotification : idNotifica
+                }, function(data) {
+
+                        alert(data);
+                
+                }).fail(function () {
+		});
         </script>
     </body>
 </html>

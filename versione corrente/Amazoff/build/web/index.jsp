@@ -116,9 +116,9 @@
                                                 {
                                                     %>
                                                         <a href="notificationPage.jsp">
-                                                        <span class="badge iconSize imgCenter" id="totNotifiche"> 
+                                                        <span class="badge iconSize imgCenter" id="totNotifichexs"> 
                                                             <spam class="glyphicon glyphicon-inbox"></spam>
-                                                            11
+                                                            99+
                                                         </span>
                                                     </a>
 

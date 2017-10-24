@@ -45,28 +45,34 @@
                 <!-- row contenente il menu / searchbar e button vari -->
                 <div class="row" > 
                     <!-- barra con: login/registrati, cerca, carrello -->
-                    <div class="logo col-xs-12 col-lg-1">
-                        <div class="row">
-                            <div class="col-xs-6 col-lg-12"><a href="index.jsp">
-                                    <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
-                                </a></div>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"> 
-                                <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
-                                        <%
-                                            try {
-                                                String user = (session.getAttribute("user")).toString();
+                    <div class="logo col-xs-12 col-lg-1"  >
+                            <div class="row">
+                                <div class="col-xs-5 col-lg-12" >
+                                    <a href="index.jsp">
+                                        <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
+                                    </a>
+                                </div>
+                                <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
+                                    <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
+                                        <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
+                                            <spam class="glyphicon glyphicon-user"> 
+                                                <% 
+                                                try {
+                                                        String user = (session.getAttribute("user")).toString();
 
-                                            } catch (Exception ex) {
-                                        %>
-                                <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
-                                <%
-                                    }
-                                %>
+                                                    }catch(Exception ex){
+                                                %>
+                                                 Accedi 
+                                                 <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
 
+                                                <%
+                                                    }
+                                                 %>
+                                            </spam>
+                                        </a>
+                                    </div>
 
-                            </div>
-
-                            <div class="col-xs-6 hidden-lg">
+                                    <div class="col-xs-6 hidden-lg">
                                     <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                                     <% 
                                         String userType = "";
@@ -76,9 +82,9 @@
                                                 {
                                                     %>
                                                         <a href="notificationPage.jsp">
-                                                        <span class="badge iconSize imgCenter" id="totNotifiche"> 
+                                                        <span class="badge iconSize imgCenter" id="totNotifichexs"> 
                                                             <spam class="glyphicon glyphicon-inbox"></spam>
-                                                            11
+                                                            
                                                         </span>
                                                     </a>
 
@@ -86,11 +92,20 @@
                                                 }
                                             }catch(Exception ex){   }
                                     %> 
+                                    </div>                    
+                                                        
+                                    <div class="col-xs-3 hidden-lg iconSize imgCenter" >
+                                        <a href="shopping-cartPage.jsp">
+                                            <spam class="glyphicon glyphicon-shopping-cart"></spam>
+                                        </a>
+                                    </div>
+
+                                </div>
                             </div>
-                                    
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"> <a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                         </div>
-                    </div>
+                    
+                    
+                    
                     <!-- SEARCH BAR -->
                     <div class="searchBar col-xs-12 col-lg-7">
                         <div>
@@ -216,7 +231,7 @@
                                                 %>
                                                 <div class="col-lg-3">                                                    
                                                     <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
-                                                      <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
+                                                      <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> </span>
                                                     </button>   
                                                  </div> 
                                                 <%
@@ -391,11 +406,13 @@
         {
             console.log(jsonNotifiche);
             var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
+            var notificationCount = 0;
+            var notifiche = "";
             var idNotifica;
             for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
             {
                 idNotifica = jsonNotifiche.notifications[i].id;
-               toAdd += "<a href=\"userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "\">";
+               toAdd += "<a href=\""+ jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica +"\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
                toAdd += "<p>";
                switch(jsonNotifiche.notifications[i].type)
                {
@@ -404,41 +421,34 @@
                     default: break;
                }
             
-                if(jsonNotifiche.notifications[i].already_read === "1") {
+                if(jsonNotifiche.notifications[i].already_read === "0") {
                    //toAdd += "<p style=\"color: red\">";
+                   notificationCount++;
                    toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                   toAdd += "<div class=\"dotsEndSentence\"><b>"+ jsonNotifiche.notifications[i].description +"</b></div>";
                }
-               else
+               else {
                    toAdd += "</p>";
+                   toAdd += "<div class=\"dotsEndSentence\">"+ jsonNotifiche.notifications[i].description +"</div>";
+
+               }
                
-                toAdd += "<div class=\"dotsEndSentence\">"+ jsonNotifiche.notifications[i].description +"</div>";
                 // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
                 toAdd += "</a><hr>";
                 
             }
             toAdd += "</div>";
-            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&i=tutte#notifiche\">Vedi tutte</a></div>";
+            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
 
+            if(notificationCount > 99)
+                notificationCount = "99+";
+            $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> "+ notificationCount);
+            $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> "+ notificationCount);
+            
             return toAdd;
         }
 
-        function baseStyle()
-        {
-            var toAdd = "";
-            toAdd += "<a href=\"\"><p style=\"color: red\"><span class=\"glyphicon glyphicon-user\"><span>";
-            toAdd += " <b>NEW!</b> </p>";
-            toAdd += "<div class=\"dotsEndSentence\">Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down</div>";
-            toAdd += "<div>Notfication date</div></a><hr>";
-            
-            toAdd += "<a href=\"\"><p style=\"\"><span class=\"glyphicon glyphicon-user\"><span>";
-            toAdd += "</p>";
-            toAdd += "<div class=\"dotsEndSentence\">Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down Desciption of the notification. I don't know what to say but i have to add the longest description possible to see if the layout breaks down</div>";
-            toAdd += "<div>Notfication date</div></a><hr>";
-            
-            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&i=tutte\">Vedi tutte</a></div>";
-            
-            return toAdd;
-        }
+
         
         // gestione POPOVER button notifiche
         $(document).ready(function(){

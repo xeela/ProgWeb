@@ -66,12 +66,12 @@
         <servlet-class>com.amazoff.servlet.ServletAjaxCarrello</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletNotifiche</servlet-name>
-        <servlet-class>com.amazoff.servlet.ServletNotifiche</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ServletDopoRegistrazione</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletDopoRegistrazione</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAjaxNotifiche</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletAjaxNotifiche</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
@@ -126,12 +126,12 @@
         <url-pattern>/ServletAjaxCarrello</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ServletNotifiche</servlet-name>
-        <url-pattern>/ServletNotifiche</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ServletDopoRegistrazione</servlet-name>
         <url-pattern>/ServletDopoRegistrazione</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAjaxNotifiche</servlet-name>
+        <url-pattern>/ServletAjaxNotifiche</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
