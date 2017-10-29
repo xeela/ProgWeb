@@ -68,7 +68,7 @@ public class ServletRegister extends HttpServlet {
                 
                 connection.close();
                 
-                if(dbName.equals(userReceived)) //Allora l'utente esiste già
+                if(dbName.equals(userReceived)) // Allora l'utente esiste già
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameTaken);

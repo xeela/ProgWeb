@@ -340,6 +340,7 @@
                     
                 </div>
 
+                <!-- PRODOTTI nel CARRELLO -->
                 <div class="tmargin">
                     <div class="col-xs-12" id="zonaProdotti">
                         <!--<div class="row">
@@ -371,7 +372,7 @@
                 </div>                          
 
                 <!-- button che porta alla pagina fittizia di pagamento -->
-                <button id="btnAcquista" class="col-lg-1 btnpaga" title="Procedi con l'acquisto."><a href="payPage.jsp" style="text-decoration: none">Paga <i class="fa fa-credit-card"></i><a></button>
+                <button id="btnAcquista" class="col-lg-1 btnpaga" title="Procedi con l'acquisto."><a href="payPage.jsp" style="text-decoration: none">Paga <i class="fa fa-credit-card"></i></a></button>
 
                             <!-- back to top button -->
                             <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>

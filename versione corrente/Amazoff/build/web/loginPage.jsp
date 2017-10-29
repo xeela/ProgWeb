@@ -82,6 +82,7 @@
                 }
             }
 
+            // funzione che fa l'hash della password
             function HashPasswordLogin()
             {
                 //$("#progressBar").css("display", "block");
@@ -121,7 +122,6 @@
                 condizioniAccettate = true;
                 document.getElementById("cbCondizioni").checked = true;
                 document.getElementById("cbCondizioni").disabled = true;
-                document.getElementById("btnRegistrati").disabled = false;
                 checkUniqueFields();
             }
             
@@ -197,13 +197,29 @@
     
             function checkUniqueFields()
             {
-                console.log("E: " + emailUnique + " U: " + usernameUnique + " C: " + condizioniAccettate);
                 if(emailUnique == true && usernameUnique == true && condizioniAccettate == true) {
-                        document.getElementById("btnRegistrati").disabled = false;
+                    document.getElementById("btnRegistrati").disabled = false;
+                    $('#btnRegistrati').prop('title', 'Registrati');
+                    return true;
                 }
-                else
+                else {
                     document.getElementById("btnRegistrati").disabled = true;
+                    // modifico il title del btnRegistrati
+                    $('#btnRegistrati').prop('title', 'Uno o più campio non sono validi.');
+                }
+                
+                return false;
             }
+            
+            // prima di fare il submit dei dati al server, controlla un ultima volta i dati inseriti.
+            function preRegistrationSubmit()
+            {               
+                if(checkUniqueFields())
+                    return HashPasswordRegister();
+                
+                return false;
+            }
+            
         </script>
         
     </head>
@@ -275,7 +291,7 @@
                 <div class="row" >
                 <div class="col-xs-12 col-lg-12"><h3 style="text-align: center">Registrati:</h3></div>
                 <div class="col-xs-12 col-lg-12">
-                    <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletRegister" method="POST" onsubmit="return HashPasswordLogin();">
+                    <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletRegister" method="POST" onsubmit="return preRegistrationSubmit();">
                         
                         <div class="input-group">
                             <input id="mailRegister" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2" onblur="checkEmail('mailRegister')">

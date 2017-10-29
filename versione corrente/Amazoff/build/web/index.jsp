@@ -141,16 +141,7 @@
                         <div class="searchBar col-xs-12 col-lg-7">
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
-                                    <div class="input-group-btn">
-                                        <!-- <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span class="glyphicon glyphicon-filter"></span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
-                                          <li><a href="#">Vicinanza</a></li>
-                                          <li><a href="#">Prezzo</a></li>
-                                          <li><a href="#">Recensione</a></li>
-                                        </ul> -->
-                                        
+                                    <div class="input-group-btn">                                        
                                         <div role="tablist" aria-multiselectable="true">
                                             <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                                             href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
@@ -163,10 +154,6 @@
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
 
                                     <div class="input-group-btn">
-                                        <!--<select class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search_category">Select category<span class="caret"></span></button>
-                                            <option value="product">Product</option>
-                                            <option value="seller">Seller</option>
-                                        </select>-->
                                             <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                                             href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
                                                             aria-controls="collapseFilter" >
@@ -286,29 +273,46 @@
                         </div>
                                    
                         <!-- DIV FILTRI e CATEGORIE -->
-                        <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12">
-                        <div id="collapseFilter" class="panel-collapse collapse out" >
-                            <div class="row">
-                                <div class="col-sm-6 col-lg-6" >
-                                    <h3 class="alignCenter">Filtri</h3>
-                                    <hr>
-                                    <ul class="no_dots"> 
-                                        <li><a href="#"><input type="radio" value="vicinanza" name="filtro"> Vicinanza</a></li>
-                                        <li><a href="#"><input type="radio" value="prezzo" name="filtro"> Prezzo</a></li>
-                                        <li><a href="#"><input type="radio" value="recensione" name="filtro"> Recensione</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-sm-6 col-lg-6" style="border-left: #8c8c8c solid; ">
-                                    <h3 class="alignCenter">Categorie</h3>
-                                    <hr>
-                                    <ul class="no_dots"> 
-                                        <li><a href="#"><input type="radio" value="categoria" name="categoria"> Categoria</a></li>
-                                        <li><a href="#"><input type="radio" value="product" name="categoria" checked="checked"> Oggetto</a></li>
-                                        <li><a href="#"><input type="radio" value="seller" name="categoria"> Venditore</a></li>
-                                    </ul>
-                                </div>
-                            </div>  
-                        </div>
+                        <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12 tmargin">
+                            <div id="collapseFilter" class="panel-collapse collapse out" > 
+                                <div class="row">
+                                    <div class="col-sm-6 col-lg-6" style="border-right: 2px #8c8c8c solid; ">
+                                        <h3 class="alignCenter">Filtri</h3>
+                                        <hr>
+                                        <ul class="no_dots"> 
+                                            <li>Vicinanza
+                                                <p>
+                                                    <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                </p>
+                                            </li>
+                                            <li>Prezzo 
+                                                <p>
+                                                    <input class="form-control" type="number" placeholder="Da..." name="prezzoDa"> 
+                                                    <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                </p>
+                                            </li>
+                                            <li>Recensione
+                                                <p>
+                                                    <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                    <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                    <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                    <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                    <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6">
+                                        <h3 class="alignCenter">Categorie</h3>
+                                        <hr>
+                                        <ul class="no_dots"> 
+                                            <li><input type="radio" value="categoria" name="categoria"> Categoria</li>
+                                            <li><input type="radio" value="product" name="categoria" checked="checked"> Oggetto</li>
+                                            <li><input type="radio" value="seller" name="categoria"> Venditore</li>
+                                        </ul>
+                                    </div>
+                                </div>  
+                            </div>
                         </div>
 
                         <!-- DIV FILTRI e CATEGORIE SU XS -->
@@ -317,8 +321,34 @@
                                 <nav class="navbar navbar-default">
                                     <div class="container">
                                         <div class="row">
-                                      
-                                            <div class="navbar-header col-xs-8">
+                                            <div class="navbar-header col-xs-6">
+                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                                    Filtri <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
+                                                    <li>Vicinanza
+                                                        <p>
+                                                            <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                        </p>
+                                                    </li>
+                                                    <li>Prezzo 
+                                                        <p>
+                                                            <input class="form-control"type="number" placeholder="Da..." name="prezzoDa"> 
+                                                            <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                        </p>
+                                                    </li>
+                                                    <li>Recensione
+                                                        <p>
+                                                            <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                            <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                            <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                            <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                            <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                        </p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="navbar-header col-xs-6">
                                                 <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                                     Scegli categoria <span class="caret"></span>
                                                 </a>
@@ -326,16 +356,6 @@
                                                     <li><a href="#"><input type="radio" value="categoria" name="categoria_xs"> Categoria</a></li>
                                                     <li><a href="#"><input type="radio" value="product" name="categoria_xs" checked="checked"> Oggetto</a></li>
                                                     <li><a href="#"><input type="radio" value="seller" name="categoria_xs"> Venditore</a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="navbar-header col-xs-4">
-                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
-                                                    Filtri <span class="caret"></span>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-right col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
-                                                    <li> <a href="#"><input type="radio" value="vicinanza" name="filtro_xs"> Vicinanza</a></li>
-                                                    <li> <a href="#"><input type="radio" value="prezzo" name="filtro_xs"> Prezzo</a></li>
-                                                    <li> <a href="#"><input type="radio" value="recensione" name="filtro_xs"> Recensione</a></li>
                                                 </ul>
                                             </div>
                                         </div>
