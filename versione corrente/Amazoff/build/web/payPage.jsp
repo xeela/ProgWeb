@@ -26,14 +26,13 @@
         <link rel="stylesheet" href="css/amazoffStyle.css">
         
         <title>Amazoff</title>
-        <script type="text/javascript">
-            var jsonProdotti;
-            var searchedProduct = null;
+        <script>
+            var jsonDatiUtente;
             function LogJson() {
-                jsonProdotti = ${jsonProdottiIndex};
-                console.log(jsonProdotti);
-                RiempiBarraRicerca();
-                AggiungiProdotti();
+                jsonDatiUtente = ${jsonPayPage};
+                console.log(jsonDatiUtente);
+                //RiempiBarraRicerca();
+                //AggiungiProdotti();
             }
             
             function AggiungiProdotti() {
@@ -57,7 +56,7 @@
                 }
                 
                 $("#zonaProdotti").html(toAdd);
-            }
+            } */
             
             function RiempiBarraRicerca()
             {
@@ -429,7 +428,9 @@
             function topFunction() {
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
-            }
+            }            
+            // TMP: leggo dati ricevuti dalla servlet
+           LogJson();
         </script>
     </body>
 </html>

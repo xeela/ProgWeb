@@ -73,6 +73,10 @@
         <servlet-name>ServletAjaxNotifiche</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletAjaxNotifiche</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletPayPage</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletPayPage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -132,6 +136,10 @@
     <servlet-mapping>
         <servlet-name>ServletAjaxNotifiche</servlet-name>
         <url-pattern>/ServletAjaxNotifiche</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPayPage</servlet-name>
+        <url-pattern>/ServletPayPage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

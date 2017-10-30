@@ -372,7 +372,7 @@
                 </div>                          
 
                 <!-- button che porta alla pagina fittizia di pagamento -->
-                <button id="btnAcquista" class="col-lg-1 btnpaga" title="Procedi con l'acquisto."><a href="payPage.jsp" style="text-decoration: none">Paga <i class="fa fa-credit-card"></i></a></button>
+                <a href="ServletPayPage" style="text-decoration: none"><button id="btnAcquista" class="col-lg-1 btnpaga" title="Procedi con l'acquisto.">Paga <i class="fa fa-credit-card"></i></button></a>
 
                             <!-- back to top button -->
                             <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
