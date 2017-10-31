@@ -27,36 +27,43 @@
         
         <title>Amazoff</title>
         <script>
+            // ottengo i dati json contenenti i dati dell'utente
             var jsonDatiUtente;
-            function LogJson() {
+            ottieniJson();
+    
+            function ottieniJson()
+            {
                 jsonDatiUtente = ${jsonPayPage};
                 console.log(jsonDatiUtente);
-                //RiempiBarraRicerca();
-                //AggiungiProdotti();
             }
-            
-            function AggiungiProdotti() {
+    
+            // funzione che inserisce nella form, l'indirizzo dell'utente
+            function AggiungiDatiUtente() {
                 var toAdd = "";
-                var id_oggetto = -1
                 
-                for(var i = 0; i < jsonProdotti.products.length; i++)
+                for(var i = 0; i < jsonDatiUtente.paymentdata.length; i++)
                 {
-                    id_oggetto = jsonProdotti.products[i].id;
-                    
-                    toAdd += "<div class=\"col-sm-6 col-md-4\">";
-                    toAdd += "<div class=\"thumbnail\">";
-                    toAdd += "<img class=\"imgResize\" src=\"UploadedImages/"+ jsonProdotti.products[i].pictures[0].path + "\" alt=\"...\">";
-                    toAdd += "<div class=\"caption\">";
-                    toAdd += "<h3>" + jsonProdotti.products[i].name + "</h3>";
-                    toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
-                    toAdd += "<p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotti.products[i].id + "\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
-                    toAdd += "</div>";
-                    toAdd += "</div>";
-                    toAdd += "</div>";
+                    toAdd += "<input name=\"paese\" value=\""+ jsonDatiUtente.paymentdata[i].town +"\" type=\"text\" class=\"form-control\" placeholder=\"Paese (si può anche fare a meno)\" aria-describedby=\"sizing-addon2\">";
+                    toAdd += "<input name=\"indirizzo\" value=\""+ jsonDatiUtente.paymentdata[i].address +"\" type=\"text\" class=\"form-control\" placeholder=\"Indirizzo\" aria-describedby=\"sizing-addon2\">";
+                    toAdd += "<input name=\"citta\" value=\""+ jsonDatiUtente.paymentdata[i].city +"\" type=\"text\" class=\"form-control\" placeholder=\"Città\" aria-describedby=\"sizing-addon2\">";
+                    toAdd += "<input name=\"provincia\" value=\""+ jsonDatiUtente.paymentdata[i].province +"\" type=\"text\" class=\"form-control\" placeholder=\"Provincia\" aria-describedby=\"sizing-addon2\">";
+                    toAdd += "<input name=\"cap\" value=\""+ jsonDatiUtente.paymentdata[i].postal_code +"\" type=\"number\" class=\"form-control\" placeholder=\"Codice postale\" aria-describedby=\"sizing-addon2\">";
                 }
+        
+                toAdd += "<button class=\"btn btn-primary\" type=\"submit\">Aggiorna</button>";
+                $("#IndirizzoForm").html(toAdd);
+            } 
+            
+             // funzione che inserisce nella form, i dati della carta di credito
+            function AggiungiDatiMetodoPagamento() {
+                var toAdd = "";
                 
-                $("#zonaProdotti").html(toAdd);
-            } */
+                $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
+                $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
+
+                $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
+                $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+            } 
             
             function RiempiBarraRicerca()
             {
@@ -328,7 +335,7 @@
                             <div class="col-lg-12" >
                                 <h3>Indirizzo di spedizione</h3>
                                 <div class="row col-xs-12">
-                                    <form class="form-group" id="LoginForm" name="FormIndirizzo" action="ServletDopoRegistrazione" method="POST" onsubmit="return checkDati();">
+                                    <form class="form-group" id="IndirizzoForm" name="FormIndirizzo" action="ServletDopoRegistrazione" method="POST" onsubmit="return checkDati();">
                                         <input name="paese" type="text" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
                                         <input name="indirizzo" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
                                         <input name="citta" type="text" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
@@ -347,13 +354,13 @@
                             <div class="col-lg-12">    
                                 <h3>Carta di credito</h3>
                                 <div class="row col-xs-12">
-                                    <input name="intestatario" type="text" class="form-control" placeholder="Intestatario" aria-describedby="sizing-addon2">
-                                    <input name="numerocarta" type="number" class="form-control" placeholder="Numero carta" aria-describedby="sizing-addon2">
+                                    <input name="intestatario" id="intestatario" type="text" class="form-control" placeholder="Intestatario" aria-describedby="sizing-addon2">
+                                    <input name="numerocarta" id="numerocarta" type="number" class="form-control" placeholder="Numero carta" aria-describedby="sizing-addon2">
 
                                     <div style="align: left">Data di scadenza</div>
                                     <div>
                                         <div class="dropdown" style="display: inline-block">
-                                                <select name="mesescadenza" class="btn btn-default dropdown-toggle" type="button" >
+                                                <select name="mesescadenza" id="mesescadenza" class="btn btn-default dropdown-toggle" type="button" >
                                                   <%
                                                         String codice = "";
                                                         for (int i = 1; i <= 12; i++)
@@ -367,7 +374,7 @@
                                         <div class="dropdown" style="display: inline-block;align: rigth ">
 
 
-                                                <select name="annoscadenza" class="btn btn-default dropdown-toggle" type="button" >
+                                                <select name="annoscadenza" id="annoscadenza" class="btn btn-default dropdown-toggle" type="button" >
                                                     <%
                                                         codice = "";
                                                         int year = new java.util.Date().getYear() + 1900 ;
@@ -428,9 +435,13 @@
             function topFunction() {
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
-            }            
-            // TMP: leggo dati ricevuti dalla servlet
-           LogJson();
+            }    
+            
+            
+            
+            // inserisco i dati dell'utente e della carta, nella pagina
+            AggiungiDatiUtente();
+            AggiungiDatiMetodoPagamento();
         </script>
     </body>
 </html>
