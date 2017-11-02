@@ -382,7 +382,9 @@
                         <div class="carousel-inner" role="listbox">
 
                           <div class="item active">
-                            <img src="images/img1.jpg" alt="Chania">
+                              <a href="paginaConFiltroVenditori" role="button">
+                                <img src="images/trova_venditori.jpg" alt="Trova i venditori">
+                              </a>
                             <!--<div class="carousel-caption">
                               <h3>Chania</h3>
                               <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
