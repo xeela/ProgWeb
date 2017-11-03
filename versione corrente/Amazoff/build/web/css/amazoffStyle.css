@@ -4,6 +4,10 @@
     color:#ffffff;
 }
 
+.popover {
+    min-width: 30%;
+}
+
 .darkPanel
 {
     border-color:#191919;
@@ -108,7 +112,7 @@
     color: white; /* Text color */
     cursor: pointer; /* Add a mouse pointer on hover */
     padding: 15px; /* Some padding */
-    border-radius: 10px; /* Rounded corners */
+    border-radius: 5px; /* Rounded corners */
 }
 
 /* rimuovo da tutti i tag a lo stile di default */
@@ -131,6 +135,15 @@ a, a:visited, a:hover, a:active {
   overflow: hidden;
   max-height: 3.6em; /* (Number of lines you want visible) * (line-height) */
   line-height: 1.2em;
+}
+
+/* add ... before cutting a sentence in a div */
+.dotsEndSentence {
+  position: relative;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto; }

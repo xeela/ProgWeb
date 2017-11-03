@@ -18,6 +18,8 @@
         
         <script type="text/javascript">
             var condizioniAccettate = false;
+            var usernameUnique = false;
+            var emailUnique = false;;
             
             function MostraErrore(text)
             {
@@ -80,6 +82,7 @@
                 }
             }
 
+            // funzione che fa l'hash della password
             function HashPasswordLogin()
             {
                 //$("#progressBar").css("display", "block");
@@ -119,7 +122,7 @@
                 condizioniAccettate = true;
                 document.getElementById("cbCondizioni").checked = true;
                 document.getElementById("cbCondizioni").disabled = true;
-                document.getElementById("btnRegistrati").disabled = false;
+                checkUniqueFields();
             }
             
             // funzione che controlla se la email inserita nel popup di reset password ha le dimensioni corrette
@@ -145,44 +148,78 @@
             // chiamata ajax
             function checkEmail(id)
             {
+                emailUnique = false;
                 var email = $("#" + id).val();
                 $("#mailFieldIcon").html("<i class=\"fa fa-spinner fa-spin\"></i>");
                 $.post('ServletAjax?op=email', {
                         _email : email
                 }, function(data) {
-                        // --> alert("RISP: "+ data);
+
                         if(data == "true") {
-                            $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-ok\"></span>");
                             document.getElementById("mailRegister").style.backgroundColor = "#80ff80";
+                            emailUnique = true;
                         }   
                         else {
                             document.getElementById("mailRegister").style.backgroundColor = "#ff9999";
-                            $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
                         }
+                        checkUniqueFields();
                 
                 }).fail(function () {
-                    $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+                    document.getElementById("mailRegister").style.backgroundColor = "#ff9999";
 		});
+                $("#mailFieldIcon").html("<span class=\"glyphicon glyphicon-envelope\"></span>");
             }
             
             function checkUsername(id)
             {
+                usernameUnique = false;
                 var user = $("#" + id).val();
                 $("#usernameFieldIcon").html("<i class=\"fa fa-spinner fa-spin\"></i>");
                 $.post('ServletAjax?op=username', {
                         _user : user
                 }, function(data) {
-                        // --> alert("RISP: "+ data);
-                        if(data == "true")
-                            $("#usernameFieldIcon").html("<span class=\"glyphicon glyphicon-ok\"></span>");
-                        else
-                            $("#usernameFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+                        
+                        if(data == "true") {
+                            document.getElementById("usernameRegister").style.backgroundColor = "#80ff80";
+                            usernameUnique = true;
+                        }
+                        else {
+                            document.getElementById("usernameRegister").style.backgroundColor = "#ff9999";
+                        }
+                        checkUniqueFields();
                 
                 }).fail(function () {
-                    $("#usernameFieldIcon").html("<span class=\"glyphicon glyphicon-remove\"></span>");
+                    document.getElementById("usernameRegister").style.backgroundColor = "#ff9999";
 		});
+                $("#usernameFieldIcon").html("<span class=\"glyphicon glyphicon-user\"></span>");
             }
     
+    
+            function checkUniqueFields()
+            {
+                if(emailUnique == true && usernameUnique == true && condizioniAccettate == true) {
+                    document.getElementById("btnRegistrati").disabled = false;
+                    $('#btnRegistrati').prop('title', 'Registrati');
+                    return true;
+                }
+                else {
+                    document.getElementById("btnRegistrati").disabled = true;
+                    // modifico il title del btnRegistrati
+                    $('#btnRegistrati').prop('title', 'Uno o più campio non sono validi.');
+                }
+                
+                return false;
+            }
+            
+            // prima di fare il submit dei dati al server, controlla un ultima volta i dati inseriti.
+            function preRegistrationSubmit()
+            {               
+                if(checkUniqueFields())
+                    return HashPasswordRegister();
+                
+                return false;
+            }
+            
         </script>
         
     </head>
@@ -254,7 +291,7 @@
                 <div class="row" >
                 <div class="col-xs-12 col-lg-12"><h3 style="text-align: center">Registrati:</h3></div>
                 <div class="col-xs-12 col-lg-12">
-                    <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletRegister" method="POST" onsubmit="return HashPasswordRegister();">
+                    <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletRegister" method="POST" onsubmit="return preRegistrationSubmit();">
                         
                         <div class="input-group">
                             <input id="mailRegister" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2" onblur="checkEmail('mailRegister')">

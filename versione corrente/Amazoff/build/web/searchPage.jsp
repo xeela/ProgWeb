@@ -11,11 +11,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
         <script src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        
+        <!--Se lo lascio non va il POPOVER per le notifiche
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>-->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
         <script type="text/javascript" src="js/json_sort.js"></script>
@@ -24,7 +27,9 @@
         <script type="text/javascript">
             var productSearched = "${searchedProduct}";
             var jsonProdotti = ${jsonProdotti};
-            //var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
+            var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
+            console.log(jsonNotifiche);
+            
         </script>
         <title>Amazoff</title>
     </head>
@@ -40,45 +45,67 @@
                 <!-- row contenente il menu / searchbar e button vari -->
                 <div class="row" > 
                     <!-- barra con: login/registrati, cerca, carrello -->
-                    <div class="logo col-xs-12 col-lg-1">
-                        <div class="row">
-                            <div class="col-xs-6 col-lg-12"><a href="index.jsp">
-                                    <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
-                                </a></div>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"> 
-                                <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
-                                        <%
-                                            try {
-                                                String user = (session.getAttribute("user")).toString();
+                    <div class="logo col-xs-12 col-lg-1"  >
+                            <div class="row">
+                                <div class="col-xs-5 col-lg-12" >
+                                    <a href="index.jsp">
+                                        <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
+                                    </a>
+                                </div>
+                                <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
+                                    <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
+                                        <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
+                                            <spam class="glyphicon glyphicon-user"> 
+                                                <% 
+                                                try {
+                                                        String user = (session.getAttribute("user")).toString();
 
-                                            } catch (Exception ex) {
-                                        %>
-                                <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
-                                <%
-                                    }
-                                %>
+                                                    }catch(Exception ex){
+                                                %>
+                                                 Accedi 
+                                                 <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
 
+                                                <%
+                                                    }
+                                                 %>
+                                            </spam>
+                                        </a>
+                                    </div>
 
+                                    <div class="col-xs-6 hidden-lg">
+                                    <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                    <% 
+                                        String userType = "";
+                                        try {
+                                                userType = (session.getAttribute("categoria_user")).toString();
+                                                if(userType.equals("1") || userType.equals("2"))
+                                                {
+                                                    %>
+                                                        <a href="notificationPage.jsp">
+                                                        <span class="badge iconSize imgCenter" id="totNotifichexs"> 
+                                                            <spam class="glyphicon glyphicon-inbox"></spam>
+                                                            
+                                                        </span>
+                                                    </a>
+
+                                                    <%
+                                                }
+                                            }catch(Exception ex){   }
+                                    %> 
+                                    </div>                    
+                                                        
+                                    <div class="col-xs-3 hidden-lg iconSize imgCenter" >
+                                        <a href="shopping-cartPage.jsp">
+                                            <spam class="glyphicon glyphicon-shopping-cart"></spam>
+                                        </a>
+                                    </div>
+
+                                </div>
                             </div>
-
-                            <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                            <%
-                                String userType = "";
-                                try {
-                                    userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("1") || userType.equals("2")) {
-                            %>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right;">
-                                <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
-                            </div>
-                            <%
-                                    }
-                                } catch (Exception ex) {
-                                }
-                            %> 
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"> <a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                         </div>
-                    </div>
+                    
+                    
+                    
                     <!-- SEARCH BAR -->
                     <div class="searchBar col-xs-12 col-lg-7">
                         <div>
@@ -127,7 +154,7 @@
                         <div class="row">                                
                             <div class="dropdownUtente col-lg-7" >
                                 <div class="btn-group">
-                                    <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                    <a href="userPage.jsp" class="btn btn-default maxlength dotsEndSentence" type="button" id="btnAccediRegistrati" >
                                         <%
                                             userType = "";
                                             String fname = "", lname = "";
@@ -153,60 +180,64 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <%
-                                            if (userType.equals("0")) // registrato
-                                            {
-                                        %>
-                                        <li><a href="profilePage.jsp">Profilo</a></li>
-                                        <li><a href=".jsp">Rimborso / Anomalia</a></li>
-                                        <li><a href=".jsp">Diventa venditore</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                            <%
-                                            } else if (userType.equals("1")) // venditore
-                                            {
-                                            %>
-                                        <li><a href="profilePage.jsp">Profilo</a></li>
-                                        <li><a href=".jsp">Notifiche</a></li>
-                                        <li><a href=".jsp">Negozio</a></li>
-                                        <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
-                                        <li><a href=".jsp">Gestisci prodotti</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                            <%
-                                            } else if (userType.equals("2")) //admin
-                                            {
-                                            %>
-                                        <li><a href="profilePage.jsp">Profilo</a></li>
-                                        <li><a href=".jsp">Notifiche</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                            <%
-                                            } else { %>
-                                        <li><a href="loginPage.jsp">Accedi</a></li>
-                                        <li><a href="loginPage.jsp">Registrati</a></li>
-                                            <% }
-                                            %>
-
-                                    </ul> 
+                                                <%
+                                                    if(userType.equals("0")) // registrato
+                                                    {
+                                                        %>
+                                                        <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
+                                                        <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                        <%
+                                                    }
+                                                    else if(userType.equals("1")) // venditore
+                                                    {
+                                                        %>
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&i=tutte">Notifiche</a></li>
+                                                        <li><a href="userPage.jsp">Negozio</a></li>
+                                                        <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
+                                                        <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                        <%
+                                                    }
+                                                    else if(userType.equals("2")) //admin
+                                                    {
+                                                        %>
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&i=tutte">Notifiche</a></li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                        <%
+                                                    }
+                                                    else { %>
+                                                        <li><a href="loginPage.jsp">Accedi</a></li>
+                                                        <li><a href="loginPage.jsp">Registrati</a></li>
+                                                   <% }
+                                                %>
+                                                
+                                    </ul>  
                                 </div>
                             </div>
 
                             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                            <% try {
-                                    //userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("1") || userType.equals("2")) {
-                            %>
-                            <div class="col-lg-3">
-                                <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
-                                    <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-                                </a>
-                            </div> 
-                            <%
-                                    }
-                                } catch (Exception ex) {
-                                }
-                            %>
+                                     <% try {
+                                            //userType = (session.getAttribute("categoria_user")).toString();
+                                            if(userType.equals("1") || userType.equals("2"))
+                                            {
+                                                %>
+                                                <div class="col-lg-3">                                                    
+                                                    <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
+                                                      <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> </span>
+                                                    </button>   
+                                                 </div> 
+                                                <%
+                                            }
+                                        }catch(Exception ex){  }
+                                   %> 
 
                             <div class="col-lg-2">
                                 <a href="shopping-cartPage.jsp" type="button" class="btn btn-default btn-md">
@@ -369,8 +400,64 @@
             document.body.scrollTop = 0; // For Chrome, Safari and Opera 
             document.documentElement.scrollTop = 0; // For IE and Firefox
         }
+        
+        // crea l'html per il button delle notifiche
+        function inserisciNotifiche()
+        {
+            console.log(jsonNotifiche);
+            var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
+            var notificationCount = 0;
+            var notifiche = "";
+            var idNotifica;
+            for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+            {
+                idNotifica = jsonNotifiche.notifications[i].id;
+               toAdd += "<a href=\""+ jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica +"\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
+               toAdd += "<p>";
+               switch(jsonNotifiche.notifications[i].type)
+               {
+                    case "0": toAdd += "<span class=\"glyphicon glyphicon-user\"></span>"; break;
+                    case "1": toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>"; break;
+                    default: break;
+               }
+            
+                if(jsonNotifiche.notifications[i].already_read === "0") {
+                   //toAdd += "<p style=\"color: red\">";
+                   notificationCount++;
+                   toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                   toAdd += "<div class=\"dotsEndSentence\"><b>"+ jsonNotifiche.notifications[i].description +"</b></div>";
+               }
+               else {
+                   toAdd += "</p>";
+                   toAdd += "<div class=\"dotsEndSentence\">"+ jsonNotifiche.notifications[i].description +"</div>";
+
+               }
+               
+                // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
+                toAdd += "</a><hr>";
+                
+            }
+            toAdd += "</div>";
+            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
+
+            if(notificationCount > 99)
+                notificationCount = "99+";
+            $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> "+ notificationCount);
+            $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> "+ notificationCount);
+            
+            return toAdd;
+        }
 
 
+        
+        // gestione POPOVER button notifiche
+        $(document).ready(function(){
+                $('[data-toggle="popover"]').attr('data-content',inserisciNotifiche());
+                $('[data-toggle="popover"]').popover({
+                    container : 'body'
+                });
+        }); 
+        
     </script>
 </body>
 </html>

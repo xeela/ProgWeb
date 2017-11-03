@@ -9,7 +9,6 @@ import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -19,42 +18,34 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Gianluca
+ * @author Fra
  */
-public class ServletAjaxCarrello extends HttpServlet {
+public class ServletAjaxNotifiche extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+ 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           
+            
         }
     }
 
-    
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        processRequest(request, response);	
     }
 
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String risposta = "-1";
         try (PrintWriter out = response.getWriter()) {
             
-            String idProductReceived = request.getParameter("_idProdotto");
-            String idUser = request.getParameter("_idUser");
+            String idNotifica = request.getParameter("idNotification");
 
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
@@ -65,11 +56,15 @@ public class ServletAjaxCarrello extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-    
-                PreparedStatement result = MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = "+ idUser +"  AND  id_product = " + MyDatabaseManager.EscapeCharacters(idProductReceived)+ ";", connection);
-                
-                risposta = "true";
+                 
+                if(idNotifica != null){
+                    MyDatabaseManager.EseguiStatement("UPDATE notifications SET already_read = 1 WHERE id = " + idNotifica + ";", connection);
+                    risposta = "true";
+                }
+                else 
+                    risposta = "false";
                 connection.close();
+                
             }
             else  // ritorno FALSE, c'è stato un errore
             {
@@ -85,9 +80,14 @@ public class ServletAjaxCarrello extends HttpServlet {
             risposta = "false";
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
-        }	
+        }
     }
 
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";

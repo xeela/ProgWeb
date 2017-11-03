@@ -321,7 +321,7 @@
                         <div class="row">                                
                             <div class="dropdownUtente col-lg-7" >
                                 <div class="btn-group">
-                                    <a href="userPage.jsp" class="btn btn-default" type="button" id="btnAccediRegistrati" >
+                                    <a href="userPage.jsp" class="btn btn-default maxlength dotsEndSentence" type="button" id="btnAccediRegistrati" >
                                         <%
                                             String userType = "";
                                             String fname = "", lname = "";
@@ -420,15 +420,14 @@
                     <div class="page">
                         <ul class="list-group">
                             <div class="list-group-item">  
-                                <div id="profile" role="tablist" aria-multiselectable="true">
+                                <div id="profilo" role="tablist" aria-multiselectable="true">
                                     Profilo 
                                     <a data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseProfile" aria-expanded="true" 
                                        aria-controls="collapseProfile" >
                                         <span class='glyphicon glyphicon-option-vertical'></span>
                                     </a>
-
-                                    <div id="collapseProfile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div id="collapseProfilo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                         <div class="row">
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-6">
@@ -493,7 +492,7 @@
                             </a>
 
                             <div class="list-group-item">  
-                                <div id="profile" role="tablist" aria-multiselectable="true">
+                                <div id="createshop" role="tablist" aria-multiselectable="true">
                                     Crea Negozio 
                                     <a data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseCreateShop" aria-expanded="true" 
@@ -502,40 +501,40 @@
                                     </a>
 
                                     <div id="collapseCreateShop" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="row">
-                                            <div class="col-lg-3"></div>
-                                            <div class="col-lg-6">
-                                                <h3 class="alignCenter">Inserisci Dati Negozio:</h3>
-                                                <FORM id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
-                                                    <p>Nome</p>  <input type="text" name="nome" placeholder="Nome"/>
-                                                    <br></br>
-                                                    <p>Descrizione</p>  <input type="text" name="descrizione" placeholder="Descrizione negozio"/>
-                                                    <br></br>
-                                                    <p>Website</p> <input type="url" name="website" placeholder="URL"/>
-                                                    <br/>
+                                       
+                                            <FORM id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
+                                                <div class="row">
+                                                        <br/>
+                                                        <div class="col-sm-4 col-sm-offset-2">
+                                                            <h3 class="">Inserisci Dati Negozio</h3>
+                                                            <p>Nome</p>  <input type="text" name="nome" placeholder="..." class="col-lg-10"/>
+                                                            <br>
+                                                            <p>Descrizione</p>  <input type="text" name="descrizione" placeholder="..." class="col-lg-10"/>
+                                                            </br>
+                                                            <p>Website</p> <input type="url" name="website" placeholder="URL" class="col-lg-10"/>
+                                                            <br>
+                                                        </div>   
+                                                        <div class="col-lg-6 col-md-6 col-sm-6  ">
+                                                            <h3 class="alignLeft">Posizione Geografica</h3>
+                                                            <div id="mapCanvas" class="col-sm-6 " style="max-width: 100%" ></div>
+                                                            <!--<div id="infoPanel" >
+                                                              <b>Marker status:</b>
+                                                               <div id="markerStatus"><i>Click and drag the marker.</i></div>
+                                                               <b>Current position:</b>
+                                                               <div id="info"></div>
+                                                               <b>Closest matching address:</b>
+                                                               <div id="address"></div>
+                                                           </div>-->
+                                                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <!--soluzione temporanea, forse :> -->
+                                                        <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
 
-                                                    <br/>
-                                                    <div id="mapCanvas"></div>
-                                                    <div id="infoPanel">
-                                                        <b>Marker status:</b>
-                                                        <div id="markerStatus"><i>Click and drag the marker.</i></div>
-                                                        <b>Current position:</b>
-                                                        <div id="info"></div>
-                                                        <b>Closest matching address:</b>
-                                                        <div id="address"></div>
-                                                    </div>
-                                                    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <!--soluzione temporanea, forse :> -->
-                                                    <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
-
-                                                    <input type="hidden" name="coordinate" id="info2"></input>
-                                                    <INPUT TYPE='submit' VALUE='Crea Negozio' />
-
-                                                </FORM>
-                                            </div>
-                                        </div>
-                                    </div>                                                  
-                                </div>
-                            </div>
+                                                            <input type="hidden" name="coordinate" id="info2"></input>
+                                                        </div>
+                                                </div>
+                                                <br/><br/><br/>
+                                                <INPUT TYPE='submit' VALUE='Crea Negozio' class="col-lg-3 col-lg-offset-4" />
+                                            </FORM>
+                                    </div>         
 
                             <%
                                         } else if (userType.equals("1")) // venditore
@@ -544,20 +543,20 @@
                               <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                               Profilo
                             </a> -->
-                            <div class="list-group-item">
+                            <div id="notifiche" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
-                                    Notifiche TMP 
+                                    Notifiche 
                                     <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseTwo" aria-expanded="true" 
-                                       aria-controls="collapseTwo" >
+                                       href="#collapseNotifiche" aria-expanded="true" 
+                                       aria-controls="collapseNotifiche" >
                                         <span class='glyphicon glyphicon-option-vertical'></span>
                                     </a>
 
-                                    <div id="collapseTwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                    <div id="collapseNotifiche" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
                                         <div class="row">
-                                            <div class="col-lg-3"></div>
-                                            <div class="col-lg-6">
-                                                <h3 class="alignCenter">Notifiche</h3>
+                                            <div class="col-lg-2"></div>
+                                            <div id="div_notifiche" class="col-lg-8">
+
                                             </div>    
                                         </div>
                                     </div>                                                  
@@ -565,24 +564,19 @@
                             </div>
                             <a href=".jsp" class="list-group-item">
                                 <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                Negozio
+                                Negozio TO DO...
                             </a>
 
-
-                            <a href="sellNewProduct.jsp" class="list-group-item">
-                                <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                Vendi prodotto
-                            </a>
-                            <div class="list-group-item">
+                            <div id="sellNewProduct" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Vendi prodotto 
                                     <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseSellProduct" aria-expanded="true" 
+                                       href="#collapseSellNewProduct" aria-expanded="true" 
                                        aria-controls="collapseSellProduct" >
                                         <span class='glyphicon glyphicon-option-vertical'></span>
                                     </a>
 
-                                    <div id="collapseSellProduct" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                    <div id="collapseSellNewProduct" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
                                         <div class="row">
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-6">
@@ -625,7 +619,7 @@
                             </div>
 
 
-                            <a href=".jsp" class="list-group-item">
+                            <a id="gestisciProdotti" href=".jsp" class="list-group-item">
                                 <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                 Gestisci prodotti
                             </a>
@@ -634,7 +628,7 @@
                                       { %>
                             <div class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
-                                    Notifiche TMP 
+                                    Notifiche TMP 2
                                     <a data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseTwo" aria-expanded="true" 
                                        aria-controls="collapseTwo" >
@@ -645,7 +639,7 @@
                                         <div class="row">
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-6">
-                                                <h3 class="alignCenter">Notifiche</h3>
+                                                <h3 class="alignCenter">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. </h3>
                                             </div>    
                                         </div>
                                     </div>                                                  
@@ -654,7 +648,7 @@
                             <% } %>
 
                             <a id="esci" href="/Amazoff/ServletLogout" class="list-group-item active">
-                                <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                                <span class="badge"><span class='glyphicon glyphicon-log-out'></span></span>
                                 Esci
                             </a>
 
@@ -697,18 +691,67 @@
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }
+            
+            function inserisciNotifiche()
+            {
+                var toAdd = "";
+                var idNotifica;
+                
+                for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+                {
+                    idNotifica = jsonNotifiche.notifications[i].id;
+                    toAdd += "<div id=\"notifica"+idNotifica+"\" class=\"panel-group\" role=\"tablist\" aria-multiselectable=\"true\">";
+                    switch(jsonNotifiche.notifications[i].type)
+                    {
+                         case "0": toAdd += "<span class=\"glyphicon glyphicon-user\"></span>"; break;
+                         case "1": toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>"; break;
+                         default: break;
+                    }
+                    toAdd += jsonNotifiche.notifications[i].description;
+                    toAdd += "      <div id=\"collapse"+idNotifica+"\" class=\"panel-collapse collapse out\" role=\"tabpanel\" aria-labelledby=\"heading"+idNotifica+"\">";
+                    toAdd += "tutto il messaggio. per ora non esiste un campo nel db in cui è salvato. E' solo presente una 'descrizione' = " + jsonNotifiche.notifications[i].description;
+                    toAdd += "      </div>";
+                    toAdd += "      <br>";
+                    toAdd += "      <a data-toggle=\"collapse\" data-parent=\"#accordion\"";
+                    toAdd += "         href=\"#collapse"+idNotifica+"\" aria-expanded=\"true\" aria-controls=\"collapse"+idNotifica+"\">";
+                    toAdd += "         <span class=\"glyphicon glyphicon-option-horizontal\"></span>";
+                    toAdd += "      </a>";
+                    toAdd += " </div>"; 
+                }
+
+                return toAdd;
+            }
+            
+            
 
             <% // se viene passato alla pagina il valore a=active, rende visibile la riga relativa al valore v
                   // --> dice sempre null 
-                  String s = request.getParameter("a").toString();
-
-                  if (request.getParameter("a") != null && request.getParameter("v") != null) {
+                  if (request.getParameter("v") != null) {
             %>
-            $('#collapse<%=request.getParameter("v")%>').addClass('in');
+                        $('#collapse<%=request.getParameter("v")%>').addClass('in');
             <%
                         }
             %>
+                
+            <% if(request.getParameter("v") != null && request.getParameter("notificationId") != null) { %>
+                var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
+                console.log(jsonNotifiche);
+                $("#div_notifiche").html(inserisciNotifiche());
+                var idNotifica = <%=request.getParameter("notificationId") %>;
+            <% } %>
+            
+            
+            
+                
+            // chiamata ajax per settare la notifica cliccata come "LETTA"
+            $.post('ServletAjaxNotifiche', {
+                        idNotification : idNotifica
+                }, function(data) {
 
+                        alert(data);
+                
+                }).fail(function () {
+		});
         </script>
     </body>
 </html>

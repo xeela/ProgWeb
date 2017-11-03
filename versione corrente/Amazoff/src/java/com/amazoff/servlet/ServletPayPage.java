@@ -16,35 +16,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
-import com.amazoff.classes.Notifications;
 import java.sql.Connection;
 
 /**
  *
- * @author Davide
+ * @author Fra
  */
-public class ServletLogin extends HttpServlet {
+public class ServletPayPage extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userReceived = request.getParameter("username");
-            String pwdReceived = request.getParameter("hashedPassword");
-
-           //Connessione al Database
-            //String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
-            //String db_user = "root";
-            //String db_pwd = "root";
+            String userIDReceived = (request.getSession().getAttribute("userID")).toString();
             
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
@@ -52,16 +37,12 @@ public class ServletLogin extends HttpServlet {
             }
         
             //Chiedi roba al db
-            String userID = "";
-            String dbPwd = "";
-            String categoriaUser = "";  // = 0, utente registrato
-                                       // = 1, utente venditore
-                                       // = 2, utente admin
-            String fname = "", lname = "";
+            String jsonObj = "";
+            boolean isFirstTime = true;
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM user_addresses, creditcards  WHERE user_addresses.id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + " AND user_addresses.id_utente = creditcards.id_utente;", connection);
                 
                 if(results.isAfterLast()) //se non c'è un utente con quel nome
                 {
@@ -72,51 +53,49 @@ public class ServletLogin extends HttpServlet {
                     return;
                 }
                 
+                jsonObj += "{";
+                jsonObj += "\"paymentdata\":[";
+                
+                // OSS: Per ora restituisco tutto
                 while (results.next()) {
-                    dbPwd = results.getString(1);
-                    categoriaUser = results.getString(2);
-                    fname = results.getString(3); 
-                    lname = results.getString(4); 
-                    userID = results.getString(5);
+                    if(isFirstTime == false) {
+                        jsonObj += ",";
+                    }
+                    jsonObj += "{";
+                    jsonObj += "\"id\": \"" + results.getString(1) + "\",";
+                    jsonObj += "\"id_utente\": \"" + results.getString(2) + "\",";
+                    jsonObj += "\"town\": \"" + results.getString(3) + "\",";
+                    jsonObj += "\"city\": \"" + results.getString(4) + "\",";
+                    jsonObj += "\"address\": \"" + results.getString(5) + "\",";
+                    jsonObj += "\"province\": \"" + results.getString(6) + "\",";
+                    jsonObj += "\"postal_code\": \"" + results.getString(7) + "\",";
+                    jsonObj += "\"owner\": \"" + results.getString(10) + "\",";
+                    jsonObj += "\"card_number\": \"" + results.getString(11) + "\","; // TO DO: ritornare una stringa di N asterischi e solo le ultime 2 cifre visibili
+                    jsonObj += "\"exp_month\": \"" + results.getString(12) + "\",";
+                    jsonObj += "\"exp_year\": \"" + results.getString(13) + "\"";
+                    jsonObj += "}";
+                    isFirstTime = false;
                 }
+                jsonObj += "]}";
                 
-                if(dbPwd.equals(pwdReceived)) //Allora la password è giusta
-                {
-                    HttpSession session = request.getSession();
-                    // memorizzo nella sessione, il nome, cognome, username e tipo di utente, in modo da utilizzare questi dati nelle altre pagine
-                    session.setAttribute("user", userReceived);
-                    session.setAttribute("userID", userID);
-                    session.setAttribute("categoria_user", categoriaUser);
-                    session.setAttribute("fname", fname);
-                    session.setAttribute("lname", lname);
-                    session.setAttribute("errorMessage", Errors.resetError);
-                    //TMP
-                    //Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
-                    //END TMP
-                    response.sendRedirect(request.getContextPath() + "/");
-                    
-                }
-                else //la password è sbagliata
-                {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("errorMessage", Errors.wrongPassword);
-                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp"); // OSS: e1 stà per errore 1.
-                } 
                 
+                HttpSession session = request.getSession();
+                session.setAttribute("jsonPayPage", jsonObj);  
                 connection.close();
-                    
+                
+                response.sendRedirect(request.getContextPath() + "/payPage.jsp");             
             }
             else
             {
                 HttpSession session = request.getSession();
-                session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                //session.setAttribute("errorMessage", Errors.dbConnection);
+                response.sendRedirect(request.getContextPath() + "/payPage"); //TODO: Gestire meglio l'errore
             }
         }catch (SQLException ex) {
-            MyDatabaseManager.LogError(request.getParameter("username"), "ServletLogin", ex.toString());
+            //MyDatabaseManager.LogError(request.getParameter("username"), "ServletLogin", ex.toString());
             HttpSession session = request.getSession();
-            session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+            //session.setAttribute("errorMessage", Errors.dbQuery);
+            response.sendRedirect(request.getContextPath() + "/payPage"); //TODO: Gestire meglio l'errore
         }
     }
 

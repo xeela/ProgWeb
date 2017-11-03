@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
-    Created on : 19-set-2017, 10.56.58
-    Author     : Davide
+    Document   : payPage
+    Created on : 28-Oct-2017, 12:54:23
+    Author     : Fra
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
@@ -26,38 +26,44 @@
         <link rel="stylesheet" href="css/amazoffStyle.css">
         
         <title>Amazoff</title>
-        <script type="text/javascript">
-            var jsonProdotti;
-            var searchedProduct = null;
-            function LogJson() {
-                jsonProdotti = ${jsonProdottiIndex};
-                console.log(jsonProdotti);
-                RiempiBarraRicerca();
-                AggiungiProdotti();
+        <script>
+            // ottengo i dati json contenenti i dati dell'utente
+            var jsonDatiUtente;
+            ottieniJson();
+    
+            function ottieniJson()
+            {
+                jsonDatiUtente = ${jsonPayPage};
+                console.log(jsonDatiUtente);
             }
-            
-            function AggiungiProdotti() {
+    
+            // funzione che inserisce nella form, l'indirizzo dell'utente
+            function AggiungiDatiUtente() {
                 var toAdd = "";
-                var id_oggetto = -1
                 
-                for(var i = 0; i < jsonProdotti.products.length; i++)
+                for(var i = 0; i < jsonDatiUtente.paymentdata.length; i++)
                 {
-                    id_oggetto = jsonProdotti.products[i].id;
-                    
-                    toAdd += "<div class=\"col-sm-6 col-md-4\">";
-                    toAdd += "<div class=\"thumbnail\">";
-                    toAdd += "<img class=\"imgResize\" src=\"UploadedImages/"+ jsonProdotti.products[i].pictures[0].path + "\" alt=\"...\">";
-                    toAdd += "<div class=\"caption\">";
-                    toAdd += "<h3>" + jsonProdotti.products[i].name + "</h3>";
-                    toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
-                    toAdd += "<p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotti.products[i].id + "\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
-                    toAdd += "</div>";
-                    toAdd += "</div>";
-                    toAdd += "</div>";
+                    toAdd += "<input name=\"paese\" value=\""+ jsonDatiUtente.paymentdata[i].town +"\" type=\"text\" class=\"form-control\" placeholder=\"Paese (si può anche fare a meno)\" aria-describedby=\"sizing-addon2\">";
+                    toAdd += "<input name=\"indirizzo\" value=\""+ jsonDatiUtente.paymentdata[i].address +"\" type=\"text\" class=\"form-control\" placeholder=\"Indirizzo\" aria-describedby=\"sizing-addon2\">";
+                    toAdd += "<input name=\"citta\" value=\""+ jsonDatiUtente.paymentdata[i].city +"\" type=\"text\" class=\"form-control\" placeholder=\"Città\" aria-describedby=\"sizing-addon2\">";
+                    toAdd += "<input name=\"provincia\" value=\""+ jsonDatiUtente.paymentdata[i].province +"\" type=\"text\" class=\"form-control\" placeholder=\"Provincia\" aria-describedby=\"sizing-addon2\">";
+                    toAdd += "<input name=\"cap\" value=\""+ jsonDatiUtente.paymentdata[i].postal_code +"\" type=\"number\" class=\"form-control\" placeholder=\"Codice postale\" aria-describedby=\"sizing-addon2\">";
                 }
+        
+                toAdd += "<button class=\"btn btn-primary\" type=\"submit\">Aggiorna</button>";
+                $("#IndirizzoForm").html(toAdd);
+            } 
+            
+             // funzione che inserisce nella form, i dati della carta di credito
+            function AggiungiDatiMetodoPagamento() {
+                var toAdd = "";
                 
-                $("#zonaProdotti").html(toAdd);
-            }
+                $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
+                $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
+
+                $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
+                $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+            } 
             
             function RiempiBarraRicerca()
             {
@@ -67,10 +73,9 @@
         </script>
             
     </head>
-    <body class="bodyStyle" onload="LogJson()">
+    <body class="bodyStyle">
        
         <div class="container-fluid tmargin">
-            
             
             <!-- barra bianca a sx -->
             <div class="hidden-xs col-lg-1"></div>
@@ -137,6 +142,7 @@
                                 </div>
                             </div>
                         </div>
+                                    
                         <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
                             <div>
@@ -253,10 +259,6 @@
                                                     <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
                                                         <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
                                                      </a> 
-                                                    
-<!-- prova ok  <button class="btn " title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="<div>This <b>is</b> your div content</div>">
-  Popover on bottom
-</button> -->
                                                  </div> 
                                                 <%
                                             }
@@ -272,159 +274,138 @@
                             </div>
                         </div>
                                    
-                        <!-- DIV FILTRI e CATEGORIE -->
-                        <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12 tmargin">
-                            <div id="collapseFilter" class="panel-collapse collapse out" > 
+                        <!-- CORPO pagina -->           
+                        <!-- RIEPILOGO ORDINE -->
+                        <div class="tmargin">
+                            <h3>Riepilogo carrello</h3>
+                            <div class="col-xs-12" id="zonaProdotti">
+                                <!-- Prodotti di prova -->
                                 <div class="row">
-                                    <div class="col-sm-6 col-lg-6" style="border-right: 2px #8c8c8c solid; ">
-                                        <h3 class="alignCenter">Filtri</h3>
-                                        <hr>
-                                        <ul class="no_dots"> 
-                                            <li>Vicinanza
-                                                <p>
-                                                    <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
-                                                </p>
-                                            </li>
-                                            <li>Prezzo 
-                                                <p>
-                                                    <input class="form-control" type="number" placeholder="Da..." name="prezzoDa"> 
-                                                    <input class="form-control" type="number" placeholder="A..." name="prezzoA">
-                                                </p>
-                                            </li>
-                                            <li>Recensione
-                                                <p>
-                                                    <input type="radio" value="5stelle" name="filtro"> 5 stelle 
-                                                    <input type="radio" value="4stelle" name="filtro"> 4 stelle 
-                                                    <input type="radio" value="3stelle" name="filtro"> 3 stelle 
-                                                    <input type="radio" value="2stelle" name="filtro"> 2 stelle 
-                                                    <input type="radio" value="1stella" name="filtro"> 1 stella 
-                                                </p>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-6 col-lg-6">
-                                        <h3 class="alignCenter">Categorie</h3>
-                                        <hr>
-                                        <ul class="no_dots"> 
-                                            <li><input type="radio" value="categoria" name="categoria"> Categoria</li>
-                                            <li><input type="radio" value="product" name="categoria" checked="checked"> Oggetto</li>
-                                            <li><input type="radio" value="seller" name="categoria"> Venditore</li>
-                                        </ul>
-                                    </div>
-                                </div>  
-                            </div>
+                                    <a href="ServletPopulateProductPage?id=id_oggetto" id="id_oggetto">
+                                            <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
+                                                <img src="UploadedImages/image3.jpg" style="max-height: 100px;" alt="...">
+                                            </div>
+                                            <div class="col-xs-8 col-md-5 col-lg-6">
+                                                <div class="row">
+                                                    <p id="nome" class="col-lg-12">Nome</p>
+                                                    <p id="stelle" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni" >#num recensioni</p>
+                                                    <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
+                                                    <h5 class="col-lg-12" id="prezzo+">Prezzo €</h5>                               
+                                                </div>                        
+                                            </div>
+                                    </a>
+                                </div>
+                                
+                                <div class="row">
+                                    <a href="ServletPopulateProductPage?id=id_oggetto" id="id_oggetto">
+                                            <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
+                                                <img src="UploadedImages/image1.jpg" style="max-height: 100px;" alt="...">
+                                            </div>
+                                            <div class="col-xs-8 col-md-5 col-lg-6">
+                                                <div class="row">
+                                                    <p id="nome" class="col-lg-12">Nome</p>
+                                                    <p id="stelle" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni" >#num recensioni</p>
+                                                    <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
+                                                    <h5 class="col-lg-12" id="prezzo+">Prezzo €</h5>                               
+                                                </div>                        
+                                            </div>
+                                    </a>
+                                </div>
+                                
+                                <div class="row">
+                                    <a href="ServletPopulateProductPage?id=id_oggetto" id="id_oggetto">
+                                            <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
+                                                <img src="UploadedImages/image.jpg" style="max-height: 100px;" alt="...">
+                                            </div>
+                                            <div class="col-xs-8 col-md-5 col-lg-6">
+                                                <div class="row">
+                                                    <p id="nome" class="col-lg-12">Nome</p>
+                                                    <p id="stelle" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni" >#num recensioni</p>
+                                                    <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
+                                                    <h5 class="col-lg-12" id="prezzo+">Prezzo €</h5>                               
+                                                </div>                        
+                                            </div>
+                                    </a>
+                                </div>
+                            </div>                                                                    
                         </div>
+                        
+                        <!-- RIEPILOGO / inserisci nuovo INDIRIZZO -->
+                        <div class="row col-xs-12 col-md-6 col-lg-6">
+                            <div class="col-lg-12" >
+                                <h3>Indirizzo di spedizione</h3>
+                                <div class="row col-xs-12">
+                                    <form class="form-group" id="IndirizzoForm" name="FormIndirizzo" action="ServletDopoRegistrazione" method="POST" onsubmit="return checkDati();">
+                                        <input name="paese" type="text" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
+                                        <input name="indirizzo" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
+                                        <input name="citta" type="text" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
+                                        <input name="provincia" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
+                                        <input name="cap" type="number" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
+                                    
+                                        <button class="btn btn-primary" type="submit">Aggiorna</button>
+                                    </form> 
+                                </div>
 
-                        <!-- DIV FILTRI e CATEGORIE SU XS -->
-                        <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
-                            <div class="menuBar">
-                                <nav class="navbar navbar-default">
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="navbar-header col-xs-6">
-                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
-                                                    Filtri <span class="caret"></span>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
-                                                    <li>Vicinanza
-                                                        <p>
-                                                            <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
-                                                        </p>
-                                                    </li>
-                                                    <li>Prezzo 
-                                                        <p>
-                                                            <input class="form-control"type="number" placeholder="Da..." name="prezzoDa"> 
-                                                            <input class="form-control" type="number" placeholder="A..." name="prezzoA">
-                                                        </p>
-                                                    </li>
-                                                    <li>Recensione
-                                                        <p>
-                                                            <input type="radio" value="5stelle" name="filtro"> 5 stelle 
-                                                            <input type="radio" value="4stelle" name="filtro"> 4 stelle 
-                                                            <input type="radio" value="3stelle" name="filtro"> 3 stelle 
-                                                            <input type="radio" value="2stelle" name="filtro"> 2 stelle 
-                                                            <input type="radio" value="1stella" name="filtro"> 1 stella 
-                                                        </p>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="navbar-header col-xs-6">
-                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
-                                                    Scegli categoria <span class="caret"></span>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-left col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
-                                                    <li><a href="#"><input type="radio" value="categoria" name="categoria_xs"> Categoria</a></li>
-                                                    <li><a href="#"><input type="radio" value="product" name="categoria_xs" checked="checked"> Oggetto</a></li>
-                                                    <li><a href="#"><input type="radio" value="seller" name="categoria_xs"> Venditore</a></li>
-                                                </ul>
-                                            </div>
+                            </div>
+                        </div>    
+                        
+                        <!-- RIEPILOGO / inserisci nuovi DATI CARTA CREDITO -->
+                        <div class="row col-xs-12 col-md-6 col-lg-6" >
+                            <div class="col-lg-12">    
+                                <h3>Carta di credito</h3>
+                                <div class="row col-xs-12">
+                                    <input name="intestatario" id="intestatario" type="text" class="form-control" placeholder="Intestatario" aria-describedby="sizing-addon2">
+                                    <input name="numerocarta" id="numerocarta" type="number" class="form-control" placeholder="Numero carta" aria-describedby="sizing-addon2">
+
+                                    <div style="align: left">Data di scadenza</div>
+                                    <div>
+                                        <div class="dropdown" style="display: inline-block">
+                                                <select name="mesescadenza" id="mesescadenza" class="btn btn-default dropdown-toggle" type="button" >
+                                                  <%
+                                                        String codice = "";
+                                                        for (int i = 1; i <= 12; i++)
+                                                        {
+                                                            codice += "<option value=\""+i+"\">"+i+"</li>";
+                                                        }
+                                                    %>
+                                                    <%= codice %>
+                                                </select>
+                                        </div>
+                                        <div class="dropdown" style="display: inline-block;align: rigth ">
+
+
+                                                <select name="annoscadenza" id="annoscadenza" class="btn btn-default dropdown-toggle" type="button" >
+                                                    <%
+                                                        codice = "";
+                                                        int year = new java.util.Date().getYear() + 1900 ;
+                                                        for (int i = year; i <= year + 20; i++)
+                                                        {
+                                                            codice += "<option value=\""+i+"\">"+i+"</li>";
+                                                        }
+                                                    %>
+                                                    <%= codice %>
+
+                                                </select>
                                         </div>
                                     </div>
-                                </nav>
-                            
+
+                                    <button class="btn btn-primary" type="submit">Aggiorna</button>
+                                </div>
                             </div>
-                            
                         </div>
-                </div>
-                     
-                <!-- carousel -->
-                <div class="panel row tmargin hidden-xs">
-                    <div class="col-lg-12">
-                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                        <!-- Indicators --
-                        <ol class="carousel-indicators">
-                          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                          <li data-target="#myCarousel" data-slide-to="1"></li>
-                          <li data-target="#myCarousel" data-slide-to="2"></li>
-                        </ol>-->
-
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner" role="listbox">
-
-                          <div class="item active">
-                              <a href="paginaConFiltroVenditori" role="button">
-                                <img src="images/trova_venditori.jpg" alt="Trova i venditori">
-                              </a>
-                            <!--<div class="carousel-caption">
-                              <h3>Chania</h3>
-                              <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
-                            </div>-->
-                          </div>
-
-                          <div class="item">
-                            <img src="images/img2.jpg" alt="Chania">
-                          </div>
-                            
-                            <div class="item">
-                            <img src="images/img3.jpg" alt="Chania">
-                          </div>
-                            
-                        </div>
-
-                        <!-- Left and right controls -->
-                        <a class="left carousel-control col-lg-2" href="#myCarousel" role="button" data-slide="prev">
-                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                          <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control col-lg-2" href="#myCarousel" role="button" data-slide="next">
-                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                          <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                    </div>
-                </div>
-                                    
-         
-                <!-- tabella di 2 righe, con 3 colonne, che mostrano 6 prodotti -->
-                <div class="row">
-                    <div class="page" id="zonaProdotti">
-                        
-                    </div>
-                </div>
-           
+                                                    
+                        <div class="row col-xs-12 alignCenter">
+                                    <!-- TO DO: finche l'utente non inserisce i dati richiesti, non viene sbloccato il button.
+                                        Se i dati sono già presenti perché vengono caricati dalla servlet, il btn è attivo
+                                        Se l'utente modifica i dati, devo controllare che siano ancora validi prima di lasciargli completare l'ordine -->
+                            <a href="orderCompletedPage.jsp?p=ok" class="btn btn-primary">Completa l'acquisto (prova: ok)</a>
+                            <a href="orderCompletedPage.jsp?p=err" class="btn btn-danger">Completa l'acquisto (prova: error)</a>
+                        </div>                            
+                </div> 
+                                            
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
-
+                
                 <!-- footer -->
                 <footer style="background-color: red">
                     <p>&copy; Company 2017</p>
@@ -440,7 +421,7 @@
             
         <script>
             // When the user scrolls down 20px from the top of the document, show the button
-            window.onscroll = function() {scrollFunction()};
+            window.onscroll = function() { scrollFunction() };
 
             function scrollFunction() {
                 if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -454,20 +435,13 @@
             function topFunction() {
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
-            }
+            }    
             
-            // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
-            function cercaProdotto(txt)
-            {
-                document.getElementById("formSearch").action = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value
-                //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-            }
             
-            // gestione POPOVER button notifiche
-            /* prova ok $(document).ready(function(){
-                $('[data-toggle="popover"]').attr('data-content','<a href=\"\">HTML</a><b>Aggiunto</b> da <i>funzione</i>.');
-                $('[data-toggle="popover"]').popover();   
-            }); */
+            
+            // inserisco i dati dell'utente e della carta, nella pagina
+            AggiungiDatiUtente();
+            AggiungiDatiMetodoPagamento();
         </script>
     </body>
 </html>
