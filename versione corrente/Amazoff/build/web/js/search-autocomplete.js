@@ -22,43 +22,63 @@ $(function () {
         'tiragraffi',
         'usb',
         'vans',
-        'winows 10',
+        'windows 10',
         'xiaomi',
         'yoyo',
         'zaino'
     ];
-
+    
+    var categories = [
+        'abbigliamento',
+        'alimentari',
+        'auto',
+        'bellezza',
+        'cancelleria',
+        'casa',
+        'cd',
+        'elettronica',
+        'film',
+        'giochi',
+        'gioielli',
+        'illuminazione',
+        'informatica',
+        'libri',
+        'musica',
+        'orologi',
+        'salute',
+        'sport',
+        'valige',
+        'videogiochi'
+    ];
+    
     var sellers = [
         'phonetech',
         'onlineshop',
         'games&games'
     ];
-
+    
 // autocomplete function
     $('#txtCerca').focusin(function () {
+        var $param;
         if ($('div[name=filters]').is(":visible")) {
-            var $category = $('input[name=categoria]:checked').val();
-            if ($category == 'product') {
-                $('#txtCerca').autocomplete({
-                    lookup: products
-                });
-            } else if ($category == 'seller') {
-                $('#txtCerca').autocomplete({
-                    lookup: sellers
-                });
-            }
+            $param = $('input[name=categoria]:checked').val();
         }
         else{
-            var $category = $('input[name=categoria_xs]:checked').val();
-            if ($category == 'product') {
-                $('#txtCerca').autocomplete({
-                    lookup: products
-                });
-            } else if ($category == 'seller') {
-                $('#txtCerca').autocomplete({
-                    lookup: sellers
-                });
-            }
+            $param = $('input[name=categoria_xs]:checked').val();
+        }
+        
+        if ($param == 'product') {
+            $('#txtCerca').autocomplete({
+                lookup: products
+            });
+        } else if ($param == 'category') {
+            $('#txtCerca').autocomplete({
+                lookup: categories  
+            });
+        } else if ($param == 'seller') {
+            $('#txtCerca').autocomplete({
+                lookup: sellers
+            });
         }
     });
 });

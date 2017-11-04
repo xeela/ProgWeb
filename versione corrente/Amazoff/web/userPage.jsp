@@ -354,25 +354,42 @@
                         </div>
                     </div>
                     <!-- DIV FILTRI e CATEGORIE -->
-                    <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12">
-                        <div id="collapseFilter" class="panel-collapse collapse out" >
+                    <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12 tmargin">
+                        <div id="collapseFilter" class="panel-collapse collapse out" > 
                             <div class="row">
-                                <div class="col-sm-6 col-lg-6" >
+                                <div class="col-sm-6 col-lg-6" style="border-right: 2px #8c8c8c solid; ">
                                     <h3 class="alignCenter">Filtri</h3>
                                     <hr>
                                     <ul class="no_dots"> 
-                                        <li><a href="#"><input type="radio" value="vicinanza" name="filtro"> Vicinanza</a></li>
-                                        <li><a href="#"><input type="radio" value="prezzo" name="filtro"> Prezzo</a></li>
-                                        <li><a href="#"><input type="radio" value="recensione" name="filtro"> Recensione</a></li>
+                                        <li>Vicinanza
+                                            <p>
+                                                <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                            </p>
+                                        </li>
+                                        <li>Prezzo 
+                                            <p>
+                                                <input class="form-control" type="number" placeholder="Da..." name="prezzoDa"> 
+                                                <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                            </p>
+                                        </li>
+                                        <li>Recensione
+                                            <p>
+                                                <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                            </p>
+                                        </li>
                                     </ul>
                                 </div>
-                                <div class="col-sm-6 col-lg-6" style="border-left: #8c8c8c solid; ">
+                                <div class="col-sm-6 col-lg-6">
                                     <h3 class="alignCenter">Categorie</h3>
                                     <hr>
                                     <ul class="no_dots"> 
-                                        <li><a href="#"><input type="radio" value="categoria" name="categoria"> Categoria</a></li>
-                                        <li><a href="#"><input type="radio" value="product" name="categoria" checked="checked"> Oggetto</a></li>
-                                        <li><a href="#"><input type="radio" value="seller" name="categoria"> Venditore</a></li>
+                                        <li><input type="radio" value="product" name="categoria" checked="checked"> Oggetto</li>
+                                        <li><input type="radio" value="seller" name="categoria"> Venditore</li>
+                                        <li><input type="radio" value="category" name="categoria"> Categoria</li>
                                     </ul>
                                 </div>
                             </div>  
@@ -385,34 +402,48 @@
                             <nav class="navbar navbar-default">
                                 <div class="container">
                                     <div class="row">
-
-                                        <div class="navbar-header col-xs-8">
+                                        <div class="navbar-header col-xs-6">
+                                            <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                                Filtri <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
+                                                <li>Vicinanza
+                                                    <p>
+                                                        <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                    </p>
+                                                </li>
+                                                <li>Prezzo 
+                                                    <p>
+                                                        <input class="form-control"type="number" placeholder="Da..." name="prezzoDa"> 
+                                                        <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                    </p>
+                                                </li>
+                                                <li>Recensione
+                                                    <p>
+                                                        <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                        <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                        <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                        <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                        <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="navbar-header col-xs-6">
                                             <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                                 Scegli categoria <span class="caret"></span>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-left col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
-                                                <li><a href="#"><input type="radio" value="categoria" name="categoria_xs"> Categoria</a></li>
                                                 <li><a href="#"><input type="radio" value="product" name="categoria_xs" checked="checked"> Oggetto</a></li>
                                                 <li><a href="#"><input type="radio" value="seller" name="categoria_xs"> Venditore</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="navbar-header col-xs-4">
-                                            <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
-                                                Filtri <span class="caret"></span>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-right col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
-                                                <li> <a href="#"><input type="radio" value="vicinanza" name="filtro_xs"> Vicinanza</a></li>
-                                                <li> <a href="#"><input type="radio" value="prezzo" name="filtro_xs"> Prezzo</a></li>
-                                                <li> <a href="#"><input type="radio" value="recensione" name="filtro_xs"> Recensione</a></li>
+                                                <li><a href="#"><input type="radio" value="category" name="categoria_xs"> Categoria</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </nav>
-
                         </div>
-
-                    </div> 
+                    </div>
                 </div>                                    
 
                 <!-- tabella di 2 righe, con 3 colonne, che mostrano 6 prodotti -->
@@ -483,8 +514,8 @@
                                 </div>
                             </div>
                             <%
-                                   if (userType.equals("0")) // registrato
-                                   { %>
+                                if (userType.equals("0")) // registrato
+                                { %>
 
                             <a href=".jsp" class="list-group-item">
                                 <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
@@ -501,257 +532,262 @@
                                     </a>
 
                                     <div id="collapseCreateShop" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                                       
-                                            <FORM id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
-                                                <div class="row">
-                                                        <br/>
-                                                        <div class="col-sm-4 col-sm-offset-2">
-                                                            <h3 class="">Inserisci Dati Negozio</h3>
-                                                            <p>Nome</p>  <input type="text" name="nome" placeholder="..." class="col-lg-10"/>
-                                                            <br>
-                                                            <p>Descrizione</p>  <input type="text" name="descrizione" placeholder="..." class="col-lg-10"/>
-                                                            </br>
-                                                            <p>Website</p> <input type="url" name="website" placeholder="URL" class="col-lg-10"/>
-                                                            <br>
-                                                        </div>   
-                                                        <div class="col-lg-6 col-md-6 col-sm-6  ">
-                                                            <h3 class="alignLeft">Posizione Geografica</h3>
-                                                            <div id="mapCanvas" class="col-sm-6 " style="max-width: 100%" ></div>
-                                                            <!--<div id="infoPanel" >
-                                                              <b>Marker status:</b>
-                                                               <div id="markerStatus"><i>Click and drag the marker.</i></div>
-                                                               <b>Current position:</b>
-                                                               <div id="info"></div>
-                                                               <b>Closest matching address:</b>
-                                                               <div id="address"></div>
-                                                           </div>-->
-                                                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <!--soluzione temporanea, forse :> -->
-                                                        <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
 
-                                                            <input type="hidden" name="coordinate" id="info2"></input>
-                                                        </div>
+                                        <FORM id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
+                                            <div class="row">
+                                                <br/>
+                                                <div class="col-sm-4 col-sm-offset-2">
+                                                    <h3 class="">Inserisci Dati Negozio</h3>
+                                                    <p>Nome</p>  <input type="text" name="nome" placeholder="..." class="col-lg-10"/>
+                                                    <br>
+                                                    <p>Descrizione</p>  <input type="text" name="descrizione" placeholder="..." class="col-lg-10"/>
+                                                    </br>
+                                                    <p>Website</p> <input type="url" name="website" placeholder="URL" class="col-lg-10"/>
+                                                    <br>
+                                                </div>   
+                                                <div class="col-lg-6 col-md-6 col-sm-6  ">
+                                                    <h3 class="alignLeft">Posizione Geografica</h3>
+                                                    <div id="mapCanvas" class="col-sm-6 " style="max-width: 100%" ></div>
+                                                    <!--<div id="infoPanel" >
+                                                      <b>Marker status:</b>
+                                                       <div id="markerStatus"><i>Click and drag the marker.</i></div>
+                                                       <b>Current position:</b>
+                                                       <div id="info"></div>
+                                                       <b>Closest matching address:</b>
+                                                       <div id="address"></div>
+                                                   </div>-->
+                                                    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <!--soluzione temporanea, forse :> -->
+                                                    <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
+
+                                                    <input type="hidden" name="coordinate" id="info2"></input>
                                                 </div>
-                                                <br/><br/><br/>
-                                                <INPUT TYPE='submit' VALUE='Crea Negozio' class="col-lg-3 col-lg-offset-4" />
-                                            </FORM>
+                                            </div>
+                                            <br/><br/><br/>
+                                            <INPUT TYPE='submit' VALUE='Crea Negozio' class="col-lg-3 col-lg-offset-4" />
+                                        </FORM>
                                     </div>         
 
-                            <%
-                                        } else if (userType.equals("1")) // venditore
-                                        { %>
-                            <!--<a href="profilePage.jsp" class="list-group-item">
-                              <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                              Profilo
-                            </a> -->
-                            <div id="notifiche" class="list-group-item">
-                                <div role="tablist" aria-multiselectable="true">
-                                    Notifiche 
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseNotifiche" aria-expanded="true" 
-                                       aria-controls="collapseNotifiche" >
-                                        <span class='glyphicon glyphicon-option-vertical'></span>
+                                    <%
+                                    } else if (userType.equals("1")) // venditore
+                                    { %>
+                                    <!--<a href="profilePage.jsp" class="list-group-item">
+                                      <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                                      Profilo
+                                    </a> -->
+                                    <div id="notifiche" class="list-group-item">
+                                        <div role="tablist" aria-multiselectable="true">
+                                            Notifiche 
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseNotifiche" aria-expanded="true" 
+                                               aria-controls="collapseNotifiche" >
+                                                <span class='glyphicon glyphicon-option-vertical'></span>
+                                            </a>
+
+                                            <div id="collapseNotifiche" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                                <div class="row">
+                                                    <div class="col-lg-2"></div>
+                                                    <div id="div_notifiche" class="col-lg-8">
+
+                                                    </div>    
+                                                </div>
+                                            </div>                                                  
+                                        </div>
+                                    </div>
+                                    <a href=".jsp" class="list-group-item">
+                                        <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                                        Negozio TO DO...
                                     </a>
 
-                                    <div id="collapseNotifiche" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="row">
-                                            <div class="col-lg-2"></div>
-                                            <div id="div_notifiche" class="col-lg-8">
+                                    <div id="sellNewProduct" class="list-group-item">
+                                        <div role="tablist" aria-multiselectable="true">
+                                            Vendi prodotto 
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseSellNewProduct" aria-expanded="true" 
+                                               aria-controls="collapseSellProduct" >
+                                                <span class='glyphicon glyphicon-option-vertical'></span>
+                                            </a>
 
-                                            </div>    
+                                            <div id="collapseSellNewProduct" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                                <div class="row">
+                                                    <div class="col-lg-3"></div>
+                                                    <div class="col-lg-6">
+                                                        <h3 class="alignCenter">Cosa vuoi vendere?</h3>
+                                                        <form ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct' >
+                                                            <div class="form-group">
+                                                                <input name="nome" type="text" class="form-control" placeholder="Nome Prodotto" aria-describedby="basic-addon1">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input name="descrizione" type="text" class="form-control" placeholder="Descrizione" aria-describedby="basic-addon1">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1">
+                                                            </div>
+
+                                                            <div class="dropdown form-group">
+                                                                <button  class="btn btn-default dropdown-toggle" type="button" id="ddCategoria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                                    Categoria <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu" name="categoria" aria-labelledby="ddCategoria">
+                                                                    <li><a href="#" value="categoria1"> Categoria 1</a></li>
+                                                                    <li><a href="#" value="categoria2"> Categoria 2</a></li>
+                                                                    <li><a href="#" value="categoria3"> Categoria 3</a></li>
+                                                                    <li role="separator" class="divider"></li>
+                                                                    <li><a href="#">Separated link</a></li>
+                                                                </ul>
+                                                            </div> 
+                                                            <div class="form-group">
+                                                                <input TYPE='file' NAME='productPic1' class="btn btn-default form-control" aria-describedby="basic-addon1">
+                                                                Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <input TYPE='submit' NAME='productPic' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
+                                                            </div>
+                                                        </form>
+                                                    </div>    
+                                                </div>
+                                            </div>                                                  
                                         </div>
-                                    </div>                                                  
-                                </div>
-                            </div>
-                            <a href=".jsp" class="list-group-item">
-                                <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                Negozio TO DO...
-                            </a>
+                                    </div>
 
-                            <div id="sellNewProduct" class="list-group-item">
-                                <div role="tablist" aria-multiselectable="true">
-                                    Vendi prodotto 
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseSellNewProduct" aria-expanded="true" 
-                                       aria-controls="collapseSellProduct" >
-                                        <span class='glyphicon glyphicon-option-vertical'></span>
+
+                                    <a id="gestisciProdotti" href=".jsp" class="list-group-item">
+                                        <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                                        Gestisci prodotti
+                                    </a>
+                                    <%
+                                    } else if (userType.equals("2")) //admin
+                                    { %>
+                                    <div class="list-group-item">
+                                        <div role="tablist" aria-multiselectable="true">
+                                            Notifiche TMP 2
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseTwo" aria-expanded="true" 
+                                               aria-controls="collapseTwo" >
+                                                <span class='glyphicon glyphicon-option-vertical'></span>
+                                            </a>
+
+                                            <div id="collapseTwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                                <div class="row">
+                                                    <div class="col-lg-3"></div>
+                                                    <div class="col-lg-6">
+                                                        <h3 class="alignCenter">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. </h3>
+                                                    </div>    
+                                                </div>
+                                            </div>                                                  
+                                        </div>
+                                    </div>
+                                    <% } %>
+
+                                    <a id="esci" href="/Amazoff/ServletLogout" class="list-group-item active">
+                                        <span class="badge"><span class='glyphicon glyphicon-log-out'></span></span>
+                                        Esci
                                     </a>
 
-                                    <div id="collapseSellNewProduct" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="row">
-                                            <div class="col-lg-3"></div>
-                                            <div class="col-lg-6">
-                                                <h3 class="alignCenter">Cosa vuoi vendere?</h3>
-                                                <form ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct' >
-                                                    <div class="form-group">
-                                                        <input name="nome" type="text" class="form-control" placeholder="Nome Prodotto" aria-describedby="basic-addon1">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input name="descrizione" type="text" class="form-control" placeholder="Descrizione" aria-describedby="basic-addon1">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1">
-                                                    </div>
-
-                                                    <div class="dropdown form-group">
-                                                        <button  class="btn btn-default dropdown-toggle" type="button" id="ddCategoria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                            Categoria <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu" name="categoria" aria-labelledby="ddCategoria">
-                                                            <li><a href="#" value="categoria1"> Categoria 1</a></li>
-                                                            <li><a href="#" value="categoria2"> Categoria 2</a></li>
-                                                            <li><a href="#" value="categoria3"> Categoria 3</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="#">Separated link</a></li>
-                                                        </ul>
-                                                    </div> 
-                                                    <div class="form-group">
-                                                        <input TYPE='file' NAME='productPic1' class="btn btn-default form-control" aria-describedby="basic-addon1">
-                                                        Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input TYPE='submit' NAME='productPic' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
-                                                    </div>
-                                                </form>
-                                            </div>    
-                                        </div>
-                                    </div>                                                  
+                                    </ul>   
                                 </div>
                             </div>
 
+                            <!-- back to top button -->
+                            <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                            <a id="gestisciProdotti" href=".jsp" class="list-group-item">
-                                <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                Gestisci prodotti
-                            </a>
-                            <%
-                                      } else if (userType.equals("2")) //admin
-                                      { %>
-                            <div class="list-group-item">
-                                <div role="tablist" aria-multiselectable="true">
-                                    Notifiche TMP 2
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseTwo" aria-expanded="true" 
-                                       aria-controls="collapseTwo" >
-                                        <span class='glyphicon glyphicon-option-vertical'></span>
-                                    </a>
+                            <!-- footer --
+                            <footer style="background-color: red">
+                                <p>&copy; Company 2017</p>
+                            </footer> -->
 
-                                    <div id="collapseTwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="row">
-                                            <div class="col-lg-3"></div>
-                                            <div class="col-lg-6">
-                                                <h3 class="alignCenter">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. </h3>
-                                            </div>    
-                                        </div>
-                                    </div>                                                  
-                                </div>
-                            </div>
-                            <% } %>
-
-                            <a id="esci" href="/Amazoff/ServletLogout" class="list-group-item active">
-                                <span class="badge"><span class='glyphicon glyphicon-log-out'></span></span>
-                                Esci
-                            </a>
-
-                        </ul>   
                     </div>
+
+                    <!-- barra bianca a dx -->
+                    <div class="hidden-xs col-lg-1"></div>
                 </div>
 
-                <!-- back to top button -->
-                <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
-
-                <!-- footer --
-                <footer style="background-color: red">
-                    <p>&copy; Company 2017</p>
-                </footer> -->
-
-            </div>
-
-            <!-- barra bianca a dx -->
-            <div class="hidden-xs col-lg-1"></div>
-        </div>
 
 
+                <script>
+                    // When the user scrolls down 20px from the top of the document, show the button
+                    window.onscroll = function () {
+                        scrollFunction()
+                    };
 
-        <script>
-            // When the user scrolls down 20px from the top of the document, show the button
-            window.onscroll = function () {
-                scrollFunction()
-            };
-
-            function scrollFunction() {
-                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                    document.getElementById("btnTop").style.display = "block";
-                } else {
-                    document.getElementById("btnTop").style.display = "none";
-                }
-            }
-
-            // When the user clicks on the button, scroll to the top of the document
-            function topFunction() {
-                document.body.scrollTop = 0; // For Chrome, Safari and Opera 
-                document.documentElement.scrollTop = 0; // For IE and Firefox
-            }
-            
-            function inserisciNotifiche()
-            {
-                var toAdd = "";
-                var idNotifica;
-                
-                for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
-                {
-                    idNotifica = jsonNotifiche.notifications[i].id;
-                    toAdd += "<div id=\"notifica"+idNotifica+"\" class=\"panel-group\" role=\"tablist\" aria-multiselectable=\"true\">";
-                    switch(jsonNotifiche.notifications[i].type)
-                    {
-                         case "0": toAdd += "<span class=\"glyphicon glyphicon-user\"></span>"; break;
-                         case "1": toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>"; break;
-                         default: break;
-                    }
-                    toAdd += jsonNotifiche.notifications[i].description;
-                    toAdd += "      <div id=\"collapse"+idNotifica+"\" class=\"panel-collapse collapse out\" role=\"tabpanel\" aria-labelledby=\"heading"+idNotifica+"\">";
-                    toAdd += "tutto il messaggio. per ora non esiste un campo nel db in cui è salvato. E' solo presente una 'descrizione' = " + jsonNotifiche.notifications[i].description;
-                    toAdd += "      </div>";
-                    toAdd += "      <br>";
-                    toAdd += "      <a data-toggle=\"collapse\" data-parent=\"#accordion\"";
-                    toAdd += "         href=\"#collapse"+idNotifica+"\" aria-expanded=\"true\" aria-controls=\"collapse"+idNotifica+"\">";
-                    toAdd += "         <span class=\"glyphicon glyphicon-option-horizontal\"></span>";
-                    toAdd += "      </a>";
-                    toAdd += " </div>"; 
-                }
-
-                return toAdd;
-            }
-            
-            
-
-            <% // se viene passato alla pagina il valore a=active, rende visibile la riga relativa al valore v
-                  // --> dice sempre null 
-                  if (request.getParameter("v") != null) {
-            %>
-                        $('#collapse<%=request.getParameter("v")%>').addClass('in');
-            <%
+                    function scrollFunction() {
+                        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                            document.getElementById("btnTop").style.display = "block";
+                        } else {
+                            document.getElementById("btnTop").style.display = "none";
                         }
-            %>
-                
-            <% if(request.getParameter("v") != null && request.getParameter("notificationId") != null) { %>
-                var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
-                console.log(jsonNotifiche);
-                $("#div_notifiche").html(inserisciNotifiche());
-                var idNotifica = <%=request.getParameter("notificationId") %>;
-            <% } %>
-            
-            
-            
-                
-            // chiamata ajax per settare la notifica cliccata come "LETTA"
-            $.post('ServletAjaxNotifiche', {
-                        idNotification : idNotifica
-                }, function(data) {
+                    }
+
+                    // When the user clicks on the button, scroll to the top of the document
+                    function topFunction() {
+                        document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+                        document.documentElement.scrollTop = 0; // For IE and Firefox
+                    }
+
+                    function inserisciNotifiche()
+                    {
+                        var toAdd = "";
+                        var idNotifica;
+
+                        for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+                        {
+                            idNotifica = jsonNotifiche.notifications[i].id;
+                            toAdd += "<div id=\"notifica" + idNotifica + "\" class=\"panel-group\" role=\"tablist\" aria-multiselectable=\"true\">";
+                            switch (jsonNotifiche.notifications[i].type)
+                            {
+                                case "0":
+                                    toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
+                                    break;
+                                case "1":
+                                    toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
+                                    break;
+                                default:
+                                    break;
+                            }
+                            toAdd += jsonNotifiche.notifications[i].description;
+                            toAdd += "      <div id=\"collapse" + idNotifica + "\" class=\"panel-collapse collapse out\" role=\"tabpanel\" aria-labelledby=\"heading" + idNotifica + "\">";
+                            toAdd += "tutto il messaggio. per ora non esiste un campo nel db in cui è salvato. E' solo presente una 'descrizione' = " + jsonNotifiche.notifications[i].description;
+                            toAdd += "      </div>";
+                            toAdd += "      <br>";
+                            toAdd += "      <a data-toggle=\"collapse\" data-parent=\"#accordion\"";
+                            toAdd += "         href=\"#collapse" + idNotifica + "\" aria-expanded=\"true\" aria-controls=\"collapse" + idNotifica + "\">";
+                            toAdd += "         <span class=\"glyphicon glyphicon-option-horizontal\"></span>";
+                            toAdd += "      </a>";
+                            toAdd += " </div>";
+                        }
+
+                        return toAdd;
+                    }
+
+
+
+                    <% // se viene passato alla pagina il valore a=active, rende visibile la riga relativa al valore v
+                        // --> dice sempre null 
+                        if (request.getParameter("v") != null) {
+                    %>
+                    $('#collapse<%=request.getParameter("v")%>').addClass('in');
+                    <%
+                        }
+                    %>
+
+                    <% if (request.getParameter("v") != null && request.getParameter("notificationId") != null) {%>
+                    var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
+                    console.log(jsonNotifiche);
+                    $("#div_notifiche").html(inserisciNotifiche());
+                    var idNotifica = <%=request.getParameter("notificationId")%>;
+                    <% }%>
+
+
+
+
+                    // chiamata ajax per settare la notifica cliccata come "LETTA"
+                    $.post('ServletAjaxNotifiche', {
+                        idNotification: idNotifica
+                    }, function (data) {
 
                         alert(data);
-                
-                }).fail(function () {
-		});
-        </script>
-    </body>
-</html>
+
+                    }).fail(function () {
+                    });
+                </script>
+                </body>
+                </html>

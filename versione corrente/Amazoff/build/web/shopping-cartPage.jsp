@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="css/amazoffStyle.css">
         <script type="text/javascript">
             var cart;
-            var idUser = <%= session.getAttribute("userID").toString() %>;
+            var idUser = <%= session.getAttribute("userID").toString()%>;
 
             function LogCart()
             {
@@ -77,28 +77,27 @@
             function removeFromCart(indexElement, idElement)
             {
                 // rimuovo l'elemento dal vettore json di dati
-                cart.products.splice(indexElement,1);
-                
+                cart.products.splice(indexElement, 1);
+
                 // salva la modifica sul DB. Chiamata Ajax
                 $.post('ServletAjaxCarrello?op=...', {
-                        _idUser : idUser,
-                        _idProdotto : idElement
-                }, function(data) {
-                        // --> alert("RISP: "+ data);
-                        if(data == "true") {
-                           alert("Elemento rimosso correttamente.");
-                            AggiungiProdotti(cart);
-                        }   
-                        else {
-                            alert("Errore durante la rimozione dell'oggetto.");
-                        }
-                
+                    _idUser: idUser,
+                    _idProdotto: idElement
+                }, function (data) {
+                    // --> alert("RISP: "+ data);
+                    if (data == "true") {
+                        alert("Elemento rimosso correttamente.");
+                        AggiungiProdotti(cart);
+                    } else {
+                        alert("Errore durante la rimozione dell'oggetto.");
+                    }
+
                 }).fail(function () {
-		});
-            
+                });
+
             }
-           
-            
+
+
         </script>
 
         <title>Amazoff</title>
@@ -117,46 +116,46 @@
                     <div class="logo col-xs-12 col-lg-1">
                         <div class="row">
                             <div class="col-xs-5 col-lg-12" >
-                                    <a href="index.jsp">
-                                        <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
+                                <a href="index.jsp">
+                                    <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
+                                </a>
+                            </div>
+                            <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
+                                <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
+                                    <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
+                                        <spam class="glyphicon glyphicon-user"> 
+                                            <%
+                                                try {
+                                                    String user = (session.getAttribute("user")).toString();
+
+                                                } catch (Exception ex) {
+                                            %>
+                                            Accedi 
+                                            <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
+
+                                            <%
+                                                }
+                                            %>
+                                        </spam>
                                     </a>
                                 </div>
-                                <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
-                                    <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
-                                        <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
-                                            <spam class="glyphicon glyphicon-user"> 
-                                                <% 
-                                                try {
-                                                        String user = (session.getAttribute("user")).toString();
 
-                                                    }catch(Exception ex){
-                                                %>
-                                                 Accedi 
-                                                 <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
-
-                                                <%
-                                                    }
-                                                 %>
-                                            </spam>
-                                        </a>
-                                    </div>
-
-                                    <div class="col-xs-6 hidden-lg">
+                                <div class="col-xs-6 hidden-lg">
                                     <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                                    <% 
+                                    <%
                                         String userType = "";
                                         try {
-                                                userType = (session.getAttribute("categoria_user")).toString();
-                                                if(userType.equals("1") || userType.equals("2"))
-                                                {
-                                                    %>
-                                                        <span class="badge iconSize imgCenter"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
-                                                    <%
-                                                }
-                                            }catch(Exception ex){   }
-                                    %> 
-                                    </div>   
-                                </div>
+                                            userType = (session.getAttribute("categoria_user")).toString();
+                                            if (userType.equals("1") || userType.equals("2")) {
+                                    %>
+                                    <span class="badge iconSize imgCenter"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
+                                                <%
+                                                        }
+                                                    } catch (Exception ex) {
+                                                    }
+                                                %> 
+                                </div>   
+                            </div>
                         </div>
                     </div>
                     <!-- SEARCH BAR -->
@@ -250,7 +249,7 @@
                                         <li role="separator" class="divider"></li>
                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                             <%
-                                                        } else { %>
+                                            } else { %>
                                         <li><a href="loginPage.jsp">Accedi</a></li>
                                         <li><a href="loginPage.jsp">Registrati</a></li>
                                             <% }
@@ -276,27 +275,44 @@
                             %>                
                         </div>
                     </div>
-                    
+
                     <!-- DIV FILTRI e CATEGORIE -->
-                    <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12">
-                        <div id="collapseFilter" class="panel-collapse collapse out" >
+                    <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12 tmargin">
+                        <div id="collapseFilter" class="panel-collapse collapse out" > 
                             <div class="row">
-                                <div class="col-sm-6 col-lg-6" >
+                                <div class="col-sm-6 col-lg-6" style="border-right: 2px #8c8c8c solid; ">
                                     <h3 class="alignCenter">Filtri</h3>
                                     <hr>
                                     <ul class="no_dots"> 
-                                        <li><a href="#"><input type="radio" value="vicinanza" name="filtro"> Vicinanza</a></li>
-                                        <li><a href="#"><input type="radio" value="prezzo" name="filtro"> Prezzo</a></li>
-                                        <li><a href="#"><input type="radio" value="recensione" name="filtro"> Recensione</a></li>
+                                        <li>Vicinanza
+                                            <p>
+                                                <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                            </p>
+                                        </li>
+                                        <li>Prezzo 
+                                            <p>
+                                                <input class="form-control" type="number" placeholder="Da..." name="prezzoDa"> 
+                                                <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                            </p>
+                                        </li>
+                                        <li>Recensione
+                                            <p>
+                                                <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                            </p>
+                                        </li>
                                     </ul>
                                 </div>
-                                <div class="col-sm-6 col-lg-6" style="border-left: #8c8c8c solid; ">
+                                <div class="col-sm-6 col-lg-6">
                                     <h3 class="alignCenter">Categorie</h3>
                                     <hr>
                                     <ul class="no_dots"> 
-                                        <li><a href="#"><input type="radio" value="categoria" name="categoria"> Categoria</a></li>
-                                        <li><a href="#"><input type="radio" value="product" name="categoria" checked="checked"> Oggetto</a></li>
-                                        <li><a href="#"><input type="radio" value="seller" name="categoria"> Venditore</a></li>
+                                        <li><input type="radio" value="product" name="categoria" checked="checked"> Oggetto</li>
+                                        <li><input type="radio" value="seller" name="categoria"> Venditore</li>
+                                        <li><input type="radio" value="category" name="categoria"> Categoria</li>
                                     </ul>
                                 </div>
                             </div>  
@@ -309,35 +325,48 @@
                             <nav class="navbar navbar-default">
                                 <div class="container">
                                     <div class="row">
-
-                                        <div class="navbar-header col-xs-8">
+                                        <div class="navbar-header col-xs-6">
+                                            <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                                Filtri <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
+                                                <li>Vicinanza
+                                                    <p>
+                                                        <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                    </p>
+                                                </li>
+                                                <li>Prezzo 
+                                                    <p>
+                                                        <input class="form-control"type="number" placeholder="Da..." name="prezzoDa"> 
+                                                        <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                    </p>
+                                                </li>
+                                                <li>Recensione
+                                                    <p>
+                                                        <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                        <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                        <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                        <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                        <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="navbar-header col-xs-6">
                                             <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
                                                 Scegli categoria <span class="caret"></span>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-left col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
-                                                <li><a href="#"><input type="radio" value="categoria" name="categoria_xs"> Categoria</a></li>
                                                 <li><a href="#"><input type="radio" value="product" name="categoria_xs" checked="checked"> Oggetto</a></li>
                                                 <li><a href="#"><input type="radio" value="seller" name="categoria_xs"> Venditore</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="navbar-header col-xs-4">
-                                            <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
-                                                Filtri <span class="caret"></span>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-right col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
-                                                <li> <a href="#"><input type="radio" value="vicinanza" name="filtro_xs"> Vicinanza</a></li>
-                                                <li> <a href="#"><input type="radio" value="prezzo" name="filtro_xs"> Prezzo</a></li>
-                                                <li> <a href="#"><input type="radio" value="recensione" name="filtro_xs"> Recensione</a></li>
+                                                <li><a href="#"><input type="radio" value="category" name="categoria_xs"> Categoria</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </nav>
-
                         </div>
-
-                    </div>  
-                    
+                    </div>
                 </div>
 
                 <!-- PRODOTTI nel CARRELLO -->
@@ -374,46 +403,46 @@
                 <!-- button che porta alla pagina fittizia di pagamento -->
                 <a href="ServletPayPage" style="text-decoration: none"><button id="btnAcquista" class="col-lg-1 btnpaga" title="Procedi con l'acquisto.">Paga <i class="fa fa-credit-card"></i></button></a>
 
-                            <!-- back to top button -->
-                            <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
+                <!-- back to top button -->
+                <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                            <!-- footer -- ROMPE TUTTO
-                            <footer style="background-color: red">
-                                <p>&copy; Company 2017</p>
-                            </footer> -->
+                <!-- footer -- ROMPE TUTTO
+                <footer style="background-color: red">
+                    <p>&copy; Company 2017</p>
+                </footer> -->
 
-                            </div>
-                            <!-- barra bianca a dx -->
-                            <div class="hidden-xs col-lg-1"></div>
-                            </div>
-                            <br><br>
+            </div>
+            <!-- barra bianca a dx -->
+            <div class="hidden-xs col-lg-1"></div>
+        </div>
+        <br><br>
 
 
-                            <script>
-                                // When the user scrolls down 20px from the top of the document, show the button
-                                window.onscroll = function () {
-                                    scrollFunction()
-                                };
+        <script>
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function () {
+                scrollFunction()
+            };
 
-                                function scrollFunction() {
-                                    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                                        document.getElementById("btnTop").style.display = "block";
-                                    } else {
-                                        document.getElementById("btnTop").style.display = "none";
-                                    }
-                                }
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("btnTop").style.display = "block";
+                } else {
+                    document.getElementById("btnTop").style.display = "none";
+                }
+            }
 
-                                // When the user clicks on the button, scroll to the top of the document
-                                function topFunction() {
-                                    document.body.scrollTop = 0; // For Chrome, Safari and Opera 
-                                    document.documentElement.scrollTop = 0; // For IE and Firefox
-                                }
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+                document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+                document.documentElement.scrollTop = 0; // For IE and Firefox
+            }
 
-                                // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
-                                function cercaProdotto(txt)
-                                {
-                                    window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-                                }
-                            </script>
+            // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
+            function cercaProdotto(txt)
+            {
+                window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
+            }
+        </script>
     </body>
 </html>
