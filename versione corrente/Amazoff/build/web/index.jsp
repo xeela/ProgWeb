@@ -71,7 +71,6 @@
        
         <div class="container-fluid tmargin">
             
-            
             <!-- barra bianca a sx -->
             <div class="hidden-xs col-lg-1"></div>
             
@@ -137,7 +136,6 @@
                                 </div>
                             </div>
                         </div>
-                            <!-- SEARCH BAR -->
                                     
                         <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
@@ -424,7 +422,6 @@
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                <!-- footer -->
                 <!-- footer TODO -->
                 <footer style="background-color: red">
                     <p>&copy; Company 2017</p>

@@ -370,6 +370,8 @@
                 </div>
 
                 <!-- PRODOTTI nel CARRELLO -->
+                <div class="tmargin col-xs-12">
+                    <div class="" id="zonaProdotti">
                         <!--<div class="row">
                             <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
                                     <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
@@ -395,7 +397,6 @@
                             </a>
                         </div> -->
 
-                    </div>                                                                    
                     </div>  
                     <!-- footer -->
                     <footer style="background-color: red">
@@ -409,6 +410,7 @@
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
+                
 
             </div>
             <!-- barra bianca a dx -->

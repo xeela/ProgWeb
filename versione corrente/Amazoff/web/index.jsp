@@ -136,6 +136,8 @@
                                 </div>
                             </div>
                         </div>
+                                    
+                        <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
@@ -420,6 +422,7 @@
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
+                <!-- footer TODO -->
                 <footer style="background-color: red">
                     <p>&copy; Company 2017</p>
                 </footer>
