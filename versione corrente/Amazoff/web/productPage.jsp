@@ -47,9 +47,9 @@
                      toAdd += "                  <span class=\"glyphicon glyphicon-star-empty\"></span> ";*/
                     toAdd += " global_value: " + jsonProdotto.result[0].reviews[i].global_value;
                     toAdd += "             </div>";
-                    toAdd += "             <p >" + jsonProdotto.result[0].reviews[i].description + "</p>";
+                    toAdd += "             <p>" + jsonProdotto.result[0].reviews[i].description + "</p>";
                     toAdd += "         </div>";
-                    toAdd += "    </div>";
+                    toAdd += "</div>";
                 }
 
                 $("#div_reviews").html(toAdd);
@@ -438,6 +438,7 @@
                         </div>
                    </div>
                    
+                   <!-- RECENSIONI -->
                    <div id="div_reviews">
                         <!-- div contenente: recensione -->
                         <div class="row panel panel-default">         
@@ -497,10 +498,10 @@
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                <!-- footer -- ROMPE TUTTO --
+                <!-- footer -- ROMPE TUTTO -->
                 <footer style="background-color: red">
                     <p>&copy; Company 2017</p>
-                </footer> -->
+                </footer> 
             </div>
             <!-- barra bianca a dx -->
             <div class="hidden-xs col-lg-1"></div>
