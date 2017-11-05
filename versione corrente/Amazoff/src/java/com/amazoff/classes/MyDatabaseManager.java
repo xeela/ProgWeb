@@ -17,16 +17,16 @@ import java.util.logging.Logger;
  * @author Davide
  */
 public class MyDatabaseManager {
+
     static public boolean alreadyExists = false;
     static public String db_host;
     static public String db_username;
     static public String db_password;
     static public ComboPooledDataSource cpds;
-    
-    public MyDatabaseManager()
-    {
+
+    public MyDatabaseManager() {
         alreadyExists = true;
-        
+
         cpds = new ComboPooledDataSource();
         cpds.setMaxPoolSize(200);
         cpds.setMaxStatements(100);
@@ -34,22 +34,22 @@ public class MyDatabaseManager {
         db_host = "jdbc:mysql://hostingmysql275.register.it:3306/progweb17";
         db_username = "GruppoProgWeb";
         db_password = "GruppoWeb17";
-        
+
         try {
-            cpds.setDriverClass("com.mysql.jdbc.Driver" ); //loads the jdbc driver    
+            cpds.setDriverClass("com.mysql.jdbc.Driver"); //loads the jdbc driver    
         } catch (PropertyVetoException ex) {
             return;
         }
-        cpds.setJdbcUrl( db_host );
-        cpds.setUser(db_username);                                  
-        cpds.setPassword(db_password); 
+        cpds.setJdbcUrl(db_host);
+        cpds.setUser(db_username);
+        cpds.setPassword(db_password);
     }
-    
+
     static public Connection CreateConnection() {
         //TODO: Gestire meglio gli errori
         Connection tmp = null;
-        try {            
-            Class.forName("com.mysql.jdbc.Driver");   
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
             return null;
         }
@@ -59,75 +59,72 @@ public class MyDatabaseManager {
         } catch (SQLException ex) {
             return null;
         }
-        
+
         //continua a chiedere una connessione valida finchè non ne trovi una
         //magari non serve, ma magari risolve il problema che ogni tanto la connessione si rompe
         //anche se si toglie dovrebbe andare tutto comunque, almeno il 90% delle volte
         try {
-            while(!tmp.isValid(3))
-            {
+            while (!tmp.isValid(3)) {
                 tmp = cpds.getConnection();
             }
         } catch (SQLException ex) {
             return null;
         }
         //se si vuole togliere, bisogna togliere tutto fino a qui, lasciando il resto invariato
-        
-        
+
         return tmp;
     }
-    
+
     static public ResultSet EseguiQuery(String query, Connection connection) throws SQLException {
         Statement stmt = connection.createStatement();
         String sql = query;
         ResultSet results = stmt.executeQuery(sql);
         return results;
     }
-    
+
     static public PreparedStatement EseguiStatement(String query, Connection connection) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS); 
+        PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         ps.executeUpdate();
 
         return ps;
     }
-    
+
     //Query usate spesso
-    static public int GetID_Shop(String utente) throws SQLException
-    {
+    static public int GetID_Shop(String utente) throws SQLException {
         int idshop = -1;
         //per ora una persona può avere solo un negozio, altrimenti non so quale prende (l'ultimo creato, in teoria)
         Connection connection = CreateConnection();
         int userID = GetID_User(utente);
-        
+
         ResultSet results = MyDatabaseManager.EseguiQuery("SELECT DISTINCT shops.id FROM shops, users WHERE shops.id_creator = " + userID + ";", connection);
-        while(results.next()) {
+        while (results.next()) {
             idshop = results.getInt(1);
         }
         connection.close();
-        
+
         return idshop;
     }
-    
-    static public int GetID_User(String utente) throws SQLException
-    {
+
+    static public int GetID_User(String utente) throws SQLException {
         Connection connection = CreateConnection();
         ResultSet userIDres = MyDatabaseManager.EseguiQuery("SELECT id FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(utente) + "';", connection);
         int userID = 0;
-        while(userIDres.next())
+        while (userIDres.next()) {
             userID = userIDres.getInt(1);
+        }
         connection.close();
         return userID;
     }
-    
-    static public String GetJsonOfProductsInSet(ResultSet results, Connection connection) throws SQLException
-    {
+
+    public static String GetJson(ResultSet results, Connection connection) throws SQLException {
         String jsonObj = "";
         boolean isFirstTime = true, isFirstTimeImg = true;
-        jsonObj += "{";
-        jsonObj        += "\"products\":[";
+        
         while (results.next()) {
-            if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
+            if (!isFirstTime) //metto la virgola prima dell'oggetto solo se non è il primo
+            {
                 jsonObj += ", ";
+            }
             isFirstTime = false;
 
             jsonObj += "{";
@@ -136,13 +133,12 @@ public class MyDatabaseManager {
             jsonObj += "\"description\": \"" + results.getString(2) + "\",";
             jsonObj += "\"price\": \"" + results.getString(3) + "\",";
 
-             // in base al prodotto, ricavo il path delle img a lui associate
+            // in base al prodotto, ricavo il path delle img a lui associate
             // TO DO:::::::: String s = productPictures(results.getString(4));
-
             //------ TMP --------
             ResultSet results2 = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(4) + ";", connection);
 
-            if(results2.isAfterLast()) //se non ci sono img per quel prodotto, allora:
+            if (results2.isAfterLast()) //se non ci sono img per quel prodotto, allora:
             {
                 /*HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.noProductFound);
@@ -153,9 +149,11 @@ public class MyDatabaseManager {
             jsonObj += "\"pictures\":[";
             // altrimenti
             while (results2.next()) {
-                if(!isFirstTimeImg)            //metto la virgola prima dell'oggetto solo se non è il primo
+                if (!isFirstTimeImg) //metto la virgola prima dell'oggetto solo se non è il primo
+                {
                     jsonObj += ", ";
-                isFirstTimeImg = false; 
+                }
+                isFirstTimeImg = false;
 
                 jsonObj += "{";
                 jsonObj += "\"id\": \"" + results2.getString(1) + "\",";
@@ -166,47 +164,64 @@ public class MyDatabaseManager {
             jsonObj += "]";
 
             //------ FINE TMP --------
-
-
             jsonObj += "}";
         }
-        jsonObj += "]}";
         
         return jsonObj;
     }
-    
-    static public String GetCurrentDate()
-    {
+
+    static public String GetJsonOfProductsInSet(ResultSet results, Connection connection) throws SQLException {
+        String jsonObj = "";
+        jsonObj += "{";
+        jsonObj += "\"products\":[";
+        
+        jsonObj += GetJson(results, connection);
+        
+        jsonObj += "]}";
+
+        return jsonObj;
+    }
+
+    static public String GetJsonOfProductsInSetList(ResultSet[] resultsList, Connection connection) throws SQLException {
+        String jsonObj = "";
+        jsonObj += "{";
+        jsonObj += "\"products\":[";
+        for (int i = 0; i < resultsList.length; i++) {
+            jsonObj += GetJson(resultsList[i], connection);
+        }
+        jsonObj += "]}";
+
+        return jsonObj;
+    }
+
+    static public String GetCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         return dateFormat.format(date);
     }
-    
-    static public void LogError(String user, String servletName, String message)
-    {
+
+    static public void LogError(String user, String servletName, String message) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
-     
+
         try {
             Connection connection = CreateConnection();
-            
+
             PreparedStatement ps = EseguiStatement("INSERT INTO errors(user, message, servlet, date) VALUES ("
                     + "'" + MyDatabaseManager.EscapeCharacters(user) + "', "
                     + "'" + MyDatabaseManager.EscapeCharacters(message) + "', "
                     + "'" + MyDatabaseManager.EscapeCharacters(servletName) + "', "
                     + "'" + dateFormat.format(date) + "');", connection);
-            
+
             connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(MyDatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     //Helpers
-    
-    static public String EscapeCharacters(String msg)
-    {
+    static public String EscapeCharacters(String msg) {
         return msg.replace("'", "\\\'");
     }
 }

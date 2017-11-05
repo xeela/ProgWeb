@@ -51,7 +51,7 @@ public class ServletFindProduct extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                // Interrogo il Db per farmi dare i prodotti cercati con la searchbarzz
+                // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "';", connection);
                 
                 if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
