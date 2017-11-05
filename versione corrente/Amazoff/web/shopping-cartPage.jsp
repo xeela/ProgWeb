@@ -370,8 +370,6 @@
                 </div>
 
                 <!-- PRODOTTI nel CARRELLO -->
-                <div class="tmargin">
-                    <div class="col-xs-12" id="zonaProdotti">
                         <!--<div class="row">
                             <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
                                     <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
@@ -397,7 +395,6 @@
                             </a>
                         </div> -->
 
-                    </div>                                                                    
                 </div>                          
 
                 <!-- button che porta alla pagina fittizia di pagamento -->
@@ -406,10 +403,6 @@
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                <!-- footer -- ROMPE TUTTO
-                <footer style="background-color: red">
-                    <p>&copy; Company 2017</p>
-                </footer> -->
 
             </div>
             <!-- barra bianca a dx -->

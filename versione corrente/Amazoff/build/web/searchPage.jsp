@@ -40,6 +40,7 @@
             <!-- barra bianca a sx -->
             <div class="hidden-xs col-lg-1"></div>
 
+            <!-- Corpo della pagina -->
             <div class="col-xs-12 col-lg-10">
 
                 <!-- row contenente il menu / searchbar e button vari -->
@@ -103,8 +104,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                     <!-- SEARCH BAR -->
                     <div class="searchBar col-xs-12 col-lg-7">
@@ -336,61 +335,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- barra verticale a sx contentente i metodi di ordinamento-->
-            <div class="tmargin hidden-xs col-sm-2 col-lg-2">
-                <table class="table table-hover">
-                    <tbody id="sorting">
-                        <tr><th>Ordina per:</th></tr>
-                        <tr><td id="price_asc"><a href="#">Costo: crescente</a></td></tr>
-                        <tr><td id="price_desc"><a href="#">Costo: decrescente</a></td></tr>
-                        <tr><td id="review_desc"><a href="#">Recensione: crescente</a></td></tr>
-                        <tr><td id="review_desc"><a href="#">Recensione: decrescente</a></td></tr>
-                    </tbody>
-                </table>
 
             </div>
-
-            <!-- corpo della pagina contenente i risultati della ricerca -->
-            <div class="tmargin col-xs-12 col-sm-10" id="zonaProdotti">
-                <!-- LAYOUT --
-                <div class="row panel panel-default">      
-                     <form method="post" action="/Amazoff/ServletPopulateProductPage" id="formid_oggetto" onclick="$('#formid_oggetto').submit();">
-                             <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; ">
-                <!-- <img src="images/doge.jpg" alt="" > --
-                immagine
-            </div>
-            <div class="col-xs-8 col-sm-7 col-md-9">
-                <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto--
-                <p id="stelle+">Voto totale</p>
-                <p id="recensioni+" >#num recensioni</p>
-                <p id="linkmappa" >Vedi su mappa</p>
-                <p id="prezzo+">Prezzo</p>
-                <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
-
-            </div>
-            <div class="hidden-xs col-sm-2 col-md-1" > 
-                <span  class="glyphicon glyphicon-chevron-right"></span>
-            </div>
-    </form>
-   <hr>
-</div> -->
-
-            </div> 
-
-            <!-- back to top button -->
-            <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
-
-            <!-- footer ROMPE TUTTO--
-            <footer style="background-color: red">
-                <p>&copy; Company 2017</p>
-            </footer> -->
 
         </div>
-        <!-- barra bianca a dx -->
-        <div class="hidden-xs col-lg-1"></div>
-    </div>
 
 
 

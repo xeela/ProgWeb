@@ -138,6 +138,8 @@
                             </div>
                         </div>
                             <!-- SEARCH BAR -->
+                                    
+                        <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
@@ -411,7 +413,6 @@
                     </div>
                     </div>
                 </div>
-                                    
          
                 <!-- tabella di 2 righe, con 3 colonne, che mostrano 6 prodotti -->
                 <div class="row">
@@ -424,6 +425,7 @@
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
                 <!-- footer -->
+                <!-- footer TODO -->
                 <footer style="background-color: red">
                     <p>&copy; Company 2017</p>
                 </footer>
