@@ -81,9 +81,16 @@ public class ServletPayPage extends HttpServlet {
                 
                 HttpSession session = request.getSession();
                 session.setAttribute("jsonPayPage", jsonObj);  
+                
+                //Crea il json del carrello
+                results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
+                    + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
+                    jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                
+                session.setAttribute("shoppingCartProducts", jsonObj);
                 connection.close();
                 
-                response.sendRedirect(request.getContextPath() + "/payPage.jsp");             
+                response.sendRedirect(request.getContextPath() + "/payPage.jsp");       
             }
             else
             {

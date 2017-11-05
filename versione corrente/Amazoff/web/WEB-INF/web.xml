@@ -77,6 +77,10 @@
         <servlet-name>ServletPayPage</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletPayPage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletConfirmOrder</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletConfirmOrder</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -140,6 +144,10 @@
     <servlet-mapping>
         <servlet-name>ServletPayPage</servlet-name>
         <url-pattern>/ServletPayPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletConfirmOrder</servlet-name>
+        <url-pattern>/ServletConfirmOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

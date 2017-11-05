@@ -29,12 +29,16 @@
         <script>
             // ottengo i dati json contenenti i dati dell'utente
             var jsonDatiUtente;
+            var cartReceived;
             ottieniJson();
     
             function ottieniJson()
             {
                 jsonDatiUtente = ${jsonPayPage};
+                cartReceived = ${shoppingCartProducts};
                 console.log(jsonDatiUtente);
+                console.log(cartReceived);
+                AggiungiProdotti(cartReceived);
             }
     
             // funzione che inserisce nella form, l'indirizzo dell'utente
@@ -64,6 +68,40 @@
                 $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
                 $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
             } 
+            
+            function AggiungiProdotti(cart)
+            {
+                var toAdd = "";
+                var id_oggetto = -1;
+
+                // visualizzo i prodotti del carrello, da quello aggiunto più di recente al più vecchio
+                for (var i = cart.products.length - 1; i >= 0; i--)
+                {
+                    id_oggetto = cart.products[i].id;
+                    toAdd += "<div class=\"row\">";
+                    toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
+                    toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                    toAdd += "                    <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
+                    toAdd += "                </div>";
+                    toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
+                    toAdd += "                        <div class=\"row\">";
+                    toAdd += "                            <p id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</p>";
+                    toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
+                    toAdd += "                            <p id=\"linkmappa" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Vedi su mappa</p> <a href=\"url_venditore.html\" class=\"col-xs-12 col-lg-3\">Negozio</a>";
+                    toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
+                    toAdd += "                        </div>";
+                    toAdd += "                   </div>";
+                    toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                    toAdd += "            </div>";
+                    toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
+                    toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+                    toAdd += "            </div>";
+                    toAdd += "        </a>";
+                    toAdd += "</div>";
+                }
+
+                $("#zonaProdotti").html(toAdd);
+            }
             
             function RiempiBarraRicerca()
             {
@@ -280,7 +318,7 @@
                             <h3>Riepilogo carrello</h3>
                             <div class="col-xs-12" id="zonaProdotti">
                                 <!-- Prodotti di prova -->
-                                <div class="row">
+                                <!--<div class="row">
                                     <a href="ServletPopulateProductPage?id=id_oggetto" id="id_oggetto">
                                             <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
                                                 <img src="UploadedImages/image3.jpg" style="max-height: 100px;" alt="...">
@@ -326,7 +364,7 @@
                                                 </div>                        
                                             </div>
                                     </a>
-                                </div>
+                                </div>-->
                             </div>                                                                    
                         </div>
                         
@@ -398,7 +436,7 @@
                                     <!-- TO DO: finche l'utente non inserisce i dati richiesti, non viene sbloccato il button.
                                         Se i dati sono già presenti perché vengono caricati dalla servlet, il btn è attivo
                                         Se l'utente modifica i dati, devo controllare che siano ancora validi prima di lasciargli completare l'ordine -->
-                            <a href="orderCompletedPage.jsp?p=ok" class="btn btn-primary">Completa l'acquisto (prova: ok)</a>
+                            <a href="ServletConfirmOrder" class="btn btn-primary">Completa l'acquisto (prova: ok)</a>
                             <a href="orderCompletedPage.jsp?p=err" class="btn btn-danger">Completa l'acquisto (prova: error)</a>
                         </div>                            
                 </div> 
