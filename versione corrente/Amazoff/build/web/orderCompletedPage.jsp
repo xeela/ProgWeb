@@ -21,21 +21,23 @@
         <link rel="stylesheet" href="css/amazoffStyle.css">
         
         <title>Amazoff</title>
-    </head>,
+    </head>
     <body>
         <!-- barra verticale vuota -->
         <div class="hidden-xs col-sm-4"></div>
         
-        <div id="bodyPage" class="col-xs-12 col-sm-4" style="background-color: greenyellow">
-            <h1 id="statoOrdine"></h1>
+        <div id="bodyPage" class="col-xs-12 col-sm-4" style="background-color: #33cc33">
             <h1 id="iconaOrdine"></h1>
-            <h4>ID ordine</h4>
+            <h1 id="statoOrdine"></h1>
+            <hr>
+            <h4 id="id_ordine">ID ordine</h4>
             <h4 id='emailOrdine'>E' stata mandata una email di conferma dell'ordine</h4>
+            <hr>
             <div>
-                <p style="display: inline; align: left;"><b>Verrà reindirizzato alla Home tra: </b></p>
+                <p style="display: inline; align: left;"><b>Verrai reindirizzato alla Home tra: </b></p>
                 <p style="display: inline; align: right;"><b id="timer">5 sec</b></p>
             <div>
-            <a href="index.jsp" style="color: blue">Torna alla Home</a>
+                <h3><a href="index.jsp" style="color: blue">Torna alla Home <span class="glyphicon glyphicon-home"></span></a></h3>
         </div>
         
         
@@ -57,8 +59,6 @@
                 },1000);
             }
             
-            
-            
             // controllo il parametro in get
             var stato = "<%=request.getParameter("p")%>";
             
@@ -66,7 +66,7 @@
             if(stato == "ok" && (stato != null && stato != "")) {
                 document.getElementById("statoOrdine").innerText = "Ordine completato correttamente";
                 document.getElementById("iconaOrdine").innerHTML = "<i class=\"fa fa-check\" aria-hidden=\"true\"></i>";
-                document.getElementById("bodyPage").style.backgroundColor = "yellowgreen";
+                document.getElementById("bodyPage").style.backgroundColor = "#33cc33";
                 document.getElementById("emailOrdine").style.visibility = "visible";
             }
             else
@@ -75,6 +75,7 @@
                 document.getElementById("iconaOrdine").innerHTML = "<i class=\"fa fa-close\" aria-hidden=\"true\"></i>";
                 document.getElementById("bodyPage").style.backgroundColor = "red";
                 document.getElementById("emailOrdine").style.visibility = "hidden";
+                $( "#emailOrdine" ).remove();
             }
             
             startTimer();

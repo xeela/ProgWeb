@@ -259,20 +259,19 @@
                                                     {
                                                         %>
                                                         <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
-                                                        <li><a href="userPage.jsp?v=Notifiche&i=tutte">Notifiche</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                         <li><a href="userPage.jsp">Negozio</a></li>
                                                         <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
                                                         <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                        <li><a href="userPage.jsp?v=parametrov&a=parametroa#esci">Prova HREF</a></li>
                                                         <%
                                                     }
                                                     else if(userType.equals("2")) //admin
                                                     {
                                                         %>
                                                         <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
-                                                        <li><a href="userPage.jsp?v=Notifiche&i=tutte">Notifiche</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
@@ -280,8 +279,7 @@
                                                     else { %>
                                                         <li><a href="loginPage.jsp">Accedi</a></li>
                                                         <li><a href="loginPage.jsp">Registrati</a></li>
-                                                   <% }
-                                                %>
+                                                    <%  } %>
                                                 
                                             </ul> 
                                     </div>

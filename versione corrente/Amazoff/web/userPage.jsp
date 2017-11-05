@@ -533,7 +533,7 @@
 
                                     <div id="collapseCreateShop" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 
-                                        <FORM id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
+                                        <form id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
                                             <div class="row">
                                                 <br/>
                                                 <div class="col-sm-4 col-sm-offset-2">
@@ -564,9 +564,10 @@
                                             </div>
                                             <br/><br/><br/>
                                             <INPUT TYPE='submit' VALUE='Crea Negozio' class="col-lg-3 col-lg-offset-4" />
-                                        </FORM>
+                                        </form>
                                     </div>         
-
+                                </div>
+                            </div>
                                     <%
                                     } else if (userType.equals("1")) // venditore
                                     { %>

@@ -227,36 +227,39 @@
                                                     if (userType.equals("0")) // registrato
                                                     {
                                                         %>
-                                                        <li><a href="profilePage.jsp">Profilo</a></li>
-                                                        <li><a href=".jsp">Rimborso / Anomalia</a></li>
-                                                        <li><a href=".jsp">Diventa venditore</a></li>
+                                                        <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
+                                                        <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
-                                                        } else if (userType.equals("1")) // venditore
-                                                        {
+                                                    }
+                                                    else if(userType.equals("1")) // venditore
+                                                    {
                                                         %>
-                                                        <li><a href="profilePage.jsp">Profilo</a></li>
-                                                        <li><a href=".jsp">Notifiche</a></li>
-                                                        <li><a href=".jsp">Negozio</a></li>
-                                                        <li><a href="sellNewProduct.jsp">Vendi Prodotto</a></li>
-                                                        <li><a href=".jsp">Gestisci prodotti</a></li>
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                                                        <li><a href="userPage.jsp">Negozio</a></li>
+                                                        <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
+                                                        <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
-                                                        } else if (userType.equals("2")) //admin
-                                                        {
+                                                    }
+                                                    else if(userType.equals("2")) //admin
+                                                    {
                                                         %>
-                                                        <li><a href="profilePage.jsp">Profilo</a></li>
-                                                        <li><a href=".jsp">Notifiche</a></li>
+                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                                         <%
-                                                        } else { %>
+                                                    }
+                                                    else { %>
                                                         <li><a href="loginPage.jsp">Accedi</a></li>
                                                         <li><a href="loginPage.jsp">Registrati</a></li>
-                                                   <% }
-                                                %>
+                                                    <%  } %>
                                                 
                                             </ul>  
                                     </div>
@@ -498,7 +501,7 @@
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                <!-- footer -- ROMPE TUTTO -->
+                <!-- footer -->
                 <footer style="background-color: red">
                     <p>&copy; Company 2017</p>
                 </footer> 
