@@ -1,13 +1,11 @@
 function LogJson() {
     console.log(jsonProdotti);
     //console.log(jsonNotifiche);
-    console.log("PORCO DIO");
     RiempiBarraRicerca();
     AggiungiProdotti();
 }
 
 function RiempiBarraRicerca() {
-    console.log("PORCA MADONNA");
     $("#txtCerca").val(productSearched);
 }
 
