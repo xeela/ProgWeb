@@ -535,15 +535,33 @@
 
                                         <form id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
                                             <div class="row">
-                                                <br/>
                                                 <div class="col-sm-4 col-sm-offset-2">
-                                                    <h3 class="">Inserisci Dati Negozio</h3>
-                                                    <p>Nome</p>  <input type="text" name="nome" placeholder="..." class="col-lg-10"/>
-                                                    <br>
-                                                    <p>Descrizione</p>  <input type="text" name="descrizione" placeholder="..." class="col-lg-10"/>
-                                                    </br>
-                                                    <p>Website</p> <input type="url" name="website" placeholder="URL" class="col-lg-10"/>
-                                                    <br>
+                                                    <div class="row">
+                                                            <h3 class="">Inserisci Dati Negozio</h3>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <p></p>
+                                                        Nome
+                                                        <p><input type="text" name="nome" placeholder="..." class="col-lg-10"/></p>
+                                                    </div>
+                                                    <div class="row">
+                                                        <p></p>
+                                                        Descrizione 
+                                                        <p><input type="text" name="descrizione" placeholder="..." class="col-lg-10"/></p>
+                                                    </div>
+                                                    <div class="row">
+                                                        <p></p>
+                                                            Website
+                                                            <p><input type="url" name="website" placeholder="URL" class="col-lg-10"/></p>
+                                                    </div>
+                                                    <div class="row">
+                                                        <p></p>
+                                                        Tipologia di consegna
+                                                        <p><input name="spedizione" type="checkbox" value="true"/> Spedizione Standard                                                    <br/>
+                                                            <input name="ritito" type="checkbox" value="true"/> Ritiro in negozio</p>
+                                                    </div>
+                                                    <INPUT TYPE='submit' VALUE='Crea Negozio' class="btn col-lg-4 col-lg-offset-3" />
                                                 </div>   
                                                 <div class="col-lg-6 col-md-6 col-sm-6  ">
                                                     <h3 class="alignLeft">Posizione Geografica</h3>
@@ -556,14 +574,14 @@
                                                        <b>Closest matching address:</b>
                                                        <div id="address"></div>
                                                    </div>-->
-                                                    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/> <!--soluzione temporanea, forse :> -->
                                                     <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
 
                                                     <input type="hidden" name="coordinate" id="info2"></input>
+                                                    
                                                 </div>
                                             </div>
                                             <br/><br/><br/>
-                                            <INPUT TYPE='submit' VALUE='Crea Negozio' class="col-lg-3 col-lg-offset-4" />
+                                            
                                         </form>
                                     </div>         
                                 </div>
