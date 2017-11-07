@@ -78,6 +78,8 @@ public class ServletFindProduct extends HttpServlet {
                 //String userID = session.getAttribute("userID").toString();
                 if(session.getAttribute("userID") != null)
                     session.setAttribute("jsonNotifiche",Notifications.GetJson(session.getAttribute("userID").toString(), connection));
+                else
+                    session.setAttribute("jsonNotifiche", "{\"notifications\": []}");
                 
                 session.setAttribute("jsonProdotti", jsonObj);
                 session.setAttribute("searchedProduct", productReceived);
