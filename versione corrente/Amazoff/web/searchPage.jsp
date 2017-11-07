@@ -28,12 +28,12 @@
             var productSearched = "${searchedProduct}";
             var jsonProdotti = ${jsonProdotti};
             var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
-            console.log(jsonNotifiche);
+            
 
         </script>
         <title>Amazoff</title>
     </head>
-    <body class="bodyStyle" onload="LogJson()">
+    <body class="bodyStyle">
 
         <div class="container-fluid tmargin">
 
@@ -401,6 +401,7 @@
 
 
     <script>
+        LogJson();
         // When the user scrolls down 20px from the top of the document, show the button
         window.onscroll = function () {
             scrollFunction()
