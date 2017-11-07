@@ -389,11 +389,11 @@
                           </div>
 
                           <div class="item">
-                            <img src="images/img2.jpg" alt="Chania">
+                            <img src="images/tecnologia.jpg" alt="Chania">
                           </div>
                             
                             <div class="item">
-                            <img src="images/img3.jpg" alt="Chania">
+                            <img src="images/diventa_venditore.jpg" alt="Chania">
                           </div>
                             
                         </div>
