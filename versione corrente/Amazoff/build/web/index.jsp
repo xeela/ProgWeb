@@ -469,8 +469,8 @@
                             <p><a href="ServletLogout"><span class="glyphicon glyphicon-menu-right"></span> ESCI</a></p>
                         </div>
                     </div>
-                    <div class="col-xs-12">
-                        <p>&copy; Company 2017</p>
+                    <div class="row col-xs-12">
+                        <p>&copy; Amazoff 2017 - info@amazoff.com - via di Amazoff 69, Trento, Italia</p>
                     </div>
                 </footer>
             

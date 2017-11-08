@@ -41,9 +41,7 @@ function sortResults(param) {
 
 function AggiungiProdotti() {
     var toAdd = "";
-    var id_oggetto = -1
-
-    $("#zonaProdotti").html(toAdd);
+    var id_oggetto = -1;
 
     for (var i = 0; i < jsonProdotti.products.length; i++)
     {
