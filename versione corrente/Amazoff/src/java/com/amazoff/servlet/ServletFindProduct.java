@@ -40,21 +40,30 @@ public class ServletFindProduct extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
             String productReceived = request.getParameter("txtCerca");
+            String categoriaReceived = request.getParameter("categoriaRicerca");
             
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            if (!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
-        
+
             //Chiedi roba al db
             String jsonObj = "";
-            if(MyDatabaseManager.cpds != null)
-            {
+            if (MyDatabaseManager.cpds != null) {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "';", connection);
+
+                ResultSet results = null;
                 
-                if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                if (categoriaReceived.equals("product")) {
+                    results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
+                } else if (categoriaReceived.equals("seller")) {
+                    //results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
+                } else if (categoriaReceived.equals("category")) {
+                    results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
+                }
+
+                if (results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.noProductFound);
@@ -62,47 +71,45 @@ public class ServletFindProduct extends HttpServlet {
                     connection.close();
                     return;
                 }
-                               
-                
+
                 //aggiungo i prodotti al json
                 jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
-                
+
                 HttpSession session = request.getSession();
-                
+
                 /*
                 // crasha se non sei loggato, perchè non riesce a trovare l'attributo userID...
                 String userID = session.getAttribute("userID").toString();
                 session.setAttribute("jsonNotifiche",Notifications.GetJson(userID, connection));
-                */
+                 */
                 // TMP
                 //String userID = session.getAttribute("userID").toString();
-                if(session.getAttribute("userID") != null)
-                    session.setAttribute("jsonNotifiche",Notifications.GetJson(session.getAttribute("userID").toString(), connection));
-                else
+                if (session.getAttribute("userID") != null) {
+                    session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
+                } else {
                     session.setAttribute("jsonNotifiche", "{\"notifications\": []}");
-                
+                }
+
                 session.setAttribute("jsonProdotti", jsonObj);
                 session.setAttribute("searchedProduct", productReceived);
-                
+
                 connection.close();
-                
+
                 response.sendRedirect(request.getContextPath() + "/searchPage.jsp"); //TODO: Gestire meglio l'errore
-            }
-            else
-            {
+            } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
             }
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             HttpSession session = request.getSession();
             MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletFindProduct", ex.toString());
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
         }
     }
-    
-     // IDEA DA SVILUPPARE in base all'ID prodotto, ricavo il path delle img a lui associate
+
+    // IDEA DA SVILUPPARE in base all'ID prodotto, ricavo il path delle img a lui associate
     /*private String productPictures(String ID_product, Connection connection, HttpServletRequest request, HttpServletResponse response) 
     {
         try (PrintWriter out = response.getWriter()) {
@@ -129,7 +136,6 @@ public class ServletFindProduct extends HttpServlet {
         return "";
 
     }*/
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
