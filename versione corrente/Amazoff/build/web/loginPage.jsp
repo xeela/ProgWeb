@@ -248,7 +248,7 @@
                     <div class="col-xs-12">
                         <form style="text-align: center" class="form-group" id="LoginForm" name="LoginForm" action="ServletLogin" method="POST" onsubmit="return HashPasswordLogin();">
                             <div>
-                                <input name="username" type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
+                                <input name="username" type="text" class="form-control" placeholder="Username / Email" aria-describedby="sizing-addon2">
                             </div>
                             <div class="input-group">
 
