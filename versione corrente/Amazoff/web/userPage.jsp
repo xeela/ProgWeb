@@ -655,11 +655,11 @@
                                                                 </ul>
                                                             </div> 
                                                             <div class="form-group">
-                                                                <input TYPE='file' NAME='productPic1' class="btn btn-default form-control" aria-describedby="basic-addon1">
+                                                                <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1">
                                                                 Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1">
                                                             </div>
                                                             <div class="form-group">
-                                                                <input TYPE='submit' NAME='productPic' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
+                                                                <input TYPE='submit' NAME='productPic1' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
                                                             </div>
                                                         </form>
                                                     </div>    
