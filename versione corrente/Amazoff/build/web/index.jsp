@@ -426,7 +426,7 @@
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                <!-- footer TODO -->
+                <!-- footer -->
                 <footer style="background-color: #fc5d5d">
                     <div class="row">
                         <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>

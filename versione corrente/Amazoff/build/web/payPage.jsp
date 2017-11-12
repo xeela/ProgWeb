@@ -30,6 +30,7 @@
             // ottengo i dati json contenenti i dati dell'utente
             var jsonDatiUtente;
             var cartReceived;
+            var datiok = false; // dati utente e carta di credito
             ottieniJson();
     
             function ottieniJson()
@@ -45,28 +46,26 @@
             function AggiungiDatiUtente() {
                 var toAdd = "";
                 
-                for(var i = 0; i < jsonDatiUtente.paymentdata.length; i++)
-                {
-                    toAdd += "<input name=\"paese\" value=\""+ jsonDatiUtente.paymentdata[i].town +"\" type=\"text\" class=\"form-control\" placeholder=\"Paese (si può anche fare a meno)\" aria-describedby=\"sizing-addon2\">";
-                    toAdd += "<input name=\"indirizzo\" value=\""+ jsonDatiUtente.paymentdata[i].address +"\" type=\"text\" class=\"form-control\" placeholder=\"Indirizzo\" aria-describedby=\"sizing-addon2\">";
-                    toAdd += "<input name=\"citta\" value=\""+ jsonDatiUtente.paymentdata[i].city +"\" type=\"text\" class=\"form-control\" placeholder=\"Città\" aria-describedby=\"sizing-addon2\">";
-                    toAdd += "<input name=\"provincia\" value=\""+ jsonDatiUtente.paymentdata[i].province +"\" type=\"text\" class=\"form-control\" placeholder=\"Provincia\" aria-describedby=\"sizing-addon2\">";
-                    toAdd += "<input name=\"cap\" value=\""+ jsonDatiUtente.paymentdata[i].postal_code +"\" type=\"number\" class=\"form-control\" placeholder=\"Codice postale\" aria-describedby=\"sizing-addon2\">";
+                if(jsonDatiUtente.paymentdata.length > 0) {
+                    $("#paese").val(jsonDatiUtente.paymentdata[0].town);  
+                    $("#indirizzo").val(jsonDatiUtente.paymentdata[0].address);
+                    $("#citta").val(jsonDatiUtente.paymentdata[0].city);
+                    $("#provincia").val(jsonDatiUtente.paymentdata[0].province);
+                    $("#cap").val(jsonDatiUtente.paymentdata[0].postal_code);
                 }
-        
-                toAdd += "<button class=\"btn btn-primary\" type=\"submit\">Aggiorna</button>";
-                $("#IndirizzoForm").html(toAdd);
             } 
             
              // funzione che inserisce nella form, i dati della carta di credito
             function AggiungiDatiMetodoPagamento() {
                 var toAdd = "";
                 
-                $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
-                $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
+                if(jsonDatiUtente.paymentdata.length > 0) {
+                    $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
+                    $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
 
-                $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
-                $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+                    $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
+                    $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+                }
             } 
             
             function AggiungiProdotti(cart)
@@ -107,6 +106,30 @@
             {
                 searchedProduct = jsonProdotti.searched;
                 $("#txtCerca").val(searchedProduct);
+            }
+            
+            function setModalita(selectedMode)
+            {
+                modalita = selectedMode;
+
+                if(modalita === "ritiro") {
+                    $( "#div_creditcard" ).fadeOut( "slow", function() {  /* Animation complete.*/ });
+                    document.getElementById("ritiro").disabled = true; 
+                    document.getElementById("spedizione").disabled = false; 
+                }
+                else
+                {
+                    $( "#div_creditcard" ).fadeIn( "slow", function() {  /* Animation complete.*/ });
+                    document.getElementById("spedizione").disabled = true; 
+                    document.getElementById("ritiro").disabled = false; 
+                }
+                document.getElementById("btnCompletaAcquisto").disabled = false; 
+                document.getElementById("txtmodalita").value = modalita;
+            }
+            
+            function  completaOrdine(stato)
+            {
+                window.location = "ServletConfirmOrder";
             }
         </script>
             
@@ -372,11 +395,11 @@
                                 <h3>Indirizzo di spedizione</h3>
                                 <div class="row col-xs-12">
                                     <form class="form-group" id="IndirizzoForm" name="FormIndirizzo" action="ServletDopoRegistrazione" method="POST" onsubmit="return checkDati();">
-                                        <input name="paese" type="text" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
-                                        <input name="indirizzo" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
-                                        <input name="citta" type="text" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
-                                        <input name="provincia" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
-                                        <input name="cap" type="number" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
+                                        <input name="paese" id="paese" type="text" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
+                                        <input name="indirizzo" id="indirizzo" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
+                                        <input name="citta" id="citta" type="text" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
+                                        <input name="provincia" id="provincia" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
+                                        <input name="cap" id="cap" type="number" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
                                     
                                         <button class="btn btn-primary" type="submit">Aggiorna</button>
                                     </form> 
@@ -386,7 +409,7 @@
                         </div>    
                         
                         <!-- RIEPILOGO / inserisci nuovi DATI CARTA CREDITO -->
-                        <div class="row col-xs-12 col-md-6 col-lg-6" >
+                        <div class="row col-xs-12 col-md-6 col-lg-6" id="div_creditcard" >
                             <div class="col-lg-12">    
                                 <h3>Carta di credito</h3>
                                 <div class="row col-xs-12">
@@ -401,7 +424,7 @@
                                                         String codice = "";
                                                         for (int i = 1; i <= 12; i++)
                                                         {
-                                                            codice += "<option value=\""+i+"\">"+i+"</li>";
+                                                            codice += "<option value=\""+i+"\"><li>"+i+"</li></option>";
                                                         }
                                                     %>
                                                     <%= codice %>
@@ -416,7 +439,7 @@
                                                         int year = new java.util.Date().getYear() + 1900 ;
                                                         for (int i = year; i <= year + 20; i++)
                                                         {
-                                                            codice += "<option value=\""+i+"\">"+i+"</li>";
+                                                            codice += "<option value=\""+i+"\"><li>"+i+"</li></option>";
                                                         }
                                                     %>
                                                     <%= codice %>
@@ -430,21 +453,79 @@
                             </div>
                         </div>
                                                     
-                        <div class="row col-xs-12 alignCenter">
+                         
+                        <form action="ServletConfirmOrder" method="POST" >
+                            <div class="row col-xs-12 alignCenter">
+                                <h3>Seleziona la modalità di acquisto:</h3>
+                                <button id="spedizione" class="btn btn-default" onclick="setModalita('spedizione')">Spedizione</button>
+                                <button id="ritiro" class="btn btn-default" onclick="setModalita('ritiro')">Ritira in negozio</button>
+                                <input type="text" name="modalita" id="txtmodalita" style="visibility: hidden; width: 0px; height: 0px" >
+                            </div> 
+
+                            <div class="row col-xs-12 alignCenter" >
                                     <!-- TO DO: finche l'utente non inserisce i dati richiesti, non viene sbloccato il button.
                                         Se i dati sono già presenti perché vengono caricati dalla servlet, il btn è attivo
                                         Se l'utente modifica i dati, devo controllare che siano ancora validi prima di lasciargli completare l'ordine -->
-                            <a href="ServletConfirmOrder" class="btn btn-primary">Completa l'acquisto (prova: ok)</a>
-                            <a href="orderCompletedPage.jsp?p=err" class="btn btn-danger">Completa l'acquisto (prova: error)</a>
-                        </div>                            
+                                <button type="submit" id="btnCompletaAcquisto" onclick="completaOrdine('ok')" class="btn btn-primary" disabled="true">Completa l'acquisto (prova: ok)</button>
+                                <a href="orderCompletedPage.jsp?p=err" class="btn btn-danger">Completa l'acquisto (prova: error)</a>
+                            </div>   
+                        </form>
                 </div> 
                                             
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
                 
                 <!-- footer -->
-                <footer style="background-color: red">
-                    <p>&copy; Company 2017</p>
+                <footer style="background-color: #fc5d5d" class="tmargin">
+                    <div class="row">
+                        <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
+                            <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
+                            <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Cerca prodotto</a></p> 
+                            <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
+                            <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
+                            <%
+                                if(userType.equals("0")) // registrato
+                                {
+                            %>
+                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
+                                    <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
+                                    <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+
+                            <%  }
+                                else if(userType.equals("1")) // venditore
+                                {  %>
+                                    <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
+                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
+                                    <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
+                                    <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
+                            <%  }
+                                else if(userType.equals("2")) // admin
+                                {  %> 
+                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                            <%  }
+                                else // non loggato
+                                {  %>    
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
+                            <%  }  %>        
+                        </div>
+                        <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
+                            <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
+                            <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Venditore</a></p>
+                        </div>
+                        
+                        <div class="col-xs-4"><h5><b>Logout</b></h5>
+                            <p><a href="ServletLogout"><span class="glyphicon glyphicon-menu-right"></span> ESCI</a></p>
+                        </div>
+                    </div>
+                    <div class="row col-xs-12">
+                        <p>&copy; Amazoff 2017 - info@amazoff.com - via di Amazoff 69, Trento, Italia</p>
+                    </div>
                 </footer>
             
             </div>
@@ -472,8 +553,6 @@
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }    
-            
-            
             
             // inserisco i dati dell'utente e della carta, nella pagina
             AggiungiDatiUtente();

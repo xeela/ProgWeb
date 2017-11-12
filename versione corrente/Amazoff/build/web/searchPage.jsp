@@ -384,9 +384,57 @@
                     
                     <div class="col-xs-12 col-lg-12">
                         <!-- footer TODO -->
-                        <footer style="background-color: red">
-                            <p>&copy; Company 2017</p>
-                        </footer> 
+                        <footer style="background-color: #fc5d5d">
+                            <div class="row">
+                                <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
+                                    <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
+                                    <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Cerca prodotto</a></p> 
+                                    <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
+                                    <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
+                                    <%
+                                        if(userType.equals("0")) // registrato
+                                        {
+                                    %>
+                                            <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
+                                            <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
+                                            <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
+                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+
+                                    <%  }
+                                        else if(userType.equals("1")) // venditore
+                                        {  %>
+                                            <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
+                                            <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
+                                            <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
+                                            <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
+                                    <%  }
+                                        else if(userType.equals("2")) // admin
+                                        {  %> 
+                                            <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <%  }
+                                        else // non loggato
+                                        {  %>    
+                                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
+                                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
+                                    <%  }  %>        
+                                </div>
+                                <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
+                                    <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
+                                    <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Venditore</a></p>
+                                </div>
+
+                                <div class="col-xs-4"><h5><b>Logout</b></h5>
+                                    <p><a href="ServletLogout"><span class="glyphicon glyphicon-menu-right"></span> ESCI</a></p>
+                                </div>
+                            </div>
+                            <div class="row col-xs-12">
+                                <p>&copy; Amazoff 2017 - info@amazoff.com - via di Amazoff 69, Trento, Italia</p>
+                            </div>
+                        </footer>
                     </div>
 
                 </div>

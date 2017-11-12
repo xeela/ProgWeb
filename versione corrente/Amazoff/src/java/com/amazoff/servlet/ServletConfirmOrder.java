@@ -39,6 +39,8 @@ public class ServletConfirmOrder extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            String modalita = request.getParameter("modalita");
+            
             if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
