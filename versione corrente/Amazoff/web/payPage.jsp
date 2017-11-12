@@ -131,6 +131,11 @@
             {
                 window.location = "ServletConfirmOrder";
             }
+            
+            function RadioSwitch(value){
+                $("#categoriaRicerca").val(value);
+                alert($("#categoriaRicerca").val());
+            }
         </script>
             
     </head>
@@ -219,7 +224,8 @@
                                     </div>
                                     
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-
+                                    <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
+                                    
                                     <div class="input-group-btn">
                                             <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                                             href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
@@ -330,6 +336,98 @@
                                         <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                                     </a>
                                 </div>
+                            </div>
+                        </div>
+                                   
+                         <!-- DIV FILTRI e CATEGORIE -->
+                        <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12 tmargin">
+                            <div id="collapseFilter" class="panel-collapse collapse out" > 
+                                <div class="row">
+                                    <div class="col-sm-6 col-lg-6" style="border-right: 2px #8c8c8c solid; ">
+                                        <h3 class="alignCenter">Filtri</h3>
+                                        <hr>
+                                        <ul class="no_dots"> 
+                                            <li>Vicinanza
+                                                <p>
+                                                    <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                </p>
+                                            </li>
+                                            <li>Prezzo 
+                                                <p>
+                                                    <input class="form-control" type="number" placeholder="Da..." name="prezzoDa"> 
+                                                    <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                </p>
+                                            </li>
+                                            <li>Recensione
+                                                <p>
+                                                    <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                    <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                    <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                    <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                    <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6">
+                                        <h3 class="alignCenter">Categorie</h3>
+                                        <hr>
+                                        <ul class="no_dots"> 
+                                            <li><input type="radio" value="product" id="product" name="categoria" checked="checked" onclick="RadioSwitch('product')"> Oggetto</li>
+                                            <li><input type="radio" value="seller" id="seller" name="categoria" onclick="RadioSwitch('seller')"> Venditore</li>
+                                            <li><input type="radio" value="category" id="category" name="categoria" onclick="RadioSwitch('category')"> Categoria</li>
+                                        </ul>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+
+                        <!-- DIV FILTRI e CATEGORIE SU XS -->
+                        <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
+                            <div class="menuBar">
+                                <nav class="navbar navbar-default">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="navbar-header col-xs-6">
+                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                                    Filtri <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
+                                                    <li>Vicinanza
+                                                        <p>
+                                                            <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                        </p>
+                                                    </li>
+                                                    <li>Prezzo 
+                                                        <p>
+                                                            <input class="form-control"type="number" placeholder="Da..." name="prezzoDa"> 
+                                                            <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                        </p>
+                                                    </li>
+                                                    <li>Recensione
+                                                        <p>
+                                                            <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                            <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                            <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                            <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                            <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                        </p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="navbar-header col-xs-6">
+                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                                    Scegli categoria <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-left col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
+                                                    <li><a href="#"><input type="radio" value="product" id="product_xs" name="categoria_xs" checked="checked" onclick="RadioSwitch('product')"> Oggetto</a></li>
+                                                    <li><a href="#"><input type="radio" value="seller" id="seller_xs" name="categoria_xs" onclick="RadioSwitch('seller')"> Venditore</a></li>
+                                                    <li><a href="#"><input type="radio" value="category" id="category_xs" name="categoria_xs" onclick="RadioSwitch('category')"> Categoria</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nav>
                             </div>
                         </div>
                                    

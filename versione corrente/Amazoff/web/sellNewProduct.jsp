@@ -22,8 +22,15 @@
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
 
         <link rel="stylesheet" href="css/amazoffStyle.css">
-
         <title>Amazoff</title>
+        
+        <script>
+            function RadioSwitch(value){
+                $("#categoriaRicerca").val(value);
+                alert($("#categoriaRicerca").val());
+            }
+        </script>
+        
     </head>
     <body class="bodyStyle">
 
@@ -92,7 +99,8 @@
                                 </div>
 
                                 <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-
+                                <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
+                                
                                 <div class="input-group-btn">
                                     <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
