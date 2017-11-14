@@ -27,6 +27,9 @@
         
         <title>Amazoff</title>
         <script>
+            
+            var user;
+            
             // ottengo i dati json contenenti i dati dell'utente
             var jsonDatiUtente;
             var cartReceived;
@@ -39,7 +42,6 @@
                 cartReceived = ${shoppingCartProducts};
                 console.log(jsonDatiUtente);
                 console.log(cartReceived);
-                AggiungiProdotti(cartReceived);
             }
     
             // funzione che inserisce nella form, l'indirizzo dell'utente
@@ -136,6 +138,49 @@
                 $("#categoriaRicerca").val(value);
                 alert($("#categoriaRicerca").val());
             }
+            
+            // chiamata ajax che controlla che i dati siano stati modificati correttamente
+            function checkDatiIndirizzo()
+            {
+                //$("#indirizzoLoading").html("<i class=\"fa fa-spinner fa-spin\"></i>");
+                var paese = $("#paese").val();
+                var indirizzo = $("#indirizzo").val();
+                var citta = $("#citta").val();
+                var provincia = $("#provincia").val();
+                var cap = $("#cap").val();
+                
+                if(paese == "" || indirizzo == "" || citta == "" || provincia == "" || cap == "")
+                {
+                    return false; // uno o più campi sono vuoti
+                }
+                else {
+                    alert(user);
+                    $.post('ServletAjaxPayPage', { 
+                            _op : "indirizzo",
+                            _user : user,
+                            _paese: paese,
+                            _indirizzo: indirizzo,
+                            _citta: citta,
+                            _provincia: provincia,
+                            _cap: cap,
+                    }, function(data) {
+                            alert("Risp: " + data);
+                            /*if(data == "true") {
+                                //document.getElementById("usernameRegister").style.backgroundColor = "#80ff80";
+                                //usernameUnique = true;
+                            }
+                            else {
+                                //document.getElementById("usernameRegister").style.backgroundColor = "#ff9999";
+                            }*/
+
+                    }).fail(function () {
+                        alert("ERR");
+                        //document.getElementById("usernameRegister").style.backgroundColor = "#ff9999";
+                    });
+                }
+                //$("#").html("<span class=\"glyphicon glyphicon-user\"></span>");
+                //return false;
+            }
         </script>
             
     </head>
@@ -164,11 +209,14 @@
                                                 <% 
                                                 try {
                                                         String user = (session.getAttribute("user")).toString();
-
+                                                %>
+                                                <!-- memorizzo l'id dell'utente, cosi da usarlo per controllare i suoi dati (indirizzo e carta) -->
+                                                <script>user = "<%=user%>"</script> 
+                                                <%
                                                     }catch(Exception ex){
                                                 %>
-                                                 Accedi 
-                                                 <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
+                                                Accedi 
+                                                <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
 
                                                 <%
                                                     }
@@ -492,15 +540,15 @@
                             <div class="col-lg-12" >
                                 <h3>Indirizzo di spedizione</h3>
                                 <div class="row col-xs-12">
-                                    <form class="form-group" id="IndirizzoForm" name="FormIndirizzo" action="ServletDopoRegistrazione" method="POST" onsubmit="return checkDati();">
+                                    <div class="form-group" id="IndirizzoForm" name="FormIndirizzo" >
                                         <input name="paese" id="paese" type="text" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
                                         <input name="indirizzo" id="indirizzo" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
                                         <input name="citta" id="citta" type="text" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
                                         <input name="provincia" id="provincia" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
                                         <input name="cap" id="cap" type="number" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
                                     
-                                        <button class="btn btn-primary" type="submit">Aggiorna</button>
-                                    </form> 
+                                        <button class="btn btn-primary" onclick="checkDatiIndirizzo()">Aggiorna</button>
+                                    </div> 
                                 </div>
 
                             </div>
@@ -655,6 +703,7 @@
             // inserisco i dati dell'utente e della carta, nella pagina
             AggiungiDatiUtente();
             AggiungiDatiMetodoPagamento();
+            AggiungiProdotti(cartReceived);
         </script>
     </body>
 </html>
