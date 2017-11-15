@@ -5,9 +5,7 @@
         <group>
             <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/web/loginPage.jsp</file>
             <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/web/payPage.jsp</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxCarrello.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletPayPage.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxPayPage.java</file>
+            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxPayPageCard.java</file>
         </group>
     </open-files>
 </project-private>

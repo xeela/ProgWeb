@@ -29,6 +29,7 @@
         <script>
             
             var user;
+            var modalita = ""; // vale: spedizione oppure ritiro
             
             // ottengo i dati json contenenti i dati dell'utente
             var jsonDatiUtente;
@@ -154,7 +155,7 @@
                     return false; // uno o più campi sono vuoti
                 }
                 else {
-                    alert(user);
+
                     $.post('ServletAjaxPayPage', { 
                             _op : "indirizzo",
                             _user : user,
@@ -163,19 +164,43 @@
                             _citta: citta,
                             _provincia: provincia,
                             _cap: cap,
+                            _ritiroOspedizione: modalita, 
                     }, function(data) {
                             alert("Risp: " + data);
-                            /*if(data == "true") {
-                                //document.getElementById("usernameRegister").style.backgroundColor = "#80ff80";
-                                //usernameUnique = true;
-                            }
-                            else {
-                                //document.getElementById("usernameRegister").style.backgroundColor = "#ff9999";
-                            }*/
 
                     }).fail(function () {
                         alert("ERR");
-                        //document.getElementById("usernameRegister").style.backgroundColor = "#ff9999";
+                    });
+                }
+                //$("#").html("<span class=\"glyphicon glyphicon-user\"></span>");
+                //return false;
+            }
+            
+            function checkDatiCarta()
+            {
+                //$("#indirizzoLoading").html("<i class=\"fa fa-spinner fa-spin\"></i>");
+                var intestatario = $("#intestatario").val();
+                var numerocarta = $("#numerocarta").val();
+                var meseScadenza = $("#mesescadenza").val();
+                var annoScadenza = $("#annoscadenza").val();
+                
+                if(intestatario == "" || numerocarta == "" || meseScadenza == "" || annoScadenza == "")
+                {
+                    return false; // uno o più campi sono vuoti
+                }
+                else {
+
+                    $.post('ServletAjaxPayPageCard', { 
+                            _intestatario : intestatario,
+                            _numerocarta : numerocarta,
+                            _meseScadenza: meseScadenza,
+                            _annoScadenza: annoScadenza,
+                            _ritiroOspedizione: modalita, 
+                    }, function(data) {
+                            alert("Risp: " + data);
+
+                    }).fail(function () {
+                        alert("ERR");
                     });
                 }
                 //$("#").html("<span class=\"glyphicon glyphicon-user\"></span>");
@@ -594,7 +619,7 @@
                                         </div>
                                     </div>
 
-                                    <button class="btn btn-primary" type="submit">Aggiorna</button>
+                                    <button class="btn btn-primary" onclick="checkDatiCarta()">Aggiorna</button>
                                 </div>
                             </div>
                         </div>

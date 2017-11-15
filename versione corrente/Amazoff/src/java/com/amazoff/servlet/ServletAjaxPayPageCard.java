@@ -18,17 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author Fra
- */
-public class ServletAjaxPayPage extends HttpServlet {
+public class ServletAjaxPayPageCard extends HttpServlet {
+
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+
         }
     }
 
@@ -38,19 +35,18 @@ public class ServletAjaxPayPage extends HttpServlet {
         processRequest(request, response);
     }
 
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String risposta = "-1";
         try (PrintWriter out = response.getWriter()) {
             
-            //String operazione = request.getParameter("_op");
-            String paeseReceived = request.getParameter("_paese");
-            String indirizzoReceived = request.getParameter("_indirizzo");
-            String cittaReceived = request.getParameter("_citta");
-            String provinciaReceived = request.getParameter("_provincia");
-            String capReceived = request.getParameter("_cap");
+            String intestatarioReceived = request.getParameter("_intestatario");
+            String numerocartaReceived = request.getParameter("_numerocarta");
+            String meseScadenzaReceived = request.getParameter("_meseScadenza"); 
+            String annoScadenzaReceived = request.getParameter("_annoScadenza"); 
             String tipoAcquistoReceived = request.getParameter("_ritiroOspedizione"); // OSS: per ora non lo mette da nessuna parte
             String userIDReceived = (request.getSession().getAttribute("userID").toString()); 
 
@@ -65,7 +61,7 @@ public class ServletAjaxPayPage extends HttpServlet {
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 // controllo se l'utente ha già un indirizzo.
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT id_utente FROM user_addresses WHERE id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + ";", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT id_utente FROM creditcards WHERE id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + ";", connection);
                                 
                 String esisteUtente = "false";
                 while (results.next()) { // se esiste un utente con quell'id, lo memorizzo
@@ -76,23 +72,22 @@ public class ServletAjaxPayPage extends HttpServlet {
                 {
                     
                     // ALLORA: aggiungo un nuovo campo nel db
-                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO user_addresses(id_utente, town, city, address, province, postal_code) " + 
+                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO creditcards(id_utente, owner, card_number, exp_month, exp_year) " + 
                                                         "VALUES (" + MyDatabaseManager.EscapeCharacters(userIDReceived) + ", " + 
-                                                        "'" + MyDatabaseManager.EscapeCharacters(paeseReceived) + "', " + 
-                                                        "'" + MyDatabaseManager.EscapeCharacters(indirizzoReceived) + "', " + 
-                                                        "'" + MyDatabaseManager.EscapeCharacters(cittaReceived) + "', " + 
-                                                        "'" + MyDatabaseManager.EscapeCharacters(provinciaReceived) + "', " + MyDatabaseManager.EscapeCharacters(capReceived) + ");", connection);
+                                                        "'" + MyDatabaseManager.EscapeCharacters(intestatarioReceived) + "', " + 
+                                                        "'" + MyDatabaseManager.EscapeCharacters(numerocartaReceived) + "', " + 
+                                                        "'" + MyDatabaseManager.EscapeCharacters(meseScadenzaReceived) + "', " + 
+                                                        "'" + MyDatabaseManager.EscapeCharacters(annoScadenzaReceived) + "');", connection);
                 }
                 else {
                 
                     // ALTRIMENTI: aggiorno i valori dell'utente
-                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("UPDATE user_addresses SET " + 
+                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("UPDATE creditcards SET " + 
                                                         "id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + " , " + 
-                                                        "town = '" + MyDatabaseManager.EscapeCharacters(paeseReceived) + "', " + 
-                                                        "city = '" + MyDatabaseManager.EscapeCharacters(indirizzoReceived) + "', " + 
-                                                        "address = '" + MyDatabaseManager.EscapeCharacters(cittaReceived) + "', " + 
-                                                        "province = '" + MyDatabaseManager.EscapeCharacters(provinciaReceived) + "', " +
-                                                        "postal_code = " + MyDatabaseManager.EscapeCharacters(capReceived) + 
+                                                        "owner = '" + MyDatabaseManager.EscapeCharacters(intestatarioReceived) + "', " + 
+                                                        "card_number = '" + MyDatabaseManager.EscapeCharacters(numerocartaReceived) + "', " + 
+                                                        "exp_month = '" + MyDatabaseManager.EscapeCharacters(meseScadenzaReceived) + "', " + 
+                                                        "exp_year = '" + MyDatabaseManager.EscapeCharacters(annoScadenzaReceived) + "' " +
                                                         " WHERE id_utente = "+ userIDReceived +";", connection);
                 }
                 risposta = "true";
@@ -113,8 +108,11 @@ public class ServletAjaxPayPage extends HttpServlet {
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
         }
+        
+        
     }
 
+    
     @Override
     public String getServletInfo() {
         return "Short description";
