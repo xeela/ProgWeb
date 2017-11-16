@@ -27,9 +27,10 @@
         
         <title>Amazoff</title>
         <script>
-            
             var user;
-            var modalita = ""; // vale: spedizione oppure ritiro
+            var modalita = "null"; // vale: spedizione oppure ritiro. null se non ancora selezionata
+            var datiIndirizzo = "false"; // true = validi. false = non validi
+            var datiCarta = "false"; 
             
             // ottengo i dati json contenenti i dati dell'utente
             var jsonDatiUtente;
@@ -49,12 +50,13 @@
             function AggiungiDatiUtente() {
                 var toAdd = "";
                 
-                if(jsonDatiUtente.paymentdata.length > 0) {
-                    $("#paese").val(jsonDatiUtente.paymentdata[0].town);  
-                    $("#indirizzo").val(jsonDatiUtente.paymentdata[0].address);
-                    $("#citta").val(jsonDatiUtente.paymentdata[0].city);
-                    $("#provincia").val(jsonDatiUtente.paymentdata[0].province);
-                    $("#cap").val(jsonDatiUtente.paymentdata[0].postal_code);
+                if(jsonDatiUtente.addressdata.length > 0) {
+                    datiIndirizzo = "true";
+                    $("#paese").val(jsonDatiUtente.addressdata[0].town);  
+                    $("#indirizzo").val(jsonDatiUtente.addressdata[0].address);
+                    $("#citta").val(jsonDatiUtente.addressdata[0].city);
+                    $("#provincia").val(jsonDatiUtente.addressdata[0].province);
+                    $("#cap").val(jsonDatiUtente.addressdata[0].postal_code);
                 }
             } 
             
@@ -63,6 +65,8 @@
                 var toAdd = "";
                 
                 if(jsonDatiUtente.paymentdata.length > 0) {
+                    datiCarta = "true";
+                    
                     $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
                     $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
 
@@ -111,7 +115,8 @@
                 $("#txtCerca").val(searchedProduct);
             }
             
-            function setModalita(selectedMode)
+            /* funzione che visualizza / nasconde la form della carta di credito in base al tipo di acquisto */
+            function checkModalita(selectedMode)
             {
                 modalita = selectedMode;
 
@@ -126,8 +131,30 @@
                     document.getElementById("spedizione").disabled = true; 
                     document.getElementById("ritiro").disabled = false; 
                 }
-                document.getElementById("btnCompletaAcquisto").disabled = false; 
-                document.getElementById("txtmodalita").value = modalita;
+                enabledBtnAcquista(modalita);
+            }
+            
+            function enabledBtnAcquista(op)
+            {
+                //alert("STATO: " + op + " " + datiIndirizzo + " " + datiCarta);
+                if(op == "ritiro"){
+                    if(datiIndirizzo == "true") {
+                        document.getElementById("btnCompletaAcquisto").disabled = false; 
+                        document.getElementById("txtmodalita").value = modalita;
+                    }
+                }
+                else {
+                    if(op == "spedizione"){
+                        if(datiIndirizzo == "true" && datiCarta == "true") {
+                            document.getElementById("btnCompletaAcquisto").disabled = false; 
+                            document.getElementById("txtmodalita").value = modalita;
+                        }
+                    } 
+                    else {
+                        document.getElementById("btnCompletaAcquisto").disabled = true; 
+                        document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito dati validi prima di continuare.";
+                    }
+                }
             }
             
             function  completaOrdine(stato)
@@ -137,7 +164,7 @@
             
             function RadioSwitch(value){
                 $("#categoriaRicerca").val(value);
-                alert($("#categoriaRicerca").val());
+                console.log($("#categoriaRicerca").val());
             }
             
             // chiamata ajax che controlla che i dati siano stati modificati correttamente
@@ -152,6 +179,9 @@
                 
                 if(paese == "" || indirizzo == "" || citta == "" || provincia == "" || cap == "")
                 {
+                    enabledBtnAcquista("null");
+                    alert("Completa tutti i campi prima di continuare");
+                    
                     return false; // uno o più campi sono vuoti
                 }
                 else {
@@ -166,8 +196,13 @@
                             _cap: cap,
                             _ritiroOspedizione: modalita, 
                     }, function(data) {
-                            alert("Risp: " + data);
-
+                            datiIndirizzo = data;
+                            //alert(datiIndirizzo);
+                            // se i dati ricevuti sono validi, ed è gia stata scelta la modalità di acq. ALLORA controllo se sbloccare il btnAcq
+                            if((datiIndirizzo) && modalita != "null") {
+                                enabledBtnAcquista(modalita);
+                            }
+                                
                     }).fail(function () {
                         alert("ERR");
                     });
@@ -186,6 +221,8 @@
                 
                 if(intestatario == "" || numerocarta == "" || meseScadenza == "" || annoScadenza == "")
                 {
+                    enabledBtnAcquista("null");
+                    alert("Completa tutti i campi prima di continuare");
                     return false; // uno o più campi sono vuoti
                 }
                 else {
@@ -197,14 +234,29 @@
                             _annoScadenza: annoScadenza,
                             _ritiroOspedizione: modalita, 
                     }, function(data) {
-                            alert("Risp: " + data);
-
+                            datiCarta = data;
+                            //alert(datiCarta);
+                             // se i dati ricevuti sono validi, ed è gia stata scelta la modalità di acq. ALLORA controllo se sbloccare il btnAcq
+                            if((datiCarta) && modalita != "null") {
+                                enabledBtnAcquista(modalita);
+                            }
                     }).fail(function () {
                         alert("ERR");
                     });
                 }
                 //$("#").html("<span class=\"glyphicon glyphicon-user\"></span>");
                 //return false;
+            }
+            
+            function datiModificati(div)
+            {
+                if(div == "indirizzo")
+                    datiIndirizzo = "false";
+                else
+                    datiCarta = "false";
+                
+                enabledBtnAcquista("in_attesa_validazione");
+                
             }
         </script>
             
@@ -564,15 +616,15 @@
                         <div class="row col-xs-12 col-md-6 col-lg-6">
                             <div class="col-lg-12" >
                                 <h3>Indirizzo di spedizione</h3>
-                                <div class="row col-xs-12">
+                                <div class="row col-xs-12" >
                                     <div class="form-group" id="IndirizzoForm" name="FormIndirizzo" >
-                                        <input name="paese" id="paese" type="text" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
-                                        <input name="indirizzo" id="indirizzo" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
-                                        <input name="citta" id="citta" type="text" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
-                                        <input name="provincia" id="provincia" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
-                                        <input name="cap" id="cap" type="number" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
+                                        <input name="paese" id="paese" type="text" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
+                                        <input name="indirizzo" id="indirizzo" onchange="datiModificati('indirizzo')" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
+                                        <input name="citta" id="citta" type="text" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
+                                        <input name="provincia" id="provincia" onchange="datiModificati('indirizzo')" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
+                                        <input name="cap" id="cap" type="number" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
                                     
-                                        <button class="btn btn-primary" onclick="checkDatiIndirizzo()">Aggiorna</button>
+                                        <button class="btn btn-primary" onclick="checkDatiIndirizzo()">Conferma indirizzo</button>
                                     </div> 
                                 </div>
 
@@ -584,13 +636,13 @@
                             <div class="col-lg-12">    
                                 <h3>Carta di credito</h3>
                                 <div class="row col-xs-12">
-                                    <input name="intestatario" id="intestatario" type="text" class="form-control" placeholder="Intestatario" aria-describedby="sizing-addon2">
-                                    <input name="numerocarta" id="numerocarta" type="number" class="form-control" placeholder="Numero carta" aria-describedby="sizing-addon2">
+                                    <input name="intestatario" id="intestatario" onchange="datiModificati('carta')" type="text" class="form-control" placeholder="Intestatario" aria-describedby="sizing-addon2">
+                                    <input name="numerocarta" id="numerocarta" onchange="datiModificati('carta')" type="number" class="form-control" placeholder="Numero carta" aria-describedby="sizing-addon2">
 
                                     <div style="align: left">Data di scadenza</div>
                                     <div>
                                         <div class="dropdown" style="display: inline-block">
-                                                <select name="mesescadenza" id="mesescadenza" class="btn btn-default dropdown-toggle" type="button" >
+                                                <select name="mesescadenza" id="mesescadenza" onchange="datiModificati('carta')" class="btn btn-default dropdown-toggle" type="button" >
                                                   <%
                                                         String codice = "";
                                                         for (int i = 1; i <= 12; i++)
@@ -603,8 +655,7 @@
                                         </div>
                                         <div class="dropdown" style="display: inline-block;align: rigth ">
 
-
-                                                <select name="annoscadenza" id="annoscadenza" class="btn btn-default dropdown-toggle" type="button" >
+                                                <select name="annoscadenza" id="annoscadenza" onchange="datiModificati('carta')"  class="btn btn-default dropdown-toggle" type="button" >
                                                     <%
                                                         codice = "";
                                                         int year = new java.util.Date().getYear() + 1900 ;
@@ -619,7 +670,7 @@
                                         </div>
                                     </div>
 
-                                    <button class="btn btn-primary" onclick="checkDatiCarta()">Aggiorna</button>
+                                    <button class="btn btn-primary" onclick="checkDatiCarta()">Conferma indirizzo</button>
                                 </div>
                             </div>
                         </div>
@@ -628,8 +679,8 @@
                         <form action="ServletConfirmOrder" method="POST" >
                             <div class="row col-xs-12 alignCenter">
                                 <h3>Seleziona la modalità di acquisto:</h3>
-                                <button id="spedizione" class="btn btn-default" onclick="setModalita('spedizione')">Spedizione</button>
-                                <button id="ritiro" class="btn btn-default" onclick="setModalita('ritiro')">Ritira in negozio</button>
+                                <button id="spedizione" class="btn btn-default" onclick="checkModalita('spedizione')">Spedizione</button>
+                                <button id="ritiro" class="btn btn-default" onclick="checkModalita('ritiro')">Ritira in negozio</button>
                                 <input type="text" name="modalita" id="txtmodalita" style="visibility: hidden; width: 0px; height: 0px" >
                             </div> 
 
@@ -729,6 +780,9 @@
             AggiungiDatiUtente();
             AggiungiDatiMetodoPagamento();
             AggiungiProdotti(cartReceived);
+            
+            // inizializzazione del bottone per l'acquisto
+            enabledBtnAcquista("inizializzazione");
         </script>
     </body>
 </html>

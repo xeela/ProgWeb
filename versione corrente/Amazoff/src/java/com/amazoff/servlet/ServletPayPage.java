@@ -42,7 +42,7 @@ public class ServletPayPage extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM user_addresses, creditcards  WHERE user_addresses.id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + " AND user_addresses.id_utente = creditcards.id_utente;", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM user_addresses  WHERE id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + ";", connection);
                 
                 if(results.isAfterLast()) //se non c'è un utente con quel nome
                 {
@@ -54,7 +54,7 @@ public class ServletPayPage extends HttpServlet {
                 }
                 
                 jsonObj += "{";
-                jsonObj += "\"paymentdata\":[";
+                jsonObj += "\"addressdata\":[";
                 
                 // OSS: Per ora restituisco tutto
                 while (results.next()) {
@@ -68,15 +68,40 @@ public class ServletPayPage extends HttpServlet {
                     jsonObj += "\"city\": \"" + results.getString(4) + "\",";
                     jsonObj += "\"address\": \"" + results.getString(5) + "\",";
                     jsonObj += "\"province\": \"" + results.getString(6) + "\",";
-                    jsonObj += "\"postal_code\": \"" + results.getString(7) + "\",";
-                    jsonObj += "\"owner\": \"" + results.getString(10) + "\",";
-                    jsonObj += "\"card_number\": \"" + results.getString(11) + "\","; // TO DO: ritornare una stringa di N asterischi e solo le ultime 2 cifre visibili
-                    jsonObj += "\"exp_month\": \"" + results.getString(12) + "\",";
-                    jsonObj += "\"exp_year\": \"" + results.getString(13) + "\"";
+                    jsonObj += "\"postal_code\": \"" + results.getString(7) + "\"";
                     jsonObj += "}";
-                    isFirstTime = false;
                 }
-                jsonObj += "]}";
+                jsonObj += "]";
+                
+                results = MyDatabaseManager.EseguiQuery("SELECT * FROM creditcards  WHERE id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + ";", connection);
+                if(results.isAfterLast()) //se non c'è un utente con quel nome
+                {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("errorMessage", Errors.usernameDoesntExist);
+                    response.sendRedirect(request.getContextPath() + "/");
+                    connection.close();
+                    return;
+                }
+                else 
+                {
+                    jsonObj += ",\"paymentdata\":[";
+                    isFirstTime = true;
+                    // OSS: Per ora restituisco tutto
+                    while (results.next()) {
+                        if(isFirstTime == false) {
+                            jsonObj += ",";
+                        }
+                        jsonObj += "{";
+                        jsonObj += "\"owner\": \"" + results.getString(1) + "\",";
+                        jsonObj += "\"card_number\": \"" + results.getString(2) + "\","; // TO DO: ritornare una stringa di N asterischi e solo le ultime 2 cifre visibili
+                        jsonObj += "\"exp_month\": \"" + results.getString(3) + "\",";
+                        jsonObj += "\"exp_year\": \"" + results.getString(4) + "\"";
+                        jsonObj += "}";
+                        isFirstTime = false;
+                    }
+                    jsonObj += "]";
+                }
+                jsonObj += "}";
                 
                 
                 HttpSession session = request.getSession();
