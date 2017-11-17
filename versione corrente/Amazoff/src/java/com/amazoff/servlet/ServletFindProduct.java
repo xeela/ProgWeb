@@ -58,7 +58,10 @@ public class ServletFindProduct extends HttpServlet {
                 if (categoriaReceived.equals("product")) {
                     results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
                 } else if (categoriaReceived.equals("seller")) {
-                    //results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
+                    //************** TMP ****************
+                    // andra modificata chiedendo al db i dati relativi al "seller" invece che in base al "name"
+                    results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
+                    //***********************************
                 } else if (categoriaReceived.equals("category")) {
                     results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
                 }

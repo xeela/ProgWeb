@@ -27,9 +27,15 @@
         
         <title>Amazoff</title>
         <script>
+            var user;
+            var modalita = "null"; // vale: spedizione oppure ritiro. null se non ancora selezionata
+            var datiIndirizzo = "false"; // true = validi. false = non validi
+            var datiCarta = "false"; 
+            
             // ottengo i dati json contenenti i dati dell'utente
             var jsonDatiUtente;
             var cartReceived;
+            var datiok = false; // dati utente e carta di credito
             ottieniJson();
     
             function ottieniJson()
@@ -38,35 +44,35 @@
                 cartReceived = ${shoppingCartProducts};
                 console.log(jsonDatiUtente);
                 console.log(cartReceived);
-                AggiungiProdotti(cartReceived);
             }
     
             // funzione che inserisce nella form, l'indirizzo dell'utente
             function AggiungiDatiUtente() {
                 var toAdd = "";
                 
-                for(var i = 0; i < jsonDatiUtente.paymentdata.length; i++)
-                {
-                    toAdd += "<input name=\"paese\" value=\""+ jsonDatiUtente.paymentdata[i].town +"\" type=\"text\" class=\"form-control\" placeholder=\"Paese (si può anche fare a meno)\" aria-describedby=\"sizing-addon2\">";
-                    toAdd += "<input name=\"indirizzo\" value=\""+ jsonDatiUtente.paymentdata[i].address +"\" type=\"text\" class=\"form-control\" placeholder=\"Indirizzo\" aria-describedby=\"sizing-addon2\">";
-                    toAdd += "<input name=\"citta\" value=\""+ jsonDatiUtente.paymentdata[i].city +"\" type=\"text\" class=\"form-control\" placeholder=\"Città\" aria-describedby=\"sizing-addon2\">";
-                    toAdd += "<input name=\"provincia\" value=\""+ jsonDatiUtente.paymentdata[i].province +"\" type=\"text\" class=\"form-control\" placeholder=\"Provincia\" aria-describedby=\"sizing-addon2\">";
-                    toAdd += "<input name=\"cap\" value=\""+ jsonDatiUtente.paymentdata[i].postal_code +"\" type=\"number\" class=\"form-control\" placeholder=\"Codice postale\" aria-describedby=\"sizing-addon2\">";
+                if(jsonDatiUtente.addressdata.length > 0) {
+                    datiIndirizzo = "true";
+                    $("#paese").val(jsonDatiUtente.addressdata[0].town);  
+                    $("#indirizzo").val(jsonDatiUtente.addressdata[0].address);
+                    $("#citta").val(jsonDatiUtente.addressdata[0].city);
+                    $("#provincia").val(jsonDatiUtente.addressdata[0].province);
+                    $("#cap").val(jsonDatiUtente.addressdata[0].postal_code);
                 }
-        
-                toAdd += "<button class=\"btn btn-primary\" type=\"submit\">Aggiorna</button>";
-                $("#IndirizzoForm").html(toAdd);
             } 
             
              // funzione che inserisce nella form, i dati della carta di credito
             function AggiungiDatiMetodoPagamento() {
                 var toAdd = "";
                 
-                $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
-                $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
+                if(jsonDatiUtente.paymentdata.length > 0) {
+                    datiCarta = "true";
+                    
+                    $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
+                    $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
 
-                $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
-                $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+                    $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
+                    $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+                }
             } 
             
             function AggiungiProdotti(cart)
@@ -108,6 +114,150 @@
                 searchedProduct = jsonProdotti.searched;
                 $("#txtCerca").val(searchedProduct);
             }
+            
+            /* funzione che visualizza / nasconde la form della carta di credito in base al tipo di acquisto */
+            function checkModalita(selectedMode)
+            {
+                modalita = selectedMode;
+
+                if(modalita === "ritiro") {
+                    $( "#div_creditcard" ).fadeOut( "slow", function() {  /* Animation complete.*/ });
+                    document.getElementById("ritiro").disabled = true; 
+                    document.getElementById("spedizione").disabled = false; 
+                }
+                else
+                {
+                    $( "#div_creditcard" ).fadeIn( "slow", function() {  /* Animation complete.*/ });
+                    document.getElementById("spedizione").disabled = true; 
+                    document.getElementById("ritiro").disabled = false; 
+                }
+                enabledBtnAcquista(modalita);
+            }
+            
+            function enabledBtnAcquista(op)
+            {
+                //alert("STATO: " + op + " " + datiIndirizzo + " " + datiCarta);
+                if(op == "ritiro"){
+                    if(datiIndirizzo == "true") {
+                        document.getElementById("btnCompletaAcquisto").disabled = false; 
+                        document.getElementById("txtmodalita").value = modalita;
+                    }
+                }
+                else {
+                    if(op == "spedizione"){
+                        if(datiIndirizzo == "true" && datiCarta == "true") {
+                            document.getElementById("btnCompletaAcquisto").disabled = false; 
+                            document.getElementById("txtmodalita").value = modalita;
+                        }
+                    } 
+                    else {
+                        document.getElementById("btnCompletaAcquisto").disabled = true; 
+                        document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito dati validi prima di continuare.";
+                    }
+                }
+            }
+            
+            function  completaOrdine(stato)
+            {
+                window.location = "ServletConfirmOrder";
+            }
+            
+            function RadioSwitch(value){
+                $("#categoriaRicerca").val(value);
+                console.log($("#categoriaRicerca").val());
+            }
+            
+            // chiamata ajax che controlla che i dati siano stati modificati correttamente
+            function checkDatiIndirizzo()
+            {
+                //$("#indirizzoLoading").html("<i class=\"fa fa-spinner fa-spin\"></i>");
+                var paese = $("#paese").val();
+                var indirizzo = $("#indirizzo").val();
+                var citta = $("#citta").val();
+                var provincia = $("#provincia").val();
+                var cap = $("#cap").val();
+                
+                if(paese == "" || indirizzo == "" || citta == "" || provincia == "" || cap == "")
+                {
+                    enabledBtnAcquista("null");
+                    alert("Completa tutti i campi prima di continuare");
+                    
+                    return false; // uno o più campi sono vuoti
+                }
+                else {
+
+                    $.post('ServletAjaxPayPage', { 
+                            _op : "indirizzo",
+                            _user : user,
+                            _paese: paese,
+                            _indirizzo: indirizzo,
+                            _citta: citta,
+                            _provincia: provincia,
+                            _cap: cap,
+                            _ritiroOspedizione: modalita, 
+                    }, function(data) {
+                            datiIndirizzo = data;
+                            //alert(datiIndirizzo);
+                            // se i dati ricevuti sono validi, ed è gia stata scelta la modalità di acq. ALLORA controllo se sbloccare il btnAcq
+                            if((datiIndirizzo) && modalita != "null") {
+                                enabledBtnAcquista(modalita);
+                            }
+                                
+                    }).fail(function () {
+                        alert("ERR");
+                    });
+                }
+                //$("#").html("<span class=\"glyphicon glyphicon-user\"></span>");
+                //return false;
+            }
+            
+            function checkDatiCarta()
+            {
+                //$("#indirizzoLoading").html("<i class=\"fa fa-spinner fa-spin\"></i>");
+                var intestatario = $("#intestatario").val();
+                var numerocarta = $("#numerocarta").val();
+                var meseScadenza = $("#mesescadenza").val();
+                var annoScadenza = $("#annoscadenza").val();
+                
+                if(intestatario == "" || numerocarta == "" || meseScadenza == "" || annoScadenza == "")
+                {
+                    enabledBtnAcquista("null");
+                    alert("Completa tutti i campi prima di continuare");
+                    return false; // uno o più campi sono vuoti
+                }
+                else {
+
+                    $.post('ServletAjaxPayPageCard', { 
+                            _intestatario : intestatario,
+                            _numerocarta : numerocarta,
+                            _meseScadenza: meseScadenza,
+                            _annoScadenza: annoScadenza,
+                            _ritiroOspedizione: modalita, 
+                    }, function(data) {
+                            datiCarta = data;
+                            //alert(datiCarta);
+                             // se i dati ricevuti sono validi, ed è gia stata scelta la modalità di acq. ALLORA controllo se sbloccare il btnAcq
+                            if((datiCarta) && modalita != "null") {
+                                enabledBtnAcquista(modalita);
+                            }
+                    }).fail(function () {
+                        alert("ERR");
+                    });
+                }
+                //$("#").html("<span class=\"glyphicon glyphicon-user\"></span>");
+                //return false;
+            }
+            
+            function datiModificati(div)
+            {
+                if(div == "indirizzo")
+                    datiIndirizzo = "false";
+                else
+                    datiCarta = "false";
+                
+                enabledBtnAcquista("in_attesa_validazione");
+                
+            }
         </script>
             
     </head>
@@ -136,11 +286,14 @@
                                                 <% 
                                                 try {
                                                         String user = (session.getAttribute("user")).toString();
-
+                                                %>
+                                                <!-- memorizzo l'id dell'utente, cosi da usarlo per controllare i suoi dati (indirizzo e carta) -->
+                                                <script>user = "<%=user%>"</script> 
+                                                <%
                                                     }catch(Exception ex){
                                                 %>
-                                                 Accedi 
-                                                 <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
+                                                Accedi 
+                                                <script>document.getElementById("iconAccediRegistrati").href="loginPage.jsp";</script>
 
                                                 <%
                                                     }
@@ -196,7 +349,8 @@
                                     </div>
                                     
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-
+                                    <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
+                                    
                                     <div class="input-group-btn">
                                             <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                                             href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
@@ -310,6 +464,98 @@
                             </div>
                         </div>
                                    
+                         <!-- DIV FILTRI e CATEGORIE -->
+                        <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12 tmargin">
+                            <div id="collapseFilter" class="panel-collapse collapse out" > 
+                                <div class="row">
+                                    <div class="col-sm-6 col-lg-6" style="border-right: 2px #8c8c8c solid; ">
+                                        <h3 class="alignCenter">Filtri</h3>
+                                        <hr>
+                                        <ul class="no_dots"> 
+                                            <li>Vicinanza
+                                                <p>
+                                                    <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                </p>
+                                            </li>
+                                            <li>Prezzo 
+                                                <p>
+                                                    <input class="form-control" type="number" placeholder="Da..." name="prezzoDa"> 
+                                                    <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                </p>
+                                            </li>
+                                            <li>Recensione
+                                                <p>
+                                                    <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                    <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                    <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                    <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                    <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6">
+                                        <h3 class="alignCenter">Categorie</h3>
+                                        <hr>
+                                        <ul class="no_dots"> 
+                                            <li><input type="radio" value="product" id="product" name="categoria" checked="checked" onclick="RadioSwitch('product')"> Oggetto</li>
+                                            <li><input type="radio" value="seller" id="seller" name="categoria" onclick="RadioSwitch('seller')"> Venditore</li>
+                                            <li><input type="radio" value="category" id="category" name="categoria" onclick="RadioSwitch('category')"> Categoria</li>
+                                        </ul>
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+
+                        <!-- DIV FILTRI e CATEGORIE SU XS -->
+                        <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
+                            <div class="menuBar">
+                                <nav class="navbar navbar-default">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="navbar-header col-xs-6">
+                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                                    Filtri <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
+                                                    <li>Vicinanza
+                                                        <p>
+                                                            <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                        </p>
+                                                    </li>
+                                                    <li>Prezzo 
+                                                        <p>
+                                                            <input class="form-control"type="number" placeholder="Da..." name="prezzoDa"> 
+                                                            <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                        </p>
+                                                    </li>
+                                                    <li>Recensione
+                                                        <p>
+                                                            <input type="radio" value="5stelle" name="filtro"> 5 stelle 
+                                                            <input type="radio" value="4stelle" name="filtro"> 4 stelle 
+                                                            <input type="radio" value="3stelle" name="filtro"> 3 stelle 
+                                                            <input type="radio" value="2stelle" name="filtro"> 2 stelle 
+                                                            <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                        </p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="navbar-header col-xs-6">
+                                                <a class="btn navbar-text dropdown-toggle" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" >
+                                                    Scegli categoria <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-left col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
+                                                    <li><a href="#"><input type="radio" value="product" id="product_xs" name="categoria_xs" checked="checked" onclick="RadioSwitch('product')"> Oggetto</a></li>
+                                                    <li><a href="#"><input type="radio" value="seller" id="seller_xs" name="categoria_xs" onclick="RadioSwitch('seller')"> Venditore</a></li>
+                                                    <li><a href="#"><input type="radio" value="category" id="category_xs" name="categoria_xs" onclick="RadioSwitch('category')"> Categoria</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                                   
                         <!-- CORPO pagina -->           
                         <!-- RIEPILOGO ORDINE -->
                         <div class="tmargin">
@@ -370,38 +616,38 @@
                         <div class="row col-xs-12 col-md-6 col-lg-6">
                             <div class="col-lg-12" >
                                 <h3>Indirizzo di spedizione</h3>
-                                <div class="row col-xs-12">
-                                    <form class="form-group" id="IndirizzoForm" name="FormIndirizzo" action="ServletDopoRegistrazione" method="POST" onsubmit="return checkDati();">
-                                        <input name="paese" type="text" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
-                                        <input name="indirizzo" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
-                                        <input name="citta" type="text" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
-                                        <input name="provincia" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
-                                        <input name="cap" type="number" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
+                                <div class="row col-xs-12" >
+                                    <div class="form-group" id="IndirizzoForm" name="FormIndirizzo" >
+                                        <input name="paese" id="paese" type="text" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
+                                        <input name="indirizzo" id="indirizzo" onchange="datiModificati('indirizzo')" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
+                                        <input name="citta" id="citta" type="text" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
+                                        <input name="provincia" id="provincia" onchange="datiModificati('indirizzo')" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
+                                        <input name="cap" id="cap" type="number" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
                                     
-                                        <button class="btn btn-primary" type="submit">Aggiorna</button>
-                                    </form> 
+                                        <button class="btn btn-primary" onclick="checkDatiIndirizzo()">Conferma indirizzo</button>
+                                    </div> 
                                 </div>
 
                             </div>
                         </div>    
                         
                         <!-- RIEPILOGO / inserisci nuovi DATI CARTA CREDITO -->
-                        <div class="row col-xs-12 col-md-6 col-lg-6" >
+                        <div class="row col-xs-12 col-md-6 col-lg-6" id="div_creditcard" >
                             <div class="col-lg-12">    
                                 <h3>Carta di credito</h3>
                                 <div class="row col-xs-12">
-                                    <input name="intestatario" id="intestatario" type="text" class="form-control" placeholder="Intestatario" aria-describedby="sizing-addon2">
-                                    <input name="numerocarta" id="numerocarta" type="number" class="form-control" placeholder="Numero carta" aria-describedby="sizing-addon2">
+                                    <input name="intestatario" id="intestatario" onchange="datiModificati('carta')" type="text" class="form-control" placeholder="Intestatario" aria-describedby="sizing-addon2">
+                                    <input name="numerocarta" id="numerocarta" onchange="datiModificati('carta')" type="number" class="form-control" placeholder="Numero carta" aria-describedby="sizing-addon2">
 
                                     <div style="align: left">Data di scadenza</div>
                                     <div>
                                         <div class="dropdown" style="display: inline-block">
-                                                <select name="mesescadenza" id="mesescadenza" class="btn btn-default dropdown-toggle" type="button" >
+                                                <select name="mesescadenza" id="mesescadenza" onchange="datiModificati('carta')" class="btn btn-default dropdown-toggle" type="button" >
                                                   <%
                                                         String codice = "";
                                                         for (int i = 1; i <= 12; i++)
                                                         {
-                                                            codice += "<option value=\""+i+"\">"+i+"</li>";
+                                                            codice += "<option value=\""+i+"\"><li>"+i+"</li></option>";
                                                         }
                                                     %>
                                                     <%= codice %>
@@ -409,14 +655,13 @@
                                         </div>
                                         <div class="dropdown" style="display: inline-block;align: rigth ">
 
-
-                                                <select name="annoscadenza" id="annoscadenza" class="btn btn-default dropdown-toggle" type="button" >
+                                                <select name="annoscadenza" id="annoscadenza" onchange="datiModificati('carta')"  class="btn btn-default dropdown-toggle" type="button" >
                                                     <%
                                                         codice = "";
                                                         int year = new java.util.Date().getYear() + 1900 ;
                                                         for (int i = year; i <= year + 20; i++)
                                                         {
-                                                            codice += "<option value=\""+i+"\">"+i+"</li>";
+                                                            codice += "<option value=\""+i+"\"><li>"+i+"</li></option>";
                                                         }
                                                     %>
                                                     <%= codice %>
@@ -425,26 +670,84 @@
                                         </div>
                                     </div>
 
-                                    <button class="btn btn-primary" type="submit">Aggiorna</button>
+                                    <button class="btn btn-primary" onclick="checkDatiCarta()">Conferma indirizzo</button>
                                 </div>
                             </div>
                         </div>
                                                     
-                        <div class="row col-xs-12 alignCenter">
+                         
+                        <form action="ServletConfirmOrder" method="POST" >
+                            <div class="row col-xs-12 alignCenter">
+                                <h3>Seleziona la modalità di acquisto:</h3>
+                                <button id="spedizione" class="btn btn-default" onclick="checkModalita('spedizione')">Spedizione</button>
+                                <button id="ritiro" class="btn btn-default" onclick="checkModalita('ritiro')">Ritira in negozio</button>
+                                <input type="text" name="modalita" id="txtmodalita" style="visibility: hidden; width: 0px; height: 0px" >
+                            </div> 
+
+                            <div class="row col-xs-12 alignCenter" >
                                     <!-- TO DO: finche l'utente non inserisce i dati richiesti, non viene sbloccato il button.
                                         Se i dati sono già presenti perché vengono caricati dalla servlet, il btn è attivo
                                         Se l'utente modifica i dati, devo controllare che siano ancora validi prima di lasciargli completare l'ordine -->
-                            <a href="ServletConfirmOrder" class="btn btn-primary">Completa l'acquisto (prova: ok)</a>
-                            <a href="orderCompletedPage.jsp?p=err" class="btn btn-danger">Completa l'acquisto (prova: error)</a>
-                        </div>                            
+                                <button type="submit" id="btnCompletaAcquisto" onclick="completaOrdine('ok')" class="btn btn-primary" disabled="true">Completa l'acquisto (prova: ok)</button>
+                                <a href="orderCompletedPage.jsp?p=err" class="btn btn-danger">Completa l'acquisto (prova: error)</a>
+                            </div>   
+                        </form>
                 </div> 
                                             
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
                 
                 <!-- footer -->
-                <footer style="background-color: red">
-                    <p>&copy; Company 2017</p>
+                <footer style="background-color: #fc5d5d" class="tmargin">
+                    <div class="row">
+                        <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
+                            <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
+                            <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Cerca prodotto</a></p> 
+                            <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
+                            <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
+                            <%
+                                if(userType.equals("0")) // registrato
+                                {
+                            %>
+                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
+                                    <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
+                                    <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+
+                            <%  }
+                                else if(userType.equals("1")) // venditore
+                                {  %>
+                                    <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
+                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
+                                    <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
+                                    <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
+                            <%  }
+                                else if(userType.equals("2")) // admin
+                                {  %> 
+                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                            <%  }
+                                else // non loggato
+                                {  %>    
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
+                            <%  }  %>        
+                        </div>
+                        <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
+                            <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
+                            <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Venditore</a></p>
+                        </div>
+                        
+                        <div class="col-xs-4"><h5><b>Logout</b></h5>
+                            <p><a href="ServletLogout"><span class="glyphicon glyphicon-menu-right"></span> ESCI</a></p>
+                        </div>
+                    </div>
+                    <div class="row col-xs-12">
+                        <p>&copy; Amazoff 2017 - info@amazoff.com - via di Amazoff 69, Trento, Italia</p>
+                    </div>
                 </footer>
             
             </div>
@@ -473,11 +776,13 @@
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }    
             
-            
-            
             // inserisco i dati dell'utente e della carta, nella pagina
             AggiungiDatiUtente();
             AggiungiDatiMetodoPagamento();
+            AggiungiProdotti(cartReceived);
+            
+            // inizializzazione del bottone per l'acquisto
+            enabledBtnAcquista("inizializzazione");
         </script>
     </body>
 </html>

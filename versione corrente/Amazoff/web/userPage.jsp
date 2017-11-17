@@ -248,6 +248,11 @@
 
             // Onload handler to fire off the app.
             google.maps.event.addDomListener(window, 'load', initialize);
+            
+            function RadioSwitch(value){
+                $("#categoriaRicerca").val(value);
+                alert($("#categoriaRicerca").val());
+            }
         </script>    
     </head>
     <body class="bodyStyle">
@@ -301,7 +306,8 @@
                                 </div>
 
                                 <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-
+                                <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
+                                
                                 <div class="input-group-btn">
                                     <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
@@ -655,11 +661,11 @@
                                                                 </ul>
                                                             </div> 
                                                             <div class="form-group">
-                                                                <input TYPE='file' NAME='productPic1' class="btn btn-default form-control" aria-describedby="basic-addon1">
+                                                                <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1">
                                                                 Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1">
                                                             </div>
                                                             <div class="form-group">
-                                                                <input TYPE='submit' NAME='productPic' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
+                                                                <input TYPE='submit' NAME='productPic1' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
                                                             </div>
                                                         </form>
                                                     </div>    
