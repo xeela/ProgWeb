@@ -11,13 +11,11 @@ function RiempiBarraRicerca() {
 
 $(function () {
     $('#sorting td').click(function () {
-        var id = $(this).attr('id');
-        sortResults(id);
+        sortResults($(this).attr('id'));
     });
     
     $('#sorting li').click(function () {
-        var id = $(this).attr('id');
-        sortResults(id);
+        sortResults($(this).attr('id'));
     });
 });
 

@@ -31,7 +31,6 @@
             
             function RadioSwitch(value){
                 $("#categoriaRicerca").val(value);
-                alert($("#categoriaRicerca").val());
             }
         </script>
         <title>Amazoff</title>
@@ -281,9 +280,9 @@
                                         <h3 class="alignCenter">Categorie</h3>
                                         <hr>
                                         <ul class="no_dots"> 
-                                            <li><input type="radio" value="product" name="categoria" checked="checked"> Oggetto</li>
-                                            <li><input type="radio" value="seller" name="categoria"> Venditore</li>
-                                            <li><input type="radio" value="category" name="categoria"> Categoria</li>
+                                            <li><input type="radio" value="product" name="categoria" checked="checked" onclick="RadioSwitch('product')"> Oggetto</li>
+                                            <li><input type="radio" value="seller" id="seller" name="categoria" onclick="RadioSwitch('seller')"> Venditore</li>
+                                            <li><input type="radio" value="category" id="category" name="categoria" onclick="RadioSwitch('category')"> Categoria</li>
                                         </ul>
                                     </div>
                                 </div>  
@@ -328,9 +327,9 @@
                                                     Scegli categoria <span class="caret"></span>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-left col-xs-8 hidden-sm hidden-md hidden-lg"> <!-- ?????????? sull'ipad non sparisce -->
-                                                    <li><a href="#"><input type="radio" value="product" name="categoria_xs" checked="checked"> Oggetto</a></li>
-                                                    <li><a href="#"><input type="radio" value="seller" name="categoria_xs"> Venditore</a></li>
-                                                    <li><a href="#"><input type="radio" value="category" name="categoria_xs"> Categoria</a></li>
+                                                    <li><a href="#"><input type="radio" value="product" id="product_xs" name="categoria_xs" checked="checked" onclick="RadioSwitch('product')"> Oggetto</a></li>
+                                                    <li><a href="#"><input type="radio" value="seller" id="seller_xs" name="categoria_xs" onclick="RadioSwitch('seller')"> Venditore</a></li>
+                                                    <li><a href="#"><input type="radio" value="category" id="category_xs" name="categoria_xs" onclick="RadioSwitch('category')"> Categoria</a></li>
                                                 </ul>
                                             </div>
                                         </div>

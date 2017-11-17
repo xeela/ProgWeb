@@ -65,8 +65,9 @@
                 $("#txtCerca").val(searchedProduct);
             }
             
+            // imposta parametro di ricerca
             function RadioSwitch(value){
-                $("#categoriaRicerca").val(value);
+                $("#categoriaRicerca").val(value);                
             }
         </script>
             
@@ -297,6 +298,7 @@
                                             </li>
                                             <li>Recensione
                                                 <p>
+                                                    <input type="radio" value="all" name="filtro" checked="checked"> tutte 
                                                     <input type="radio" value="5stelle" name="filtro"> 5 stelle 
                                                     <input type="radio" value="4stelle" name="filtro"> 4 stelle 
                                                     <input type="radio" value="3stelle" name="filtro"> 3 stelle 
@@ -343,11 +345,12 @@
                                                     </li>
                                                     <li>Recensione
                                                         <p>
-                                                            <input type="radio" value="5stelle" name="filtro"> 5 stelle 
-                                                            <input type="radio" value="4stelle" name="filtro"> 4 stelle 
-                                                            <input type="radio" value="3stelle" name="filtro"> 3 stelle 
-                                                            <input type="radio" value="2stelle" name="filtro"> 2 stelle 
-                                                            <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                            <input type="radio" value="all" name="filtro_xs"> tutte 
+                                                            <input type="radio" value="5stelle" name="filtro_xs"> 5 stelle 
+                                                            <input type="radio" value="4stelle" name="filtro_xs"> 4 stelle 
+                                                            <input type="radio" value="3stelle" name="filtro_xs"> 3 stelle 
+                                                            <input type="radio" value="2stelle" name="filtro_xs"> 2 stelle 
+                                                            <input type="radio" value="1stella" name="filtro_xs"> 1 stella 
                                                         </p>
                                                     </li>
                                                 </ul>
