@@ -41,6 +41,7 @@ public class ServletFindProduct extends HttpServlet {
             String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
             String productReceived = request.getParameter("txtCerca");
             String categoriaReceived = request.getParameter("categoriaRicerca");
+            String recensioneReceived = request.getParameter("recensioneRicerca");
             
             if (!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
@@ -54,18 +55,35 @@ public class ServletFindProduct extends HttpServlet {
                 // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
 
                 ResultSet results = null;
+                String query = "";
                 
-                if (categoriaReceived.equals("product")) {
-                    results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
-                } else if (categoriaReceived.equals("seller")) {
-                    //************** TMP ****************
-                    // andra modificata chiedendo al db i dati relativi al "seller" invece che in base al "name"
-                    results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
-                    //***********************************
-                } else if (categoriaReceived.equals("category")) {
-                    results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;", connection);
+                if(recensioneReceived != null){
+                    query += "SELECT products.name, products.description, price, products.id "
+                            + "FROM products, "
+                            + "(SELECT products.id, AVG(global_value) AS avg "
+                            + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
+                            + "WHERE products.ID = sub.id AND avg >= " + recensioneReceived + " AND ";
+                } else {
+                    query += "SELECT name, description, price, id FROM products WHERE ";
                 }
-
+                
+                switch (categoriaReceived) {
+                    case "product":
+                        query += "products.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC";
+                        break;
+                    case "seller": 
+                        // TODO
+                        break;
+                    case "category":                    
+                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC";
+                        break;
+                    default:
+                        break;
+                }
+                
+                query += ";";
+                results = MyDatabaseManager.EseguiQuery(query, connection);
+                
                 if (results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
                 {
                     HttpSession session = request.getSession();

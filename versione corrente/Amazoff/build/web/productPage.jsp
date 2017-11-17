@@ -97,7 +97,19 @@
             function RadioSwitch(value){
                 $("#categoriaRicerca").val(value);
             }
-
+            
+            function impostaRecensione(value){
+                if($("#recensioneRicerca").length){
+                    if(value == "all"){
+                        $("#recensioneRicerca").remove();
+                    } else{
+                        $("#recensioneRicerca").val(value);
+                    }
+                } else if (value != 'all'){
+                    $("#parametriRicerca").append('<input id="recensioneRicerca" name="recensioneRicerca" type="text" style="display:none;" value="">');
+                    $("#recensioneRicerca").val(value);
+                }
+            }  
         </script> 
         <title>Amazoff</title>
     </head>
@@ -315,11 +327,12 @@
                                             </li>
                                             <li>Recensione
                                                 <p>
-                                                    <input type="radio" value="5stelle" name="filtro"> 5 stelle 
-                                                    <input type="radio" value="4stelle" name="filtro"> 4 stelle 
-                                                    <input type="radio" value="3stelle" name="filtro"> 3 stelle 
-                                                    <input type="radio" value="2stelle" name="filtro"> 2 stelle 
-                                                    <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                    <input type="radio" value="all" name="filtro" checked="checked" onclick="impostaRecensione('all')"> tutte 
+                                                    <input type="radio" value="5stelle" name="filtro" onclick="impostaRecensione('5')"> 5 stelle 
+                                                    <input type="radio" value="4stelle" name="filtro" onclick="impostaRecensione('4')"> 4 stelle 
+                                                    <input type="radio" value="3stelle" name="filtro" onclick="impostaRecensione('3')"> 3 stelle 
+                                                    <input type="radio" value="2stelle" name="filtro" onclick="impostaRecensione('2')"> 2 stelle 
+                                                    <input type="radio" value="1stella" name="filtro" onclick="impostaRecensione('1')"> 1 stella 
                                                 </p>
                                             </li>
                                         </ul>
@@ -361,11 +374,12 @@
                                                     </li>
                                                     <li>Recensione
                                                         <p>
-                                                            <input type="radio" value="5stelle" name="filtro"> 5 stelle 
-                                                            <input type="radio" value="4stelle" name="filtro"> 4 stelle 
-                                                            <input type="radio" value="3stelle" name="filtro"> 3 stelle 
-                                                            <input type="radio" value="2stelle" name="filtro"> 2 stelle 
-                                                            <input type="radio" value="1stella" name="filtro"> 1 stella 
+                                                            <input type="radio" value="all" name="filtro_xs" onclick="impostaRecensione('all')"> tutte 
+                                                            <input type="radio" value="5stelle" name="filtro_xs" onclick="impostaRecensione('5')"> 5 stelle 
+                                                            <input type="radio" value="4stelle" name="filtro_xs" onclick="impostaRecensione('4')"> 4 stelle 
+                                                            <input type="radio" value="3stelle" name="filtro_xs" onclick="impostaRecensione('3')"> 3 stelle 
+                                                            <input type="radio" value="2stelle" name="filtro_xs" onclick="impostaRecensione('2')"> 2 stelle 
+                                                            <input type="radio" value="1stella" name="filtro_xs" onclick="impostaRecensione('1')"> 1 stella 
                                                         </p>
                                                     </li>
                                                 </ul>
