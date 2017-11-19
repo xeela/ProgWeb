@@ -92,10 +92,10 @@ public class ServletPayPage extends HttpServlet {
                             jsonObj += ",";
                         }
                         jsonObj += "{";
-                        jsonObj += "\"owner\": \"" + results.getString(1) + "\",";
-                        jsonObj += "\"card_number\": \"" + results.getString(2) + "\","; // TO DO: ritornare una stringa di N asterischi e solo le ultime 2 cifre visibili
-                        jsonObj += "\"exp_month\": \"" + results.getString(3) + "\",";
-                        jsonObj += "\"exp_year\": \"" + results.getString(4) + "\"";
+                        jsonObj += "\"owner\": \"" + results.getString(3) + "\",";
+                        jsonObj += "\"card_number\": \"" + results.getString(4) + "\","; // TO DO: ritornare una stringa di N asterischi e solo le ultime 2 cifre visibili
+                        jsonObj += "\"exp_month\": \"" + results.getString(5) + "\",";
+                        jsonObj += "\"exp_year\": \"" + results.getString(6) + "\"";
                         jsonObj += "}";
                         isFirstTime = false;
                     }
