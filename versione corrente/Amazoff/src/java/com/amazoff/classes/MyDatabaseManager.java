@@ -170,6 +170,28 @@ public class MyDatabaseManager {
         return jsonObj;
     }
 
+    public static String GetJsonShops(ResultSet results, Connection connection) throws SQLException {
+        String jsonObj = "";
+        boolean isFirstTime = true, isFirstTimeImg = true;
+        
+        while (results.next()) {
+            if (!isFirstTime) //metto la virgola prima dell'oggetto solo se non è il primo
+            {
+                jsonObj += ", ";
+            }
+            isFirstTime = false;
+
+            jsonObj += "{";
+            jsonObj += "\"name\": \"" + results.getString(1) + "\",";
+            jsonObj += "\"lat\": \"" + results.getString(2) + "\",";
+            jsonObj += "\"lng\": \"" + results.getString(3) + "\",";
+            jsonObj += "]";
+            jsonObj += "}";
+        }
+        
+        return jsonObj;
+    }
+    
     static public String GetJsonOfProductsInSet(ResultSet results, Connection connection) throws SQLException {
         String jsonObj = "";
         jsonObj += "{";
@@ -194,6 +216,18 @@ public class MyDatabaseManager {
         return jsonObj;
     }
 
+    static public String GetJsonOfShopsInSet(ResultSet results, Connection connection) throws SQLException {
+        String jsonObj = "";
+        jsonObj += "{";
+        jsonObj += "\"shops\":[";
+        
+        jsonObj += GetJsonShops(results, connection);
+        
+        jsonObj += "]}";
+
+        return jsonObj;
+    }
+    
     static public String GetCurrentDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
