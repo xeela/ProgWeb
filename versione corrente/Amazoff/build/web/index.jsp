@@ -64,6 +64,23 @@
                 searchedProduct = jsonProdotti.searched;
                 $("#txtCerca").val(searchedProduct);
             }
+            
+            $(document).ready(function() {
+                $("#carouselNegozi").click( function(){
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(redirect);
+                    } else {
+                        alert("Geolocation is not supported by this browser");
+                    }
+                });
+                
+                function redirect(position){
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    // TODO: collegare servlet prima di raggiungere la pagina con la mappa
+                    window.location.href = 'negoziVicini.jsp';// 'ServletFindShops?userLat=' + lat + "&userLng=" + lng;
+                }
+            });
             </script>
     
     </head>
@@ -382,9 +399,9 @@ Accedi
                         <div class="carousel-inner" role="listbox">
 
                           <div class="item active">
-                              <a href="paginaConFiltroVenditori" role="button">
-                                <img src="images/trova_venditori.jpg" alt="Trova i venditori">
-                              </a>
+                            <a id="carouselNegozi" role="button">
+                              <img src="images/trova_venditori.jpg" alt="Trova i venditori">
+                            </a>
                             <!--<div class="carousel-caption">
                               <h3>Chania</h3>
                               <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
@@ -497,7 +514,7 @@ Accedi
 // When the user clicks on the button, scroll to the top of the document
             function                             topFunction() {
                         document.body.scrollTop = 0; // For Chrome, Safari and Opera 
-                document.documentElement.scrollT                            op = 0; // For IE and Firefox
+                document.documentElement.scrollTop = 0; // For IE and Firefox
                         }
                         
                         // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt

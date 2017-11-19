@@ -564,41 +564,37 @@
             
             
         <script>
-                    // When the user scrolls down 20px from the top of the document, show the button
-                    window.onscroll = function () {
-                        scrollFunction()
-                    };
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function () {
+                scrollFunction()
+            };
 
-                    function scrollFunction() {
-                
-                        if (doc
-                    ument.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                     document.getElementById("btnTop").style.display = "block";
-                        } else {
+                } else {
                     document.getElementById("btnTop").style.display = "none";
-                        }
-                    }
+                }
+            }
 
-                    // When the user clicks on the button, scroll to the top of the document
-                    function topFunction() {
-                        document.body.scrollTop = 0; // For Chrome, Safari and Opera 
-                        document.documentElement.scrollTop = 0; // For IE and Firefox
-                    }
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+                document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+                document.documentElement.scrollTop = 0; // For IE and Firefox
+            }
 
-<!-- CODICE per la gestione del CAROUSEL delle immagini -->
+            <!-- CODICE per la gestione del CAROUSEL delle immagini -->
             $("#myCarousel").carousel({
                 interval: 5000
             });
 
-               //Handles the carousel thumbnails
-               $('[id^=carousel-selector-]').click( function(){
-               
-                    var id = this.id.substr(this.id.lastIndexOf("-") + 1);
-                    var id = parseInt(id);
-                    $("#myCarousel").carousel(id);
-                });
-               // FINE carousel
-        
+            //Handles the carousel thumbnails
+            $('[id^=carousel-selector-]').click( function(){
+                var id = this.id.substr(this.id.lastIndexOf("-") + 1);
+                var id = parseInt(id);
+                $("#myCarousel").carousel(id);
+            });
+            // FINE carousel
         </script>
     </body>
 </html>

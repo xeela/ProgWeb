@@ -22,4 +22,5 @@ public class Errors {
     static public String dbQuery = "C'è stato un errore nell'inserimento o nella lettura dei dati dal database";
     //Altro
     static public String noProductFound = "Non è stato trovato un prodotto con quel nome";
+    static public String noShopFound = "Non è stato trovato un negozio vicino a te";
 }
