@@ -21,7 +21,7 @@
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDofgdH-2Rk2JWl1U_ZWs-yi2gq_U25txY&callback=initMap"></script> 
-
+        <script type="text/javascript" src="js/parametri-ricerca.js"></script>
 
         <link rel="stylesheet" href="css/amazoffStyle.css">
 
@@ -248,23 +248,6 @@
 
             // Onload handler to fire off the app.
             google.maps.event.addDomListener(window, 'load', initialize);
-            
-            function RadioSwitch(value){
-                $("#categoriaRicerca").val(value);
-            }
-            
-            function impostaRecensione(value){
-                if($("#recensioneRicerca").length){
-                    if(value == "all"){
-                        $("#recensioneRicerca").remove();
-                    } else{
-                        $("#recensioneRicerca").val(value);
-                    }
-                } else if (value != 'all'){
-                    $("#parametriRicerca").append('<input id="recensioneRicerca" name="recensioneRicerca" type="text" style="display:none;" value="">');
-                    $("#recensioneRicerca").val(value);
-                }
-            }
         </script>    
     </head>
     <body class="bodyStyle">
@@ -386,8 +369,8 @@
                                         </li>
                                         <li>Prezzo 
                                             <p>
-                                                <input class="form-control" type="number" placeholder="Da..." name="prezzoDa"> 
-                                                <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
+                                                <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
                                             </p>
                                         </li>
                                         <li>Recensione
@@ -433,8 +416,8 @@
                                                 </li>
                                                 <li>Prezzo 
                                                     <p>
-                                                        <input class="form-control"type="number" placeholder="Da..." name="prezzoDa"> 
-                                                        <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
                                                     </p>
                                                 </li>
                                                 <li>Recensione

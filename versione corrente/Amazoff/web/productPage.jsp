@@ -18,6 +18,7 @@
         <!--<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script> rompe il carousel-->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script> 
+        <script type="text/javascript" src="js/parametri-ricerca.js"></script>
         
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         
@@ -93,23 +94,6 @@
                 $("#div_carousel").html(toAdd);
                 //$("#div_carousel_miniature").html(toAddMiniature);
             }
-            
-            function RadioSwitch(value){
-                $("#categoriaRicerca").val(value);
-            }
-            
-            function impostaRecensione(value){
-                if($("#recensioneRicerca").length){
-                    if(value == "all"){
-                        $("#recensioneRicerca").remove();
-                    } else{
-                        $("#recensioneRicerca").val(value);
-                    }
-                } else if (value != 'all'){
-                    $("#parametriRicerca").append('<input id="recensioneRicerca" name="recensioneRicerca" type="text" style="display:none;" value="">');
-                    $("#recensioneRicerca").val(value);
-                }
-            }  
         </script> 
         <title>Amazoff</title>
     </head>
@@ -321,8 +305,8 @@
                                             </li>
                                             <li>Prezzo 
                                                 <p>
-                                                    <input class="form-control" type="number" placeholder="Da..." name="prezzoDa"> 
-                                                    <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                    <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
+                                                    <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
                                                 </p>
                                             </li>
                                             <li>Recensione
@@ -368,8 +352,8 @@
                                                     </li>
                                                     <li>Prezzo 
                                                         <p>
-                                                            <input class="form-control"type="number" placeholder="Da..." name="prezzoDa"> 
-                                                            <input class="form-control" type="number" placeholder="A..." name="prezzoA">
+                                                            <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
+                                                            <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
                                                         </p>
                                                     </li>
                                                     <li>Recensione

@@ -42,6 +42,8 @@ public class ServletFindProduct extends HttpServlet {
             String productReceived = request.getParameter("txtCerca");
             String categoriaReceived = request.getParameter("categoriaRicerca");
             String recensioneReceived = request.getParameter("recensioneRicerca");
+            String prezzoMinRicerca = request.getParameter("prezzoMinRicerca");
+            String prezzoMaxRicerca = request.getParameter("prezzoMaxRicerca");
             
             if (!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
@@ -57,6 +59,7 @@ public class ServletFindProduct extends HttpServlet {
                 ResultSet results = null;
                 String query = "";
                 
+                // esegue sempre
                 if(recensioneReceived != null){
                     query += "SELECT products.name, products.description, price, products.id "
                             + "FROM products, "
@@ -67,6 +70,16 @@ public class ServletFindProduct extends HttpServlet {
                     query += "SELECT name, description, price, id FROM products WHERE ";
                 }
                 
+                // esegue solo su condizione
+                if(prezzoMinRicerca != null){
+                    query += "price >= " + prezzoMinRicerca + " AND ";
+                }
+                
+                if(prezzoMaxRicerca != null){
+                    query += "price <= " + prezzoMaxRicerca + " AND ";
+                }
+                
+                // esegue sempre
                 switch (categoriaReceived) {
                     case "product":
                         query += "products.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC";
