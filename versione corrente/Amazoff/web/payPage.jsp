@@ -45,6 +45,7 @@
                 cartReceived = ${shoppingCartProducts};
                 console.log(jsonDatiUtente);
                 console.log(cartReceived);
+                
             }
     
             // funzione che inserisce nella form, l'indirizzo dell'utente
@@ -64,7 +65,11 @@
              // funzione che inserisce nella form, i dati della carta di credito
             function AggiungiDatiMetodoPagamento() {
                 var toAdd = "";
-                
+                console.log("2");
+                 console.log("a: "+ jsonDatiUtente.paymentdata[0].owner);
+                 console.log("b: "+ jsonDatiUtente.paymentdata[0].card_number);
+                 console.log("c: "+ jsonDatiUtente.paymentdata[0].exp_month);
+                 console.log("d: "+ jsonDatiUtente.paymentdata[0].exp_year);
                 if(jsonDatiUtente.paymentdata.length > 0) {
                     datiCarta = "true";
                     
