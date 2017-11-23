@@ -687,12 +687,12 @@
                                 <input type="text" name="modalita" id="txtmodalita" style="visibility: hidden; width: 0px; height: 0px" >
                             </div> 
 
-                            <div class="row col-xs-12 alignCenter" >
+                            <div class="row col-xs-12 alignCenter" style="margin-top: 10px" >
                                     <!-- TO DO: finche l'utente non inserisce i dati richiesti, non viene sbloccato il button.
                                         Se i dati sono già presenti perché vengono caricati dalla servlet, il btn è attivo
                                         Se l'utente modifica i dati, devo controllare che siano ancora validi prima di lasciargli completare l'ordine -->
-                                <button type="submit" id="btnCompletaAcquisto" onclick="completaOrdine('ok')" class="btn btn-primary" disabled="true">Completa l'acquisto (prova: ok)</button>
-                                <a href="orderCompletedPage.jsp?p=err" class="btn btn-danger">Completa l'acquisto (prova: error)</a>
+                                <button type="submit" id="btnCompletaAcquisto" onclick="completaOrdine('ok')" class="btn btn-primary" disabled="true">Completa l'acquisto</button>
+                                
                             </div>   
                         </form>
                 </div> 
