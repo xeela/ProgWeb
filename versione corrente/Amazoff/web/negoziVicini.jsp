@@ -15,6 +15,7 @@
     <script type="text/javascript" src="js/parametri-ricerca.js"></script>
 
     <link rel="stylesheet" href="css/amazoffStyle.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAubIH7U4eTK9xVgfusufE2fu0LG8Xq5ao&callback=initMap"></script>
     <script type="text/javascript" src="js/geolocation-marker.js"></script>
