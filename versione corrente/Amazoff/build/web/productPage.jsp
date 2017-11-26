@@ -301,7 +301,7 @@
                                         <ul class="no_dots"> 
                                             <li>Vicinanza
                                                 <p>
-                                                    <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                    <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanza(this)" onkeypress="return isNumberKey(event)"> 
                                                 </p>
                                             </li>
                                             <li>Prezzo 
@@ -348,7 +348,7 @@
                                                 <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
                                                     <li>Vicinanza
                                                         <p>
-                                                            <input class="form-control" type="number" placeholder="KM Max" name="distanzaMax"> 
+                                                            <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanza(this)" onkeypress="return isNumberKey(event)"> 
                                                         </p>
                                                     </li>
                                                     <li>Prezzo 

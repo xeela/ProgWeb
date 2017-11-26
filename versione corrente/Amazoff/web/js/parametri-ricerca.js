@@ -15,6 +15,38 @@ function impostaRecensione(value){
     }
 }
 
+function impostaDistanza(obj){
+    var dist = obj.value;
+    
+    if($("#distanzaRicerca").length){
+        $("#distanzaRicerca").val(dist);
+    } else {
+        $("#parametriRicerca").append('<input id="distanzaRicerca" name="distanzaRicerca" type="text" style="display:none;" value="">');
+        $("#distanzaRicerca").val(dist);
+    }
+    
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(impostaLatLng);
+    } else {
+        alert("Geolocation is not supported by this browser");
+    }
+}
+
+function impostaLatLng(position){
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    
+    if($("#latRicerca").length){
+        $("#latRicerca").val(lat);
+        $("#lngRicerca").val(lng);
+    } else {
+        $("#parametriRicerca").append('<input id="latRicerca" name="latRicerca" type="text" style="display:none;" value="">');
+        $("#latRicerca").val(lat);
+        $("#parametriRicerca").append('<input id="lngRicerca" name="lngRicerca" type="text" style="display:none;" value="">');
+        $("#lngRicerca").val(lng);
+    }
+}
+
 function impostaMin(obj) {
     var min = obj.value;
     var remove = false;

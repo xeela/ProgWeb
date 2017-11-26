@@ -42,8 +42,11 @@ public class ServletFindProduct extends HttpServlet {
             String productReceived = request.getParameter("txtCerca");
             String categoriaReceived = request.getParameter("categoriaRicerca");
             String recensioneReceived = request.getParameter("recensioneRicerca");
+            String distanzaReceived = request.getParameter("distanzaRicerca");
             String prezzoMinRicerca = request.getParameter("prezzoMinRicerca");
             String prezzoMaxRicerca = request.getParameter("prezzoMaxRicerca");
+            String userLat = request.getParameter("latRicerca");
+            String userLng = request.getParameter("lngRicerca");
             
             if (!MyDatabaseManager.alreadyExists) //se non esiste lo creo
             {
@@ -61,13 +64,43 @@ public class ServletFindProduct extends HttpServlet {
                 
                 // esegue sempre
                 if(recensioneReceived != null){
-                    query += "SELECT products.name, products.description, price, products.id "
-                            + "FROM products, "
-                            + "(SELECT products.id, AVG(global_value) AS avg "
-                            + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
-                            + "WHERE products.ID = sub.id AND avg >= " + recensioneReceived + " AND ";
+                    if(distanzaReceived != null){
+                        query += "SELECT products.name, products.description, price, products.id, "
+                                + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
+                                + "* COS(RADIANS(" + userLat + ")) "
+                                + "* COS(RADIANS(lng - " + userLng + ")) "
+                                + "+ SIN(RADIANS(lat)) "
+                                + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
+                                + "FROM products, shops, shops_coordinates, "
+                                + "(SELECT products.id, AVG(global_value) AS avg "
+                                + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
+                                + "WHERE products.id = sub.id AND products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
+                                + "AND avg >= " + recensioneReceived + " "
+                                + "AND products.ritiro = 1 "
+                                + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
+                    } else {
+                        query += "SELECT products.name, products.description, price, products.id "
+                                + "FROM products, shops, "
+                                + "(SELECT products.id, AVG(global_value) AS avg "
+                                + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
+                                + "WHERE products.id_shop = shops.id "
+                                + "AND products.ID = sub.id AND avg >= " + recensioneReceived + " AND ";
+                    }
+                } else if(distanzaReceived != null){
+                    query += "SELECT products.name, products.description, price, products.id, "
+                            + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
+                            + "* COS(RADIANS(" + userLat + ")) "
+                            + "* COS(RADIANS(lng - " + userLng + ")) "
+                            + "+ SIN(RADIANS(lat)) "
+                            + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
+                            + "FROM products, shops, shops_coordinates "
+                            + "WHERE products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
+                            + "AND products.ritiro = 1 "
+                            + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                 } else {
-                    query += "SELECT name, description, price, id FROM products WHERE ";
+                    query += "SELECT products.name, products.description, price, products.id "
+                            + "FROM products, shops "
+                            + "WHERE products.id_shop = shops.id AND ";
                 }
                 
                 // esegue solo su condizione
@@ -82,19 +115,18 @@ public class ServletFindProduct extends HttpServlet {
                 // esegue sempre
                 switch (categoriaReceived) {
                     case "product":
-                        query += "products.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC";
+                        query += "products.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;";
                         break;
                     case "seller": 
-                        // TODO
+                        query += "shops.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;";
                         break;
                     case "category":                    
-                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC";
+                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;";
                         break;
                     default:
                         break;
                 }
                 
-                query += ";";
                 results = MyDatabaseManager.EseguiQuery(query, connection);
                 
                 if (results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto

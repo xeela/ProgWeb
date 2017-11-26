@@ -60,8 +60,8 @@ public class ServletFindShops extends HttpServlet {
                         + "* COS(RADIANS(lng - " + userLng + ")) "
                         + "+ SIN(RADIANS(lat)) "
                         + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
-                        + "FROM shops, shops_coordinates, users "
-                        + "WHERE shops.id_owner = users.id AND shops_coordinates.id_shop = shops.id "
+                        + "FROM shops, shops_coordinates "
+                        + "WHERE shops_coordinates.id_shop = shops.id "
                         + "HAVING dist_in_km <= 20.0;";
                 
                 //query += ";";
