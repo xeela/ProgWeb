@@ -22,6 +22,7 @@
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
         
         <link rel="stylesheet" href="css/amazoffStyle.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         
         <title>Amazoff</title>
                 <script type="text/javascript">

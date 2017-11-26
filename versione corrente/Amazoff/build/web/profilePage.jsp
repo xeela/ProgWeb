@@ -14,6 +14,7 @@
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/sjcl.js" ></script>
         <link rel="stylesheet" href="css/amazoffStyle.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         
         <script type="text/javascript">
             var condizioniAccettate = false;

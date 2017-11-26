@@ -78,18 +78,18 @@ public class ServletConfirmOrder extends HttpServlet {
                 
                 connection.close();
                 
-                response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=ok");       
+                response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=ok&id="+orderID);       
             }
             else
             {
                 //session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/payPage"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=err"); 
             }
         }catch (SQLException ex) {
             MyDatabaseManager.LogError(request.getParameter("username"), "ServletConfirmOrder", ex.toString());
             HttpSession session = request.getSession();
             //session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/payPage"); //TODO: Gestire meglio l'errore
+            response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=err"); 
         }
     }
 

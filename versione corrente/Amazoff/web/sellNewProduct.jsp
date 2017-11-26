@@ -23,6 +23,7 @@
         <script type="text/javascript" src="js/parametri-ricerca.js"></script>
 
         <link rel="stylesheet" href="css/amazoffStyle.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <title>Amazoff</title>
     </head>
     <body class="bodyStyle">

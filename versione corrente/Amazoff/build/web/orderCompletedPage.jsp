@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="css/bootstrap-theme.css">
         <script src="js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/amazoffStyle.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         
         <title>Amazoff</title>
     </head>
