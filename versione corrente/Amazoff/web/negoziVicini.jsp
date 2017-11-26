@@ -21,7 +21,15 @@
     <script type="text/javascript" src="js/geolocation-marker.js"></script>
     
     <script>
+        var jsonNegozi;
+        
+        function LogJson(){
+            jsonNegozi = ${jsonNegozi};
+            console.log(jsonNegozi);
+        }
+        
         function initMap(){
+            LogJson();
             if (navigator.geolocation){
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var pos = {
@@ -51,26 +59,27 @@
 
                     GeoMarker.setMap(map);
                     
-                    var myLatLng={
-                        lat: 46.088474,
-                        lng: 11.117854
-                    };
-                    
-                    // TMP
-                    var marker = new google.maps.Marker({
-                      position: myLatLng,
-                      map: map,
-                      title: 'MediaWorld'
-                    });
-                    // TMP-end
+                    var marker;
+                    var shopPos;
+        
+                    for (var i = 0; i < jsonNegozi.shops.length; i++) {
+                        shopPos = {
+                            lat: parseFloat(jsonNegozi.shops[i].lat),
+                            lng: parseFloat(jsonNegozi.shops[i].lng)
+                        };
+                        
+                        marker = new google.maps.Marker({
+                            position: shopPos,
+                            map: map,
+                            title: jsonNegozi.shops[i].name
+                        });
+                    }
                 });
             }
             else{
                 alert("Geolocation is not supported by this browser.");
             }
         }
-        
-        // TODO: popolare con marker da json
     </script>
 	<style type="text/css">
 		div#mia_mappa {

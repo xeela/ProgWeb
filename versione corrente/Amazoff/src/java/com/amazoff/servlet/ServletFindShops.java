@@ -54,41 +54,46 @@ public class ServletFindShops extends HttpServlet {
                 // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
 
                 ResultSet results = null;
-                String query = "SELECT shops_coordinates.name, lat, lng "
-                        + "FROM shops, shops_coordinates,users "
-                        + "WHERE shops.id_owner = users.id AND shops_coordinates.id_shop = shops.id"
-                        + "";   // TODO: AGGIUNGERE CONDIZIONE DISTANZA
+                String query = "SELECT shops.name, lat, lng, "
+                        + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
+                        + "* COS(RADIANS(" + userLat + ")) "
+                        + "* COS(RADIANS(lng - " + userLng + ")) "
+                        + "+ SIN(RADIANS(lat)) "
+                        + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
+                        + "FROM shops, shops_coordinates, users "
+                        + "WHERE shops.id_owner = users.id AND shops_coordinates.id_shop = shops.id "
+                        + "HAVING dist_in_km <= 20.0;";
+                
+                //query += ";";
+                results = MyDatabaseManager.EseguiQuery(query, connection);
 
-                query += ";";
-                    results = MyDatabaseManager.EseguiQuery(query, connection);
-
-                    if (results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
-                    {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("errorMessage", Errors.noShopFound);
-                        response.sendRedirect(request.getContextPath() + "/negoziVicini.jsp");
-                        connection.close();
-                        return;
-                    }
-
-                    //aggiungo i prodotti al json
-                    jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
-
+                if (results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                {
                     HttpSession session = request.getSession();
-
-                    session.setAttribute("jsonNegozi", jsonObj);
-
-                    connection.close();
-
+                    session.setAttribute("errorMessage", Errors.noShopFound);
                     response.sendRedirect(request.getContextPath() + "/negoziVicini.jsp");
-                } else {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("errorMessage", Errors.dbConnection);
-                    response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                    connection.close();
+                    return;
                 }
-            } catch (SQLException ex) {
+
+                //aggiungo i prodotti al json
+                jsonObj = MyDatabaseManager.GetJsonOfShopsInSet(results, connection);
+
+                HttpSession session = request.getSession();
+
+                session.setAttribute("jsonNegozi", jsonObj);
+
+                connection.close();
+
+                response.sendRedirect(request.getContextPath() + "/negoziVicini.jsp");
+            } else {
+                HttpSession session = request.getSession();
+                session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
             }
+        } catch (SQLException ex) {
+            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+        }
     }
 /**
      * Handles the HTTP <code>GET</code> method.

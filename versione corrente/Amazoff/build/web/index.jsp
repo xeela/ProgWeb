@@ -39,7 +39,7 @@
 
             function AggiungiProdotti() {
                 var toAdd = "";
-                var id_oggetto = - 1
+                var id_oggetto = - 1;
 
                 for (var i = 0; i < jsonProdotti.products.length; i++)
                 {
@@ -77,8 +77,8 @@
                 function redirect(position){
                     var lat = position.coords.latitude;
                     var lng = position.coords.longitude;
-                    // TODO: collegare servlet prima di raggiungere la pagina con la mappa
-                    window.location.href = 'negoziVicini.jsp';// 'ServletFindShops?userLat=' + lat + "&userLng=" + lng;
+                    
+                    window.location.href = 'ServletFindShops?userLat=' + lat + "&userLng=" + lng;
                 }
             });
             </script>
@@ -512,21 +512,21 @@ Accedi
 }
 
 // When the user clicks on the button, scroll to the top of the document
-            function                             topFunction() {
-                        document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+            function topFunction() {
+                document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
-                        }
+            }
                         
-                        // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
-                                function cercaProdotto(txt)
-                                    {
-                        document.ge                            tElementById("formSearch").action = "/Amazoff/Ser                            vletFindProduct?p=" + document.getElementById(txt).value
-                        //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-                                    }
+            // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
+            function cercaProdotto(txt)
+            {
+                document.getElementById("formSearch").action = "/Amazoff/Ser                            vletFindProduct?p=" + document.getElementById(txt).value
+                //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
+            }
                                     
-                                    // gestione POPOVER button notifiche
-                                        /* prova ok $(document).ready(function(){
-                        $('[data-toggle="popover"]').attr('data-content', '<a href=\"\">HTML</a><b>Aggiunto</b> da <i>funzione</i>.');
+            // gestione POPOVER button notifiche
+            /* prova ok $(document).ready(function(){
+                $('[data-toggle="popover"]').attr('data-content', '<a href=\"\">HTML</a><b>Aggiunto</b> da <i>funzione</i>.');
                 $('[data-toggle="popover"]').popover();
             }); */
             </script>

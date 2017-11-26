@@ -172,7 +172,7 @@ public class MyDatabaseManager {
 
     public static String GetJsonShops(ResultSet results, Connection connection) throws SQLException {
         String jsonObj = "";
-        boolean isFirstTime = true, isFirstTimeImg = true;
+        boolean isFirstTime = true;
         
         while (results.next()) {
             if (!isFirstTime) //metto la virgola prima dell'oggetto solo se non è il primo
@@ -184,8 +184,7 @@ public class MyDatabaseManager {
             jsonObj += "{";
             jsonObj += "\"name\": \"" + results.getString(1) + "\",";
             jsonObj += "\"lat\": \"" + results.getString(2) + "\",";
-            jsonObj += "\"lng\": \"" + results.getString(3) + "\",";
-            jsonObj += "]";
+            jsonObj += "\"lng\": \"" + results.getString(3) + "\"";
             jsonObj += "}";
         }
         
