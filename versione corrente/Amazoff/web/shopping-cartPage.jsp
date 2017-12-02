@@ -28,21 +28,22 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <script type="text/javascript">
             var cart;
-            var idUser = <%= session.getAttribute("userID").toString()%>;
+            var idUser = <%session.getAttribute("userID");%>;
 
             function LogCart()
             {
                 // oss: se non si aggiunge un oggetto dalla home, anche se shoppingCartProducts conterrebbe valori, non vengono trovati
                 cart = ${shoppingCartProducts};
                 console.log(cart);
-                AggiungiProdotti(cart);
+                AggiungiProdotti(cart);                
+                Autocomplete("product");
             }
 
             // funzione che dovrà essere spostata nel file json_sort.js
             function AggiungiProdotti(cart)
             {
                 var toAdd = "";
-                var id_oggetto = -1
+                var id_oggetto = -1;
 
                 $("#zonaProdotti").html(toAdd);
 
@@ -78,25 +79,26 @@
 
             function removeFromCart(indexElement, idElement)
             {
-                // rimuovo l'elemento dal vettore json di dati
-                cart.products.splice(indexElement, 1);
+                if(idUser != -1){
+                    // rimuovo l'elemento dal vettore json di dati
+                    cart.products.splice(indexElement, 1);
 
-                // salva la modifica sul DB. Chiamata Ajax
-                $.post('ServletAjaxCarrello?op=...', {
-                    _idUser: idUser,
-                    _idProdotto: idElement
-                }, function (data) {
-                    // --> alert("RISP: "+ data);
-                    if (data == "true") {
-                        alert("Elemento rimosso correttamente.");
-                        AggiungiProdotti(cart);
-                    } else {
-                        alert("Errore durante la rimozione dell'oggetto.");
-                    }
+                    // salva la modifica sul DB. Chiamata Ajax
+                    $.post('ServletAjaxCarrello?op=...', {
+                        _idUser: idUser,
+                        _idProdotto: idElement
+                    }, function (data) {
+                        // --> alert("RISP: "+ data);
+                        if (data == "true") {
+                            alert("Elemento rimosso correttamente.");
+                            AggiungiProdotti(cart);
+                        } else {
+                            alert("Errore durante la rimozione dell'oggetto.");
+                        }
 
-                }).fail(function () {
-                });
-
+                    }).fail(function () {
+                    });
+                }
             }
         </script>
 

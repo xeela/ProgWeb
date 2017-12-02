@@ -3,10 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/web/loginPage.jsp</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletFindProduct.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/web/payPage.jsp</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletPayPage.java</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/index.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxAutocomplete.java</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/productPage.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/payPage.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAddToCart.java</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/userPage.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/js/search-autocomplete.js</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/sellNewProduct.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/shopping-cartPage.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/negoziVicini.jsp</file>
+            <file>file:/C:/Users/Cate/Documents/ProgWeb/versione%20corrente/Amazoff/web/searchPage.jsp</file>
         </group>
     </open-files>
 </project-private>

@@ -5,16 +5,13 @@
  */
 package com.amazoff.filters;
 
-import com.amazoff.classes.Errors;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Date;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -94,6 +91,7 @@ public class IndexPageFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
@@ -109,6 +107,7 @@ public class IndexPageFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
@@ -126,12 +125,15 @@ public class IndexPageFilter implements Filter {
     /**
      * Destroy method for this filter
      */
+    @Override
     public void destroy() {        
     }
 
     /**
      * Init method for this filter
+     * @param filterConfig
      */
+    @Override
     public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
@@ -155,7 +157,7 @@ public class IndexPageFilter implements Filter {
         if (filterConfig == null) {
             return ("IndexPageFilter()");
         }
-        StringBuffer sb = new StringBuffer("IndexPageFilter(");
+        StringBuilder sb = new StringBuilder("IndexPageFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
@@ -178,7 +180,7 @@ public class IndexPageFilter implements Filter {
                 pw.close();
                 ps.close();
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         } else {
             try {
@@ -186,7 +188,7 @@ public class IndexPageFilter implements Filter {
                 t.printStackTrace(ps);
                 ps.close();
                 response.getOutputStream().close();
-            } catch (Exception ex) {
+            } catch (IOException ex) {
             }
         }
     }
@@ -200,7 +202,7 @@ public class IndexPageFilter implements Filter {
             pw.close();
             sw.close();
             stackTrace = sw.getBuffer().toString();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
         }
         return stackTrace;
     }

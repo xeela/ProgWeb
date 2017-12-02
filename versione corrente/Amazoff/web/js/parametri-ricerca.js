@@ -1,5 +1,6 @@
 function RadioSwitch(value){
     $("#categoriaRicerca").val(value);
+    Autocomplete(value);
 }
 
 function impostaRecensione(value){

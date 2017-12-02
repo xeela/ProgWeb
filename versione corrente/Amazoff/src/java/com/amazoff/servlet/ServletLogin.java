@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
-import com.amazoff.classes.Notifications;
 import java.sql.Connection;
 
 /**

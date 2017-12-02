@@ -26,7 +26,7 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <title>Amazoff</title>
     </head>
-    <body class="bodyStyle">
+    <body class="bodyStyle" onload="Autocomplete('product');">
 
         <div class="container-fluid tmargin">
 
