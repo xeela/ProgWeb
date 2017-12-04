@@ -251,7 +251,7 @@
             google.maps.event.addDomListener(window, 'load', initialize);
         </script>    
     </head>
-    <body class="bodyStyle">
+    <body class="bodyStyle" onload="Autocomplete('product');">
 
         <div class="container-fluid tmargin">
 

@@ -207,8 +207,16 @@ public class MyDatabaseManager {
         String jsonObj = "";
         jsonObj += "{";
         jsonObj += "\"products\":[";
-        for (int i = 0; i < resultsList.length; i++) {
-            jsonObj += GetJson(resultsList[i], connection);
+        boolean isFirstTime = true;
+        
+        for (ResultSet result : resultsList) {
+            if (!isFirstTime) //metto la virgola prima dell'oggetto solo se non è il primo
+            {
+                jsonObj += ", ";
+            }
+            isFirstTime = false;
+            
+            jsonObj += GetJson(result, connection);
         }
         jsonObj += "]}";
 

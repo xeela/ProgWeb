@@ -1,6 +1,5 @@
 package com.amazoff.servlet;
 
-import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;

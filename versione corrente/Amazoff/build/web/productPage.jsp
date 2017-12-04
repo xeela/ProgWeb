@@ -30,7 +30,8 @@
                 console.log(jsonProdotto);
                 PopulateData();
                 PopolaReviews();
-                PopolaCarousel();
+                PopolaCarousel();                
+                Autocomplete("product");
             }
 
             function PopolaReviews() {

@@ -26,6 +26,7 @@
         function LogJson(){
             jsonNegozi = ${jsonNegozi};
             console.log(jsonNegozi);
+            Autocomplete("product");
         }
         
         function initMap(){

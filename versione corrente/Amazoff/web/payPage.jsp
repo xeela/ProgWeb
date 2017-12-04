@@ -196,7 +196,7 @@
                             _citta: citta,
                             _provincia: provincia,
                             _cap: cap,
-                            _ritiroOspedizione: modalita, 
+                            _ritiroOspedizione: modalita 
                     }, function(data) {
                             datiIndirizzo = data;
                             //alert(datiIndirizzo);
@@ -263,7 +263,7 @@
         </script>
             
     </head>
-    <body class="bodyStyle">
+    <body class="bodyStyle" onload="Autocomplete('product')">
        
         <div class="container-fluid tmargin">
             
