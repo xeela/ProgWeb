@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
@@ -20,39 +15,40 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Fra
+ * @author Francesco
  */
 public class ServletIndexProducts extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * ServletIndexProducts
+     * 
+     * Questa servlet ha il compito di fornire i 6 prodotti da visualizzare all'interno della home page.
+     * Questi 6 elementi vengono scelti prendendo gli ultimi 6 elementi (i più recenti) inseriti nel sito
+     * 
+     * @return jsonProdottiIndex che contiene i prodotti e le relative informazioni
+     * 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            //Chiedi roba al db
             String jsonObj = "";
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
+                /** Interrogo il Db per farmi dare i prodotti da inserire nella homepage */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products ORDER BY id DESC LIMIT 6;", connection);
                 
-                if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                if(results.isAfterLast()) /** se non sono presenti prodotti */
                 {
+                    /** allora reindirizzo l'utente alla home */
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.noProductFound);
                     response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
@@ -61,66 +57,45 @@ public class ServletIndexProducts extends HttpServlet {
                 }
                                
                 
-                //aggiungo i prodotti al json
+                /** creo il jsonProdottiIndex in cui memorizzo i dati dei prodotti e i loro dettagli */
                 jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                 
                 connection.close();
                 
                 HttpSession session = request.getSession();  
                 session.setAttribute("jsonProdottiIndex", jsonObj);
-                response.sendRedirect(request.getContextPath() + "/index.jsp"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/index.jsp"); 
             }
             else
             {
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         }catch (SQLException ex) {
             HttpSession session = request.getSession();
             MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletIndexProducts", ex.toString());
             session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+            response.sendRedirect(request.getContextPath() + "/"); 
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

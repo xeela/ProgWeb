@@ -59,7 +59,6 @@ public class ServletAddToCart extends HttpServlet {
                             + session.getAttribute("userID") + ", "
                             + productReceived + ", "
                             + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);
-<<<<<<< HEAD
 
                     /** Dopo aver inserito il nuovo prodotto, mi faccio restituire tutta la lista di oggetti presenti nel carrello */
                     ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
@@ -67,10 +66,8 @@ public class ServletAddToCart extends HttpServlet {
                     /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */
                     jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
 
-=======
->>>>>>> e9552fd0bdacdd858b347a5cea887e6f546882c1
                 } else {
-                    // salva nel carrello
+                    /** salva l'elemento selezionato nel carrello */
                     String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
                     Cookie cookie = new Cookie(timeStamp, productReceived);
                     cookie.setMaxAge(60 * 60 * 24 * 7);
@@ -81,7 +78,7 @@ public class ServletAddToCart extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/ServletShowCookieCart");
             } else {
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         } catch (SQLException ex) {
             HttpSession session = request.getSession();
