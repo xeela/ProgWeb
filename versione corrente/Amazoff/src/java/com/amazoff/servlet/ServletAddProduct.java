@@ -29,23 +29,24 @@ import javax.servlet.annotation.MultipartConfig;
 public class ServletAddProduct extends HttpServlet {
     private String dirName;
     
-    //Prende la directory di upload dal file web.xml
+    /** Si occuopa di selezionare la directory in cui sono caricate le immagini sul server (se esiste). Dà errore altrimenti 
+     *Prende la directory di upload dal file web.xml */
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        // read the uploadDir from the servlet parameters
+        /** read the uploadDir from the servlet parameters */
         dirName = config.getInitParameter("uploadDir");
         if (dirName == null) {
         throw new ServletException("Please supply uploadDir parameter");
         }
     }
+    
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Servlet richiamata quando l'utente (venditore) vuole inserire un nuovo prodotto.
+     * 
+     * @param request contiene tutti i dati relativi all'oggetto che l'utente sta caricando
+     *              Quindi: nome, categoria dell'oggetto, descrizione, prezzo e le immagini 
+     * 
+     * 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -53,7 +54,7 @@ public class ServletAddProduct extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String userReceived = (String) request.getSession().getAttribute("user");
 
-            //prendi il file e salvalo sul server
+            /** Funzione che prende il file specificato dall'utente e lo salva sul server */
             MultipartRequest multi = new MultipartRequest(request, getServletContext().getRealPath(dirName), 10*1024*1024, "ISO-8859-1", new DefaultFileRenamePolicy());
 
             String categoriaReceived = multi.getParameter("categoria");
@@ -62,30 +63,30 @@ public class ServletAddProduct extends HttpServlet {
             String prezzoReceived = multi.getParameter("prezzo");
             String nomeFotoReceived = multi.getFilesystemName("productPic");
             
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
                  
-            //Chiedi roba al db
             if(MyDatabaseManager.cpds != null)
             {
                 int id_shop = MyDatabaseManager.GetID_Shop(userReceived);
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
-                //aggiungi alla tabella products il prodotto
+                /** aggiungi alla tabella products il prodotto */
                 PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO products (name, description, price, id_shop) VALUES (" 
                             + "'" + MyDatabaseManager.EscapeCharacters(nomeReceived) + "', "
                             + "'" + MyDatabaseManager.EscapeCharacters(descrizioneReceived) + "', "
                             + "" + prezzoReceived + ", "
                             + id_shop + ");", connection);
-                //ottieni l'ID del prodotto appena aggiunto
+                /** ottieni l'ID del prodotto appena aggiunto */
                 int productID = -1;
                 ResultSet idProdottoRS = ps.getGeneratedKeys();
                 if(idProdottoRS.next())
                     productID = idProdottoRS.getInt(1);
                 
-                //aggiungi il nome della foto alla tabella pictures
+                /** aggiungi il nome della foto alla tabella pictures */
                 PreparedStatement ps2 = MyDatabaseManager.EseguiStatement("INSERT INTO pictures (path, id_product) VALUES ("
                             + "'" + MyDatabaseManager.EscapeCharacters(nomeFotoReceived) + "', "
                             + productID + ");", connection);
@@ -95,62 +96,37 @@ public class ServletAddProduct extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/");
             }
             else
-            {
+            {   /** C'è stato un errore */
                 HttpSession session = request.getSession(); 
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         }
         catch(Exception ex)
         {
+            /** C'è stato un errore non previsto */
             HttpSession session = request.getSession();
             MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletFindProduct", ex.toString());
             return;
         }
-        /*catch (SQLException ex) {
-            HttpSession session = request.getSession();
-            session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
-        }*/
     }
     
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

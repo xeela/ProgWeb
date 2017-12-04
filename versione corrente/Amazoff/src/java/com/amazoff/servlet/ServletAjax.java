@@ -17,8 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author Fra
+ * @author Francesco
  */
 public class ServletAjax extends HttpServlet {
 
@@ -35,7 +34,16 @@ public class ServletAjax extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+    
+    /**
+     * Questa servlet viene chiamata dalla pagina loginpage quando un utente si sta registrando.
+     * Ha il compito di verificare che il valore ricevuto (email o username) non sia già presenti nel db.
+     * 
+     * @param request può contenere il dato EMAIL o USERNAME, in base all'operazione che deve eseguire.
+     *                L'operazione che svolge è specificata nella variabile "OP"
+     * @return response all'interno della quale è contenuto TRUE se il valore in ingresso è univoco nel db
+     *                  FALSE se è già presente o se si sono verificati errori                 
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,19 +54,19 @@ public class ServletAjax extends HttpServlet {
             
             String emailReceived = request.getParameter("_email");
             String usernameReceived = request.getParameter("_user");
-
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            //Chiedi roba al db
+            /** Chiedi roba al db */
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 switch(operazione) {
                     case "email":
-                        
                         results = MyDatabaseManager.EseguiQuery("SELECT email FROM users WHERE email = '" + MyDatabaseManager.EscapeCharacters(emailReceived) + "';", connection);
                         break;
                     default: results = MyDatabaseManager.EseguiQuery("SELECT username FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(usernameReceived) + "';", connection);
@@ -72,23 +80,23 @@ public class ServletAjax extends HttpServlet {
                 }
                 else {
                     risposta = "true";
-                    while (results.next()) { // se esiste un utente con quella email, ritorno FALSE
+                    while (results.next()) { /** se esiste un utente con quella email, ritorno FALSE */
                         risposta = "false";
                     }
                 }
                 connection.close();
             }
-            else  // ritorno FALSE, c'è stato un errore
+            else  /** ritorno FALSE, c'è stato un errore */
             {
                 risposta = "false";
             }
             
-            // ritorno il risultato alla pagina chiamante
+            /** ritorno il risultato alla pagina chiamante */
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
             
         }catch (SQLException ex) {
-           // ritorno FALSE, c'è stato un errore
+            /** ritorno FALSE, c'è stato un errore */
             risposta = "false";
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
@@ -99,6 +107,6 @@ public class ServletAjax extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

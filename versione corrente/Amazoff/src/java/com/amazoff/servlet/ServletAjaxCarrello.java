@@ -18,20 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
  * @author Gianluca
  */
 public class ServletAjaxCarrello extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -47,6 +37,14 @@ public class ServletAjaxCarrello extends HttpServlet {
         processRequest(request, response);
     }
 
+    /**
+     * Questa servlet, riceve l'id di un utente e quello del prodotto che è stato che è stato selezionato per essere rimosso dal carrello
+     * 
+     * @param request variabile all'interno della quale è contenuto l'id del prodotto da rimuovere dal carrello
+     *                  e quello dell'utente che ha richiesto l'operazione
+     * @return response all'interno della quale è contenuto TRUE se l'operazione è stata completata correttamente
+     *                  FALSE se si sono verificati errori  
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -55,33 +53,34 @@ public class ServletAjaxCarrello extends HttpServlet {
             
             String idProductReceived = request.getParameter("_idProdotto");
             String idUser = request.getParameter("_idUser");
-
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            //Chiedi roba al db
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
     
+                /** Elimino l'elemento specificato, come idProductReceived, dal db */
                 PreparedStatement result = MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = "+ idUser +"  AND  id_product = " + MyDatabaseManager.EscapeCharacters(idProductReceived)+ ";", connection);
                 
                 risposta = "true";
                 connection.close();
             }
-            else  // ritorno FALSE, c'è stato un errore
+            else  /** ritorno FALSE, c'è stato un errore */
             {
                 risposta = "false";
             }
             
-            // ritorno il risultato alla pagina chiamante
+            /** ritorno il risultato alla pagina chiamante */
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
             
         }catch (SQLException ex) {
-           // ritorno FALSE, c'è stato un errore
+            /** ritorno FALSE, c'è stato un errore */
             risposta = "false";
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
@@ -91,6 +90,6 @@ public class ServletAjaxCarrello extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

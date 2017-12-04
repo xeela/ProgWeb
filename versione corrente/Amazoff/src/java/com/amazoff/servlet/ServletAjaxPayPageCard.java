@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.MyDatabaseManager;
@@ -18,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * @author Francesco
+ */
 public class ServletAjaxPayPageCard extends HttpServlet {
 
 
@@ -35,7 +33,17 @@ public class ServletAjaxPayPageCard extends HttpServlet {
         processRequest(request, response);
     }
 
-    
+    /**
+     * 
+     * Questa servlet viene chiamata quando, dalla pagina  <a href="./WebRoot/WEB-INF/tiles/templates/bob.jsp">Pay page</a>,
+     * viene richiesto di aggiornare le informazioni relative alla carta di credito dell'utente.
+     * Nel caso in cui l'utente non avesse già dei dati associati al suo profilo, verranno inseriti nel db.
+     * Se invece, l'utente ha già una carta registrata, i nuovi dati sovrascriveranno quelli vecchi.
+     * 
+     * @param request variabile all'interno della quale sono memorizzati tutti i dati di cui l'utente a fatto il submit 
+     * @return response all'interno della quale è contenuto TRUE se il salvataggio dei dati è andato a buon fine,
+     *                  FALSE se si sono verificati errori   
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -50,28 +58,27 @@ public class ServletAjaxPayPageCard extends HttpServlet {
             String tipoAcquistoReceived = request.getParameter("_ritiroOspedizione"); // OSS: per ora non lo mette da nessuna parte
             String userIDReceived = (request.getSession().getAttribute("userID").toString()); 
 
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            
-            //Chiedi roba al db
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                // controllo se l'utente ha già un indirizzo.
+                /** controllo se l'utente ha già una carta di credito memorizzata */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT id_utente FROM creditcards WHERE id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + ";", connection);
                                 
                 String esisteUtente = "false";
-                while (results.next()) { // se esiste un utente con quell'id, lo memorizzo
+                while (results.next()) {
                     esisteUtente = results.getString(1);
                 }
                 
-                if(esisteUtente == "false") //Se NON c'è un indirizzo per quel ID utente
+                /** Se l'utente non ha una carta di credito memorizzata */
+                if(esisteUtente == "false") 
                 {
-                    
-                    // ALLORA: aggiungo un nuovo campo nel db
+                    /** ALLORA: aggiungo un nuovo campo nel db, con i dati specificati */
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO creditcards(id_utente, owner, card_number, exp_month, exp_year) " + 
                                                         "VALUES (" + MyDatabaseManager.EscapeCharacters(userIDReceived) + ", " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(intestatarioReceived) + "', " + 
@@ -81,7 +88,7 @@ public class ServletAjaxPayPageCard extends HttpServlet {
                 }
                 else {
                 
-                    // ALTRIMENTI: aggiorno i valori dell'utente
+                    /** ALTRIMENTI: aggiorno i valori dell'utente (li sovrascrivo) */
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("UPDATE creditcards SET " + 
                                                         "id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + " , " + 
                                                         "owner = '" + MyDatabaseManager.EscapeCharacters(intestatarioReceived) + "', " + 
@@ -93,17 +100,17 @@ public class ServletAjaxPayPageCard extends HttpServlet {
                 risposta = "true";
                 connection.close();
             }
-            else  // ritorno FALSE, c'è stato un errore
+            else  /** ritorno FALSE, c'è stato un errore */
             {
                 risposta = "false";
             }
             
-            // ritorno il risultato alla pagina chiamante
+            /** ritorno il risultato alla pagina chiamante */
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
             
         }catch (SQLException ex) {
-           // ritorno FALSE, c'è stato un errore
+            /** ritorno FALSE, c'è stato un errore */
             risposta = "false";
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
@@ -116,6 +123,6 @@ public class ServletAjaxPayPageCard extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

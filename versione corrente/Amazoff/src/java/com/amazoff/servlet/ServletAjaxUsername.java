@@ -17,8 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author Fra
+ * @author Francesco
  */
 public class ServletAjaxUsername extends HttpServlet {
 
@@ -37,6 +36,17 @@ public class ServletAjaxUsername extends HttpServlet {
         processRequest(request, response);
     }
 
+    /**
+     * 
+     * 
+     * 
+     * 
+     * SERVLET MAI CHIAMATA PERCHè IL SUO CODICE FA LA STESSA COSA DELLA SERVLETAJAX 
+     * 
+     * 
+     * 
+     * 
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,18 +55,18 @@ public class ServletAjaxUsername extends HttpServlet {
         
             String usernameReceived = request.getParameter("_user").trim();
 
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            //Chiedi roba al db
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT username FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(usernameReceived) + "';", connection);
                 
-                if(results.isAfterLast()) //NON SO QUANDO CI ENTRA. se non c'è un utente con quel nome --> ritorno TRUE
+                if(results.isAfterLast()) 
                 {
                     risposta = "true";
                 }
@@ -88,6 +98,6 @@ public class ServletAjaxUsername extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }
