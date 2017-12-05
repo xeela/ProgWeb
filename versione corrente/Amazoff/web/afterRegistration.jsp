@@ -178,8 +178,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div>
-                                    <button class="btn btn-default" type="submit">Salva</button>
+                                <div style="margin-top: 10px">
+                                    <button class="btn btn-primary" type="submit">Salva</button>
                                     <a href="ServletIndexProducts" class="btn btn-default" type="button">Aggiungi in seguito</a>
                                 </div>
                                 
