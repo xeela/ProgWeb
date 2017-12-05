@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
@@ -26,13 +21,14 @@ import javax.servlet.http.HttpSession;
 public class ServletDopoRegistrazione extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * ServletDopoRegistrazione 
+     * 
+     * Ha il compito di memorizzari i dati inseriti nella pagina afterRegistration.
+     * Memorizza nel db i dati dell'indirizzo e della carta di credito forniti dall'utente successivamente alla sua registrazione
+     * 
+     * @param request contiene i dati relativi all'indirizzo e alla carta di credito che l'utente vuole memorizzare
+     * @return: in caso di errore, richiama la pagina afterRegistration, dove l'utente dovrà inserire nuovamente i dati
+     *          in caso di successo, verrà rimandato alla home del sito (index)
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,17 +45,18 @@ public class ServletDopoRegistrazione extends HttpServlet {
             String meseScadenza = request.getParameter("mesescadenza");
             String annoScadenza = request.getParameter("annoscadenza");
             
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            //Chiedi roba al db
             if(MyDatabaseManager.cpds != null)
             {
                 HttpSession session = request.getSession();
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
+                /** memorizzo i dati l'indirizzo dell'utente */
                 MyDatabaseManager.EseguiStatement("INSERT INTO user_addresses(ID_UTENTE, TOWN, CITY, ADDRESS, PROVINCE, POSTAL_CODE)"
                         + " VALUES("
                         + session.getAttribute("userID") + ","
@@ -69,6 +66,7 @@ public class ServletDopoRegistrazione extends HttpServlet {
                         + "'" + provincia + "',"
                         + "'" + cap + "');", connection);
                 
+                /** memorizzo i dati della carta di credito */
                 MyDatabaseManager.EseguiStatement("INSERT INTO creditcards(ID_UTENTE, OWNER, CARD_NUMBER, EXP_MONTH, EXP_YEAR)"
                         + " VALUES("
                         + session.getAttribute("userID") + ","
@@ -79,60 +77,41 @@ public class ServletDopoRegistrazione extends HttpServlet {
                 
                 connection.close();
                 
+                /** SE è andato tutto bene rimando alla home del sito */
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
             }
             else
             {
+                /** SE c'è stato un errore, memorizzo l'errore e chiedo di reinserire i dati */
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         }
         catch (SQLException ex) {
+            /** SE c'è stato un errore, memorizzo l'errore e chiedo di reinserire i dati */
             MyDatabaseManager.LogError(request.getParameter("username"), "ServletDopoRegistrazione", ex.toString());
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

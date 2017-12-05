@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.MyDatabaseManager;
@@ -19,19 +14,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author DVD_01
+ * @author Davide Farina
  */
 public class ServletConfirmOrder extends HttpServlet {
 
+    
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * ServletConfirmOrder
+     * 
+     * Questa servlet viene richiamata quando il cliente, dalla pagina del pagamento (payPage), 
+     * procede con l'acquisto dei prodotti
+     * 
+     * @param request contiene la modalità con cui l'utente intente ricevere i prodotti. 
+     * @param modalita è contenuto nel parametro request ed ha memorizzato la modalità di ritiro dei prodotti (spediti a casa o ritirati in negozio) 
+     * @param session contiene l'id dell'utente che sta eseguendo l'acquisto
+     * @return PER ORA IL CODICE è DA FINIRE. "Variabile che specifica se l'operazione è andata a buon fine (return TRUE) o FLASE in caso di errori
+     * 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,7 +38,8 @@ public class ServletConfirmOrder extends HttpServlet {
             
             String modalita = request.getParameter("modalita");
             
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
@@ -48,23 +47,22 @@ public class ServletConfirmOrder extends HttpServlet {
             HttpSession session = request.getSession();
             String userID = session.getAttribute("userID").toString();
             
-            //Chiedi roba al db
             int orderID = -1;
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
-                //Creo un nuovo ordine
+                /** Memorizza nel db un nuovo ordine associato all'utente specificato */
                 PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO orders (who_ordered, order_date, address) VALUES (" + userID + ", "
                         + "'" + MyDatabaseManager.GetCurrentDate() + "',"
                         + "1);", connection);
                 
-                //Ottengo l'orderID
+                /** Memorizzo l'id dell'ordine aggiunto sopra */
                 ResultSet idOrderRS = ps.getGeneratedKeys();
                 if(idOrderRS.next())
                     orderID = idOrderRS.getInt(1);
                 
-                //Prendo i prodotti nel carrello e li aggiungo all'ordine corretto
+                /** Prendo i prodotti nel carrello e li aggiungo all'ordine corrente */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT id_product FROM cart WHERE id_user = " + userID + ";", connection);
                 while(results.next())
                 {
@@ -72,11 +70,12 @@ public class ServletConfirmOrder extends HttpServlet {
                     MyDatabaseManager.EseguiStatement("INSERT INTO orders_products (order_id, product_id) VALUES (" + orderID + ", " + productID + ");", connection);
                 }
                 
-                //TODO: segnare i prodotti ordinati come "venduti"
+                //****** TODO: segnare i prodotti ordinati come "venduti" ****** //
                 
                 
                 connection.close();
                 
+                //****** TODO: quando cìè l'errore, questo dovrebbe essere passato tramite la session.setAttribute *******/
                 response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=ok&id="+orderID);       
             }
             else
@@ -92,43 +91,21 @@ public class ServletConfirmOrder extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

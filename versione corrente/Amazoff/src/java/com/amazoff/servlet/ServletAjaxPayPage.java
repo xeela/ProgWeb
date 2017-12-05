@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.MyDatabaseManager;
@@ -18,8 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author Fra
+ * @author Francesco
  */
 public class ServletAjaxPayPage extends HttpServlet {
 
@@ -37,14 +31,23 @@ public class ServletAjaxPayPage extends HttpServlet {
         processRequest(request, response);
     }
 
-
+    /**
+     * 
+     * Questa servlet viene chiamata quando, dalla pagina  <a href="./WebRoot/WEB-INF/tiles/templates/bob.jsp">Pay page</a>,
+     * viene richiesto di aggiornare le informazioni relative all'indirizzo di spedizione per i prodotti che l'utente sta per comprare
+     * Nel caso in cui l'utente non avesse già un indirizzo associato al suo profilo, verrà memorizzato quello nuovo.
+     * Se invece, l'utente ha già un indirizzo, i nuovi dati sovrascriveranno quelli vecchi
+     * 
+     * @param request variabile all'interno della quale sono memorizzati tutti i dati di cui l'utente a fatto il submit 
+     * @return response all'interno della quale è contenuto TRUE se il salvataggio dei dati è andato a buon fine,
+     *                  FALSE se si sono verificati errori   
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String risposta = "-1";
         try (PrintWriter out = response.getWriter()) {
             
-            //String operazione = request.getParameter("_op");
             String paeseReceived = request.getParameter("_paese");
             String indirizzoReceived = request.getParameter("_indirizzo");
             String cittaReceived = request.getParameter("_citta");
@@ -53,28 +56,27 @@ public class ServletAjaxPayPage extends HttpServlet {
             String tipoAcquistoReceived = request.getParameter("_ritiroOspedizione"); // OSS: per ora non lo mette da nessuna parte
             String userIDReceived = (request.getSession().getAttribute("userID").toString()); 
 
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            
-            //Chiedi roba al db
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                // controllo se l'utente ha già un indirizzo.
+                /** ottengo dal db i dati dell'indirizzo dell'utente con @param id specificato */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT id_utente FROM user_addresses WHERE id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + ";", connection);
                                 
                 String esisteUtente = "false";
-                while (results.next()) { // se esiste un utente con quell'id, lo memorizzo
+                while (results.next()) { 
                     esisteUtente = results.getString(1);
                 }
                 
-                if(esisteUtente == "false") //Se NON c'è un indirizzo per quel ID utente
+                /** Se l'utente NON esiste (quindi non ha un indirizzo associato */
+                if(esisteUtente == "false") 
                 {
-                    
-                    // ALLORA: aggiungo un nuovo campo nel db
+                    /** ALLORA: aggiungo un nuovo campo nel db con i dati ricevuti dalla pagina PayPage */
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO user_addresses(id_utente, town, city, address, province, postal_code) " + 
                                                         "VALUES (" + MyDatabaseManager.EscapeCharacters(userIDReceived) + ", " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(paeseReceived) + "', " + 
@@ -84,7 +86,7 @@ public class ServletAjaxPayPage extends HttpServlet {
                 }
                 else {
                 
-                    // ALTRIMENTI: aggiorno i valori dell'utente
+                    /** ALTRIMENTI: aggiorno i valori dell'utente (li sovrascrivo) */
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("UPDATE user_addresses SET " + 
                                                         "id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + " , " + 
                                                         "town = '" + MyDatabaseManager.EscapeCharacters(paeseReceived) + "', " + 
@@ -94,20 +96,21 @@ public class ServletAjaxPayPage extends HttpServlet {
                                                         "postal_code = " + MyDatabaseManager.EscapeCharacters(capReceived) + 
                                                         " WHERE id_utente = "+ userIDReceived +";", connection);
                 }
+                /** @return "true" ritorno al client un valore di OK, l'inserimento dei dati è avvenuto correttamente  */
                 risposta = "true";
                 connection.close();
             }
-            else  // ritorno FALSE, c'è stato un errore
+            else  /** ritorno FALSE, c'è stato un errore */
             {
                 risposta = "false";
             }
             
-            // ritorno il risultato alla pagina chiamante
+            /** ritorno il risultato alla pagina chiamante */
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
             
         }catch (SQLException ex) {
-           // ritorno FALSE, c'è stato un errore
+            /** @return "true" ritorno al client un valore di OK, l'inserimento dei dati è avvenuto correttamente  */
             risposta = "false";
             response.setContentType("text/plain");
             response.getWriter().write(risposta);
@@ -117,6 +120,6 @@ public class ServletAjaxPayPage extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

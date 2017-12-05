@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import java.io.IOException;
@@ -25,13 +20,12 @@ import java.sql.Connection;
 public class ServletLogin extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * ServletLogin
+     * 
+     * Questa servlet ha il compito di ricevere i dati specificati dall'utente, tramite la form di login, e controllare che siano valide.
+     * 
+     * @param request contiene l'username/email e l'hash della password da utilizzare per verificare che l'utente abbia un profilo.
+     * 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,33 +39,35 @@ public class ServletLogin extends HttpServlet {
             //String db_user = "root";
             //String db_pwd = "root";
             
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            //Chiedi roba al db
             String username = "";
             String userID = "";
             String dbPwd = "";
-            String categoriaUser = "";  // = 0, utente registrato
-                                       // = 1, utente venditore
-                                       // = 2, utente admin
+            String categoriaUser = "";  /** = 0, utente registrato
+                                        * = 1, utente venditore
+                                        * = 2, utente admin */
             String fname = "", lname = "";
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 ResultSet results;
-                //Ha usato la mail
+                /** Controllo quale metodo sta usando l'utente per eseguire il login */
+                /** SE ha usato la mail */
                 if(userReceived.contains("@"))
                     results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID, username FROM users WHERE email = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
-                //Ha usato il nome utente
+                /** OPPURE se ha usato il suo username */
                 else
                     results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID, username FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
                 
-                if(results.isAfterLast()) //se non c'è un utente con quel nome/mail
+                if(results.isAfterLast()) /** se non c'è un utente con quel nome/mail */
                 {
+                    /** ALLORA: memorizzo l'errore in modo da mostrarlo all'utente nella pagina di login */
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
                     response.sendRedirect(request.getContextPath() + "/");
@@ -88,10 +84,11 @@ public class ServletLogin extends HttpServlet {
                     username = results.getString(6);
                 }
                 
-                if(dbPwd.equals(pwdReceived)) //Allora la password è giusta
+                /** Controllo se la password inserita dall'utente è corretta */
+                if(dbPwd.equals(pwdReceived))
                 {
                     HttpSession session = request.getSession();
-                    // memorizzo nella sessione, il nome, cognome, username e tipo di utente, in modo da utilizzare questi dati nelle altre pagine
+                    /** memorizzo nella sessione, il nome, cognome, username e tipo di utente, in modo da utilizzare questi dati nelle altre pagine */
                     session.setAttribute("user", username);
                     session.setAttribute("userID", userID);
                     session.setAttribute("categoria_user", categoriaUser);
@@ -104,11 +101,11 @@ public class ServletLogin extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/");
                     
                 }
-                else //la password è sbagliata
+                else /** la password è sbagliata */
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.wrongPassword);
-                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp"); // OSS: e1 stà per errore 1.
+                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp"); 
                 } 
                 
                 connection.close();
@@ -118,53 +115,31 @@ public class ServletLogin extends HttpServlet {
             {
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         }catch (SQLException ex) {
             MyDatabaseManager.LogError(request.getParameter("username"), "ServletLogin", ex.toString());
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+            response.sendRedirect(request.getContextPath() + "/"); 
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

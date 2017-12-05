@@ -28,7 +28,7 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <script type="text/javascript">
             var cart;
-            var idUser = <%session.getAttribute("userID");%>;
+            var idUser = "<%session.getAttribute("userID");%>"; // NON VA, anche se l'utente è loggato
 
             function LogCart()
             {
@@ -47,33 +47,44 @@
 
                 $("#zonaProdotti").html(toAdd);
 
-                // visualizzo i prodotti del carrello, da quello aggiunto più di recente al più vecchio
-                for (var i = cart.products.length - 1; i >= 0; i--)
+               
+                if(!(cart.products.length > 0) || cart == undefined)
                 {
-                    id_oggetto = cart.products[i].id;
-                    toAdd += "<div class=\"row\">";
-                    toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
-                    toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
-                    toAdd += "                    <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
-                    toAdd += "                </div>";
-                    toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
-                    toAdd += "                        <div class=\"row\">";
-                    toAdd += "                            <p id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</p>";
-                    toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
-                    toAdd += "                            <p id=\"linkmappa" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Vedi su mappa</p> <a href=\"url_venditore.html\" class=\"col-xs-12 col-lg-3\">Negozio</a>";
-                    toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
-                    toAdd += "                        </div>";
-                    toAdd += "                   </div>";
-                    toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
-                    toAdd += "            </div>";
-                    toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
-                    toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
-                    toAdd += "            </div>";
-                    toAdd += "        </a>";
+                    toAdd = "<div>";
+                    toAdd += "Nessun prodotto presente nel carrello.";
                     toAdd += "</div>";
                 }
-
+                else 
+                {
+                
+                    // visualizzo i prodotti del carrello, da quello aggiunto più di recente al più vecchio
+                    for (var i = cart.products.length - 1; i >= 0; i--)
+                    {
+                        id_oggetto = cart.products[i].id;
+                        toAdd += "<div class=\"row\">";
+                        toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
+                        toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                        toAdd += "                    <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
+                        toAdd += "                </div>";
+                        toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
+                        toAdd += "                        <div class=\"row\">";
+                        toAdd += "                            <p id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</p>";
+                        toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
+                        toAdd += "                            <p id=\"linkmappa" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Vedi su mappa</p> <a href=\"url_venditore.html\" class=\"col-xs-12 col-lg-3\">Negozio</a>";
+                        toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
+                        toAdd += "                        </div>";
+                        toAdd += "                   </div>";
+                        toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                        toAdd += "            </div>";
+                        toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
+                        toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+                        toAdd += "            </div>";
+                        toAdd += "        </a>";
+                        toAdd += "</div>";
+                    }
+                }
                 $("#zonaProdotti").html(toAdd);
+                
 
             }
 

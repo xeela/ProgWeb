@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import java.io.IOException;
@@ -23,18 +18,16 @@ import java.util.UUID;
 
 /**
  *
- * @author DVD_01
+ * @author Davide Farina
  */
 public class ServletRegister extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * ServletRegister
+     * 
+     * Questa servlet permette ad un utente di registrarsi al sito 
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request contiene i dati relativi al profilo del nuovo utente 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,18 +41,18 @@ public class ServletRegister extends HttpServlet {
             String userReceived = request.getParameter("username");
             String pwdReceived = request.getParameter("hashedPassword");
             
-            //Connection connection = null;
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
                 mydb.CreateConnection();    
             }
             
-            //Chiedi roba al db
             String dbName = "";
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
+                /** Cerco nel db se esiste già un profilo con l'username specificato */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
                 
                 while (results.next()) {
@@ -68,7 +61,8 @@ public class ServletRegister extends HttpServlet {
                 
                 connection.close();
                 
-                if(dbName.equals(userReceived)) // Allora l'utente esiste già
+                /** Se si, l'username è già presente */
+                if(dbName.equals(userReceived))
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameTaken);
@@ -76,6 +70,7 @@ public class ServletRegister extends HttpServlet {
                 }
                 else
                 {
+                    /** ALTRIMENTI: memorizzo i dati del nuovo utente nel db */
                     connection = MyDatabaseManager.CreateConnection();
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO users(first_name, last_name, username, pass, registration_date, email, usertype, passrecupero) " + 
                                                         "VALUES (" + 
@@ -93,7 +88,7 @@ public class ServletRegister extends HttpServlet {
                     
                     
                     connection.close();
-                    //Prosegui con la pagina corretta
+
                     HttpSession session = request.getSession();
                     session.setAttribute("userID", userID);
                     session.setAttribute("user", userReceived);
@@ -102,7 +97,6 @@ public class ServletRegister extends HttpServlet {
                     session.setAttribute("lname", surnameReceived);                    
                     session.setAttribute("errorMessage", Errors.resetError);
                     response.sendRedirect(request.getContextPath() + "/afterRegistration.jsp");
-                    //request.getRequestDispatcher("/GestioneSquadra").forward(request, response);
                 }
             }
             else
@@ -120,49 +114,28 @@ public class ServletRegister extends HttpServlet {
         }           
     }
     
+    /** Funzione che genera una stringa in modo casuale, da usare come password di recupero */
     private static String generateString() {
         
         String uuid = UUID.randomUUID().toString();
         return uuid;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

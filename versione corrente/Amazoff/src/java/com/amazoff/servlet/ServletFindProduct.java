@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
@@ -21,18 +16,19 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author DVD_01
+ * @author Davide 
  */
 public class ServletFindProduct extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * SerlvetFindProduct
+     * 
+     * Questa servlet ha il compito di estrarre dal db tutti i prodotti (e le relative informazioni)
+     * che soddisfano il parametro di ricerca specificati dall'utente.
+     * 
+     * @param request contiene i campi con cui l'utente può cercare i prodotti. Compresi gli eventuali tipi di filtri applicati e i dati per applicarli 
+     * @return
+     * 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,22 +44,22 @@ public class ServletFindProduct extends HttpServlet {
             String userLat = request.getParameter("latRicerca");
             String userLng = request.getParameter("lngRicerca");
             
-            if (!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
 
-            //Chiedi roba al db
             String jsonObj = "";
             if (MyDatabaseManager.cpds != null) {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
-
+                
                 ResultSet results = null;
                 String query = "";
                 
                 // esegue sempre
                 if(recensioneReceived != null){
+                    /** in caso l'utente abbia specificato il filtro della distanza, i prodotti cercati saranno in un determinato raggio dalla sua posizione */
                     if(distanzaReceived != null){
                         query += "SELECT products.name, products.description, price, products.id, "
                                 + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
@@ -79,6 +75,7 @@ public class ServletFindProduct extends HttpServlet {
                                 + "AND products.ritiro = 1 "
                                 + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                     } else {
+                        /** ALTRIMENTI, verranno restituiti tutti i prodottiche soddifano il criterio dell ....... */
                         query += "SELECT products.name, products.description, price, products.id "
                                 + "FROM products, shops, "
                                 + "(SELECT products.id, AVG(global_value) AS avg "
@@ -202,43 +199,23 @@ public class ServletFindProduct extends HttpServlet {
         return "";
 
     }*/
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

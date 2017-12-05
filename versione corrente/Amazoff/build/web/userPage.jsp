@@ -462,7 +462,7 @@
                                        aria-controls="collapseProfile" >
                                         <span class='glyphicon glyphicon-option-vertical'></span>
                                     </a>
-                                    <div id="collapseProfilo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div id="collapseProfile" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                         <div class="row">
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-6">
@@ -659,8 +659,8 @@
                                                                 </ul>
                                                             </div> 
                                                             <div class="form-group">
-                                                                <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1">
-                                                                Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1">
+                                                                <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1" accept=".jpg, .jpeg, .png, .gif">
+                                                                <!-- [5+] Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1"> -->
                                                             </div>
                                                             <div class="form-group">
                                                                 <input TYPE='submit' NAME='productPic1' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
@@ -781,33 +781,35 @@
                         return toAdd;
                     }
 
-
-
                     <% // se viene passato alla pagina il valore a=active, rende visibile la riga relativa al valore v
                         // --> dice sempre null 
                         if (request.getParameter("v") != null) {
                     %>
-                    $('#collapse<%=request.getParameter("v")%>').addClass('in');
+                            $('#collapse<%=request.getParameter("v")%>').addClass('in');
                     <%
                         }
                     %>
 
+                    var idNotifica, jsonNotifiche;
                     <% if (request.getParameter("v") != null && request.getParameter("notificationId") != null) {%>
-                    var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
-                    console.log(jsonNotifiche);
-                    $("#div_notifiche").html(inserisciNotifiche());
-                    var idNotifica = <%=request.getParameter("notificationId")%>;
-                    <% }%>
-
-
-
+                        jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
+                        console.log(jsonNotifiche);
+                        $("#div_notifiche").html(inserisciNotifiche());
+                        idNotifica = <%=request.getParameter("notificationId")%>;
+                    <% } else { %>   
+                        if(jsonNotifiche == undefined)
+                        {
+                            $("#div_notifiche").html("Nessuna notifica trovata.");
+                        }
+                        
+                    <% } %>
 
                     // chiamata ajax per settare la notifica cliccata come "LETTA"
                     $.post('ServletAjaxNotifiche', {
                         idNotification: idNotifica
                     }, function (data) {
 
-                        alert(data);
+                        console.log("ServletAjaxNotifiche " + data);
 
                     }).fail(function () {
                     });

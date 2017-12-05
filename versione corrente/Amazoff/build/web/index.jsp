@@ -30,15 +30,13 @@
         <script type="text/javascript">
             var jsonProdotti;
             var searchedProduct = null;
-            
             function LogJson() {
                 jsonProdotti = ${jsonProdottiIndex};
                 console.log(jsonProdotti);
                 RiempiBarraRicerca();
                 AggiungiProdotti();
-                Autocomplete("product");
             }
-            
+
             function AggiungiProdotti() {
                 var toAdd = "";
                 var id_oggetto = - 1;
@@ -146,7 +144,7 @@
     </div>                    
 
     <div class="col-xs-3 hidden-lg iconSize imgCenter" >
-        <a href="ServletShowCart">
+        <a href="shopping-cartPage.jsp">
             <spam class="glyphicon glyphicon-shopping-cart"></spam>
         </a>
     </div>

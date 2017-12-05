@@ -23,18 +23,18 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author DVD_01
+ * @author Davide
  */
 public class ServletAddToCart extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Servlet che permette di memorizzare un prodotto, nel carrello dell'utente, registrato, che lo ha richiesto.
+     * 
+     * @param request contiene l'id dell'oggeto che l'utente vuole aggiungere nel carrello
+     * @param session contiene l'id dell'utente registrato che sta richiedendo l'operazione
+     * 
+     * @return response all'interno della quale è contenuto TRUE se l'oggetto è stato memorizzato correttamente nel carrello dell'utente
+     *                  FALSE se si sono verificati errori  
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -43,24 +43,31 @@ public class ServletAddToCart extends HttpServlet {
             HttpSession session = request.getSession();
             String productReceived = request.getParameter("productID");
 
-            if (!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
 
-            //Chiedi roba al db
             String jsonObj = "";
             if (MyDatabaseManager.cpds != null) {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 if (session.getAttribute("user") != null) {
-                    // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
+                    /** Interrogo il per inserire nel carrello dell'utente, l'id del prodotto specificato */
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED) VALUES ("
                             + session.getAttribute("userID") + ", "
                             + productReceived + ", "
                             + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);
+
+                    /** Dopo aver inserito il nuovo prodotto, mi faccio restituire tutta la lista di oggetti presenti nel carrello */
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
+                            + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
+                    /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */
+                    jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+
                 } else {
-                    // salva nel carrello
+                    /** salva l'elemento selezionato nel carrello */
                     String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
                     Cookie cookie = new Cookie(timeStamp, productReceived);
                     cookie.setMaxAge(60 * 60 * 24 * 7);
@@ -71,53 +78,32 @@ public class ServletAddToCart extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/ServletShowCookieCart");
             } else {
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         } catch (SQLException ex) {
             HttpSession session = request.getSession();
             MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletAddToCart", ex.toString());
             session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+            response.sendRedirect(request.getContextPath() + "/"); 
         }
     }
-
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    
+    
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }
