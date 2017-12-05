@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import java.io.IOException;
@@ -20,32 +15,43 @@ import java.sql.Connection;
 
 /**
  *
- * @author Fra
+ * @author Francesco Bruschetti
  */
 public class ServletPayPage extends HttpServlet {
 
-
+    /**
+     * 
+     * ServletPayPage
+     * 
+     * Questa servlet restituisce i dati della carta di credito e l'indirizzo associati all'utente.
+     * 
+     * @param request contiene l'id dell'utente, da usare per accedere ai rispettivi dati (carta di credito e indirizzo)
+     * 
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String userIDReceived = (request.getSession().getAttribute("userID")).toString();
             
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            //Chiedi roba al db
             String jsonObj = "";
             boolean isFirstTime = true;
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
+                /** restituisce i dati relativi all'indirizzo dell'utente */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM user_addresses  WHERE id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + ";", connection);
                 
-                if(results.isAfterLast()) //se non c'è un utente con quel nome
+                /** SE non esiste un utente con quell'id */
+                if(results.isAfterLast()) 
                 {
+                    /** ALLORA: memorizzo l'errore in modo da poterlo mostrare all'utente */
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
                     response.sendRedirect(request.getContextPath() + "/");
@@ -53,6 +59,7 @@ public class ServletPayPage extends HttpServlet {
                     return;
                 }
                 
+                /** ALTRIMENTI: creo un oggetto json in cui memorizzari i dettagli dell'indirizzo */
                 jsonObj += "{";
                 jsonObj += "\"addressdata\":[";
                 
@@ -73,9 +80,13 @@ public class ServletPayPage extends HttpServlet {
                 }
                 jsonObj += "]";
                 
+                /** Oltre all'indirizzo, mi interessa ottenere anche i dati relativi al metodo di pagamento */
                 results = MyDatabaseManager.EseguiQuery("SELECT * FROM creditcards  WHERE id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + ";", connection);
-                if(results.isAfterLast()) //se non c'è un utente con quel nome
+                
+                /** SE non c'è un utente con quel id */
+                if(results.isAfterLast()) 
                 {
+                    /** ALLORA: ritorno alla pagina solo il json con l'indirizzo. E l'errore riguardo il metodo di pagamento */
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
                     response.sendRedirect(request.getContextPath() + "/");
@@ -84,6 +95,7 @@ public class ServletPayPage extends HttpServlet {
                 }
                 else 
                 {
+                    /** ALTRIMENTI: memorizzo nell'oggetto json anche i dati relativi alla carta di credito */
                     jsonObj += ",\"paymentdata\":[";
                     isFirstTime = true;
                     // OSS: Per ora restituisco tutto
@@ -107,11 +119,14 @@ public class ServletPayPage extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("jsonPayPage", jsonObj);  
                 
-                //Crea il json del carrello
+                /** Estraggo dal db tutti i prodotti che l'utente ha salvato nel carrello */
                 results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
                     + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
-                    jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                 
+                /** Inserisco i prodotti nel json */
+                jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                
+                /** Memorizzo l'oggetto json in una variabile di sessione da cui recuperare i dati per visualizzarli prima di completare l'acquisto */
                 session.setAttribute("shoppingCartProducts", jsonObj);
                 connection.close();
                 
@@ -119,15 +134,18 @@ public class ServletPayPage extends HttpServlet {
             }
             else
             {
+                /** In caso di errore dovuto alla connessione, lo memorizzo, così da poterlo comunicare all'utente nella pagina corretta */
                 HttpSession session = request.getSession();
                 //session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/payPage"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/payPage"); 
             }
         }catch (SQLException ex) {
+            /** In caso di errore generico non previsto, lo memorizzo, così da poterlo comunicare all'utente nella pagina corretta */
+            
             //MyDatabaseManager.LogError(request.getParameter("username"), "ServletLogin", ex.toString());
             HttpSession session = request.getSession();
             //session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/payPage"); //TODO: Gestire meglio l'errore
+            response.sendRedirect(request.getContextPath() + "/payPage"); 
         }
     }
 

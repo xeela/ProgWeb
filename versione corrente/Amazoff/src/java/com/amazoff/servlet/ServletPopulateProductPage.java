@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
@@ -20,18 +15,16 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Fra
+ * @author Francesco Bruschetti
  */
 public class ServletPopulateProductPage extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * ServletPopulateProductPage
+     * 
+     * Questa servlet restituisce tutti i dati (dettagli) relativi ad un determinato prodotto
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request contiene l'id del prodotto, selezionato dall'utente, di cui si vogliono visualizzare i dettagli
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -41,21 +34,23 @@ public class ServletPopulateProductPage extends HttpServlet {
             String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
             String idReceived = request.getParameter("id");
             
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            //Chiedi roba al db
             String jsonObj = "";
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                // Interrogo il Db per farmi dare i prodotti cercati con la searchbar
+                /** Interrogo il Db per farmi restituire i dettagli del prodotto specificato */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM products WHERE id = '" + idReceived + "';", connection);
                 
-                if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                /** se non c'è il prodotto specificato */
+                if(results.isAfterLast()) 
                 {
+                    /** ALLORA: genero un errore e lo memorizzo */
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.noProductFound);
                     response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
@@ -63,8 +58,7 @@ public class ServletPopulateProductPage extends HttpServlet {
                     return;
                 }
                                
-                
-                //aggiungo i prodotti al json
+                /** ALTRIEMTI: aggiungo i dati del prodotti ad un oggetto json */
                 boolean isFirstTime = true, isFirstTimeImg = true, isFirstReview = true;
                 jsonObj += "{";
                 jsonObj += "\"result\":[";
@@ -80,22 +74,25 @@ public class ServletPopulateProductPage extends HttpServlet {
                     jsonObj += "\"price\": \"" + results.getString(4) + "\",";
                     jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
                     
-                     // in base al prodotto, ricavo il path delle img a lui associate                    
+                    /** in base al prodotto, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
                     //------ TMP --------
                     ResultSet resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(1) + ";", connection);
                 
-                    if(resultsPictures.isAfterLast()) //se non ci sono img per quel prodotto, allora:
+                    /** SE non ci sono immagini per questo prodotto */
+                    if(resultsPictures.isAfterLast())
                     {
+                        /** ALLORA: genero e memorizzo un errore */
                         HttpSession session = request.getSession();
                         session.setAttribute("errorMessage", Errors.noProductFound);
                         response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
                         connection.close();
                         return;
                     }
+                    
+                    /** ALTRIMENTI: memorizzo le immagini del prodotto */
                     jsonObj += "\"pictures\":[";
-                    // altrimenti
                     while (resultsPictures.next()) {
-                        if(!isFirstTimeImg)            //metto la virgola prima dell'oggetto solo se non è il primo
+                        if(!isFirstTimeImg)            
                             jsonObj += ", ";
                         isFirstTimeImg = false; 
                         
@@ -110,20 +107,24 @@ public class ServletPopulateProductPage extends HttpServlet {
                     //------ FINE TMP --------
                     
                     //------ TMP --------
+                    /** Cerco nel db tutte le recensioni che sono state fatte per questo oggetto */
                     ResultSet resultsReviews = MyDatabaseManager.EseguiQuery("SELECT * FROM reviews WHERE id_product = " + results.getString(1) + ";", connection);
                 
-                    if(resultsReviews.isAfterLast()) //se non ci sono img per quel prodotto, allora:
+                    /** se non ci sono recensione per questo prodotto */
+                    if(resultsReviews.isAfterLast()) 
                     {
+                        /** ALLORA: genero un errore */
                         HttpSession session = request.getSession();
                         session.setAttribute("errorMessage", Errors.noProductFound);
                         response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
                         connection.close();
                         return;
                     }
+                    
+                    /** ALTRIMENTI: memorizzo le recensioni e i relativi dati (numero di stelle, testo recensione) */
                     jsonObj += "\"reviews\":[";
-                    // altrimenti
                     while (resultsReviews.next()) {
-                        if(!isFirstReview)            //metto la virgola prima dell'oggetto solo se non è il primo
+                        if(!isFirstReview)            
                             jsonObj += ", ";
                         isFirstReview = false; 
                         
@@ -153,58 +154,36 @@ public class ServletPopulateProductPage extends HttpServlet {
                 
                 HttpSession session = request.getSession();  
                 session.setAttribute("jsonProdotti", jsonObj);
-                response.sendRedirect(request.getContextPath() + "/productPage.jsp?id="+idReceived+""); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/productPage.jsp?id="+idReceived+""); 
             }
             else
             {
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         }catch (SQLException ex) {
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

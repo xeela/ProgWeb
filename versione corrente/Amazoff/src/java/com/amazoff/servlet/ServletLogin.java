@@ -20,6 +20,11 @@ import java.sql.Connection;
 public class ServletLogin extends HttpServlet {
 
     /**
+     * ServletLogin
+     * 
+     * Questa servlet ha il compito di ricevere i dati specificati dall'utente, tramite la form di login, e controllare che siano valide.
+     * 
+     * @param request contiene l'username/email e l'hash della password da utilizzare per verificare che l'utente abbia un profilo.
      * 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -34,7 +39,8 @@ public class ServletLogin extends HttpServlet {
             //String db_user = "root";
             //String db_pwd = "root";
             
-            if(!MyDatabaseManager.alreadyExists) //se non esiste lo creo
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
@@ -42,9 +48,9 @@ public class ServletLogin extends HttpServlet {
             String username = "";
             String userID = "";
             String dbPwd = "";
-            String categoriaUser = "";  // = 0, utente registrato
-                                       // = 1, utente venditore
-                                       // = 2, utente admin
+            String categoriaUser = "";  /** = 0, utente registrato
+                                        * = 1, utente venditore
+                                        * = 2, utente admin */
             String fname = "", lname = "";
             if(MyDatabaseManager.cpds != null)
             {
@@ -78,7 +84,8 @@ public class ServletLogin extends HttpServlet {
                     username = results.getString(6);
                 }
                 
-                if(dbPwd.equals(pwdReceived)) //Allora la password è giusta
+                /** Controllo se la password inserita dall'utente è corretta */
+                if(dbPwd.equals(pwdReceived))
                 {
                     HttpSession session = request.getSession();
                     /** memorizzo nella sessione, il nome, cognome, username e tipo di utente, in modo da utilizzare questi dati nelle altre pagine */
@@ -94,7 +101,7 @@ public class ServletLogin extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/");
                     
                 }
-                else //la password è sbagliata
+                else /** la password è sbagliata */
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.wrongPassword);

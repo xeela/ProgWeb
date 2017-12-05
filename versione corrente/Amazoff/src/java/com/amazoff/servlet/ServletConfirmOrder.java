@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Davide
+ * @author Davide Farina
  */
 public class ServletConfirmOrder extends HttpServlet {
 
