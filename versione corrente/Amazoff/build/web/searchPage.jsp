@@ -523,8 +523,6 @@
             return toAdd;
         }
 
-
-
         // gestione POPOVER button notifiche
         $(document).ready(function () {
             $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());

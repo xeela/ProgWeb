@@ -44,7 +44,7 @@ public class ServletIndexProducts extends HttpServlet {
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 /** Interrogo il Db per farmi dare i prodotti da inserire nella homepage */
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products ORDER BY id DESC LIMIT 6;", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT id,name, description, price FROM products ORDER BY id DESC LIMIT 6;", connection);
                 
                 if(results.isAfterLast()) /** se non sono presenti prodotti */
                 {

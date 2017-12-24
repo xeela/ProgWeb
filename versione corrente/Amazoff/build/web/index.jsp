@@ -30,13 +30,15 @@
         <script type="text/javascript">
             var jsonProdotti;
             var searchedProduct = null;
+            
             function LogJson() {
                 jsonProdotti = ${jsonProdottiIndex};
                 console.log(jsonProdotti);
                 RiempiBarraRicerca();
                 AggiungiProdotti();
+                Autocomplete("product");
             }
-
+            
             function AggiungiProdotti() {
                 var toAdd = "";
                 var id_oggetto = - 1;
@@ -50,7 +52,7 @@
                     toAdd += "<div class=\"caption\">";
                     toAdd += "<h3>" + jsonProdotti.products[i].name + "</h3>";
                     toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
-                    toAdd += "<p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotti.products[i].id + "\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
+                    toAdd += "<p><a href=\"ServletPopulateProductPage?id="+jsonProdotti.products[i].id+"\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotti.products[i].id + "\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
                     toAdd += "</div>";
                     toAdd += "</div>";
                     toAdd += "</div>";
@@ -144,7 +146,7 @@
     </div>                    
 
     <div class="col-xs-3 hidden-lg iconSize imgCenter" >
-        <a href="shopping-cartPage.jsp">
+        <a href="ServletShowCart">
             <spam class="glyphicon glyphicon-shopping-cart"></spam>
         </a>
     </div>

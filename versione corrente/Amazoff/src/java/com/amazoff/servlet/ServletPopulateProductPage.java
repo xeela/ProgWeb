@@ -45,7 +45,7 @@ public class ServletPopulateProductPage extends HttpServlet {
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 /** Interrogo il Db per farmi restituire i dettagli del prodotto specificato */
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM products WHERE id = '" + idReceived + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM products, shops, users WHERE products.ID = '" + idReceived + "' and products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER;", connection);
                 
                 /** se non c'è il prodotto specificato */
                 if(results.isAfterLast()) 
@@ -72,10 +72,19 @@ public class ServletPopulateProductPage extends HttpServlet {
                     jsonObj += "\"name\": \"" + results.getString(2) + "\",";
                     jsonObj += "\"description\": \"" + results.getString(3) + "\",";
                     jsonObj += "\"price\": \"" + results.getString(4) + "\",";
-                    jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
+                    jsonObj += "\"category\": \"" + results.getString(6) + "\",";
+                    jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
+                    
+                    jsonObj += "\"id_shop\": \"" + results.getString(8) + "\",";
+                    jsonObj += "\"shop\": \"" + results.getString(9) + "\",";
+                    jsonObj += "\"description\": \"" + results.getString(10) + "\",";
+                    jsonObj += "\"web_site\": \"" + results.getString(11) + "\",";
+                    jsonObj += "\"id_owner\": \"" + results.getString(13) + "\",";
+                    jsonObj += "\"last_name\": \"" + results.getString(16) + "\",";
+                    jsonObj += "\"first_name\": \"" + results.getString(17) + "\",";
+                    
                     
                     /** in base al prodotto, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
-                    //------ TMP --------
                     ResultSet resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(1) + ";", connection);
                 
                     /** SE non ci sono immagini per questo prodotto */
@@ -104,9 +113,7 @@ public class ServletPopulateProductPage extends HttpServlet {
                     isFirstTimeImg = true;
                     jsonObj += "],";
                     
-                    //------ FINE TMP --------
                     
-                    //------ TMP --------
                     /** Cerco nel db tutte le recensioni che sono state fatte per questo oggetto */
                     ResultSet resultsReviews = MyDatabaseManager.EseguiQuery("SELECT * FROM reviews WHERE id_product = " + results.getString(1) + ";", connection);
                 
@@ -122,8 +129,10 @@ public class ServletPopulateProductPage extends HttpServlet {
                     }
                     
                     /** ALTRIMENTI: memorizzo le recensioni e i relativi dati (numero di stelle, testo recensione) */
+                    float tot_avg_value = 0, num_reviews = 0;
                     jsonObj += "\"reviews\":[";
                     while (resultsReviews.next()) {
+                        num_reviews += 1;
                         if(!isFirstReview)            
                             jsonObj += ", ";
                         isFirstReview = false; 
@@ -139,14 +148,13 @@ public class ServletPopulateProductPage extends HttpServlet {
                         jsonObj += "\"date_creation\": \"" + resultsReviews.getString(8) + "\",";
                         jsonObj += "\"id_creator\": \"" + resultsReviews.getString(10) + "\"";
                         jsonObj += "}";
+                        tot_avg_value += Float.valueOf(resultsReviews.getString(2));
                     }
                     isFirstTimeImg = true;
-                    jsonObj += "]";
-                    
-                    //------ FINE TMP --------
-                    
-                    
-                    jsonObj += "}";
+                    jsonObj += "],";
+                                        
+                    jsonObj += "\"num_reviews\": \"" + num_reviews + "\",";
+                    jsonObj += "\"global_value_avg\": \"" + tot_avg_value / num_reviews + "\"}";
                 }
                 jsonObj += "]}";
                 

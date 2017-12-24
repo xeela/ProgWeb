@@ -57,68 +57,71 @@ public class ServletFindProduct extends HttpServlet {
                 ResultSet results = null;
                 String query = "";
                 
-                // esegue sempre
                 if(recensioneReceived != null){
                     /** in caso l'utente abbia specificato il filtro della distanza, i prodotti cercati saranno in un determinato raggio dalla sua posizione */
                     if(distanzaReceived != null){
-                        query += "SELECT products.name, products.description, price, products.id, "
+                        query += "SELECT products.*, pictures.path, "
                                 + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                                 + "* COS(RADIANS(" + userLat + ")) "
                                 + "* COS(RADIANS(lng - " + userLng + ")) "
                                 + "+ SIN(RADIANS(lat)) "
                                 + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
-                                + "FROM products, shops, shops_coordinates, "
+                                + "FROM products, shops, shops_coordinates, users, , pictures, "
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id = sub.id AND products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
                                 + "AND avg >= " + recensioneReceived + " "
                                 + "AND products.ritiro = 1 "
+                                + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
                                 + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                     } else {
-                        /** ALTRIMENTI, verranno restituiti tutti i prodottiche soddifano il criterio dell ....... */
-                        query += "SELECT products.name, products.description, price, products.id "
-                                + "FROM products, shops, "
+                        /** ????????? ALTRIMENTI, verranno restituiti tutti i prodottiche soddifano il criterio dell ....... */
+                        query += "SELECT products.*,pictures.path, "
+                                + "FROM products, shops, users, pictures,"
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id_shop = shops.id "
+                                + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
                                 + "AND products.ID = sub.id AND avg >= " + recensioneReceived + " AND ";
                     }
                 } else if(distanzaReceived != null){
-                    query += "SELECT products.name, products.description, price, products.id, "
+                    query += "SELECT products.*, pictures.path, "
                             + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                             + "* COS(RADIANS(" + userLat + ")) "
                             + "* COS(RADIANS(lng - " + userLng + ")) "
                             + "+ SIN(RADIANS(lat)) "
                             + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
-                            + "FROM products, shops, shops_coordinates "
+                            + "FROM products, shops, shops_coordinates, users, pictures "
                             + "WHERE products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
                             + "AND products.ritiro = 1 "
+                            + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
                             + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                 } else {
-                    query += "SELECT products.name, products.description, price, products.id "
-                            + "FROM products, shops "
-                            + "WHERE products.id_shop = shops.id AND ";
+                    query += "SELECT products.*, pictures.path "
+                            + "FROM products, shops, users, pictures "
+                            + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
+                            + "AND products.id_shop = shops.id AND ";
                 }
                 
                 // esegue solo su condizione
                 if(prezzoMinRicerca != null){
-                    query += "price >= " + prezzoMinRicerca + " AND ";
+                    query += "products.price >= " + prezzoMinRicerca + " AND ";
                 }
                 
                 if(prezzoMaxRicerca != null){
-                    query += "price <= " + prezzoMaxRicerca + " AND ";
+                    query += "products.price <= " + prezzoMaxRicerca + " AND ";
                 }
                 
                 // esegue sempre
                 switch (categoriaReceived) {
                     case "product":
-                        query += "products.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;";
+                        query += "products.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
                         break;
                     case "seller": 
-                        query += "shops.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;";
+                        query += "shops.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
                         break;
                     case "category":                    
-                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;";
+                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
                         break;
                     default:
                         break;
@@ -158,49 +161,20 @@ public class ServletFindProduct extends HttpServlet {
 
                 connection.close();
 
-                response.sendRedirect(request.getContextPath() + "/searchPage.jsp"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/searchPage.jsp"); 
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         } catch (SQLException ex) {
             HttpSession session = request.getSession();
             MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletFindProduct", ex.toString());
             session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+            response.sendRedirect(request.getContextPath() + "/"); 
         }
     }
 
-    // IDEA DA SVILUPPARE in base all'ID prodotto, ricavo il path delle img a lui associate
-    /*private String productPictures(String ID_product, Connection connection, HttpServletRequest request, HttpServletResponse response) 
-    {
-        try (PrintWriter out = response.getWriter()) {
-            ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + ID_product + "';", connection);
-
-            if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
-            {
-                HttpSession session = request.getSession();
-                session.setAttribute("errorMessage", Errors.noProductFound);
-                response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                connection.close();
-            }
-
-
-        }catch (IOException ex) {
-            try {
-                HttpSession session = request.getSession();
-                session.setAttribute("errorMessage", Errors.dbQuery);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
-            } catch (IOException ex1) {
-                Logger.getLogger(ServletFindProduct.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-        }
-        return "";
-
-    }*/
-    
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
