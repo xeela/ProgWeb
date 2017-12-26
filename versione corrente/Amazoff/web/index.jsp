@@ -48,7 +48,10 @@
                     id_oggetto = jsonProdotti.products[i].id;
                     toAdd += "<div class=\"col-sm-6 col-md-4\">";
                     toAdd += "<div class=\"thumbnail\">";
-                    toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotti.products[i].pictures[0].path + "\" alt=\"...\">";
+                    if(!(jsonProdotti.products[i].pictures.length > 0) || jsonProdotti.products[i].pictures[0].path == undefined)
+                        toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"...\">";
+                    else
+                        toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotti.products[i].pictures[0].path + "\" alt=\"...\">";
                     toAdd += "<div class=\"caption\">";
                     toAdd += "<h3>" + jsonProdotti.products[i].name + "</h3>";
                     toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";

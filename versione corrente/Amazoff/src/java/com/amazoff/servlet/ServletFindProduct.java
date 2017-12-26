@@ -61,6 +61,9 @@ public class ServletFindProduct extends HttpServlet {
                     /** in caso l'utente abbia specificato il filtro della distanza, i prodotti cercati saranno in un determinato raggio dalla sua posizione */
                     if(distanzaReceived != null){
                         query += "SELECT products.*, pictures.path, "
+                                + " users.LAST_NAME, users.FIRST_NAME, " 
+                                + " shops.NAME, shops.WEB_SITE_URL," 
+                                + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
                                 + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                                 + "* COS(RADIANS(" + userLat + ")) "
                                 + "* COS(RADIANS(lng - " + userLng + ")) "
@@ -77,6 +80,9 @@ public class ServletFindProduct extends HttpServlet {
                     } else {
                         /** ????????? ALTRIMENTI, verranno restituiti tutti i prodottiche soddifano il criterio dell ....... */
                         query += "SELECT products.*,pictures.path, "
+                                + " users.LAST_NAME, users.FIRST_NAME, "
+                                + " shops.NAME, shops.WEB_SITE_URL," 
+                                + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
                                 + "FROM products, shops, users, pictures,"
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
@@ -86,6 +92,9 @@ public class ServletFindProduct extends HttpServlet {
                     }
                 } else if(distanzaReceived != null){
                     query += "SELECT products.*, pictures.path, "
+                            + " users.LAST_NAME, users.FIRST_NAME, "
+                            + " shops.NAME, shops.WEB_SITE_URL," 
+                            + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
                             + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                             + "* COS(RADIANS(" + userLat + ")) "
                             + "* COS(RADIANS(lng - " + userLng + ")) "
@@ -97,7 +106,10 @@ public class ServletFindProduct extends HttpServlet {
                             + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
                             + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                 } else {
-                    query += "SELECT products.*, pictures.path "
+                    query += "SELECT products.*, pictures.path,  "
+                            + " users.LAST_NAME, users.FIRST_NAME, "
+                            + " shops.NAME, shops.WEB_SITE_URL," 
+                            + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
                             + "FROM products, shops, users, pictures "
                             + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
                             + "AND products.id_shop = shops.id AND ";
@@ -139,8 +151,35 @@ public class ServletFindProduct extends HttpServlet {
                 }
 
                 //aggiungo i prodotti al json
-                jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
-
+                // ------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                
+                boolean isFirstTime = true;
+                jsonObj += "{";
+                jsonObj += "\"products\":["; 
+                while (results.next()) {
+                        if(!isFirstTime)            
+                            jsonObj += ", ";
+                        isFirstTime = false; 
+                        
+                        jsonObj += "{";
+                        jsonObj += "\"id\": \"" + results.getString(1) + "\",";
+                        jsonObj += "\"name\": \"" + results.getString(2) + "\",";
+                        jsonObj += "\"description\": \"" + results.getString(3) + "\",";
+                        jsonObj += "\"price\": \"" + results.getString(4) + "\",";
+                        jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
+                        jsonObj += "\"category\": \"" + results.getString(6) + "\",";
+                        jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
+                        jsonObj += "\"path\": \"" + results.getString(8) + "\","; /* percorso immagini */
+                        jsonObj += "\"last_name\": \"" + results.getString(9) + "\","; /* dati del venditore */
+                        jsonObj += "\"first_name\": \"" + results.getString(10) + "\",";
+                        jsonObj += "\"shop_name\": \"" + results.getString(11) + "\",";
+                        jsonObj += "\"site_url\": \"" + results.getString(12) + "\",";
+                        jsonObj += "\"num_reviews\": \"" + results.getString(13) + "\"";
+                        jsonObj += "}";
+                }
+                jsonObj += "]}";
+                
+                
                 HttpSession session = request.getSession();
 
                 /*
