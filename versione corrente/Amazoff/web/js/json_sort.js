@@ -49,11 +49,11 @@ function AggiungiProdotti() {
         toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"form" + id_oggetto + "\" onclick=\"$('#form" + id_oggetto + "').submit();\"> ";
         toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
         console.log(jsonProdotti.products[i].path);
-        if(jsonProdotti.products[i].path == undefined)
+        if(jsonProdotti.products[i].pictures.length == 0)
             path = "default.jpg";
         else
-            path = jsonProdotti.products[i].path; // visualizzo solo la prima immagine del prodotto
-        toAdd += "   <img src=\"UploadedImages/" + path + "\" style=\"max-height: 100px; \" alt=\"...\">";
+            path = jsonProdotti.products[i].pictures[0].path; // visualizzo solo la prima immagine del prodotto
+        toAdd += "   <img src=\"UploadedImages/" + path + "\" style=\"max-height: 100px; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
         toAdd += "</div>";
         toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
         toAdd += "<p name=\"nome" + id_oggetto + "\" >" + jsonProdotti.products[i].name + "</p>";
@@ -64,9 +64,9 @@ function AggiungiProdotti() {
         toAdd += "<p name=\"venditore" + id_oggetto + "\" >Venditore"+ jsonProdotti.products[i].last_name +" "+ jsonProdotti.products[i].first_name +"</p>";
         toAdd += "<p><a href=\""+jsonProdotti.products[i].site_url+"\">Sito Negozio: "+jsonProdotti.products[i].shop_name+"</a></p>";
         toAdd += "</div>";
-        toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1\" >";
-        toAdd += "<span class=\"prova glyphicon glyphicon-chevron-right\"></span>";
-        toAdd += "</div>";
+        //toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1\" >";
+        //toAdd += "<span class=\"prova glyphicon glyphicon-chevron-right\"></span>";
+        //toAdd += "</div>";
         toAdd += "</div></form><hr>";
     }
 

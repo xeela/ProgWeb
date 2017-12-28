@@ -54,13 +54,13 @@ public class ServletFindProduct extends HttpServlet {
             if (MyDatabaseManager.cpds != null) {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
-                ResultSet results = null;
+                ResultSet results = null, resultsImages = null;
                 String query = "";
                 
                 if(recensioneReceived != null){
                     /** in caso l'utente abbia specificato il filtro della distanza, i prodotti cercati saranno in un determinato raggio dalla sua posizione */
                     if(distanzaReceived != null){
-                        query += "SELECT products.*, pictures.path, "
+                        query += "SELECT DISTINCT products.*, "
                                 + " users.LAST_NAME, users.FIRST_NAME, " 
                                 + " shops.NAME, shops.WEB_SITE_URL," 
                                 + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
@@ -75,11 +75,11 @@ public class ServletFindProduct extends HttpServlet {
                                 + "WHERE products.id = sub.id AND products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
                                 + "AND avg >= " + recensioneReceived + " "
                                 + "AND products.ritiro = 1 "
-                                + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
+                                + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                                 + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                     } else {
                         /** ????????? ALTRIMENTI, verranno restituiti tutti i prodottiche soddifano il criterio dell ....... */
-                        query += "SELECT products.*,pictures.path, "
+                        query += "SELECT DISTINCT products.*, "
                                 + " users.LAST_NAME, users.FIRST_NAME, "
                                 + " shops.NAME, shops.WEB_SITE_URL," 
                                 + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
@@ -87,11 +87,11 @@ public class ServletFindProduct extends HttpServlet {
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id_shop = shops.id "
-                                + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
+                                + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                                 + "AND products.ID = sub.id AND avg >= " + recensioneReceived + " AND ";
                     }
                 } else if(distanzaReceived != null){
-                    query += "SELECT products.*, pictures.path, "
+                    query += "SELECT DISTINCT products.*, "
                             + " users.LAST_NAME, users.FIRST_NAME, "
                             + " shops.NAME, shops.WEB_SITE_URL," 
                             + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
@@ -103,15 +103,15 @@ public class ServletFindProduct extends HttpServlet {
                             + "FROM products, shops, shops_coordinates, users, pictures "
                             + "WHERE products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
                             + "AND products.ritiro = 1 "
-                            + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
+                            + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                             + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                 } else {
-                    query += "SELECT products.*, pictures.path,  "
+                    query += "SELECT DISTINCT products.*,  "
                             + " users.LAST_NAME, users.FIRST_NAME, "
                             + " shops.NAME, shops.WEB_SITE_URL," 
                             + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
                             + "FROM products, shops, users, pictures "
-                            + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER AND pictures.id_product = products.id "
+                            + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                             + "AND products.id_shop = shops.id AND ";
                 }
                 
@@ -153,29 +153,55 @@ public class ServletFindProduct extends HttpServlet {
                 //aggiungo i prodotti al json
                 // ------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                 
-                boolean isFirstTime = true;
+                boolean isFirstTime = true, isFirstTimeImg = true;
+                String id_product = "";
                 jsonObj += "{";
                 jsonObj += "\"products\":["; 
                 while (results.next()) {
-                        if(!isFirstTime)            
-                            jsonObj += ", ";
-                        isFirstTime = false; 
+                    isFirstTimeImg = true;
+                    if(!isFirstTime)            
+                        jsonObj += ", ";
+                    isFirstTime = false; 
                         
+                    id_product = results.getString(1);
+                    jsonObj += "{";
+                    jsonObj += "\"id\": \"" + id_product + "\",";
+                    jsonObj += "\"name\": \"" + results.getString(2) + "\",";
+                    jsonObj += "\"description\": \"" + results.getString(3) + "\",";
+                    jsonObj += "\"price\": \"" + results.getString(4) + "\",";
+                    jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
+                    jsonObj += "\"category\": \"" + results.getString(6) + "\",";
+                    jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
+                    jsonObj += "\"last_name\": \"" + results.getString(8) + "\","; /* dati del venditore */
+                    jsonObj += "\"first_name\": \"" + results.getString(9) + "\",";
+                    jsonObj += "\"shop_name\": \"" + results.getString(10) + "\",";
+                    jsonObj += "\"site_url\": \"" + results.getString(11) + "\",";
+                    jsonObj += "\"num_reviews\": \"" + results.getString(12) + "\",";
+                        
+                    // richiedo le immagini per questo prodotto
+                    jsonObj += "\"pictures\": [";
+                    resultsImages = MyDatabaseManager.EseguiQuery("SELECT path FROM pictures WHERE ID_PRODUCT = "+id_product+";", connection);
+                
+                    /*if (resultsImages.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                    {
+                        HttpSession session = request.getSession();
+                        session.setAttribute("errorMessage", Errors.noProductFound);
+                        response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
+                        connection.close();
+                        return;
+                    }*/
+                    while (resultsImages.next()) {
+                        if(!isFirstTimeImg)            
+                            jsonObj += ", ";
+                        isFirstTimeImg = false;
                         jsonObj += "{";
-                        jsonObj += "\"id\": \"" + results.getString(1) + "\",";
-                        jsonObj += "\"name\": \"" + results.getString(2) + "\",";
-                        jsonObj += "\"description\": \"" + results.getString(3) + "\",";
-                        jsonObj += "\"price\": \"" + results.getString(4) + "\",";
-                        jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
-                        jsonObj += "\"category\": \"" + results.getString(6) + "\",";
-                        jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
-                        jsonObj += "\"path\": \"" + results.getString(8) + "\","; /* percorso immagini */
-                        jsonObj += "\"last_name\": \"" + results.getString(9) + "\","; /* dati del venditore */
-                        jsonObj += "\"first_name\": \"" + results.getString(10) + "\",";
-                        jsonObj += "\"shop_name\": \"" + results.getString(11) + "\",";
-                        jsonObj += "\"site_url\": \"" + results.getString(12) + "\",";
-                        jsonObj += "\"num_reviews\": \"" + results.getString(13) + "\"";
+                        jsonObj += "\"path\": \"" + resultsImages.getString(1) + "\"";                            
                         jsonObj += "}";
+                    }
+                        
+                    jsonObj += "]"; // chiusura array images
+                        
+                    jsonObj += "}"; //chiusura dati prodotto
                 }
                 jsonObj += "]}";
                 

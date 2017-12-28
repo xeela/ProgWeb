@@ -127,22 +127,39 @@
             }
             
             // funzione che controlla se la email inserita nel popup di reset password ha le dimensioni corrette
-            function checkResetEmail(mail)
+            function checkResetEmail()
             {
-                //OSSSSSS: oltre al controllo sulla lunghezza della email, andrebbe controllato, magari con ajax, se la password esiste nel db
+                document.getElementById("btnRipristina").disabled = true;              
+                
                 var mail = document.getElementById("inputEmail").value;
+                //console.log(mail.length < 6);
+                //console.log("||"+ !mail.includes("@"));
                 if(mail.length < 6 || !mail.includes("@"))
                 {
+                    document.getElementById("alertResetPassword").style.visibility = "visible";
+                    document.getElementById("btnRipristina").disabled = false;
+                }
+                else {
+                    document.getElementById("alertResetPassword").style.visibility = "hidden";
+
                     // chiama ajax che controlla se la email è presente nel db
-                    //if(checkEmailExists(mail)) {          
-                      document.getElementById("alertResetPassword").style.visibility = "visible";
-                    //  return false;
-                   // }
+                    $.post('ServletAjaxEmailExists', {
+                        _email : mail
+                    }, function(data) {
+
+                        if(data.indexOf("true") >= 0) {
+                            var dati = data.split('&');
+                            document.getElementById("modalViewResetPwd").innerHTML += "<h4><a href="+dati[1]+" style='text-decoration: underline'>Clicca per Accedere</a> con la password temporanea e aggiornare i dati</h4>";
+                            
+                        }else {
+                            document.getElementById("alertResetPassword").style.visibility = "visible";
+                        }
+                        return false;
+                    }).fail(function () {
+                        return false;
+                    });                    
                     return false;
-                }else {
-                    // chiudo la modal
-                    $('#modalPasswordReset').modal('hide');
-                    return true;
+                
                 }
             }
             
@@ -155,7 +172,7 @@
                 $.post('ServletAjax?op=email', {
                         _email : email
                 }, function(data) {
-
+                        console.log(data);
                         if(data == "true") {
                             document.getElementById("mailRegister").style.backgroundColor = "#80ff80";
                             emailUnique = true;
@@ -406,7 +423,7 @@
                           <div class="form-group">
                             <label  class="col-sm-2 control-label"
                                       for="inputEmail3">Email</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-10" id="modalViewResetPwd">
                                 <input type="email" class="form-control" 
                                 id="inputEmail" placeholder="Inserisci Email"/>
                                 <label  class="control-label">Ti verrà mandata una email con cui ripristinare la password.</label>  
@@ -423,8 +440,8 @@
 
                             <!-- Modal Footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Annulla</button>
-                        <button type="button" class="btn btn-primary" onclick="checkResetEmail()">Ripristina</button>
+                        <button type="button" class="btn btn-default" id="btnAnnulla" data-dismiss="modal">Annulla</button>
+                        <button type="button" class="btn btn-primary" id="btnRipristina" onclick="checkResetEmail()">Ripristina</button>
                     </div>
                 </div>
             </div>

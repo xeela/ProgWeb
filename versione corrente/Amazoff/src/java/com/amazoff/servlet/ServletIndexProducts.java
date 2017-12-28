@@ -32,6 +32,7 @@ public class ServletIndexProducts extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+                       
 
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */

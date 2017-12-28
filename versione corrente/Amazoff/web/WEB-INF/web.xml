@@ -58,10 +58,6 @@
         <servlet-class>com.amazoff.servlet.ServletAjax</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletAjaxUsername</servlet-name>
-        <servlet-class>com.amazoff.servlet.ServletAjaxUsername</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ServletAjaxCarrello</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletAjaxCarrello</servlet-class>
     </servlet>
@@ -92,6 +88,18 @@
     <servlet>
         <servlet-name>ServletAjaxAutocomplete</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletAjaxAutocomplete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletSendEmail</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletSendEmail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAjaxEmailExists</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletAjaxEmailExists</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletRecuperoPassword</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletRecuperoPassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
@@ -138,10 +146,6 @@
         <url-pattern>/ServletAjax</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ServletAjaxUsername</servlet-name>
-        <url-pattern>/ServletAjaxUsername</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ServletAjaxCarrello</servlet-name>
         <url-pattern>/ServletAjaxCarrello</url-pattern>
     </servlet-mapping>
@@ -172,6 +176,18 @@
     <servlet-mapping>
         <servlet-name>ServletAjaxPayPageCard</servlet-name>
         <url-pattern>/ServletAjaxPayPageCard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletSendEmail</servlet-name>
+        <url-pattern>/ServletSendEmail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAjaxEmailExists</servlet-name>
+        <url-pattern>/ServletAjaxEmailExists</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletRecuperoPassword</servlet-name>
+        <url-pattern>/ServletRecuperoPassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

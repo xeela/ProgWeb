@@ -4,7 +4,7 @@
     Author     : Fra
 --%>
 
-<%@page import="com.amazoff.classes.SendEmail"%>
+<%@page import="com.amazoff.servlet.ServletSendEmail"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -15,7 +15,14 @@
     <body>
         <h1>Hello World!</h1>
         <p>Send Email (di prova)</p>
-        <p>"RISP: <%=SendEmail.sendEmail() %></p>
+        <form action="ServletSendEmail" method="get">
+            To:<input type="text" name="to" value="francesco.bruschetti@marconirovereto.it" /><br/>
+            Subject:<input type="text" name="subject" value="subbbbb"/><br/>
+            Message:<input type="text" name="message"  value="Messaggio di prova"/><br/>
+            Your Email id:<input type="text" name="user" value="francesco.bruschetti@studenti.unitn.it"><br/>
+            Password: <input type="password" name="pass"   /><br/>
+            <input type="submit" value="send" />
+        </form>
             
             
     </body>

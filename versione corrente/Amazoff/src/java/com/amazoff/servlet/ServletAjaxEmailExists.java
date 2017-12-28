@@ -17,43 +17,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Francesco
+ *
+ * @author Fra
  */
-public class ServletAjaxUsername extends HttpServlet {
+public class ServletAjaxEmailExists extends HttpServlet {
 
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
         }
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * 
-     * 
-     * 
-     * 
-     * SERVLET MAI CHIAMATA PERCHè IL SUO CODICE FA LA STESSA COSA DELLA SERVLETAJAX 
-     * 
-     * 
-     * 
-     * 
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String risposta = "-1";
+        
+        String risposta = "false";
         try (PrintWriter out = response.getWriter()) {
         
-            String usernameReceived = request.getParameter("_user").trim();
+            String emailReceived = request.getParameter("_email");
 
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
@@ -64,16 +53,17 @@ public class ServletAjaxUsername extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT username FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(usernameReceived) + "';", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT email, passrecupero FROM users WHERE email = '" + MyDatabaseManager.EscapeCharacters(emailReceived) + "';", connection);
                 
                 if(results.isAfterLast()) 
                 {
-                    risposta = "true";
+                    risposta = "false";
                 }
                 else {
-                    risposta = "true";
+                    risposta = "false";
                     while (results.next()) { // se esiste un utente con quella email, ritorno FALSE
-                        risposta = "false";
+                        risposta = "true&/Amazoff/ResetPassword.jsp?tmp="+results.getString(2);
+                        //response.sendRedirect(request.getContextPath() + "/ResetPassword.jsp?tmp="+results.getString(2));
                     }
                 }
                 connection.close();
