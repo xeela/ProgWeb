@@ -64,7 +64,10 @@
                         toAdd += "<div class=\"row\">";
                         toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
                         toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
-                        toAdd += "                    <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
+                         if(!(cart.products[i].pictures.length > 0) || cart.products[i].pictures[0].path == undefined)
+                            toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"...\">";
+                        else
+                            toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
                         toAdd += "                </div>";
                         toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
                         toAdd += "                        <div class=\"row\">";

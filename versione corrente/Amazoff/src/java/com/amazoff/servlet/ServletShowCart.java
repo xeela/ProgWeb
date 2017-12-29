@@ -41,8 +41,8 @@ public class ServletShowCart extends HttpServlet {
 
                 if (session.getAttribute("user") != null) {
                     /** Interrogo il db per farmi restituire tutti i dettagli dei prodotti nel carrello */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
-                            + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.name, products.description, products.price, products.id FROM products, cart "
+                            + "WHERE cart.ID_USER = " + session.getAttribute("userID") + " AND cart.ID_PRODUCT = products.ID;", connection);
                     /** Memorizzo i dati in un oggetto json */
                     jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
 

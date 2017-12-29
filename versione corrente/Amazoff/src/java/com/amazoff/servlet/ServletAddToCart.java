@@ -49,7 +49,7 @@ public class ServletAddToCart extends HttpServlet {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
 
-            String jsonObj = "";
+            String jsonObj = "{";
             if (MyDatabaseManager.cpds != null) {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
@@ -61,21 +61,28 @@ public class ServletAddToCart extends HttpServlet {
                             + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);
 
                     /** Dopo aver inserito il nuovo prodotto, mi faccio restituire tutta la lista di oggetti presenti nel carrello */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.id, name, description, price FROM products, cart "
                             + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
-                    /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */
+                    
+                    /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
                     jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
-
+                   
+                    connection.close();
+                    session.setAttribute("shoppingCartProducts", jsonObj);
+                    response.sendRedirect(request.getContextPath() + "/shopping-cartPage.jsp");
+                    
                 } else {
                     /** salva l'elemento selezionato nel carrello */
                     String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
                     Cookie cookie = new Cookie(timeStamp, productReceived);
                     cookie.setMaxAge(60 * 60 * 24 * 7);
                     response.addCookie(cookie);
+                    
+                    connection.close();
+                    response.sendRedirect(request.getContextPath() + "/ServletShowCookieCart");
                 }
                     
-                connection.close();
-                response.sendRedirect(request.getContextPath() + "/ServletShowCookieCart");
+                
             } else {
                 session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/"); 
