@@ -26,6 +26,10 @@
         <servlet-class>com.amazoff.servlet.ServletLogin</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ServletRegisterShop</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletRegisterShop</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServletFindProduct</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletFindProduct</servlet-class>
     </servlet>
@@ -100,6 +104,10 @@
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletRegisterShop</servlet-name>
+        <url-pattern>/ServletRegisterShop</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>ServletRegister</servlet-name>

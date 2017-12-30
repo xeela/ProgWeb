@@ -209,6 +209,7 @@
                     latLng.lat(),
                     latLng.lng()
                 ].join(';');
+                
             }
             function initialize() {
                 latLng = new google.maps.LatLng(41.9, 12.5);
@@ -537,7 +538,7 @@
 
                                     <div id="collapseCreateShop" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 
-                                        <form id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
+                                        <form id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletRegisterShop'>
                                             <div class="row">
                                                 <div class="col-sm-4 col-sm-offset-2">
                                                     <div class="row">
@@ -561,21 +562,15 @@
                                                     </div>
                                                     <div class="row">
                                                         <p></p>
-                                                        <b>Tipologia di consegna</b>
-                                                        <p><input name="spedizione" type="checkbox" value="true"/> Spedizione Standard                                                    <br/>
-                                                            <input name="ritito" type="checkbox" value="true"/> Ritiro in negozio</p>
-                                                    </div>
-                                                    <div class="row">
-                                                        <p></p>
                                                         <b>Giorni di apertura</b>
                                                         <div>
-                                                            <input name="monday" type="checkbox" value="true"/> Lunedì <br/>
-                                                            <input name="tuesday" type="checkbox" value="true"/> Martedì  <br/>
-                                                            <input name="wednesday" type="checkbox" value="true"/> Mercoledì   <br/>
-                                                            <input name="thursday" type="checkbox" value="true"/> Giovedì   <br/>
-                                                            <input name="friday" type="checkbox" value="true"/> Venerdì   <br/>
-                                                            <input name="saturday" type="checkbox" value="true"/> Sabato   <br/>
-                                                            <input name="sunday" type="checkbox" value="true"/> Domenica   <br/>
+                                                            <input name="mon" type="checkbox" value="true"/> Lunedì <br/>
+                                                            <input name="tue" type="checkbox" value="true"/> Martedì  <br/>
+                                                            <input name="wed" type="checkbox" value="true"/> Mercoledì   <br/>
+                                                            <input name="thu" type="checkbox" value="true"/> Giovedì   <br/>
+                                                            <input name="fri" type="checkbox" value="true"/> Venerdì   <br/>
+                                                            <input name="sat" type="checkbox" value="true"/> Sabato   <br/>
+                                                            <input name="sun" type="checkbox" value="true"/> Domenica   <br/>
 
                                                         </div>
                                                     </div>
