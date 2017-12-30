@@ -65,6 +65,11 @@
                     MostraErrore("La password deve essere di almeno 8 caratteri");
                     return false;
                 }
+                else if(pwd1.toString().toLowerCase() == pwd1 || pwd1.toString().toUpperCase() == pwd1)
+                {
+                    MostraErrore("La password deve avere un misto di maiuscole e minuscole");
+                    return false;
+                }
                 else if(pwd1 != pwd2)
                 {
                     MostraErrore("Le password non coincidono");
