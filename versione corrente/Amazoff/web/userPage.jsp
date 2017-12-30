@@ -546,24 +546,38 @@
                                                     
                                                     <div class="row">
                                                         <p></p>
-                                                        Nome
+                                                        <b>Nome</b>
                                                         <p><input type="text" name="nome" placeholder="..." class="col-lg-10"/></p>
                                                     </div>
                                                     <div class="row">
                                                         <p></p>
-                                                        Descrizione 
+                                                        <b>Descrizione </b>
                                                         <p><input type="text" name="descrizione" placeholder="..." class="col-lg-10"/></p>
                                                     </div>
                                                     <div class="row">
                                                         <p></p>
-                                                            Website
+                                                        <b>Website</b>
                                                             <p><input type="url" name="website" placeholder="URL" class="col-lg-10"/></p>
                                                     </div>
                                                     <div class="row">
                                                         <p></p>
-                                                        Tipologia di consegna
+                                                        <b>Tipologia di consegna</b>
                                                         <p><input name="spedizione" type="checkbox" value="true"/> Spedizione Standard                                                    <br/>
                                                             <input name="ritito" type="checkbox" value="true"/> Ritiro in negozio</p>
+                                                    </div>
+                                                    <div class="row">
+                                                        <p></p>
+                                                        <b>Giorni di apertura</b>
+                                                        <div>
+                                                            <input name="monday" type="checkbox" value="true"/> Lunedì <br/>
+                                                            <input name="tuesday" type="checkbox" value="true"/> Martedì  <br/>
+                                                            <input name="wednesday" type="checkbox" value="true"/> Mercoledì   <br/>
+                                                            <input name="thursday" type="checkbox" value="true"/> Giovedì   <br/>
+                                                            <input name="friday" type="checkbox" value="true"/> Venerdì   <br/>
+                                                            <input name="saturday" type="checkbox" value="true"/> Sabato   <br/>
+                                                            <input name="sunday" type="checkbox" value="true"/> Domenica   <br/>
+
+                                                        </div>
                                                     </div>
                                                     <INPUT TYPE='submit' VALUE='Crea Negozio' class="btn col-lg-4 col-lg-offset-3" />
                                                 </div>   
