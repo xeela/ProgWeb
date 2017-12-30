@@ -152,7 +152,7 @@
                                     </div>                    
 
                                     <div class="col-xs-3 hidden-lg iconSize imgCenter" >
-                                        <a href="shopping-cartPage.jsp">
+                                        <a href="ServletAddToCart">
                                             <spam class="glyphicon glyphicon-shopping-cart"></spam>
                                         </a>
                                     </div>

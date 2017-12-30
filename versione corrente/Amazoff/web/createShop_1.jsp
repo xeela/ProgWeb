@@ -170,7 +170,7 @@
                                 
                                 
                                 </div>
-                                             <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+                                             <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="ServletAddToCart"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                             </div>
                         </div>
                         <!-- SEARCH BAR -->
