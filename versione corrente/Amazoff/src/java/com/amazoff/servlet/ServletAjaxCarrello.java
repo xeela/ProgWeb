@@ -70,7 +70,7 @@ public class ServletAjaxCarrello extends HttpServlet {
                 risposta = "true";
                 
                 // dopo aver rimosso il prodotto, aggiorno la lista json dei prodotti nel carrello */
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME FROM cart, shops, users, products WHERE users.ID = '"+ idUser +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and users.id = shops.ID_OWNER;", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME FROM cart, shops, users, products WHERE users.ID = '"+ idUser +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
                     
                     /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
                     // -------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);

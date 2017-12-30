@@ -54,19 +54,29 @@ public class ServletAddToCart extends HttpServlet {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 if (session.getAttribute("user") != null) {
-                    /** Interrogo il per inserire nel carrello dell'utente, l'id del prodotto specificato */
-                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED) VALUES ("
-                            + session.getAttribute("userID") + ", "
-                            + productReceived + ", "
-                            + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);
+                    /** Controllo se il prodotto è già presente nel carrello dell'utente. Se si, non faccio nulla, altrimenti lo aggiungo*/
+                    ResultSet isPresent = MyDatabaseManager.EseguiQuery("SELECT * FROM cart WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = " + productReceived + ";", connection);
+                    //Se non c'è
+                    if(!isPresent.isBeforeFirst())
+                    {
+                        /** Interrogo il per inserire nel carrello dell'utente, l'id del prodotto specificato */
+                        PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED) VALUES ("
+                                + session.getAttribute("userID") + ", "
+                                + productReceived + ", "
+                                + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);   
+                    }
+                    /*else
+                    {
+                        //il prodotto è già nel carrello 
+                    }*/
 
                     /** Dopo aver inserito il nuovo prodotto, mi faccio restituire tutta la lista di oggetti presenti nel carrello */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME FROM cart, shops, users, products WHERE users.ID = '"+ session.getAttribute("userID")+"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and users.id = shops.ID_OWNER;", connection);
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME FROM cart, shops, users, products WHERE users.ID = '"+ session.getAttribute("userID") +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
                     
                     /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
                     // -------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                    
-                    /** se non c'è il prodotto specificato */
+                    /** se il carrello è vuoto */
                     if(results.isAfterLast()) 
                     {
                         /** ALLORA: genero un errore e lo memorizzo */
