@@ -5,6 +5,8 @@ import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,8 +43,8 @@ public class ServletRegisterShop extends HttpServlet {
             String description = request.getParameter("descrizione");
             String website = request.getParameter("website");
             String location = request.getParameter("coordinate");
-            //String lat = location.split(",")[0];
-            //String lng = location.split(",")[1];
+            String lat = location.split(";")[0];
+            String lng = location.split(";")[1];
             String[]days = new String[7];
             days[0]= request.getParameter("mon");
             days[1] = request.getParameter("tue");
@@ -73,7 +75,7 @@ public class ServletRegisterShop extends HttpServlet {
                 HttpSession session = request.getSession();
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
-                /** memorizzo i dati l'indirizzo dell'utente */
+                /** memorizzo i dati del negozio */
                 MyDatabaseManager.EseguiStatement("INSERT INTO shops(NAME, DESCRIPTION, WEB_SITE_URL, GLOBAL_VALUE, ID_OWNER, ID_CREATOR, BUSINESS_DAYS)"
                         + " VALUES("
                         + "'" + name + "',"
@@ -82,18 +84,22 @@ public class ServletRegisterShop extends HttpServlet {
                         + "0,"
                         + session.getAttribute("userID") + ","
                         + session.getAttribute("userID") + ","
-                        + "'" + businessDays + "',"
+                        + "'" + businessDays
                         +"');", connection);
+                ResultSet RS = MyDatabaseManager.EseguiQuery("SELECT LAST_INSERT_ID()", connection);
+                int ShopID = -1;
+                while (RS.next()) {
+                    ShopID = RS.getInt(1);
+                }
+                /** memorizzo i dati della posizione geografica del negozio appena creato */
+                MyDatabaseManager.EseguiStatement("INSERT INTO shops_coordinates(ID_SHOP, ID_COORDINATE, Lat, Lng)"
+                        + " VALUES('"
+                        + ShopID + "','"
+                        + ShopID + "',"
+                        + "'" + lat + "',"
+                        + "'" + lng + "');", connection);
                 
-                /** memorizzo i dati della carta di credito */
-                /*MyDatabaseManager.EseguiStatement("INSERT INTO shop_coordinates(ID_SHOP, Lat, Lng)"
-                        + " VALUES("
-                        + session.getAttribute("userID") + ","
-                        + "'" + intestatario + "',"
-                        + "'" + numeroCarta + "',"
-                        + "'" + meseScadenza + "',"
-                        + "'" + annoScadenza + "');", connection);
-                */
+                MyDatabaseManager.EseguiStatement("UPDATE users SET USERTYPE = 1 WHERE ID ="+session.getAttribute("userID"), connection);
                 connection.close();
                 
                 /** SE è andato tutto bene rimando alla home del sito */
@@ -104,7 +110,7 @@ public class ServletRegisterShop extends HttpServlet {
                 /** SE c'è stato un errore, memorizzo l'errore e chiedo di reinserire i dati */
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/aaaa"); 
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         }
         catch (SQLException ex) {
@@ -112,7 +118,7 @@ public class ServletRegisterShop extends HttpServlet {
             MyDatabaseManager.LogError(request.getParameter("username"), "ServletRegisterShop", ex.toString());
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/aaaaa");
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 
