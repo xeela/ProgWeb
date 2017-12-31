@@ -75,6 +75,7 @@ public class ServletAddProduct extends HttpServlet {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 /** aggiungi alla tabella products il prodotto */
+                /* QUERY: vanno aggiornati i campi. manca ritiro, venduto */
                 PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO products (name, description, price, id_shop) VALUES (" 
                             + "'" + MyDatabaseManager.EscapeCharacters(nomeReceived) + "', "
                             + "'" + MyDatabaseManager.EscapeCharacters(descrizioneReceived) + "', "

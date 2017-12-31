@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Francesco
+ * @author Francesco Bruschetti
  */
 public class ServletIndexProducts extends HttpServlet {
 

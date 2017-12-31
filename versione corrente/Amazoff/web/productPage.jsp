@@ -58,7 +58,7 @@
 
                         toAdd += insertStartsInReview(jsonProdotto.result[0].reviews[i].global_value);
 
-                        toAdd += " global_value: " + jsonProdotto.result[0].reviews[i].global_value;
+                        //toAdd += " global_value: " + jsonProdotto.result[0].reviews[i].global_value;
                         toAdd += "             </div>";
                         toAdd += "             <p>" + jsonProdotto.result[0].reviews[i].description + "</p>";
                         toAdd += "         </div>";
@@ -89,12 +89,12 @@
                 var toAdd = "";
                 var id_product = jsonProdotto.result[0].id;
 
-                toAdd += "<p name=\"nome\">" + jsonProdotto.result[0].name + "</p>";
+                toAdd += "<h3 name=\"nome\">" + jsonProdotto.result[0].name + "</h3>";
                 toAdd += "<p name=\"stelle\">Valutazione: " + jsonProdotto.result[0].global_value_avg + "</p>";
                 toAdd += "<p name=\"recensioni\" >Tot recensioni: "+ jsonProdotto.result[0].num_reviews +"</p>";
                 toAdd += "<p name=\"linkmappa\" ><a href='ServletVisualizzaNegozio....?p="+ jsonProdotto.result[0].id_shop +"'>Vedi negozio su mappa</a></p>";
-                toAdd += "<p name=\"prezzo\">" + jsonProdotto.result[0].price + " €</p>";
-                toAdd += "<p name=\"venditore\" >"+ jsonProdotto.result[0].first_name +" " + jsonProdotto.result[0].last_name + " <a href=\""+jsonProdotto.result[0].web_site+"\">Sito web Negozio id:" + jsonProdotto.result[0].id_shop + "</a></p>";
+                toAdd += "<p name=\"prezzo\">Prezzo: " + jsonProdotto.result[0].price + " €</p>";
+                toAdd += "<p name=\"venditore\" >Venditore: "+ jsonProdotto.result[0].first_name +" " + jsonProdotto.result[0].last_name + "</p> <a href=\""+jsonProdotto.result[0].web_site+"\">Sito web "+jsonProdotto.result[0].shop+"</a><p> Negozio id:" + jsonProdotto.result[0].id_shop + "</a></p>";
                 toAdd += "<a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotto.result[0].id + "\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</a></div>";
 
                 $("#div_dati").html(toAdd);
@@ -429,12 +429,12 @@
                                                 </div>
                                                 
                                                 <!-- Carousel nav -->
-                                                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                                <!--<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                                                     <span class="glyphicon glyphicon-chevron-left"></span>                                       
                                                 </a>
                                                 <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
                                                     <span class="glyphicon glyphicon-chevron-right"></span>                                       
-                                                </a>                                
+                                                </a> -->                               
                                             </div>
                                         </div>
 
@@ -442,9 +442,6 @@
                                     </div>
                                 </div>
                             </div><!--/Slider-->
-
-                            
-                            
                         </div>                       
                         
                         <div class="col-xs-12 col-md-5 col-lg-6" id="div_dati">

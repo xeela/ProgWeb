@@ -105,13 +105,13 @@ public class ServletAjaxCarrello extends HttpServlet {
                         jsonObj += "\"category\": \"" + results.getString(6) + "\",";
                         jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
 
-                        jsonObj += "\"id_shop\": \"" + results.getString(8) + "\",";
-                        jsonObj += "\"shop\": \"" + results.getString(9) + "\",";
-                        jsonObj += "\"description\": \"" + results.getString(10) + "\",";
-                        jsonObj += "\"web_site\": \"" + results.getString(11) + "\",";
-                        jsonObj += "\"id_owner\": \"" + results.getString(13) + "\",";
-                        jsonObj += "\"first_name\": \"" + results.getString(15) + "\",";
-                        jsonObj += "\"last_name\": \"" + results.getString(16) + "\",";
+                        jsonObj += "\"id_shop\": \"" + results.getString(9) + "\",";
+                        jsonObj += "\"shop\": \"" + results.getString(10) + "\",";
+                        jsonObj += "\"description\": \"" + results.getString(11) + "\",";
+                        jsonObj += "\"web_site\": \"" + results.getString(12) + "\",";
+                        jsonObj += "\"id_owner\": \"" + results.getString(14) + "\",";
+                        jsonObj += "\"first_name\": \"" + results.getString(16) + "\",";
+                        jsonObj += "\"last_name\": \"" + results.getString(17) + "\",";
 
 
                         /** in base al prodotto, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   

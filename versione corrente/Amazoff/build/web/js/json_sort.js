@@ -60,8 +60,8 @@ function AggiungiProdotti() {
         toAdd += "<p name=\"stelle" + id_oggetto + "\">Voto totale</p>";
         toAdd += "<p name=\"recensioni" + id_oggetto + "\">Tot recensioni: "+ jsonProdotti.products[i].num_reviews +"</p>";
         toAdd += "<p name=\"linkmappa" + id_oggetto + "\" >Vedi su mappa TO DO</p>";
-        toAdd += "<p name=\"prezzo" + id_oggetto + "\">Prezzo: " + jsonProdotti.products[i].price + "</p>";
-        toAdd += "<p name=\"venditore" + id_oggetto + "\" >Venditore"+ jsonProdotti.products[i].last_name +" "+ jsonProdotti.products[i].first_name +"</p>";
+        toAdd += "<p name=\"prezzo" + id_oggetto + "\">Prezzo: " + jsonProdotti.products[i].price + "€</p>";
+        toAdd += "<p name=\"venditore" + id_oggetto + "\" >Venditore: "+ jsonProdotti.products[i].last_name +" "+ jsonProdotti.products[i].first_name +"</p>";
         toAdd += "<p><a href=\""+jsonProdotti.products[i].site_url+"\">Sito Negozio: "+jsonProdotti.products[i].shop_name+"</a></p>";
         toAdd += "</div>";
         //toAdd += "<div class=\"hidden-xs col-sm-2 col-md-1\" >";

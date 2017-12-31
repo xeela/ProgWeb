@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Davide 
+ * @author Davide Farina
  */
 public class ServletFindProduct extends HttpServlet {
 
@@ -172,11 +172,11 @@ public class ServletFindProduct extends HttpServlet {
                     jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
                     jsonObj += "\"category\": \"" + results.getString(6) + "\",";
                     jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
-                    jsonObj += "\"last_name\": \"" + results.getString(8) + "\","; /* dati del venditore */
-                    jsonObj += "\"first_name\": \"" + results.getString(9) + "\",";
-                    jsonObj += "\"shop_name\": \"" + results.getString(10) + "\",";
-                    jsonObj += "\"site_url\": \"" + results.getString(11) + "\",";
-                    jsonObj += "\"num_reviews\": \"" + results.getString(12) + "\",";
+                    jsonObj += "\"last_name\": \"" + results.getString(9) + "\","; /* dati del venditore */
+                    jsonObj += "\"first_name\": \"" + results.getString(10) + "\",";
+                    jsonObj += "\"shop_name\": \"" + results.getString(11) + "\",";
+                    jsonObj += "\"site_url\": \"" + results.getString(12) + "\",";
+                    jsonObj += "\"num_reviews\": \"" + results.getString(13) + "\",";
                         
                     // richiedo le immagini per questo prodotto
                     jsonObj += "\"pictures\": [";

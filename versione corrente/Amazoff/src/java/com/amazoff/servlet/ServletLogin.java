@@ -15,7 +15,7 @@ import java.sql.Connection;
 
 /**
  *
- * @author Davide
+ * @author Davide Farina
  */
 public class ServletLogin extends HttpServlet {
 
