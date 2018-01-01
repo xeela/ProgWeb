@@ -40,7 +40,7 @@ public class ServletRegister extends HttpServlet {
             String emailReceived = request.getParameter("email");
             String userReceived = request.getParameter("username");
             String pwdReceived = request.getParameter("hashedPassword");
-            
+                               
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
@@ -120,6 +120,17 @@ public class ServletRegister extends HttpServlet {
         String uuid = UUID.randomUUID().toString();
         return uuid;
     }
+    
+    /******** TMP: 
+    private static void generateNString() {
+        
+        String[] tmp = new String[50];
+        for (int i = 0; i < 50; i++) {
+            String uuid = UUID.randomUUID().toString();
+            tmp[i] = uuid;
+        }
+        tmp = tmp;
+    }*/
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

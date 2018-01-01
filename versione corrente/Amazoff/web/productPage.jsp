@@ -60,7 +60,7 @@
 
                         //toAdd += " global_value: " + jsonProdotto.result[0].reviews[i].global_value;
                         toAdd += "             </div>";
-                        toAdd += "             <p>" + jsonProdotto.result[0].reviews[i].description + "</p>";
+                        toAdd += "             <p><b>"+ jsonProdotto.result[0].reviews[i].name +":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
                         toAdd += "         </div>";
                         toAdd += "</div>";
                     }
