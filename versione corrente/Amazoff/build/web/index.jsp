@@ -53,7 +53,7 @@
                     else
                         toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotti.products[i].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
                     toAdd += "<div class=\"caption\">";
-                    toAdd += "<h3 class=\"maxlength dotsEndSentence\">" + jsonProdotti.products[i].name + "</h3>";
+                    toAdd += "<h3 class=\"maxlength dotsEndSentence\" title=\"" + jsonProdotti.products[i].name + "\">" + jsonProdotti.products[i].name + "</h3>";
                     toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
                     toAdd += "<p><a href=\"ServletPopulateProductPage?id="+jsonProdotti.products[i].id+"\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotti.products[i].id + "\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
                     toAdd += "</div>";
