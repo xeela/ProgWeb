@@ -150,17 +150,15 @@
                         document.getElementById("txtmodalita").value = modalita;
                     }
                 }
-                else {
-                    if(op == "spedizione"){
-                        if(datiIndirizzo == "true" && datiCarta == "true") {
-                            document.getElementById("btnCompletaAcquisto").disabled = false; 
-                            document.getElementById("txtmodalita").value = modalita;
-                        }
-                    } 
+                else if(op == "spedizione"){
+                    if(datiIndirizzo == "true" && datiCarta == "true") {
+                        document.getElementById("btnCompletaAcquisto").disabled = false; 
+                        document.getElementById("txtmodalita").value = modalita;
+                    }
                     else {
                         document.getElementById("btnCompletaAcquisto").disabled = true; 
                         document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito dati validi prima di continuare.";
-                    }
+                   }
                 }
             }
             
