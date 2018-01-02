@@ -184,7 +184,7 @@
                                                 if(userType.equals("0")) // registrato
                                                         {
                                                             %>
-                                                            <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                             <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                                                             <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                                             <li role="separator" class="divider"></li>
@@ -194,7 +194,7 @@
                                                         else if(userType.equals("1")) // venditore
                                                         {
                                                             %>
-                                                            <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                             <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                             <li><a href="userPage.jsp">Negozio</a></li>
                                                             <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
@@ -206,7 +206,7 @@
                                                         else if(userType.equals("2")) //admin
                                                         {
                                                             %>
-                                                            <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                             <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                             <li role="separator" class="divider"></li>
                                                             <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -398,7 +398,7 @@
                                         if(userType.equals("0")) // registrato
                                         {
                                     %>
-                                            <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                                             <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
                                             <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
                                             <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
@@ -408,7 +408,7 @@
                                         else if(userType.equals("1")) // venditore
                                         {  %>
                                             <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
-                                            <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                                             <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
                                             <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
                                             <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
@@ -416,7 +416,7 @@
                                     <%  }
                                         else if(userType.equals("2")) // admin
                                         {  %> 
-                                            <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                                             <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
                                     <%  }
                                         else // non loggato
