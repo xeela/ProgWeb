@@ -43,6 +43,7 @@ public class ServletRegisterShop extends HttpServlet {
             String description = request.getParameter("descrizione");
             String website = request.getParameter("website");
             String location = request.getParameter("coordinate");
+            String citta = request.getParameter("citta");
             String lat = location.split(";")[0];
             String lng = location.split(";")[1];
             String[]days = new String[7];
@@ -92,12 +93,13 @@ public class ServletRegisterShop extends HttpServlet {
                     ShopID = RS.getInt(1);
                 }
                 /** memorizzo i dati della posizione geografica del negozio appena creato */
-                MyDatabaseManager.EseguiStatement("INSERT INTO shops_coordinates(ID_SHOP, ID_COORDINATE, Lat, Lng)"
-                        + " VALUES('"
-                        + ShopID + "','"
-                        + ShopID + "',"
-                        + "'" + lat + "',"
-                        + "'" + lng + "');", connection);
+                MyDatabaseManager.EseguiStatement("INSERT INTO shops_coordinates(ID_SHOP, ID_COORDINATE, Lat, Lng, Citta)"
+                        + " VALUES("
+                        + ShopID + ","
+                        + ShopID + ","
+                        + "" + lat + ","
+                        + "" + lng + ","
+                        + "'"+ citta +"');", connection);
                 
                 MyDatabaseManager.EseguiStatement("UPDATE users SET USERTYPE = 1 WHERE ID ="+session.getAttribute("userID"), connection);
                 connection.close();

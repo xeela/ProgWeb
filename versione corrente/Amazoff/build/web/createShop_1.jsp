@@ -352,7 +352,7 @@
                         <br></br>
                         <p>Website</p> <input type="url" name="website" placeholder="URL"/>
                         <br/>
-                        
+                        <p>Citta</p> <input type="text" name="citta" placeholder="Citta Negozio"/>
                         <br/>
                         <div id="mapCanvas"></div>
                         <div id="infoPanel">

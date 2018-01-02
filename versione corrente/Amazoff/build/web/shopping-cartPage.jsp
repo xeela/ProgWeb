@@ -73,7 +73,7 @@
                         toAdd += "                        <div class=\"row\">";
                         toAdd += "                            <h4 id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</h4>";
                         //toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
-                        toAdd += "                            <a id=\"linkmappa" + id_oggetto + "\" href=\"TODO\" class=\"col-xs-12 col-lg-3\">Vedi su mappa TODO</a> <a href=\""+cart.products[i].web_site+"\" class=\"col-xs-12 col-lg-3\">Negozio: "+cart.products[i].shop+"</a>";
+                        toAdd += "                            <a id=\"linkmappa" + id_oggetto + "\" href=\"ServletShowShopOnMap?id="+cart.products[i].id_shop+"\" class=\"col-xs-12 col-lg-3\">Vedi su mappa TODO</a> <a href=\""+cart.products[i].web_site+"\" class=\"col-xs-12 col-lg-3\">Negozio: "+cart.products[i].shop+"</a>";
                         toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
                         toAdd += "                            <div class=\"col-xs-12\"><button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button></div>";
                         toAdd += "                        </div>";

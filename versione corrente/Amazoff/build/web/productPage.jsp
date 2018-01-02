@@ -92,7 +92,7 @@
                 toAdd += "<h3 name=\"nome\">" + jsonProdotto.result[0].name + "</h3>";
                 toAdd += "<p name=\"stelle\">Valutazione: " + jsonProdotto.result[0].global_value_avg + "</p>";
                 toAdd += "<p name=\"recensioni\" >Tot recensioni: "+ jsonProdotto.result[0].num_reviews +"</p>";
-                toAdd += "<p name=\"linkmappa\" ><a href='ServletVisualizzaNegozio....?p="+ jsonProdotto.result[0].id_shop +"'>Vedi negozio su mappa</a></p>";
+                toAdd += "<p name=\"linkmappa\" ><a href='ServletShowShopOnMap?id="+ jsonProdotto.result[0].id_shop +"'>Vedi negozio su mappa</a></p>";
                 toAdd += "<p name=\"prezzo\">Prezzo: " + jsonProdotto.result[0].price + " €</p>";
                 toAdd += "<p name=\"venditore\" >Venditore: "+ jsonProdotto.result[0].first_name +" " + jsonProdotto.result[0].last_name + "</p> <a href=\""+jsonProdotto.result[0].web_site+"\">Sito web "+jsonProdotto.result[0].shop+"</a><p> Negozio id:" + jsonProdotto.result[0].id_shop + "</a></p>";
                 toAdd += "<a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotto.result[0].id + "\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</a></div>";
