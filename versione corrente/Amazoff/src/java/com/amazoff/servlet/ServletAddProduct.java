@@ -62,7 +62,20 @@ public class ServletAddProduct extends HttpServlet {
             String descrizioneReceived = multi.getParameter("descrizione");
             String prezzoReceived = multi.getParameter("prezzo");
             String nomeFotoReceived = multi.getFilesystemName("productPic");
-            
+            String spedizioneReceived = multi.getParameter("consegna");
+            int ritiro;
+            if (spedizioneReceived != null)
+            {
+                if(spedizioneReceived == "ritiro")
+                {
+                    ritiro = 1;
+                }
+                else
+                    ritiro = 0;
+            }
+            else
+                ritiro = -1;
+                    
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
@@ -76,11 +89,14 @@ public class ServletAddProduct extends HttpServlet {
                 
                 /** aggiungi alla tabella products il prodotto */
                 /* QUERY: vanno aggiornati i campi. manca ritiro, venduto */
-                PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO products (name, description, price, id_shop) VALUES (" 
+                PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO products (name, description, price, id_shop, ritiro, sold) VALUES (" 
                             + "'" + MyDatabaseManager.EscapeCharacters(nomeReceived) + "', "
                             + "'" + MyDatabaseManager.EscapeCharacters(descrizioneReceived) + "', "
                             + "" + prezzoReceived + ", "
-                            + id_shop + ");", connection);
+                            + id_shop + ", "
+                            + ritiro + ","
+                            + 0
+                            + ");", connection);
                 /** ottieni l'ID del prodotto appena aggiunto */
                 int productID = -1;
                 ResultSet idProdottoRS = ps.getGeneratedKeys();

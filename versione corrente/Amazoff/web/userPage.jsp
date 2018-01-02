@@ -654,7 +654,7 @@
                                                             <div class="form-group">
                                                                 <input name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1">
                                                             </div>
-
+                                                            
                                                             <div class="dropdown form-group">
                                                                 <button  class="btn btn-default dropdown-toggle" type="button" id="ddCategoria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                                     Categoria <span class="caret"></span>
@@ -666,7 +666,17 @@
                                                                     <li role="separator" class="divider"></li>
                                                                     <li><a href="#">Separated link</a></li>
                                                                 </ul>
-                                                            </div> 
+                                                            </div>
+                                                            <p>Tipo di consegna:</p>
+                                                            <div class="form-group">
+                                                                <div class="radio">
+                                                                    <label><input value="spedizione" type="radio" name="consegna" checked>Spedizione standard</label>
+                                                                    
+                                                                  </div>
+                                                                  <div class="radio">
+                                                                    <label><input value="ritiro" type="radio" name="consegna" >Ritiro in sede</label>
+                                                                </div>
+                                                            </div>
                                                             <div class="form-group">
                                                                 <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1" accept=".jpg, .jpeg, .png, .gif">
                                                                 <!-- [5+] Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1"> -->
