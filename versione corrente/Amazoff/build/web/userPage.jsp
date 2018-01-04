@@ -4,6 +4,7 @@
     Author     : Davide
 --%>
 
+<%@page import="com.amazoff.classes.Errors"%>
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.*" %>
 <!DOCTYPE html>
@@ -88,6 +89,15 @@
                     //alert(newPwd);
                     document.RegisterForm.hashedPassword.value = newPwd;
                     document.RegisterForm.newpwd.value = "";
+                    
+                    var oldPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash($('#oldpwd').val()));
+                    for (var i = 0; i < 10000; i++)
+                        oldPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldPwd));
+                    //alert(newPwd);
+                    document.RegisterForm.oldhashedPassword.value = oldPwd;
+                    document.RegisterForm.oldpwd.value = "";
+                    
+                    
                     return true;
                 }
                 return false;
@@ -492,16 +502,16 @@
                                                 <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletUpdateCredentials" method="POST" >
 
                                                     <div class="form-group">
-                                                        <input id="email" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
+                                                        <input id="email" type="text" name="email" class="form-control" value="<%if(session.getAttribute("email") != null){%><%= session.getAttribute("email")%><%} else {}%>" placeholder="<%if(session.getAttribute("email") != null){%> <%= session.getAttribute("email")%><% }else{%>Email<%}%>" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input id="username" type="text" name="username" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
+                                                        <input id="username" type="text" name="username" class="form-control" value="<%if(session.getAttribute("user") != null){%><%= session.getAttribute("user")%><%} else {}%>" placeholder="<%if(session.getAttribute("user") != null){%> <%= session.getAttribute("user")%><% }else{%>Username<%}%>" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input id="nameRegister" type="text" name="name" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
+                                                        <input id="nameRegister" type="text" name="name" class="form-control" value ="<%if(session.getAttribute("fname") != null){%><%= session.getAttribute("fname")%><%} else {} %>" placeholder="<%if(session.getAttribute("fname") != null){%> <%= session.getAttribute("fname")%><% }else{%>Nome<%}%>" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input id="surnameRegister" type="text" name="surname" class="form-control" placeholder="Cognome" aria-describedby="sizing-addon2">
+                                                        <input id="surnameRegister" type="text" name="surname" class="form-control" value ="<%if(session.getAttribute("lname") != null){%><%= session.getAttribute("lname")%><%} else {} %>" placeholder="<%if(session.getAttribute("lname") != null){%> <%= session.getAttribute("lname")%><% }else{%>Cognome<%}%>" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group input-group">
                                                         <input id="oldpwd" type="password"  class="form-control" placeholder="Vecchia password" aria-describedby="sizing-addon2">
@@ -522,6 +532,7 @@
                                                     <div class="form-group input-group">
                                                         <input id="newpwdconfirm" type="password" class="form-control" placeholder="Ripeti password" aria-describedby="sizing-addon2">
                                                         <input id="hashedPassword" type="hidden" name="hashedPassword" value="pigreco" />
+                                                        <input id="oldhashedPassword" type="hidden" name="oldhashedPassword" value="pigreco" />
                                                         <span class="input-group-btn">
                                                             <a id="btnpwdRegisterConfirm" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('newpwdconfirm')">
                                                                 <span id="spanpwdRegisterConfirm" class="glyphicon glyphicon-eye-open"></span>
@@ -535,21 +546,21 @@
                                                         <button id="btnRegistrati" class="btn btn-default" onclick="if(HashPasswordRegister()){document.getElementById('RegisterForm').submit();}" >Aggiorna dati</button>
                                                         <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
                                                     </div>
-                                                    
-                                                <div class="alert alert-danger alert-dismissible" style="visibility: hidden" id="alertRegistrati" role="alert">
+                                                 
+                                                <div class="alert alert-danger alert-dismissible" style="<% 
+                                                            if(session.getAttribute("errorMessage") != Errors.resetError) { %> visibility: visible<%} else {%>visibility:hidden<%}%>" id="alertRegistrati" role="alert">
                         
                                                         <!-- div che visualizza il messaggio di errore durante il login -->
                                                         <% 
-                                                            if(session.getAttribute("errorMessage") != null) { %>
-                                                            <div class="alert alert-danger alert-dismissible" id="alertRegistrati" role="alert">
+                                                            if(session.getAttribute("errorMessage") != Errors.resetError) { %>   
                                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                 <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
-                                                            </div>
-                                                        <% } 
-                                                            session.setAttribute("errorMessage", null);
-                                                        %>
+                                                        <% } %>
 
                                                 </div>
+                                                            <%
+                                                            session.setAttribute("errorMessage", Errors.resetError);
+                                                        %>
                                             </div>
                                         </div>
                                     </div>                                                  
