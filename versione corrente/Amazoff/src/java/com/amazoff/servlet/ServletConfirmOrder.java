@@ -51,32 +51,61 @@ public class ServletConfirmOrder extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
+                boolean possoFareOrdine = true;
                 
-                /** Memorizza nel db un nuovo ordine associato all'utente specificato */
-                PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO orders (who_ordered, order_date, address) VALUES (" + userID + ", "
-                        + "'" + MyDatabaseManager.GetCurrentDate() + "',"
-                        + "1);", connection);
-                
-                /** Memorizzo l'id dell'ordine aggiunto sopra */
-                ResultSet idOrderRS = ps.getGeneratedKeys();
-                if(idOrderRS.next())
-                    orderID = idOrderRS.getInt(1);
-                
-                /** Prendo i prodotti nel carrello e li aggiungo all'ordine corrente */
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT id_product FROM cart WHERE id_user = " + userID + ";", connection);
+                /** Controllo che i prodotti che sto cercando di comprare siano "non venduti". Questo serve perchè magari in 2 hanno il prodotto nel carrello, il primo lo compra, e quando ci prova il secondo deve dare errore*/
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT sold, products.id FROM products, cart WHERE cart.id_user = " + userID + " and products.id = cart.id_product;", connection);
                 while(results.next())
                 {
-                    String productID = results.getString(1);
-                    MyDatabaseManager.EseguiStatement("INSERT INTO orders_products (order_id, product_id) VALUES (" + orderID + ", " + productID + ");", connection);
+                    //Se il prodotto è già venduto, lo tolgo dal carrello e rimando l'utente alla pagina del carrello
+                    //TODO: Settare anche un messaggio di errore per l'utente
+                    String sold = results.getString(1);
+                    String productID = results.getString(2);
+                    if(sold.equals("1"))
+                    {
+                       MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = " + userID + " AND id_product = " + productID + ";", connection);
+                       possoFareOrdine = false; 
+                    }    
                 }
                 
-                //****** TODO: segnare i prodotti ordinati come "venduti" ****** //
-                
+                if(possoFareOrdine)
+                {
+                    /** Memorizza nel db un nuovo ordine associato all'utente specificato */
+                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO orders (who_ordered, order_date, address) VALUES (" + userID + ", "
+                            + "'" + MyDatabaseManager.GetCurrentDate() + "',"
+                            + "1);", connection);
+
+                    /** Memorizzo l'id dell'ordine aggiunto sopra */
+                    ResultSet idOrderRS = ps.getGeneratedKeys();
+                    if(idOrderRS.next())
+                        orderID = idOrderRS.getInt(1);
+
+                    /** Prendo i prodotti nel carrello e li aggiungo all'ordine corrente. Inoltre, li segno come venduti nella tabella products */
+                    results = MyDatabaseManager.EseguiQuery("SELECT id_product FROM cart WHERE id_user = " + userID + ";", connection);
+                    while(results.next())
+                    {
+                        String productID = results.getString(1);
+                        MyDatabaseManager.EseguiStatement("INSERT INTO orders_products (order_id, product_id) VALUES (" + orderID + ", " + productID + ");", connection);
+                        //Segno il prodotto come venduto
+                        MyDatabaseManager.EseguiStatement("UPDATE products SET sold = 1 WHERE id = " + productID + ";", connection);
+                    }
+
+                    /** Tolgo i prodotti dal carrello e annullo la variabile json, così che venga ricreata la volta dopo*/
+                    MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = " + userID + ";", connection);
+                    session.setAttribute("shoppingCartProducts", "");
+                    
+                    //****** TODO: quando cìè l'errore, questo dovrebbe essere passato tramite la session.setAttribute *******/
+                    response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=ok&id="+orderID);      
+                }
+                else
+                {
+                    session.setAttribute("shoppingCartProducts", "");
+                    response.sendRedirect(request.getContextPath() + "/ServletAddToCart");
+                }
                 
                 connection.close();
                 
-                //****** TODO: quando cìè l'errore, questo dovrebbe essere passato tramite la session.setAttribute *******/
-                response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=ok&id="+orderID);       
+                 
             }
             else
             {
