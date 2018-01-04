@@ -51,34 +51,40 @@
     
             // funzione che inserisce nella form, l'indirizzo dell'utente
             function AggiungiDatiUtente() {
-                var toAdd = "";
-                
-                if(jsonDatiUtente.addressdata.length > 0) {
-                    datiIndirizzo = "true";
-                    $("#paese").val(jsonDatiUtente.addressdata[0].town);  
-                    $("#indirizzo").val(jsonDatiUtente.addressdata[0].address);
-                    $("#citta").val(jsonDatiUtente.addressdata[0].city);
-                    $("#provincia").val(jsonDatiUtente.addressdata[0].province);
-                    $("#cap").val(jsonDatiUtente.addressdata[0].postal_code);
+                if(jsonDatiUtente.addressdata.length != 0)
+                {
+                    var toAdd = "";
+
+                    if(jsonDatiUtente.addressdata.length > 0) {
+                        datiIndirizzo = "true";
+                        $("#paese").val(jsonDatiUtente.addressdata[0].town);  
+                        $("#indirizzo").val(jsonDatiUtente.addressdata[0].address);
+                        $("#citta").val(jsonDatiUtente.addressdata[0].city);
+                        $("#provincia").val(jsonDatiUtente.addressdata[0].province);
+                        $("#cap").val(jsonDatiUtente.addressdata[0].postal_code);
+                    }
                 }
             } 
             
              // funzione che inserisce nella form, i dati della carta di credito
             function AggiungiDatiMetodoPagamento() {
-                var toAdd = "";
-                console.log("2");
-                 console.log("a: "+ jsonDatiUtente.paymentdata[0].owner);
-                 console.log("b: "+ jsonDatiUtente.paymentdata[0].card_number);
-                 console.log("c: "+ jsonDatiUtente.paymentdata[0].exp_month);
-                 console.log("d: "+ jsonDatiUtente.paymentdata[0].exp_year);
-                if(jsonDatiUtente.paymentdata.length > 0) {
-                    datiCarta = "true";
-                    
-                    $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
-                    $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
+                if(jsonDatiUtente.paymentdata.length != 0)
+                {
+                    var toAdd = "";
+                    console.log("2");
+                     console.log("a: "+ jsonDatiUtente.paymentdata[0].owner);
+                     console.log("b: "+ jsonDatiUtente.paymentdata[0].card_number);
+                     console.log("c: "+ jsonDatiUtente.paymentdata[0].exp_month);
+                     console.log("d: "+ jsonDatiUtente.paymentdata[0].exp_year);
+                    if(jsonDatiUtente.paymentdata.length > 0) {
+                        datiCarta = "true";
 
-                    $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
-                    $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+                        $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
+                        $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
+
+                        $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
+                        $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+                    }
                 }
             } 
             
