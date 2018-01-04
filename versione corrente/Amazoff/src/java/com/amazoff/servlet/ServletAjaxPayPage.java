@@ -33,7 +33,7 @@ public class ServletAjaxPayPage extends HttpServlet {
 
     /**
      * 
-     * Questa servlet viene chiamata quando, dalla pagina  <a href="./WebRoot/WEB-INF/tiles/templates/bob.jsp">Pay page</a>,
+     * Questa servlet viene chiamata quando, dalla pagina  PayPage,
      * viene richiesto di aggiornare le informazioni relative all'indirizzo di spedizione per i prodotti che l'utente sta per comprare
      * Nel caso in cui l'utente non avesse già un indirizzo associato al suo profilo, verrà memorizzato quello nuovo.
      * Se invece, l'utente ha già un indirizzo, i nuovi dati sovrascriveranno quelli vecchi

@@ -28,8 +28,8 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <script type="text/javascript">
             var cart;
-            var idUser = "<%session.getAttribute("userID");%>"; // NON VA, anche se l'utente è loggato
-
+            var idUser = "<%= session.getAttribute("userID") %>"; // NON VA, anche se l'utente è loggato
+            
             function LogCart()
             {
                 // oss: se non si aggiunge un oggetto dalla home, anche se shoppingCartProducts conterrebbe valori, non vengono trovati
@@ -64,21 +64,25 @@
                         toAdd += "<div class=\"row\">";
                         toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
                         toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
-                        toAdd += "                    <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
+                         if(!(cart.products[i].pictures.length > 0) || cart.products[i].pictures[0].path == undefined)
+                            toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"...\">";
+                        else
+                            toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
                         toAdd += "                </div>";
-                        toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
+                        toAdd += "                    <div class=\"col-xs-8 col-md-7 col-lg-9\">";
                         toAdd += "                        <div class=\"row\">";
-                        toAdd += "                            <p id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</p>";
-                        toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
-                        toAdd += "                            <p id=\"linkmappa" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Vedi su mappa</p> <a href=\"url_venditore.html\" class=\"col-xs-12 col-lg-3\">Negozio</a>";
+                        toAdd += "                            <h4 id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</h4>";
+                        //toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
+                        toAdd += "                            <a id=\"linkmappa" + id_oggetto + "\" href=\"ServletShowShopOnMap?id="+cart.products[i].id_shop+"\" class=\"col-xs-12 col-lg-3\">Vedi su mappa TODO</a> <a href=\""+cart.products[i].web_site+"\" class=\"col-xs-12 col-lg-3\">Negozio: "+cart.products[i].shop+"</a>";
                         toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
+                        toAdd += "                            <div class=\"col-xs-12\"><button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button></div>";
                         toAdd += "                        </div>";
                         toAdd += "                   </div>";
                         toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
                         toAdd += "            </div>";
-                        toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
-                        toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
-                        toAdd += "            </div>";
+                        //toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
+                        //toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+                        //toAdd += "            </div>";
                         toAdd += "        </a>";
                         toAdd += "</div>";
                     }
@@ -92,16 +96,25 @@
             {
                 if(idUser != -1){
                     // rimuovo l'elemento dal vettore json di dati
-                    cart.products.splice(indexElement, 1);
+                    console.log("Updated json");
+                    cart.products.splice(indexElement, 1); // NON va
+                    console.log("---------------");
 
                     // salva la modifica sul DB. Chiamata Ajax
                     $.post('ServletAjaxCarrello?op=...', {
                         _idUser: idUser,
                         _idProdotto: idElement
                     }, function (data) {
-                        // --> alert("RISP: "+ data);
-                        if (data == "true") {
+                        var estraiDati = data.split("$");
+                        if (estraiDati[0] == "true") {
                             alert("Elemento rimosso correttamente.");
+                            
+                            cart = JSON.parse(estraiDati[1]);
+                            console.log(cart);
+                            
+                            // rimuovo l'elemento dalla lista
+                            //console.log("Updated json");
+                            // console.log(cart);
                             AggiungiProdotti(cart);
                         } else {
                             alert("Errore durante la rimozione dell'oggetto.");
@@ -239,7 +252,7 @@
                                             {
                                                         %>
                                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
-                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                                                         <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
@@ -249,7 +262,7 @@
                                                     else if(userType.equals("1")) // venditore
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                         <li><a href="userPage.jsp">Negozio</a></li>
                                                         <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
@@ -261,7 +274,7 @@
                                                     else if(userType.equals("2")) //admin
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -429,7 +442,7 @@
                                     if(userType.equals("0")) // registrato
                                     {
                                 %>
-                                        <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                        <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                                         <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
                                         <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
                                         <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
@@ -439,7 +452,7 @@
                                     else if(userType.equals("1")) // venditore
                                     {  %>
                                         <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
-                                        <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                        <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                                         <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
                                         <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
                                         <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
@@ -447,7 +460,7 @@
                                 <%  }
                                     else if(userType.equals("2")) // admin
                                     {  %> 
-                                        <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                        <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                                         <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
                                 <%  }
                                     else // non loggato

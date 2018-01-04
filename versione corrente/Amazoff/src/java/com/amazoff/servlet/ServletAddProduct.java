@@ -55,14 +55,28 @@ public class ServletAddProduct extends HttpServlet {
             String userReceived = (String) request.getSession().getAttribute("user");
 
             /** Funzione che prende il file specificato dall'utente e lo salva sul server */
-            MultipartRequest multi = new MultipartRequest(request, getServletContext().getRealPath(dirName), 10*1024*1024, "ISO-8859-1", new DefaultFileRenamePolicy());
+            MultipartRequest multi = new MultipartRequest(request, getServletContext().getRealPath(dirName), 16*4096*4096, "ISO-8859-1", new DefaultFileRenamePolicy());
 
             String categoriaReceived = multi.getParameter("categoria");
             String nomeReceived = multi.getParameter("nome");
             String descrizioneReceived = multi.getParameter("descrizione");
             String prezzoReceived = multi.getParameter("prezzo");
             String nomeFotoReceived = multi.getFilesystemName("productPic");
-            
+            String spedizioneReceived = multi.getParameter("consegna");
+            int ritiro;
+            prezzoReceived = prezzoReceived.replace(',', '.');
+            if (spedizioneReceived != null)
+            {
+                if("ritiro".equals(spedizioneReceived))
+                {
+                    ritiro = 1;
+                }
+                else
+                    ritiro = 0;
+            }
+            else
+                ritiro = -1;
+                  
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
@@ -75,25 +89,30 @@ public class ServletAddProduct extends HttpServlet {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 /** aggiungi alla tabella products il prodotto */
-                PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO products (name, description, price, id_shop) VALUES (" 
+                /* QUERY: vanno aggiornati i campi. manca ritiro, venduto */
+                PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO products (name, description, price, id_shop, ritiro, sold) VALUES (" 
                             + "'" + MyDatabaseManager.EscapeCharacters(nomeReceived) + "', "
                             + "'" + MyDatabaseManager.EscapeCharacters(descrizioneReceived) + "', "
                             + "" + prezzoReceived + ", "
-                            + id_shop + ");", connection);
+                            + id_shop + ", "
+                            + ritiro + ","
+                            + 0
+                            + ");", connection);
                 /** ottieni l'ID del prodotto appena aggiunto */
                 int productID = -1;
                 ResultSet idProdottoRS = ps.getGeneratedKeys();
                 if(idProdottoRS.next())
                     productID = idProdottoRS.getInt(1);
-                
-                /** aggiungi il nome della foto alla tabella pictures */
-                PreparedStatement ps2 = MyDatabaseManager.EseguiStatement("INSERT INTO pictures (path, id_product) VALUES ("
-                            + "'" + MyDatabaseManager.EscapeCharacters(nomeFotoReceived) + "', "
-                            + productID + ");", connection);
-                
+                if(nomeFotoReceived != null)
+                {
+                    /** aggiungi il nome della foto alla tabella pictures */
+                    PreparedStatement ps2 = MyDatabaseManager.EseguiStatement("INSERT INTO pictures (path, id_product) VALUES ("
+                                + "'" + MyDatabaseManager.EscapeCharacters(nomeFotoReceived) + "', "
+                                + productID + ");", connection);
+                }
                 connection.close();
                 
-                response.sendRedirect(request.getContextPath() + "/");
+                response.sendRedirect(request.getContextPath() + "/index.jsp");
             }
             else
             {   /** C'è stato un errore */
@@ -106,8 +125,8 @@ public class ServletAddProduct extends HttpServlet {
         {
             /** C'è stato un errore non previsto */
             HttpSession session = request.getSession();
-            MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletFindProduct", ex.toString());
-            return;
+            MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletAddProduct", ex.toString());
+            response.sendRedirect(request.getContextPath() + "/"); 
         }
     }
     

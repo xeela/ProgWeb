@@ -209,6 +209,7 @@
                     latLng.lat(),
                     latLng.lng()
                 ].join(';');
+                
             }
             function initialize() {
                 latLng = new google.maps.LatLng(41.9, 12.5);
@@ -249,9 +250,24 @@
 
             // Onload handler to fire off the app.
             google.maps.event.addDomListener(window, 'load', initialize);
+            function checkProductData(){
+                /*console.log(document.getElementById("prname").value);
+                    console.log(document.getElementById("prdesc").value);
+                    console.log(document.getElementById("prprice").value);
+                    console.log(parseFloat(document.getElementById("prprice").value));*/
+                if(document.getElementById("prname").value !== "" && document.getElementById("prname").value !== undefined &&
+                   document.getElementById("prdesc").value !== "" && document.getElementById("prname").value !== undefined &&
+                   document.getElementById("prprice").value !== "" && document.getElementById("prname").value !== undefined &&
+                       !isNaN(parseFloat(document.getElementById("prprice").value)))
+                       
+                {
+                    return true;
+                }
+                return false;
+            }
         </script>    
     </head>
-    <body class="bodyStyle" onload="Autocomplete('product');">
+    <body class="bodyStyle" onload="Autocomplete('product'); document.getElementById('btnVendi').addEventListener ('click', checkProductData, false);">
 
         <div class="container-fluid tmargin">
 
@@ -283,7 +299,7 @@
 
 
                             </div>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+                            <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="ServletAddToCart"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                         </div>
                     </div>
                     <!-- SEARCH BAR -->
@@ -537,7 +553,7 @@
 
                                     <div id="collapseCreateShop" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 
-                                        <form id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletEditUser'>
+                                        <form id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletRegisterShop'>
                                             <div class="row">
                                                 <div class="col-sm-4 col-sm-offset-2">
                                                     <div class="row">
@@ -546,24 +562,32 @@
                                                     
                                                     <div class="row">
                                                         <p></p>
-                                                        Nome
+                                                        <b>Nome</b>
                                                         <p><input type="text" name="nome" placeholder="..." class="col-lg-10"/></p>
                                                     </div>
                                                     <div class="row">
                                                         <p></p>
-                                                        Descrizione 
+                                                        <b>Descrizione </b>
                                                         <p><input type="text" name="descrizione" placeholder="..." class="col-lg-10"/></p>
                                                     </div>
                                                     <div class="row">
                                                         <p></p>
-                                                            Website
+                                                        <b>Website</b>
                                                             <p><input type="url" name="website" placeholder="URL" class="col-lg-10"/></p>
                                                     </div>
                                                     <div class="row">
                                                         <p></p>
-                                                        Tipologia di consegna
-                                                        <p><input name="spedizione" type="checkbox" value="true"/> Spedizione Standard                                                    <br/>
-                                                            <input name="ritito" type="checkbox" value="true"/> Ritiro in negozio</p>
+                                                        <b>Giorni di apertura</b>
+                                                        <div>
+                                                            <input name="mon" type="checkbox" value="true"/> Lunedì <br/>
+                                                            <input name="tue" type="checkbox" value="true"/> Martedì  <br/>
+                                                            <input name="wed" type="checkbox" value="true"/> Mercoledì   <br/>
+                                                            <input name="thu" type="checkbox" value="true"/> Giovedì   <br/>
+                                                            <input name="fri" type="checkbox" value="true"/> Venerdì   <br/>
+                                                            <input name="sat" type="checkbox" value="true"/> Sabato   <br/>
+                                                            <input name="sun" type="checkbox" value="true"/> Domenica   <br/>
+
+                                                        </div>
                                                     </div>
                                                     <INPUT TYPE='submit' VALUE='Crea Negozio' class="btn col-lg-4 col-lg-offset-3" />
                                                 </div>   
@@ -581,7 +605,6 @@
                                                     <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
 
                                                     <input type="hidden" name="coordinate" id="info2"></input>
-                                                    
                                                 </div>
                                             </div>
                                             <br/><br/><br/>
@@ -635,37 +658,63 @@
                                                     <div class="col-lg-3"></div>
                                                     <div class="col-lg-6">
                                                         <h3 class="alignCenter">Cosa vuoi vendere?</h3>
-                                                        <form ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct' >
+                                                        <form id="vendiForm" ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct' >
                                                             <div class="form-group">
-                                                                <input name="nome" type="text" class="form-control" placeholder="Nome Prodotto" aria-describedby="basic-addon1">
+                                                                <input id="prname" name="nome" type="text" class="form-control" placeholder="Nome Prodotto" aria-describedby="basic-addon1"></input>
                                                             </div>
                                                             <div class="form-group">
-                                                                <input name="descrizione" type="text" class="form-control" placeholder="Descrizione" aria-describedby="basic-addon1">
+                                                                <input id="prdesc" name="descrizione" type="text" class="form-control" placeholder="Descrizione" aria-describedby="basic-addon1"></input>
                                                             </div>
                                                             <div class="form-group">
-                                                                <input name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1">
+                                                                <input id="prprice" name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1"></input>
                                                             </div>
-
-                                                            <div class="dropdown form-group">
-                                                                <button  class="btn btn-default dropdown-toggle" type="button" id="ddCategoria" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                                    Categoria <span class="caret"></span>
-                                                                </button>
-                                                                <ul class="dropdown-menu" name="categoria" aria-labelledby="ddCategoria">
-                                                                    <li><a href="#" value="categoria1"> Categoria 1</a></li>
-                                                                    <li><a href="#" value="categoria2"> Categoria 2</a></li>
-                                                                    <li><a href="#" value="categoria3"> Categoria 3</a></li>
-                                                                    <li role="separator" class="divider"></li>
-                                                                    <li><a href="#">Separated link</a></li>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Categoria<span class="caret"></span></button>
+                                                                <ul class="dropdown-menu scrollable-menu" role="menu" name ="categoria">
+                                                                    <li><a href="#" value="0" selected="selected"> Abbigliamento</a></li>
+                                                                    <li><a href="#" value="1"> Alimentari</a></li>
+                                                                    <li><a href="#" value="2"> Auto</a></li>
+                                                                    <li><a href="#" value="3"> Bellezza</a></li>
+                                                                    <li><a href="#" value="4"> Cancelleria</a></li>
+                                                                    <li><a href="#" value="5"> Casa</a></li>
+                                                                    <li><a href="#" value="6"> CD</a></li>
+                                                                    <li><a href="#" value="7"> Elettronica</a></li>
+                                                                    <li><a href="#" value="8"> Fai Da Te</a></li>
+                                                                    <li><a href="#" value="9"> Film</a></li>
+                                                                    <li><a href="#" value="10"> Giochi</a></li>
+                                                                    <li><a href="#" value="11"> Gioielli</a></li>
+                                                                    <li><a href="#" value="12"> Illuminazione</a></li>
+                                                                    <li><a href="#" value="13"> Informatica</a></li>
+                                                                    <li><a href="#" value="14"> Libri</a></li>
+                                                                    <li><a href="#" value="15"> Musica</a></li>
+                                                                    <li><a href="#" value="16"> Orologi</a></li>
+                                                                    <li><a href="#" value="17"> Salute</a></li>
+                                                                    <li><a href="#" value="18"> Sport</a></li>
+                                                                    <li><a href="#" value="19"> Valigie</a></li>
+                                                                    <li><a href="#" value="20"> Videogiochi</a></li>
                                                                 </ul>
-                                                            </div> 
+                                                            </div>
+                                                            <p>Tipo di consegna:</p>
+                                                            <div class="form-group">
+                                                                <div class="radio">
+                                                                    <label><input value="spedizione" type="radio" name="consegna" checked>Spedizione standard</label>
+                                                                    
+                                                                  </div>
+                                                                  <div class="radio">
+                                                                    <label><input value="ritiro" type="radio" name="consegna" >Ritiro in sede</label>
+                                                                </div>
+                                                            </div>
                                                             <div class="form-group">
                                                                 <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1" accept=".jpg, .jpeg, .png, .gif">
                                                                 <!-- [5+] Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1"> -->
                                                             </div>
+                                                            
                                                             <div class="form-group">
-                                                                <input TYPE='submit' NAME='productPic1' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
-                                                            </div>
+                                                                <!--<input TYPE='submit' hidden="true" NAME='productPic1' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
+                                                            --></div>
                                                         </form>
+                                                        <button id="btnVendi" type='button' class="btn-primary" onclick="if(checkProductData()){document.getElementById('vendiForm').submit();}">Aggiungi Prodotto</button>
+
                                                     </div>    
                                                 </div>
                                             </div>                                                  

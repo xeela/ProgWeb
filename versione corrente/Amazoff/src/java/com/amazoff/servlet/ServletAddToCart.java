@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Davide
+ * @author Davide Farina
  */
 public class ServletAddToCart extends HttpServlet {
 
@@ -42,7 +42,7 @@ public class ServletAddToCart extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
             String productReceived = request.getParameter("productID");
-
+            
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
@@ -54,28 +54,124 @@ public class ServletAddToCart extends HttpServlet {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 if (session.getAttribute("user") != null) {
-                    /** Interrogo il per inserire nel carrello dell'utente, l'id del prodotto specificato */
-                    PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED) VALUES ("
-                            + session.getAttribute("userID") + ", "
-                            + productReceived + ", "
-                            + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);
+                    //Se sto aggiungendo un prodotto lo aggiungo, altrimenti vado solo alla pagina del carrello senza aggiungere nulla
+                    if(productReceived != null)
+                    {
+                        /** Controllo se il prodotto è già presente nel carrello dell'utente. Se si, non faccio nulla, altrimenti lo aggiungo*/
+                        ResultSet isPresent = MyDatabaseManager.EseguiQuery("SELECT * FROM cart WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = " + productReceived + ";", connection);
+                        //Se non c'è
+                        if(!isPresent.isBeforeFirst())
+                        {
+                            /** Interrogo il per inserire nel carrello dell'utente, l'id del prodotto specificato */
+                            PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED) VALUES ("
+                                    + session.getAttribute("userID") + ", "
+                                    + productReceived + ", "
+                                    + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);   
+                        }
+                        /*else
+                        {
+                            //il prodotto è già nel carrello 
+                        }*/
+                    }                    
 
                     /** Dopo aver inserito il nuovo prodotto, mi faccio restituire tutta la lista di oggetti presenti nel carrello */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
-                            + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
-                    /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */
-                    jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME FROM cart, shops, users, products WHERE users.ID = '"+ session.getAttribute("userID") +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
+                    
+                    /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
+                    // -------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                   
+                    /** se il carrello è vuoto */
+                    if(results.isAfterLast()) 
+                    {
+                        /** ALLORA: genero un errore e lo memorizzo */
+                        session = request.getSession();
+                        session.setAttribute("errorMessage", Errors.noProductFound);
+                        response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
+                        connection.close();
+                        return;
+                    }
 
+                    /** ALTRIEMTI: aggiungo i dati del prodotti ad un oggetto json */
+                    boolean isFirstTime = true, isFirstTimeImg = true;
+                    String id_product = "";
+                    jsonObj += "{";
+                    jsonObj += "\"products\":[";
+                    while (results.next()) {
+                        if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
+                            jsonObj += ", ";
+                        isFirstTime = false;
+
+                        id_product = results.getString(1);
+                        jsonObj += "{";
+                        jsonObj += "\"id\": \"" + id_product + "\",";
+                        jsonObj += "\"name\": \"" + results.getString(2) + "\",";
+                        jsonObj += "\"description\": \"" + results.getString(3) + "\",";
+                        jsonObj += "\"price\": \"" + results.getString(4) + "\",";
+                        jsonObj += "\"category\": \"" + results.getString(6) + "\",";
+                        jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
+
+                        jsonObj += "\"id_shop\": \"" + results.getString(9) + "\",";
+                        jsonObj += "\"shop\": \"" + results.getString(10) + "\",";
+                        jsonObj += "\"description\": \"" + results.getString(11) + "\",";
+                        jsonObj += "\"web_site\": \"" + results.getString(12) + "\",";
+                        jsonObj += "\"id_owner\": \"" + results.getString(14) + "\",";
+                        jsonObj += "\"first_name\": \"" + results.getString(16) + "\",";
+                        jsonObj += "\"last_name\": \"" + results.getString(17) + "\",";
+
+
+                        /** in base al prodotto, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
+                        ResultSet resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + id_product + ";", connection);
+
+                        /** SE non ci sono immagini per questo prodotto */
+                        if(resultsPictures.isAfterLast())
+                        {
+                            /** ALLORA: genero e memorizzo un errore */
+                            session = request.getSession();
+                            session.setAttribute("errorMessage", Errors.noProductFound);
+                            response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
+                            connection.close();
+                            return;
+                        }
+
+                        /** ALTRIMENTI: memorizzo le immagini del prodotto */
+                        jsonObj += "\"pictures\":[";
+                        while (resultsPictures.next()) {
+                            if(!isFirstTimeImg)            
+                                jsonObj += ", ";
+                            isFirstTimeImg = false; 
+
+                            jsonObj += "{";
+                            jsonObj += "\"id\": \"" + resultsPictures.getString(1) + "\",";
+                            jsonObj += "\"path\": \"" + resultsPictures.getString(2) + "\"";
+                            jsonObj += "}";
+                        }
+                        isFirstTimeImg = true;
+                        jsonObj += "]"; // chiusura immagini prodotto
+                        
+                        jsonObj += "}"; // chiusura prodotto
+                        
+                    }
+                    jsonObj += "]}";
+                    
+                    
+                    
+                    
+                    connection.close();
+                    session.setAttribute("shoppingCartProducts", jsonObj);
+                    response.sendRedirect(request.getContextPath() + "/shopping-cartPage.jsp");
+                    
                 } else {
                     /** salva l'elemento selezionato nel carrello */
                     String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
                     Cookie cookie = new Cookie(timeStamp, productReceived);
                     cookie.setMaxAge(60 * 60 * 24 * 7);
                     response.addCookie(cookie);
+                    
+                    connection.close();
+                    response.sendRedirect(request.getContextPath() + "/ServletShowCookieCart");
                 }
                     
-                connection.close();
-                response.sendRedirect(request.getContextPath() + "/ServletShowCookieCart");
+                
             } else {
                 session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/"); 

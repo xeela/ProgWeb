@@ -35,7 +35,7 @@ public class ServletAjaxPayPageCard extends HttpServlet {
 
     /**
      * 
-     * Questa servlet viene chiamata quando, dalla pagina  <a href="./WebRoot/WEB-INF/tiles/templates/bob.jsp">Pay page</a>,
+     * Questa servlet viene chiamata quando, dalla pagina Pay page</a>,
      * viene richiesto di aggiornare le informazioni relative alla carta di credito dell'utente.
      * Nel caso in cui l'utente non avesse già dei dati associati al suo profilo, verranno inseriti nel db.
      * Se invece, l'utente ha già una carta registrata, i nuovi dati sovrascriveranno quelli vecchi.

@@ -119,6 +119,7 @@ public class MyDatabaseManager {
     public static String GetJson(ResultSet results, Connection connection) throws SQLException {
         String jsonObj = "";
         boolean isFirstTime = true, isFirstTimeImg = true;
+        String id_product = "";
         
         while (results.next()) {
             if (!isFirstTime) //metto la virgola prima dell'oggetto solo se non è il primo
@@ -127,16 +128,15 @@ public class MyDatabaseManager {
             }
             isFirstTime = false;
 
+            id_product = results.getString(1);
             jsonObj += "{";
-            jsonObj += "\"id\": \"" + results.getString(4) + "\",";
-            jsonObj += "\"name\": \"" + results.getString(1) + "\",";
-            jsonObj += "\"description\": \"" + results.getString(2) + "\",";
-            jsonObj += "\"price\": \"" + results.getString(3) + "\",";
+            jsonObj += "\"id\": \"" + id_product + "\",";
+            jsonObj += "\"name\": \"" + results.getString(2) + "\",";
+            jsonObj += "\"description\": \"" + results.getString(3) + "\",";
+            jsonObj += "\"price\": \"" + results.getString(4) + "\",";
 
             // in base al prodotto, ricavo il path delle img a lui associate
-            // TO DO:::::::: String s = productPictures(results.getString(4));
-            //------ TMP --------
-            ResultSet results2 = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + results.getString(4) + ";", connection);
+            ResultSet results2 = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + id_product + ";", connection);
 
             if (results2.isAfterLast()) //se non ci sono img per quel prodotto, allora:
             {
@@ -163,7 +163,6 @@ public class MyDatabaseManager {
             isFirstTimeImg = true;
             jsonObj += "]";
 
-            //------ FINE TMP --------
             jsonObj += "}";
         }
         

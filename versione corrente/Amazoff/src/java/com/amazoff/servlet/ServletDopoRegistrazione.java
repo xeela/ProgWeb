@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Davide
+ * @author Davide Farina
  */
 public class ServletDopoRegistrazione extends HttpServlet {
 

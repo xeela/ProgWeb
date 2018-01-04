@@ -48,11 +48,14 @@
                     id_oggetto = jsonProdotti.products[i].id;
                     toAdd += "<div class=\"col-sm-6 col-md-4\">";
                     toAdd += "<div class=\"thumbnail\">";
-                    toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotti.products[i].pictures[0].path + "\" alt=\"...\">";
+                    if(!(jsonProdotti.products[i].pictures.length > 0) || jsonProdotti.products[i].pictures[0].path == undefined)
+                        toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"...\">";
+                    else
+                        toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotti.products[i].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
                     toAdd += "<div class=\"caption\">";
-                    toAdd += "<h3>" + jsonProdotti.products[i].name + "</h3>";
+                    toAdd += "<h3 class=\"maxlength dotsEndSentence\" title=\"" + jsonProdotti.products[i].name + "\">" + jsonProdotti.products[i].name + "</h3>";
                     toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
-                    toAdd += "<p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotti.products[i].id + "\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
+                    toAdd += "<p><a href=\"ServletPopulateProductPage?id="+jsonProdotti.products[i].id+"\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotti.products[i].id + "\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
                     toAdd += "</div>";
                     toAdd += "</div>";
                     toAdd += "</div>";
@@ -226,7 +229,7 @@
                             {
                         %>
                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
-                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                         <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                         <li role="separator" class="divider"></li>
@@ -235,8 +238,8 @@
                             } else if (userType.equals("1")) // venditore
                             {
                             %>
-                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
-                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                        <li><a href="userPage.jsp?v=Notifiche#notifiche">Notifiche</a></li>
                         <li><a href="userPage.jsp">Negozio</a></li>
                         <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
                         <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
@@ -246,7 +249,7 @@
                             } else if (userType.equals("2")) //admin
                             {
                             %>
-                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -283,7 +286,7 @@
 
 
             <div class="col-lg-2">
-                <a href="shopping-cartPage.jsp" type="button" class="btn btn-default btn-md">
+                <a href="ServletAddToCart" type="button" class="btn btn-default btn-md">
                     <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                 </a>
             </div>
@@ -454,7 +457,7 @@
                                    if (userType.equals("0")) // registrato
                                    {
                                %>
-                               <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                               <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                         <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
                         <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
                         <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
@@ -463,14 +466,14 @@
                         <%  } else if (userType.equals("1")) // venditore
                             {  %>
                         <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
-                        <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                        <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                         <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
                         <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
                         <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
                         <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
                         <%  } else if (userType.equals("2")) // admin
                             {  %> 
-                        <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                        <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                         <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
                         <%  } else // non loggato
                             {  %>    

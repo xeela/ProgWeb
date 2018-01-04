@@ -1,23 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
+import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
- * @author Gianluca
+ * @author Gianluca Pasqua
  */
 public class ServletAjaxCarrello extends HttpServlet {
 
@@ -48,8 +46,11 @@ public class ServletAjaxCarrello extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String risposta = "-1";
+        String jsonObj = "";
+        HttpSession session;
         try (PrintWriter out = response.getWriter()) {
             
+            session = request.getSession();
             String idProductReceived = request.getParameter("_idProdotto");
             String idUser = request.getParameter("_idUser");
             
@@ -67,6 +68,88 @@ public class ServletAjaxCarrello extends HttpServlet {
                 PreparedStatement result = MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = "+ idUser +"  AND  id_product = " + MyDatabaseManager.EscapeCharacters(idProductReceived)+ ";", connection);
                 
                 risposta = "true";
+                
+                // dopo aver rimosso il prodotto, aggiorno la lista json dei prodotti nel carrello */
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME FROM cart, shops, users, products WHERE users.ID = '"+ idUser +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
+                    
+                    /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
+                    // -------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                   
+                    /** se non c'è il prodotto specificato */
+                    if(results.isAfterLast()) 
+                    {
+                        /** ALLORA: genero un errore e lo memorizzo */
+                        session = request.getSession();
+                        session.setAttribute("errorMessage", Errors.noProductFound);
+                        response.sendRedirect(request.getContextPath() + "/");
+                        connection.close();
+                        return;
+                    }
+
+                    /** ALTRIEMTI: aggiungo i dati del prodotti ad un oggetto json */
+                    boolean isFirstTime = true, isFirstTimeImg = true;
+                    String id_product = "";
+                    jsonObj += "{";
+                    jsonObj += "\"products\":[";
+                    while (results.next()) {
+                        if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
+                            jsonObj += ", ";
+                        isFirstTime = false;
+
+                        id_product = results.getString(1);
+                        jsonObj += "{";
+                        jsonObj += "\"id\": \"" + id_product + "\",";
+                        jsonObj += "\"name\": \"" + results.getString(2) + "\",";
+                        jsonObj += "\"description\": \"" + results.getString(3) + "\",";
+                        jsonObj += "\"price\": \"" + results.getString(4) + "\",";
+                        jsonObj += "\"category\": \"" + results.getString(6) + "\",";
+                        jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
+
+                        jsonObj += "\"id_shop\": \"" + results.getString(9) + "\",";
+                        jsonObj += "\"shop\": \"" + results.getString(10) + "\",";
+                        jsonObj += "\"description\": \"" + results.getString(11) + "\",";
+                        jsonObj += "\"web_site\": \"" + results.getString(12) + "\",";
+                        jsonObj += "\"id_owner\": \"" + results.getString(14) + "\",";
+                        jsonObj += "\"first_name\": \"" + results.getString(16) + "\",";
+                        jsonObj += "\"last_name\": \"" + results.getString(17) + "\",";
+
+
+                        /** in base al prodotto, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
+                        ResultSet resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + id_product + ";", connection);
+
+                        /** SE non ci sono immagini per questo prodotto */
+                        if(resultsPictures.isAfterLast())
+                        {
+                            /** ALLORA: genero e memorizzo un errore */
+                            session = request.getSession();
+                            session.setAttribute("errorMessage", Errors.noProductFound);
+                            response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
+                            connection.close();
+                            return;
+                        }
+
+                        /** ALTRIMENTI: memorizzo le immagini del prodotto */
+                        jsonObj += "\"pictures\":[";
+                        while (resultsPictures.next()) {
+                            if(!isFirstTimeImg)            
+                                jsonObj += ", ";
+                            isFirstTimeImg = false; 
+
+                            jsonObj += "{";
+                            jsonObj += "\"id\": \"" + resultsPictures.getString(1) + "\",";
+                            jsonObj += "\"path\": \"" + resultsPictures.getString(2) + "\"";
+                            jsonObj += "}";
+                        }
+                        isFirstTimeImg = true;
+                        jsonObj += "]"; // chiusura immagini prodotto
+                        
+                        jsonObj += "}"; // chiusura prodotto
+                        
+                    }
+                    jsonObj += "]}";
+                
+                session.setAttribute("shoppingCartProducts", jsonObj);
+                risposta += "$"+ jsonObj;
                 connection.close();
             }
             else  /** ritorno FALSE, c'è stato un errore */

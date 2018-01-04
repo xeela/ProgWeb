@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Davide 
+ * @author Davide Farina
  */
 public class ServletFindProduct extends HttpServlet {
 
@@ -54,71 +54,86 @@ public class ServletFindProduct extends HttpServlet {
             if (MyDatabaseManager.cpds != null) {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
-                ResultSet results = null;
+                ResultSet results = null, resultsImages = null;
                 String query = "";
                 
-                // esegue sempre
                 if(recensioneReceived != null){
                     /** in caso l'utente abbia specificato il filtro della distanza, i prodotti cercati saranno in un determinato raggio dalla sua posizione */
                     if(distanzaReceived != null){
-                        query += "SELECT products.name, products.description, price, products.id, "
+                        query += "SELECT DISTINCT products.*, "
+                                + " users.LAST_NAME, users.FIRST_NAME, " 
+                                + " shops.NAME, shops.WEB_SITE_URL," 
+                                + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
                                 + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                                 + "* COS(RADIANS(" + userLat + ")) "
                                 + "* COS(RADIANS(lng - " + userLng + ")) "
                                 + "+ SIN(RADIANS(lat)) "
                                 + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
-                                + "FROM products, shops, shops_coordinates, "
+                                + "FROM products, shops, shops_coordinates, users, , pictures, "
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id = sub.id AND products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
                                 + "AND avg >= " + recensioneReceived + " "
                                 + "AND products.ritiro = 1 "
+                                + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                                 + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                     } else {
-                        /** ALTRIMENTI, verranno restituiti tutti i prodottiche soddifano il criterio dell ....... */
-                        query += "SELECT products.name, products.description, price, products.id "
-                                + "FROM products, shops, "
+                        /** ????????? ALTRIMENTI, verranno restituiti tutti i prodottiche soddifano il criterio dell ....... */
+                        query += "SELECT DISTINCT products.*, "
+                                + " users.LAST_NAME, users.FIRST_NAME, "
+                                + " shops.NAME, shops.WEB_SITE_URL," 
+                                + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
+                                + "FROM products, shops, users, pictures,"
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id_shop = shops.id "
+                                + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                                 + "AND products.ID = sub.id AND avg >= " + recensioneReceived + " AND ";
                     }
                 } else if(distanzaReceived != null){
-                    query += "SELECT products.name, products.description, price, products.id, "
+                    query += "SELECT DISTINCT products.*, "
+                            + " users.LAST_NAME, users.FIRST_NAME, "
+                            + " shops.NAME, shops.WEB_SITE_URL," 
+                            + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
                             + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                             + "* COS(RADIANS(" + userLat + ")) "
                             + "* COS(RADIANS(lng - " + userLng + ")) "
                             + "+ SIN(RADIANS(lat)) "
                             + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
-                            + "FROM products, shops, shops_coordinates "
+                            + "FROM products, shops, shops_coordinates, users, pictures "
                             + "WHERE products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
                             + "AND products.ritiro = 1 "
+                            + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                             + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                 } else {
-                    query += "SELECT products.name, products.description, price, products.id "
-                            + "FROM products, shops "
-                            + "WHERE products.id_shop = shops.id AND ";
+                    query += "SELECT DISTINCT products.*,  "
+                            + " users.LAST_NAME, users.FIRST_NAME, "
+                            + " shops.NAME, shops.WEB_SITE_URL," 
+                            + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
+                            + "FROM products, shops, users, pictures "
+                            + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
+                            + "AND products.id_shop = shops.id AND ";
                 }
                 
                 // esegue solo su condizione
                 if(prezzoMinRicerca != null){
-                    query += "price >= " + prezzoMinRicerca + " AND ";
+                    query += "products.price >= " + prezzoMinRicerca + " AND ";
                 }
                 
                 if(prezzoMaxRicerca != null){
-                    query += "price <= " + prezzoMaxRicerca + " AND ";
+                    query += "products.price <= " + prezzoMaxRicerca + " AND ";
                 }
                 
                 // esegue sempre
                 switch (categoriaReceived) {
                     case "product":
-                        query += "products.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;";
+                        query += "products.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
                         break;
                     case "seller": 
-                        query += "shops.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;";
+                        query += "shops.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
                         break;
                     case "category":                    
-                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY price ASC;";
+                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
                         break;
                     default:
                         break;
@@ -136,8 +151,61 @@ public class ServletFindProduct extends HttpServlet {
                 }
 
                 //aggiungo i prodotti al json
-                jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
-
+                // ------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                
+                boolean isFirstTime = true, isFirstTimeImg = true;
+                String id_product = "";
+                jsonObj += "{";
+                jsonObj += "\"products\":["; 
+                while (results.next()) {
+                    isFirstTimeImg = true;
+                    if(!isFirstTime)            
+                        jsonObj += ", ";
+                    isFirstTime = false; 
+                        
+                    id_product = results.getString(1);
+                    jsonObj += "{";
+                    jsonObj += "\"id\": \"" + id_product + "\",";
+                    jsonObj += "\"name\": \"" + results.getString(2) + "\",";
+                    jsonObj += "\"description\": \"" + results.getString(3) + "\",";
+                    jsonObj += "\"price\": \"" + results.getString(4) + "\",";
+                    jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
+                    jsonObj += "\"category\": \"" + results.getString(6) + "\",";
+                    jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
+                    jsonObj += "\"last_name\": \"" + results.getString(9) + "\","; /* dati del venditore */
+                    jsonObj += "\"first_name\": \"" + results.getString(10) + "\",";
+                    jsonObj += "\"shop_name\": \"" + results.getString(11) + "\",";
+                    jsonObj += "\"site_url\": \"" + results.getString(12) + "\",";
+                    jsonObj += "\"num_reviews\": \"" + results.getString(13) + "\",";
+                        
+                    // richiedo le immagini per questo prodotto
+                    jsonObj += "\"pictures\": [";
+                    resultsImages = MyDatabaseManager.EseguiQuery("SELECT path FROM pictures WHERE ID_PRODUCT = "+id_product+";", connection);
+                
+                    /*if (resultsImages.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                    {
+                        HttpSession session = request.getSession();
+                        session.setAttribute("errorMessage", Errors.noProductFound);
+                        response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
+                        connection.close();
+                        return;
+                    }*/
+                    while (resultsImages.next()) {
+                        if(!isFirstTimeImg)            
+                            jsonObj += ", ";
+                        isFirstTimeImg = false;
+                        jsonObj += "{";
+                        jsonObj += "\"path\": \"" + resultsImages.getString(1) + "\"";                            
+                        jsonObj += "}";
+                    }
+                        
+                    jsonObj += "]"; // chiusura array images
+                        
+                    jsonObj += "}"; //chiusura dati prodotto
+                }
+                jsonObj += "]}";
+                
+                
                 HttpSession session = request.getSession();
 
                 /*
@@ -158,49 +226,20 @@ public class ServletFindProduct extends HttpServlet {
 
                 connection.close();
 
-                response.sendRedirect(request.getContextPath() + "/searchPage.jsp"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/searchPage.jsp"); 
             } else {
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+                response.sendRedirect(request.getContextPath() + "/"); 
             }
         } catch (SQLException ex) {
             HttpSession session = request.getSession();
             MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletFindProduct", ex.toString());
             session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
+            response.sendRedirect(request.getContextPath() + "/"); 
         }
     }
 
-    // IDEA DA SVILUPPARE in base all'ID prodotto, ricavo il path delle img a lui associate
-    /*private String productPictures(String ID_product, Connection connection, HttpServletRequest request, HttpServletResponse response) 
-    {
-        try (PrintWriter out = response.getWriter()) {
-            ResultSet results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, id FROM products WHERE name = '" + ID_product + "';", connection);
-
-            if(results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
-            {
-                HttpSession session = request.getSession();
-                session.setAttribute("errorMessage", Errors.noProductFound);
-                response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                connection.close();
-            }
-
-
-        }catch (IOException ex) {
-            try {
-                HttpSession session = request.getSession();
-                session.setAttribute("errorMessage", Errors.dbQuery);
-                response.sendRedirect(request.getContextPath() + "/"); //TODO: Gestire meglio l'errore
-            } catch (IOException ex1) {
-                Logger.getLogger(ServletFindProduct.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-        }
-        return "";
-
-    }*/
-    
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.MyDatabaseManager;
@@ -80,7 +75,7 @@ public class ServletAjax extends HttpServlet {
                 }
                 else {
                     risposta = "true";
-                    while (results.next()) { /** se esiste un utente con quella email, ritorno FALSE */
+                    while (results.next()) { /** se esiste un utente con quella email, ritorno FALSE. Non devo avere due persone con la stessa email */
                         risposta = "false";
                     }
                 }

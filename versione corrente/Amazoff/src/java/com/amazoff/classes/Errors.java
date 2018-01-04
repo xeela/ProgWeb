@@ -17,6 +17,7 @@ public class Errors {
     static public String wrongPassword = "Password non corretta";
     static public String usernameDoesntExist = "Username non corretto";
     static public String mustLogin = "E' necessario eseguire il login per accedere a quest'area";
+    static public String isNotYourEmail = "L'email selezionata non è quella corretta";
     //Database
     static public String dbConnection = "Impossibile stabilire la connessione al database. Riprovare piu tardi";
     static public String dbQuery = "C'è stato un errore nell'inserimento o nella lettura dei dati dal database";

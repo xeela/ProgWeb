@@ -51,34 +51,40 @@
     
             // funzione che inserisce nella form, l'indirizzo dell'utente
             function AggiungiDatiUtente() {
-                var toAdd = "";
-                
-                if(jsonDatiUtente.addressdata.length > 0) {
-                    datiIndirizzo = "true";
-                    $("#paese").val(jsonDatiUtente.addressdata[0].town);  
-                    $("#indirizzo").val(jsonDatiUtente.addressdata[0].address);
-                    $("#citta").val(jsonDatiUtente.addressdata[0].city);
-                    $("#provincia").val(jsonDatiUtente.addressdata[0].province);
-                    $("#cap").val(jsonDatiUtente.addressdata[0].postal_code);
+                if(jsonDatiUtente.addressdata.length != 0)
+                {
+                    var toAdd = "";
+
+                    if(jsonDatiUtente.addressdata.length > 0) {
+                        datiIndirizzo = "true";
+                        $("#paese").val(jsonDatiUtente.addressdata[0].town);  
+                        $("#indirizzo").val(jsonDatiUtente.addressdata[0].address);
+                        $("#citta").val(jsonDatiUtente.addressdata[0].city);
+                        $("#provincia").val(jsonDatiUtente.addressdata[0].province);
+                        $("#cap").val(jsonDatiUtente.addressdata[0].postal_code);
+                    }
                 }
             } 
             
              // funzione che inserisce nella form, i dati della carta di credito
             function AggiungiDatiMetodoPagamento() {
-                var toAdd = "";
-                console.log("2");
-                 console.log("a: "+ jsonDatiUtente.paymentdata[0].owner);
-                 console.log("b: "+ jsonDatiUtente.paymentdata[0].card_number);
-                 console.log("c: "+ jsonDatiUtente.paymentdata[0].exp_month);
-                 console.log("d: "+ jsonDatiUtente.paymentdata[0].exp_year);
-                if(jsonDatiUtente.paymentdata.length > 0) {
-                    datiCarta = "true";
-                    
-                    $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
-                    $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
+                if(jsonDatiUtente.paymentdata.length != 0)
+                {
+                    var toAdd = "";
+                    console.log("2");
+                     console.log("a: "+ jsonDatiUtente.paymentdata[0].owner);
+                     console.log("b: "+ jsonDatiUtente.paymentdata[0].card_number);
+                     console.log("c: "+ jsonDatiUtente.paymentdata[0].exp_month);
+                     console.log("d: "+ jsonDatiUtente.paymentdata[0].exp_year);
+                    if(jsonDatiUtente.paymentdata.length > 0) {
+                        datiCarta = "true";
 
-                    $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
-                    $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+                        $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);   
+                        $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);                    
+
+                        $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
+                        $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+                    }
                 }
             } 
             
@@ -150,17 +156,15 @@
                         document.getElementById("txtmodalita").value = modalita;
                     }
                 }
-                else {
-                    if(op == "spedizione"){
-                        if(datiIndirizzo == "true" && datiCarta == "true") {
-                            document.getElementById("btnCompletaAcquisto").disabled = false; 
-                            document.getElementById("txtmodalita").value = modalita;
-                        }
-                    } 
+                else if(op == "spedizione"){
+                    if(datiIndirizzo == "true" && datiCarta == "true") {
+                        document.getElementById("btnCompletaAcquisto").disabled = false; 
+                        document.getElementById("txtmodalita").value = modalita;
+                    }
                     else {
                         document.getElementById("btnCompletaAcquisto").disabled = true; 
                         document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito dati validi prima di continuare.";
-                    }
+                   }
                 }
             }
             
@@ -327,7 +331,7 @@
                                     </div>                    
                                                         
                                     <div class="col-xs-3 hidden-lg iconSize imgCenter" >
-                                        <a href="shopping-cartPage.jsp">
+                                        <a href="ServletAddToCart"">
                                             <spam class="glyphicon glyphicon-shopping-cart"></spam>
                                         </a>
                                     </div>
@@ -404,7 +408,7 @@
                                                     {
                                                         %>
                                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
-                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                                                         <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
@@ -414,7 +418,7 @@
                                                     else if(userType.equals("1")) // venditore
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                         <li><a href="userPage.jsp">Negozio</a></li>
                                                         <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
@@ -426,7 +430,7 @@
                                                     else if(userType.equals("2")) //admin
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -713,7 +717,7 @@
                                 if(userType.equals("0")) // registrato
                                 {
                             %>
-                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                                     <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
                                     <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
                                     <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
@@ -723,7 +727,7 @@
                                 else if(userType.equals("1")) // venditore
                                 {  %>
                                     <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
-                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                                     <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
                                     <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
                                     <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
@@ -731,7 +735,7 @@
                             <%  }
                                 else if(userType.equals("2")) // admin
                                 {  %> 
-                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                                     <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
                             <%  }
                                 else // non loggato

@@ -1,5 +1,5 @@
 <%-- 
-    Document   : index
+    Document   : productPage
     Created on : 19-set-2017, 10.56.58
     Author     : Davide
 --%>
@@ -36,39 +36,65 @@
 
             function PopolaReviews() {
                 var toAdd = "";
-
-                for (var i = 0; i < jsonProdotto.result[0].reviews.length; i++)
+                
+                if(!(jsonProdotto.result[0].reviews.length > 0)) 
                 {
-                    toAdd += "<div class=\"row panel panel-default\"> ";
-                    toAdd += "         <div class=\"col-lg-12\">";
-                    toAdd += "             <div class=\"col-xs-12 col-lg-2\" style=\"background-color: aqua\" >";
-                    // TODO: cambiare il tipo di stella in base al numero di stelle tot (global value)
-                    /*toAdd += "                 <span class=\"glyphicon glyphicon-star\"></span> ";
-                     toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
-                     toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
-                     toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
-                     toAdd += "                  <span class=\"glyphicon glyphicon-star-empty\"></span> ";*/
-                    toAdd += " global_value: " + jsonProdotto.result[0].reviews[i].global_value;
-                    toAdd += "             </div>";
-                    toAdd += "             <p>" + jsonProdotto.result[0].reviews[i].description + "</p>";
-                    toAdd += "         </div>";
-                    toAdd += "</div>";
+                    toAdd += "<h4>Nessuna recensione presente</h4>";
+                }
+                else 
+                {
+
+                    for (var i = 0; i < jsonProdotto.result[0].reviews.length; i++)
+                    {
+                        toAdd += "<div class=\"row panel panel-default\"> ";
+                        toAdd += "         <div class=\"col-lg-12\">";
+                        toAdd += "             <div class=\"col-xs-12 col-lg-2\" style=\"background-color: aqua\" >";
+                        // TODO: cambiare il tipo di stella in base al numero di stelle tot (global value)
+                        /*toAdd += "                 <span class=\"glyphicon glyphicon-star\"></span> ";
+                         toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
+                         toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
+                         toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
+                         toAdd += "                  <span class=\"glyphicon glyphicon-star-empty\"></span> ";*/
+
+                        toAdd += insertStartsInReview(jsonProdotto.result[0].reviews[i].global_value);
+
+                        //toAdd += " global_value: " + jsonProdotto.result[0].reviews[i].global_value;
+                        toAdd += "             </div>";
+                        toAdd += "             <p><b>"+ jsonProdotto.result[0].reviews[i].name +":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
+                        toAdd += "         </div>";
+                        toAdd += "</div>";
+                    }
                 }
 
                 $("#div_reviews").html(toAdd);
+            }
+            
+            function insertStartsInReview(stelle)
+            {
+                var toAdd = "";
+                
+                for(var i = 1; i <= Math.round(stelle); i++)
+                {
+                    toAdd += "<span class=\"glyphicon glyphicon-star\"></span>";
+                }
+                for(var i = Math.round(stelle); i < 5; i++)
+                {
+                    toAdd += "<span class=\"glyphicon glyphicon-star-empty\"></span>";
+                }
+                return toAdd;
             }
 
             function PopulateData()
             {
                 var toAdd = "";
-                var id_product = jsonProdotto.result.id;
+                var id_product = jsonProdotto.result[0].id;
 
-                toAdd += "<p name=\"nome\">" + jsonProdotto.result[0].name + "</p>";
-                toAdd += "<p name=\"stelle\"></p>";
-                toAdd += "<p name=\"recensioni\" >#num recensioni</p>";
-                toAdd += "<p name=\"linkmappa\" >Vedi su mappa</p>";
-                toAdd += "<p name=\"prezzo\">" + jsonProdotto.result[0].price + "</p>";
-                toAdd += "<p name=\"venditore\" >Nome venditore <a href=\"url_venditore.html\">Negozio id:" + jsonProdotto.result[0].id_shop + "</a></p>";
+                toAdd += "<h3 name=\"nome\">" + jsonProdotto.result[0].name + "</h3>";
+                toAdd += "<p name=\"stelle\">Valutazione: " + jsonProdotto.result[0].global_value_avg + "</p>";
+                toAdd += "<p name=\"recensioni\" >Tot recensioni: "+ jsonProdotto.result[0].num_reviews +"</p>";
+                toAdd += "<p name=\"linkmappa\" ><a href='ServletShowShopOnMap?id="+ jsonProdotto.result[0].id_shop +"'>Vedi negozio su mappa</a></p>";
+                toAdd += "<p name=\"prezzo\">Prezzo: " + jsonProdotto.result[0].price + " €</p>";
+                toAdd += "<p name=\"venditore\" >Venditore: "+ jsonProdotto.result[0].first_name +" " + jsonProdotto.result[0].last_name + "</p> <a href=\""+jsonProdotto.result[0].web_site+"\">Sito web "+jsonProdotto.result[0].shop+"</a><p> Negozio id:" + jsonProdotto.result[0].id_shop + "</a></p>";
                 toAdd += "<a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotto.result[0].id + "\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</a></div>";
 
                 $("#div_dati").html(toAdd);
@@ -84,7 +110,7 @@
                     else
                         toAdd += "<div class=\"item\" data-slide-number=\"" + i + "\">";
 
-                    /* NON  VA 
+                    /* NON  VA, ma non serve più, era per [5+]
                      toAddMiniature += "<div class=\"col-md-4\">";
                      toAddMiniature += "<a class=\"thumbnail\" id=\"carousel-selector-"+i+"\">";
                      toAddMiniature += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";                                      
@@ -148,9 +174,10 @@
                                                     } catch (Exception ex) {
                                                     }
                                 %> 
-                                <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="shopping-cartPage.jsp"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
+                                <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="ServletAddToCart"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                             </div>
                         </div>
+                                
                         <!-- SEARCH BAR -->
                         <div class="searchBar col-xs-12 col-lg-7">
                             <div>
@@ -178,10 +205,6 @@
                                 <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
                                 
                                 <div class="input-group-btn">
-                                    <!--<select class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search_category">Select category<span class="caret"></span></button>
-                                        <option value="product">Product</option>
-                                        <option value="seller">Seller</option>
-                                    </select>-->
                                     <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
                                        aria-controls="collapseFilter" >
@@ -189,9 +212,9 @@
                                     </a>
 
                                     <button class="btn btn-default" type="submit">Cerca</button>
-                                </div><!-- /btn-group --> 
+                                </div>
                             </form>
-                            </div><!-- /input-group -->
+                            </div>
                         </div>                     
                         
                         <!-- button: accedi/registrati e carrello per PC -->
@@ -231,7 +254,7 @@
                                                     {
                                                         %>
                                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
-                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                                                         <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                                         <li role="separator" class="divider"></li>
@@ -241,7 +264,7 @@
                                                     else if(userType.equals("1")) // venditore
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                         <li><a href="userPage.jsp">Negozio</a></li>
                                                         <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
@@ -253,7 +276,7 @@
                                                     else if(userType.equals("2")) //admin
                                                     {
                                                         %>
-                                                        <li><a href="userPage.jsp?v=Profilo#profilo">Profilo</a></li>
+                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                                         <li role="separator" class="divider"></li>
                                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
@@ -292,7 +315,7 @@
                             </div>
                         </div>
                         
-                 <!-- DIV FILTRI e CATEGORIE -->
+                        <!-- DIV FILTRI e CATEGORIE -->
                         <div name="filters" class="hidden-xs col-sm-12 col-md-12 col-lg-12 tmargin">
                             <div id="collapseFilter" class="panel-collapse collapse out" > 
                                 <div class="row">
@@ -385,9 +408,10 @@
                                 </nav>
                             </div>
                         </div>
-                        
-               <!-- corpo della pagina contenente i dati dell'oggetto selezionato -->
-               <div class="tmargin col-xs-12 col-sm-10">
+                </div>
+               
+                <!-- corpo della pagina contenente i dati dell'oggetto selezionato -->
+               <div class="tmargin col-xs-12">
                    <!-- div contenente i dati relativi al prodotto -->
                    <div class="row panel panel-default">                          
                                                 
@@ -402,37 +426,22 @@
                                                 <!-- Carousel items -->
                                                 <div class="carousel-inner" id="div_carousel">
                                                     
-                                                </div><!-- Carousel nav -->
-                                                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                                </div>
+                                                
+                                                <!-- Carousel nav -->
+                                                <!--<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                                                     <span class="glyphicon glyphicon-chevron-left"></span>                                       
                                                 </a>
                                                 <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
                                                     <span class="glyphicon glyphicon-chevron-right"></span>                                       
-                                                </a>                                
-                                                </div>
+                                                </a> -->                               
+                                            </div>
                                         </div>
 
 
                                     </div>
                                 </div>
                             </div><!--/Slider-->
-
-                            
-                            <!-- BARRA CONTENENTE LE miniature delle img del prodotto-->
-                            <div class="row tmargin">
-                                <div class="hidden-xs hidden-sm" id="slider-thumbs">
-                                    <!-- Bottom switcher of slider -->
-                                    <div style="list-style:none;" id="div_carousel_miniature">
-                                            <div class="col-md-4">
-                                                <a class="thumbnail" id="carousel-selector-0"><img src="http://placehold.it/170x100&text=one"></a>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <a class="thumbnail" id="carousel-selector-1"><img src="http://placehold.it/170x100"></a>
-                                            </div> 
-                                    </div>                 
-                                </div>
-                            </div>
                         </div>                       
                         
                         <div class="col-xs-12 col-md-5 col-lg-6" id="div_dati">
@@ -446,8 +455,10 @@
                         </div>
                    </div>
                    
+                   <h3>Recensioni: </h3>
                    <!-- RECENSIONI -->
                    <div id="div_reviews">
+                       
                         <!-- div contenente: recensione -->
                         <div class="row panel panel-default">         
                              <div class="col-lg-12">
@@ -502,62 +513,63 @@
                              </div>
                         </div>
                     </div>                    
-                          
+               </div>
+                
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
                 <!-- footer -->
-                <footer style="background-color: #fc5d5d">
-                    <div class="row">
-                        <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
-                            <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
-                            <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Cerca prodotto</a></p> 
-                            <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
-                            <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
-                            <%
-                                if(userType.equals("0")) // registrato
-                                {
-                            %>
-                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
-                                    <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
-                                    <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
-                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                <footer class="col-xs-12">
+                    <div class="">
+                        <div class="row" style="background-color: #fc5d5d">
+                            <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
+                                <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
+                                <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Cerca prodotto</a></p> 
+                                <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
+                                <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
+                                <%
+                                    if(userType.equals("0")) // registrato
+                                    {
+                                %>
+                                        <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                        <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
+                                        <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
+                                        <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
+                                        <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
 
-                            <%  }
-                                else if(userType.equals("1")) // venditore
-                                {  %>
-                                    <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
-                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
-                                    <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
-                                    <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
-                            <%  }
-                                else if(userType.equals("2")) // admin
-                                {  %> 
-                                    <p><a href="userPage.jsp?v=Profilo#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                            <%  }
-                                else // non loggato
-                                {  %>    
-                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
-                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
-                            <%  }  %>        
+                                <%  }
+                                    else if(userType.equals("1")) // venditore
+                                    {  %>
+                                        <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
+                                        <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                        <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                        <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
+                                        <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
+                                        <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
+                                <%  }
+                                    else if(userType.equals("2")) // admin
+                                    {  %> 
+                                        <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                        <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                <%  }
+                                    else // non loggato
+                                    {  %>    
+                                        <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
+                                        <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
+                                <%  }  %>        
+                            </div>
+                            <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
+                                <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
+                                <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Venditore</a></p>
+                            </div>
+
+                            <div class="col-xs-4"><h5><b>Logout</b></h5>
+                                <p><a href="ServletLogout"><span class="glyphicon glyphicon-menu-right"></span> ESCI</a></p>
+                            </div>
                         </div>
-                        <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
-                            <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
-                            <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Venditore</a></p>
-                        </div>
-                        
-                        <div class="col-xs-4"><h5><b>Logout</b></h5>
-                            <p><a href="ServletLogout"><span class="glyphicon glyphicon-menu-right"></span> ESCI</a></p>
-                        </div>
-                    </div>
-                    <div class="row col-xs-12">
                         <p>&copy; Amazoff 2017 - info@amazoff.com - via di Amazoff 69, Trento, Italia</p>
                     </div>
-                </footer> 
+                </footer>
             </div>
             <!-- barra bianca a dx -->
             <div class="hidden-xs col-lg-1"></div>
@@ -590,7 +602,7 @@
                 interval: 5000
             });
 
-            //Handles the carousel thumbnails
+            //NON SERVE PIU:   Handles the carousel thumbnails
             $('[id^=carousel-selector-]').click( function(){
                 var id = this.id.substr(this.id.lastIndexOf("-") + 1);
                 var id = parseInt(id);

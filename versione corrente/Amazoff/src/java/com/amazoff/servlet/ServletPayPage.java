@@ -120,7 +120,7 @@ public class ServletPayPage extends HttpServlet {
                 session.setAttribute("jsonPayPage", jsonObj);  
                 
                 /** Estraggo dal db tutti i prodotti che l'utente ha salvato nel carrello */
-                results = MyDatabaseManager.EseguiQuery("SELECT name, description, price, products.id FROM products, cart "
+                results = MyDatabaseManager.EseguiQuery("SELECT products.id, name, description, price FROM products, cart "
                     + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
                 
                 /** Inserisco i prodotti nel json */
@@ -142,7 +142,7 @@ public class ServletPayPage extends HttpServlet {
         }catch (SQLException ex) {
             /** In caso di errore generico non previsto, lo memorizzo, così da poterlo comunicare all'utente nella pagina corretta */
             
-            //MyDatabaseManager.LogError(request.getParameter("username"), "ServletLogin", ex.toString());
+            MyDatabaseManager.LogError(request.getParameter("username"), "ServletPayPage", ex.toString());
             HttpSession session = request.getSession();
             //session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/payPage"); 
