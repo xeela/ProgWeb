@@ -251,10 +251,10 @@
             // Onload handler to fire off the app.
             google.maps.event.addDomListener(window, 'load', initialize);
             function checkProductData(){
-                console.log(document.getElementById("prname").value);
+                /*console.log(document.getElementById("prname").value);
                     console.log(document.getElementById("prdesc").value);
                     console.log(document.getElementById("prprice").value);
-                    console.log(parseFloat(document.getElementById("prprice").value));
+                    console.log(parseFloat(document.getElementById("prprice").value));*/
                 if(document.getElementById("prname").value !== "" && document.getElementById("prname").value !== undefined &&
                    document.getElementById("prdesc").value !== "" && document.getElementById("prname").value !== undefined &&
                    document.getElementById("prprice").value !== "" && document.getElementById("prname").value !== undefined &&
