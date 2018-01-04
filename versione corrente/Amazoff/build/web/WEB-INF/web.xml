@@ -30,6 +30,10 @@
         <servlet-class>com.amazoff.servlet.ServletRegisterShop</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ServletUpdateCredentials</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletUpdateCredentials</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServletFindProduct</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletFindProduct</servlet-class>
     </servlet>
@@ -204,6 +208,10 @@
     <servlet-mapping>
         <servlet-name>ServletShowShopOnMap</servlet-name>
         <url-pattern>/ServletShowShopOnMap</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletUpdateCredentials</servlet-name>
+        <url-pattern>/ServletUpdateCredentials</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -22,7 +22,7 @@
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDofgdH-2Rk2JWl1U_ZWs-yi2gq_U25txY&callback=initMap"></script> 
         <script type="text/javascript" src="js/parametri-ricerca.js"></script>
-
+        <script type="text/javascript" src="js/sjcl.js" ></script>
         <link rel="stylesheet" href="css/amazoffStyle.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
@@ -42,13 +42,14 @@
 
             function HashPasswordRegister()
             {
-                var mail = $("#mailRegister").val();
+                var mail = $("#email").val();
                 var name = $("#nameRegister").val();
                 var surname = $("#surnameRegister").val();
-                var user = $("#usernameRegister").val();
-                var pwd1 = $("#pwdRegister").val();
-                var pwd2 = $("#pwdRegisterConfirm").val();
-
+                var user = $("#username").val();
+                console.log(user);
+                var oldpwd = $("#oldpwd").val();
+                var newpwd = $("#newpwd").val();
+                var pwdc = $("#newpwdconfirm").val();
                 //Controllo se le password sono valide, lunghezze dei campi etc
                 if (mail.length < 6 || !mail.includes("@"))
                 {
@@ -66,25 +67,30 @@
                 {
                     MostraErrore("L'username deve essere di almeno 6 caratteri");
                     return false;
-                } else if (pwd1.length < 8)
+                } else if (newpwd.length < 8)
                 {
                     MostraErrore("La password deve essere di almeno 8 caratteri");
                     return false;
-                } else if (pwd1 != pwd2)
+                } else if (newpwd != pwdc)
                 {
+                    console.log(oldpwd);
+                    console.log(newpwd);
                     MostraErrore("Le password non coincidono");
                     return false;
                 } else
                 {
+                    console.log($('#newpwd').val());
+                     console.log("password ok");
                     //$("#progressBar").css("display", "block");
-                    var newPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash($('#pwdRegister').val()));
+                    var newPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash($('#newpwd').val()));
                     for (var i = 0; i < 10000; i++)
                         newPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newPwd));
                     //alert(newPwd);
                     document.RegisterForm.hashedPassword.value = newPwd;
-                    document.RegisterForm.password.value = "";
+                    document.RegisterForm.newpwd.value = "";
                     return true;
                 }
+                return false;
             }
 
             function HashPasswordLogin()
@@ -267,7 +273,7 @@
             }
         </script>    
     </head>
-    <body class="bodyStyle" onload="Autocomplete('product'); document.getElementById('btnVendi').addEventListener ('click', checkProductData, false);">
+    <body class="bodyStyle" onload="Autocomplete('product'); document.getElementById('btnVendi').addEventListener ('click', checkProductData, false); ">
 
         <div class="container-fluid tmargin">
 
@@ -483,51 +489,67 @@
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-6">
                                                 <h3 style="text-align: center">Aggiorna le tue credenziali:</h3>
-                                                <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletUpdateProfile" method="POST" onsubmit="return HashPasswordRegister();">
+                                                <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletUpdateCredentials" method="POST" >
 
                                                     <div class="form-group">
-                                                        <input id="mailRegister" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
+                                                        <input id="email" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input id="usernameRegister" type="text" name="username" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
+                                                        <input id="username" type="text" name="username" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group">
                                                         <input id="nameRegister" type="text" name="name" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
-                                                    </div class="form-group">
+                                                    </div>
                                                     <div class="form-group">
                                                         <input id="surnameRegister" type="text" name="surname" class="form-control" placeholder="Cognome" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group input-group">
-                                                        <input id="oldpassword" type="password"  class="form-control" placeholder="Vecchia password" aria-describedby="sizing-addon2">
+                                                        <input id="oldpwd" type="password"  class="form-control" placeholder="Vecchia password" aria-describedby="sizing-addon2">
                                                         <span class="input-group-btn">
-                                                            <a id="btnoldPassword" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('oldpassword')">
+                                                            <a id="btnoldPassword" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('oldpwd')">
                                                                 <span id="spanoldpassword" class="glyphicon glyphicon-eye-open"></span>
                                                             </a>
                                                         </span>
                                                     </div>
                                                     <div class="form-group input-group">
-                                                        <input id="pwdRegister" type="password" name="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
+                                                        <input id="newpwd" type="password" name="newpwd" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
                                                         <span class="input-group-btn">
-                                                            <a id="btnpwdRegister" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('pwdRegister')">
+                                                            <a id="btnpwdRegister" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('newpwd')">
                                                                 <span id="spanpwdRegister" class="glyphicon glyphicon-eye-open"></span>
                                                             </a>
                                                         </span>
                                                     </div>
                                                     <div class="form-group input-group">
-                                                        <input id="pwdRegisterConfirm" type="password" class="form-control" placeholder="Ripeti password" aria-describedby="sizing-addon2">
+                                                        <input id="newpwdconfirm" type="password" class="form-control" placeholder="Ripeti password" aria-describedby="sizing-addon2">
                                                         <input id="hashedPassword" type="hidden" name="hashedPassword" value="pigreco" />
                                                         <span class="input-group-btn">
-                                                            <a id="btnpwdRegisterConfirm" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('pwdRegisterConfirm')">
+                                                            <a id="btnpwdRegisterConfirm" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('newpwdconfirm')">
                                                                 <span id="spanpwdRegisterConfirm" class="glyphicon glyphicon-eye-open"></span>
                                                             </a>
                                                         </span>
                                                     </div>
 
-                                                    <div class="form-group tmargin">
-                                                        <button id="btnRegistrati" class="btn btn-default" >Aggiorna dati</button>
+                                                    
+                                                </form>
+                                                 <div class="form-group tmargin">
+                                                        <button id="btnRegistrati" class="btn btn-default" onclick="if(HashPasswordRegister()){document.getElementById('RegisterForm').submit();}" >Aggiorna dati</button>
                                                         <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
                                                     </div>
-                                                </form>
+                                                    
+                                                <div class="alert alert-danger alert-dismissible" style="visibility: hidden" id="alertRegistrati" role="alert">
+                        
+                                                        <!-- div che visualizza il messaggio di errore durante il login -->
+                                                        <% 
+                                                            if(session.getAttribute("errorMessage") != null) { %>
+                                                            <div class="alert alert-danger alert-dismissible" id="alertRegistrati" role="alert">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
+                                                            </div>
+                                                        <% } 
+                                                            session.setAttribute("errorMessage", null);
+                                                        %>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>                                                  
