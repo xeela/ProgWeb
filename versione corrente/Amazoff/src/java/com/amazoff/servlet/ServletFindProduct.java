@@ -73,12 +73,13 @@ public class ServletFindProduct extends HttpServlet {
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id = sub.id AND products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
+                                + "AND sold = 0 "
                                 + "AND avg >= " + recensioneReceived + " "
                                 + "AND products.ritiro = 1 "
                                 + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                                 + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                     } else {
-                        /** ????????? ALTRIMENTI, verranno restituiti tutti i prodottiche soddifano il criterio dell ....... */
+                        /** ALTRIMENTI, verranno restituiti tutti i prodotti che soddifano il criterio di ricerca per recensione */
                         query += "SELECT DISTINCT products.*, "
                                 + " users.LAST_NAME, users.FIRST_NAME, "
                                 + " shops.NAME, shops.WEB_SITE_URL," 
@@ -87,6 +88,7 @@ public class ServletFindProduct extends HttpServlet {
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id_shop = shops.id "
+                                + "AND sold = 0 "
                                 + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                                 + "AND products.ID = sub.id AND avg >= " + recensioneReceived + " AND ";
                     }
@@ -102,6 +104,7 @@ public class ServletFindProduct extends HttpServlet {
                             + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
                             + "FROM products, shops, shops_coordinates, users, pictures "
                             + "WHERE products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
+                            + "AND sold = 0 "
                             + "AND products.ritiro = 1 "
                             + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                             + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
@@ -112,6 +115,7 @@ public class ServletFindProduct extends HttpServlet {
                             + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
                             + "FROM products, shops, users, pictures "
                             + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
+                            + "AND sold = 0 "
                             + "AND products.id_shop = shops.id AND ";
                 }
                 

@@ -102,6 +102,10 @@
         <servlet-class>com.amazoff.servlet.ServletRecuperoPassword</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ServletShowCart</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletShowCart</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServletShowShopOnMap</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletShowShopOnMap</servlet-class>
     </servlet>
@@ -192,6 +196,10 @@
     <servlet-mapping>
         <servlet-name>ServletRecuperoPassword</servlet-name>
         <url-pattern>/ServletRecuperoPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletShowCart</servlet-name>
+        <url-pattern>/ServletShowCart</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletShowShopOnMap</servlet-name>

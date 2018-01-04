@@ -32,7 +32,6 @@
             
             function LogCart()
             {
-                // oss: se non si aggiunge un oggetto dalla home, anche se shoppingCartProducts conterrebbe valori, non vengono trovati
                 cart = ${shoppingCartProducts};
                 console.log(cart);
                 AggiungiProdotti(cart);                
@@ -94,7 +93,7 @@
 
             function removeFromCart(indexElement, idElement)
             {
-                if(idUser != -1){
+                if(idUser !== -1){
                     // rimuovo l'elemento dal vettore json di dati
                     console.log("Updated json");
                     cart.products.splice(indexElement, 1); // NON va
@@ -122,6 +121,8 @@
 
                     }).fail(function () {
                     });
+                } else {
+                    document.cookie = idElement + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                 }
             }
         </script>

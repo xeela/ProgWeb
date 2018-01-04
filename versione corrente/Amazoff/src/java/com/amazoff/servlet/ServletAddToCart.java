@@ -73,104 +73,17 @@ public class ServletAddToCart extends HttpServlet {
                             //il prodotto è già nel carrello 
                         }*/
                     }                    
-
-                    /** Dopo aver inserito il nuovo prodotto, mi faccio restituire tutta la lista di oggetti presenti nel carrello */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME FROM cart, shops, users, products WHERE users.ID = '"+ session.getAttribute("userID") +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
                     
-                    /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
-                    // -------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
-                   
-                    /** se il carrello è vuoto */
-                    if(results.isAfterLast()) 
-                    {
-                        /** ALLORA: genero un errore e lo memorizzo */
-                        session = request.getSession();
-                        session.setAttribute("errorMessage", Errors.noProductFound);
-                        response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                        connection.close();
-                        return;
-                    }
-
-                    /** ALTRIEMTI: aggiungo i dati del prodotti ad un oggetto json */
-                    boolean isFirstTime = true, isFirstTimeImg = true;
-                    String id_product = "";
-                    jsonObj += "{";
-                    jsonObj += "\"products\":[";
-                    while (results.next()) {
-                        if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
-                            jsonObj += ", ";
-                        isFirstTime = false;
-
-                        id_product = results.getString(1);
-                        jsonObj += "{";
-                        jsonObj += "\"id\": \"" + id_product + "\",";
-                        jsonObj += "\"name\": \"" + results.getString(2) + "\",";
-                        jsonObj += "\"description\": \"" + results.getString(3) + "\",";
-                        jsonObj += "\"price\": \"" + results.getString(4) + "\",";
-                        jsonObj += "\"category\": \"" + results.getString(6) + "\",";
-                        jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
-
-                        jsonObj += "\"id_shop\": \"" + results.getString(9) + "\",";
-                        jsonObj += "\"shop\": \"" + results.getString(10) + "\",";
-                        jsonObj += "\"description\": \"" + results.getString(11) + "\",";
-                        jsonObj += "\"web_site\": \"" + results.getString(12) + "\",";
-                        jsonObj += "\"id_owner\": \"" + results.getString(14) + "\",";
-                        jsonObj += "\"first_name\": \"" + results.getString(16) + "\",";
-                        jsonObj += "\"last_name\": \"" + results.getString(17) + "\",";
-
-
-                        /** in base al prodotto, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
-                        ResultSet resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + id_product + ";", connection);
-
-                        /** SE non ci sono immagini per questo prodotto */
-                        if(resultsPictures.isAfterLast())
-                        {
-                            /** ALLORA: genero e memorizzo un errore */
-                            session = request.getSession();
-                            session.setAttribute("errorMessage", Errors.noProductFound);
-                            response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                            connection.close();
-                            return;
-                        }
-
-                        /** ALTRIMENTI: memorizzo le immagini del prodotto */
-                        jsonObj += "\"pictures\":[";
-                        while (resultsPictures.next()) {
-                            if(!isFirstTimeImg)            
-                                jsonObj += ", ";
-                            isFirstTimeImg = false; 
-
-                            jsonObj += "{";
-                            jsonObj += "\"id\": \"" + resultsPictures.getString(1) + "\",";
-                            jsonObj += "\"path\": \"" + resultsPictures.getString(2) + "\"";
-                            jsonObj += "}";
-                        }
-                        isFirstTimeImg = true;
-                        jsonObj += "]"; // chiusura immagini prodotto
-                        
-                        jsonObj += "}"; // chiusura prodotto
-                        
-                    }
-                    jsonObj += "]}";
-                    
-                    
-                    
-                    
-                    connection.close();
-                    session.setAttribute("shoppingCartProducts", jsonObj);
-                    response.sendRedirect(request.getContextPath() + "/shopping-cartPage.jsp");
                     
                 } else {
                     /** salva l'elemento selezionato nel carrello */
-                    String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
-                    Cookie cookie = new Cookie(timeStamp, productReceived);
+                    Cookie cookie = new Cookie(productReceived, productReceived);
                     cookie.setMaxAge(60 * 60 * 24 * 7);
                     response.addCookie(cookie);
-                    
-                    connection.close();
-                    response.sendRedirect(request.getContextPath() + "/ServletShowCookieCart");
                 }
                     
+                connection.close();
+                response.sendRedirect(request.getContextPath() + "/ServletShowCart");
                 
             } else {
                 session.setAttribute("errorMessage", Errors.dbConnection);

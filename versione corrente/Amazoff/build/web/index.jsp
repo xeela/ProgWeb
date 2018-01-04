@@ -286,7 +286,7 @@
 
 
             <div class="col-lg-2">
-                <a href="ServletAddToCart" type="button" class="btn btn-default btn-md">
+                <a href="ServletShowCart" type="button" class="btn btn-default btn-md">
                     <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
                 </a>
             </div>
