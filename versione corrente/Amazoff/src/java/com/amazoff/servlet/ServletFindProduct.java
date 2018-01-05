@@ -212,12 +212,6 @@ public class ServletFindProduct extends HttpServlet {
                 
                 HttpSession session = request.getSession();
 
-                /*
-                // crasha se non sei loggato, perchè non riesce a trovare l'attributo userID...
-                String userID = session.getAttribute("userID").toString();
-                session.setAttribute("jsonNotifiche",Notifications.GetJson(userID, connection));
-                 */
-                // TMP
                 //String userID = session.getAttribute("userID").toString();
                 if (session.getAttribute("userID") != null) {
                     session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));

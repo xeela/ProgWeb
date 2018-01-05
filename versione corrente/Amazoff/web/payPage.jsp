@@ -1,7 +1,7 @@
 <%-- 
     Document   : payPage
     Created on : 28-Oct-2017, 12:54:23
-    Author     : Fra
+    Author     : Francesco Bruschetti
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
@@ -29,10 +29,11 @@
         
         <title>Amazoff</title>
         <script>
-            var user;
+            var userID = "<%= session.getAttribute("userID")%>";
             var modalita = "null"; // vale: spedizione oppure ritiro. null se non ancora selezionata
             var datiIndirizzo = "false"; // true = validi. false = non validi
             var datiCarta = "false"; 
+            var jsonNotifiche = ${jsonNotifiche};
             
             // ottengo i dati json contenenti i dati dell'utente
             var jsonDatiUtente;
@@ -44,6 +45,7 @@
             {
                 jsonDatiUtente = ${jsonPayPage};
                 cartReceived = ${shoppingCartProducts};
+                                
                 console.log(jsonDatiUtente);
                 console.log(cartReceived);
                 
@@ -194,7 +196,7 @@
 
                     $.post('ServletAjaxPayPage', { 
                             _op : "indirizzo",
-                            _user : user,
+                            _user : userID,
                             _paese: paese,
                             _indirizzo: indirizzo,
                             _citta: citta,
@@ -446,20 +448,20 @@
                                 </div>
                                 
                                 <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                                     <% try {
-                                            //userType = (session.getAttribute("categoria_user")).toString();
-                                            if(userType.equals("1") || userType.equals("2"))
-                                            {
-                                                %>
-                                                <div class="col-lg-3">
-                                                    <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
-                                                        <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-                                                     </a> 
-                                                 </div> 
-                                                <%
-                                            }
-                                        }catch(Exception ex){  }
-                                   %> 
+                                <% try {
+                                    //userType = (session.getAttribute("categoria_user")).toString();
+                                    if (userType.equals("1") || userType.equals("2")) {
+                                %>
+                                <div class="col-lg-3">                                                    
+                                    <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
+                                        <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> </span>
+                                    </button>   
+                                </div> 
+                                <%
+                                        }
+                                    } 
+                                    catch (Exception ex) { }
+                                %> 
                                                 
                                                 
                                 <div class="col-lg-2">
@@ -784,6 +786,66 @@
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }    
             
+            
+            // crea l'html per il button delle notifiche
+            function inserisciNotifiche()
+            {
+                console.log(jsonNotifiche);
+                var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
+                var notificationCount = 0;
+                var notifiche = "";
+                var idNotifica;
+                for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+                {
+                    idNotifica = jsonNotifiche.notifications[i].id;
+                    toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
+                    toAdd += "<p>";
+                    switch (jsonNotifiche.notifications[i].type)
+                    {
+                        case "0":
+                            toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
+                            break;
+                        case "1":
+                            toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (jsonNotifiche.notifications[i].already_read === "0") {
+                        //toAdd += "<p style=\"color: red\">";
+                        notificationCount++;
+                        toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                        toAdd += "<div class=\"dotsEndSentence\"><b>" + jsonNotifiche.notifications[i].description + "</b></div>";
+                    } else {
+                        toAdd += "</p>";
+                        toAdd += "<div class=\"dotsEndSentence\">" + jsonNotifiche.notifications[i].description + "</div>";
+
+                    }
+
+                    // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
+                    toAdd += "</a><hr>";
+
+                }
+                toAdd += "</div>";
+                toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
+
+                if (notificationCount > 99)
+                    notificationCount = "99+";
+                $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+                $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+
+                return toAdd;
+            }
+
+            // gestione POPOVER button notifiche
+            $(document).ready(function () {
+                $('[data-toggle="popover"]').popover({
+                    container: 'body'
+                });
+            });
+            
+            
             // inserisco i dati dell'utente e della carta, nella pagina
             AggiungiDatiUtente();
             AggiungiDatiMetodoPagamento();
@@ -791,6 +853,10 @@
             
             // inizializzazione del bottone per l'acquisto
             enabledBtnAcquista("inizializzazione");
+            
+            // inizializzazione delle notifiche e del suo button.
+            $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());            
+            
         </script>
     </body>
 </html>

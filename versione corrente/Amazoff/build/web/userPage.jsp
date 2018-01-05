@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
+    Document   : userPage
     Created on : 19-set-2017, 10.56.58
-    Author     : Davide
+    Author     : Davide Farina
 --%>
 
 <%@page import="com.amazoff.classes.Errors"%>
@@ -900,7 +900,8 @@
                         console.log("ServletAjaxNotifiche " + data);
 
                     }).fail(function () {
-                    });
+                    });                    
+                    
                 </script>
-                </body>
-                </html>
+</body>
+</html>

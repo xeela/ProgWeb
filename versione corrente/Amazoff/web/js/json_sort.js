@@ -1,6 +1,8 @@
 function LogJson() {
+    console.log("LOGJSON");
     console.log(jsonProdotti);
-    //console.log(jsonNotifiche);
+    console.log(jsonNotifiche);
+    console.log("-----");
     RiempiBarraRicerca();
     AggiungiProdotti();
 }

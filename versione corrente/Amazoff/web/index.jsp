@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : 19-set-2017, 10.56.58
-    Author     : Davide
+    Author     : Davide Farina
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
@@ -28,12 +28,14 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <title>Amazoff</title>
         <script type="text/javascript">
-            var jsonProdotti;
+            var jsonProdotti, jsonNotifiche;
             var searchedProduct = null;
+            var userID = "<%= session.getAttribute("userID")%>";
             
             function LogJson() {
                 jsonProdotti = ${jsonProdottiIndex};
-                console.log(jsonProdotti);
+                //console.log(jsonProdotti);
+                
                 RiempiBarraRicerca();
                 AggiungiProdotti();
                 Autocomplete("product");
@@ -86,6 +88,22 @@
                     window.location.href = 'ServletFindShops?userLat=' + lat + "&userLng=" + lng;
                 }
             });
+            
+            function checkForNewNotifications()
+            {
+                console.log("Notification for userID: " + userID);
+                $.post('SerlvetAjaxGetNotifications', {
+                        _idUser : userID,
+                    }, function(data) {
+                        jsonNotifiche = JSON.parse(data); // converto da stringa a oggetto json
+                             
+                        // chiamo la funzione "inserisciNotifiche()" che ritorna il codice dello stile e funzionamento delle notifiche
+                        // prendo il codice html e lo inserisco nel corpo del popover
+                        $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
+                    }).fail(function () {
+                        
+                    }); 
+            }
             </script>
     
     </head>
@@ -266,22 +284,18 @@
 
             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
             <% try {
-                    //userType = (session.getAttribute("categoria_user")).toString();
-                    if (userType.equals("1") || userType.equals("2")) {
+                //userType = (session.getAttribute("categoria_user")).toString();
+                if (userType.equals("1") || userType.equals("2")) {
             %>
-            <div class="col-lg-3">
-                <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
-                    <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-                </a> 
-
-                <!-- prova ok  <button class="btn " title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="<div>This <b>is</b> your div content</div>">
-                  Popover on bottom
-                </button> -->
+            <div class="col-lg-3">                                                    
+                <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
+                    <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> </span>
+                </button>   
             </div> 
             <%
                     }
-                } catch (Exception ex) {
-                }
+                } 
+                catch (Exception ex) { }
             %> 
 
 
@@ -527,12 +541,73 @@
                 document.getElementById("formSearch").action = "/Amazoff/Ser                            vletFindProduct?p=" + document.getElementById(txt).value
                 //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
             }
+                 
+            // crea l'html per il button delle notifiche
+            function inserisciNotifiche()
+            {
+                console.log(jsonNotifiche);
+                var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
+                var notificationCount = 0;
+                var notifiche = "";
+                var idNotifica;
+
+                for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+                {
+                    idNotifica = jsonNotifiche.notifications[i].id;
+                    toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
+                    toAdd += "<p>";
+                    switch (jsonNotifiche.notifications[i].type)
+                    {
+                        case "0":
+                            toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
+                            break;
+                        case "1":
+                            toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (jsonNotifiche.notifications[i].already_read === "0") {
+                        //toAdd += "<p style=\"color: red\">";
+                        notificationCount++;
+                        toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                        toAdd += "<div class=\"dotsEndSentence\"><b>" + jsonNotifiche.notifications[i].description + "</b></div>";
+                    } else {
+                        toAdd += "</p>";
+                        toAdd += "<div class=\"dotsEndSentence\">" + jsonNotifiche.notifications[i].description + "</div>";
+
+                    }
+
+                    // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
+                    toAdd += "</a><hr>";
+
+                }
+                toAdd += "</div>";
+                toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
+
+                if (notificationCount > 99)
+                    notificationCount = "99+";
+                
+                $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+                $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+
+                return toAdd;
+            }
                                     
             // gestione POPOVER button notifiche
-            /* prova ok $(document).ready(function(){
-                $('[data-toggle="popover"]').attr('data-content', '<a href=\"\">HTML</a><b>Aggiunto</b> da <i>funzione</i>.');
-                $('[data-toggle="popover"]').popover();
-            }); */
+            $(document).ready(function () {
+                //$('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
+                $('[data-toggle="popover"]').popover({
+                    container: 'body'
+                });
+            });
+            
+            // se l'utente è loggato, chiedo alla servlet le notifiche
+            if(userID != "null")
+            {   
+                checkForNewNotifications();
+            }     
         </script>
     </body>
 </html>

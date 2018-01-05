@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
+import com.amazoff.classes.Notifications;
 import java.sql.Connection;
 
 /**
@@ -128,6 +129,14 @@ public class ServletPayPage extends HttpServlet {
                 
                 /** Memorizzo l'oggetto json in una variabile di sessione da cui recuperare i dati per visualizzarli prima di completare l'acquisto */
                 session.setAttribute("shoppingCartProducts", jsonObj);
+                
+                // creo l'oggetto notifiche aggiornate, da mandare alla pagina
+                if (session.getAttribute("userID") != null) {
+                    session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
+                } else {
+                    session.setAttribute("jsonNotifiche", "{\"notifications\": []}");
+                }
+                
                 connection.close();
                 
                 response.sendRedirect(request.getContextPath() + "/payPage.jsp");       

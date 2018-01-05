@@ -84,7 +84,7 @@ public class ServletRegister extends HttpServlet {
                     
                     String userID = String.valueOf(MyDatabaseManager.GetID_User(userReceived));
                     
-                    Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
+                    Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp?v=Notifiche", connection);
                     
                     
                     connection.close();
@@ -120,17 +120,6 @@ public class ServletRegister extends HttpServlet {
         String uuid = UUID.randomUUID().toString();
         return uuid;
     }
-    
-    /******** TMP: 
-    private static void generateNString() {
-        
-        String[] tmp = new String[50];
-        for (int i = 0; i < 50; i++) {
-            String uuid = UUID.randomUUID().toString();
-            tmp[i] = uuid;
-        }
-        tmp = tmp;
-    }*/
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
