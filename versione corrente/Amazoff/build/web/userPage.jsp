@@ -621,7 +621,13 @@
                                                             <input name="sun" type="checkbox" value="true"/> Domenica   <br/>
 
                                                         </div>
+                                                        <p></p>
                                                     </div>
+                                                    <div class="row">
+                                                        <p><b>Città</b></p>
+                                                        <input type="text" name="citta" placeholder="..." class="col-lg-10"/>
+                                                    </div>
+                                                    <div class="row"></div>
                                                     <INPUT TYPE='submit' VALUE='Crea Negozio' class="btn col-lg-4 col-lg-offset-3" />
                                                 </div>   
                                                 <div class="col-lg-6 col-md-6 col-sm-6  ">
