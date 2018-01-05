@@ -28,7 +28,7 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <script type="text/javascript">
             var cart;
-            var jsonNotifiche = ${jsonNotifiche};;
+            var jsonNotifiche = ${jsonNotifiche};
             var idUser = "<%= session.getAttribute("userID") %>"; 
             
             function LogCart()
@@ -407,7 +407,7 @@
                 <!-- PRODOTTI nel CARRELLO -->
                 <div class="tmargin col-xs-12">
                     <div class="" id="zonaProdotti">
-                        <!--<div class="row">
+                        <div class="row">
                             <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
                                     <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
                                         <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
@@ -415,7 +415,7 @@
                                         <div class="col-xs-8 col-md-5 col-lg-6">
 
                                             <div class="row">
-                                                <p id="nome+" class="col-lg-12" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto--
+                                                <p id="nome+" class="col-lg-12" >Nome</p> 
 
                                                 <p id="stelle+" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni+" >#num recensioni</p>
                                                 <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
@@ -430,7 +430,7 @@
                                         <button class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></button>
                                 </div>
                             </a>
-                        </div> -->
+                        </div> 
 
                     </div>  
                     <!-- footer -->

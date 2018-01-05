@@ -33,7 +33,7 @@ public class ServletPayPage extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userIDReceived = (request.getSession().getAttribute("userID")).toString();
+            String userIDReceived = request.getParameter("userID");
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
