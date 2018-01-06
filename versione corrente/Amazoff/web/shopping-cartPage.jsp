@@ -80,9 +80,9 @@
                         // codice html dei bottoni + , - , remove
                         toAdd += "                            <div class=\"col-xs-12 col-sm-6\" >";
                         toAdd += "                                <div>";
-                        toAdd += "                                    <button class=\"btn btn-primary col-lg-3\" onclick=\"ajax("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
+                        toAdd += "                                    <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
                         toAdd += "                                    <p class=\"btn col-lg-3\" id=\"quantita"+id_oggetto+"\">"+ cart.products[i].quantita + "</p>";
-                        toAdd += "                                    <button class=\"btn btn-danger col-lg-3\" onclick=\"ajax("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")\"><span class=\"glyphicon glyphicon-minus\"></span></button>";
+                        toAdd += "                                    <button class=\"btn btn-danger col-lg-3\" onclick=\"rimuovi("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")\"><span class=\"glyphicon glyphicon-minus\"></span></button>";
                         toAdd += "                                </div>";
                         toAdd += "                             </div>";
                         toAdd += "                            <div class=\"col-xs-12 tmargin\"><button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button></div>";

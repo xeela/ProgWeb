@@ -24,6 +24,7 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         
         <script>
+            var quantita = 1;
             var jsonProdotto;
             var jsonNotifiche = ${jsonNotifiche};
             console.log(jsonNotifiche);
@@ -54,16 +55,8 @@
                         toAdd += "<div class=\"row panel panel-default\"> ";
                         toAdd += "         <div class=\"col-lg-12\">";
                         toAdd += "             <div class=\"col-xs-12 col-lg-2\" style=\"background-color: aqua\" >";
-                        // TODO: cambiare il tipo di stella in base al numero di stelle tot (global value)
-                        /*toAdd += "                 <span class=\"glyphicon glyphicon-star\"></span> ";
-                         toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
-                         toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
-                         toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
-                         toAdd += "                  <span class=\"glyphicon glyphicon-star-empty\"></span> ";*/
-
+                        // Cambiare il tipo di stella in base al numero di stelle tot (global value)
                         toAdd += insertStartsInReview(jsonProdotto.result[0].reviews[i].global_value);
-
-                        //toAdd += " global_value: " + jsonProdotto.result[0].reviews[i].global_value;
                         toAdd += "             </div>";
                         toAdd += "             <p><b>"+ jsonProdotto.result[0].reviews[i].name +":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
                         toAdd += "         </div>";
@@ -100,6 +93,15 @@
                 toAdd += "<p name=\"linkmappa\" ><a href='ServletShowShopOnMap?id="+ jsonProdotto.result[0].id_shop +"'>Vedi negozio su mappa</a></p>";
                 toAdd += "<p name=\"prezzo\">Prezzo: " + jsonProdotto.result[0].price + " €</p>";
                 toAdd += "<p name=\"venditore\" >Venditore: "+ jsonProdotto.result[0].first_name +" " + jsonProdotto.result[0].last_name + "</p> <a href=\""+jsonProdotto.result[0].web_site+"\">Sito web "+jsonProdotto.result[0].shop+"</a><p> Negozio id:" + jsonProdotto.result[0].id_shop + "</a></p>";
+                // buttons + , - , remove
+                toAdd += " <div class=\"col-xs-12 col-sm-6\" >";
+                toAdd += "    <div>";
+                toAdd += "         <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi("+id_product+", " + quantita + ")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
+                toAdd += "         <p class=\"btn col-lg-3\" id=\"quantita"+id_product+"\">"+quantita+"</p>";
+                toAdd += "         <button class=\"btn btn-danger col-lg-3\" onclick=\"rimuovi("+id_product+"," + quantita + ")\"><span class=\"glyphicon glyphicon-minus\"></span></button>";
+                toAdd += "     </div>";
+                toAdd += "</div>";
+        
                 toAdd += "<a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotto.result[0].id + "\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</a></div>";
 
                 $("#div_dati").html(toAdd);
@@ -115,17 +117,10 @@
                     else
                         toAdd += "<div class=\"item\" data-slide-number=\"" + i + "\">";
 
-                    /* NON  VA, ma non serve più, era per [5+]
-                     toAddMiniature += "<div class=\"col-md-4\">";
-                     toAddMiniature += "<a class=\"thumbnail\" id=\"carousel-selector-"+i+"\">";
-                     toAddMiniature += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";                                      
-                     */
-
                     toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/" + jsonProdotto.result[0].pictures[i].path + "\"></div>";
                 }
 
                 $("#div_carousel").html(toAdd);
-                //$("#div_carousel_miniature").html(toAddMiniature);
             }
         </script> 
         <title>Amazoff</title>
@@ -447,7 +442,15 @@
                             <p name="recensioni" >#num recensioni</p>
                             <p name="linkmappa" >Vedi su mappa</p>
                             <p name="prezzo">Prezzo</p>
-                            <p name="venditore" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
+                            <p name="venditore" >Nome venditore <a href="url_venditore.html">Negozio</a></p>  
+                            
+                            <!--<div class="col-xs-12 col-sm-6" >
+                                <div>
+                                    <button class="btn btn-primary col-lg-3" onclick="aggiungi("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")"><span class="glyphicon glyphicon-plus"></span></button>
+                                    <p class="btn col-lg-3" id=\"quantita"+id_oggetto+">"+ cart.products[i].quantita + "</p>
+                                    <button class="btn btn-danger col-lg-3" onclick="rimuovi("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")"><span class="glyphicon glyphicon-minus"></span></button>
+                                </div>
+                            </div> -->
                             <button class="btn btn-warning"><span class="glyphicon glyphicon-shopping-cart"></span> Aggiungi al carrello</button>
                         </div>
                    </div>
