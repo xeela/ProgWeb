@@ -117,6 +117,10 @@
         <servlet-name>SerlvetAjaxGetNotifications</servlet-name>
         <servlet-class>com.amazoff.servlet.SerlvetAjaxGetNotifications</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletAjaxUpdateProductQuantity</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletAjaxUpdateProductQuantity</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -220,6 +224,10 @@
     <servlet-mapping>
         <servlet-name>SerlvetAjaxGetNotifications</servlet-name>
         <url-pattern>/SerlvetAjaxGetNotifications</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAjaxUpdateProductQuantity</servlet-name>
+        <url-pattern>/ServletAjaxUpdateProductQuantity</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

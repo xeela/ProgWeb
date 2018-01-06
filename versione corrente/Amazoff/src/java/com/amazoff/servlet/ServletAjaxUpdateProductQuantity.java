@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
@@ -15,19 +20,37 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Gianluca Pasqua
+ *
+ * @author DVD_01
  */
-public class ServletAjaxCarrello extends HttpServlet {
+public class ServletAjaxUpdateProductQuantity extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           
+
         }
     }
 
-    
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -35,12 +58,12 @@ public class ServletAjaxCarrello extends HttpServlet {
     }
 
     /**
-     * Questa servlet, riceve l'id di un utente e quello del prodotto che è stato che è stato selezionato per essere rimosso dal carrello
-     * 
-     * @param request variabile all'interno della quale è contenuto l'id del prodotto da rimuovere dal carrello
-     *                  e quello dell'utente che ha richiesto l'operazione
-     * @return response all'interno della quale è contenuto TRUE se l'operazione è stata completata correttamente
-     *                  FALSE se si sono verificati errori  
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -52,7 +75,8 @@ public class ServletAjaxCarrello extends HttpServlet {
             
             session = request.getSession();
             String idProductReceived = request.getParameter("_idProdotto");
-            String idUser = request.getParameter("_idUser");
+            String idUser = session.getAttribute("userID").toString();
+            String addOrRemove = request.getParameter("_whatToDo");
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
@@ -64,12 +88,24 @@ public class ServletAjaxCarrello extends HttpServlet {
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
     
-                /** Elimino l'elemento specificato, come idProductReceived, dal db */
-                PreparedStatement result = MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = "+ idUser +"  AND  id_product = " + MyDatabaseManager.EscapeCharacters(idProductReceived)+ ";", connection);
-                
-                risposta = "true";
-                
-                // dopo aver rimosso il prodotto, aggiorno la lista json dei prodotti nel carrello */
+                if(addOrRemove.equals("add"))
+                {
+                    MyDatabaseManager.EseguiStatement("UPDATE cart SET amount = amount + 1 WHERE id_user = " + idUser + " AND id_product = " + idProductReceived + ";", connection);
+                    risposta = "true";
+                }
+                else if(addOrRemove.equals("remove"))
+                {
+                    MyDatabaseManager.EseguiStatement("UPDATE cart SET amount = amount - 1 WHERE id_user = " + idUser + " AND id_product = " + idProductReceived + ";", connection);
+                    risposta = "true";
+                }
+                else
+                {
+                    risposta = "false";
+                }
+
+                // dopo aver cambiato la quantità, aggiorno la lista json dei prodotti nel carrello */
+                if(risposta.equals("true"))
+                {
                     ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME, cart.amount FROM cart, shops, users, products WHERE users.ID = '"+ idUser +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
                     
                     /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
@@ -149,13 +185,11 @@ public class ServletAjaxCarrello extends HttpServlet {
                     }
                     jsonObj += "]}";
                 
-                session.setAttribute("shoppingCartProducts", jsonObj);
+                    session.setAttribute("shoppingCartProducts", jsonObj);
+                }
+                
                 risposta += "$"+ jsonObj;
                 connection.close();
-            }
-            else  /** ritorno FALSE, c'è stato un errore */
-            {
-                risposta = "false";
             }
             
             /** ritorno il risultato alla pagina chiamante */
@@ -170,9 +204,14 @@ public class ServletAjaxCarrello extends HttpServlet {
         }	
     }
 
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }
+    }// </editor-fold>
 
 }

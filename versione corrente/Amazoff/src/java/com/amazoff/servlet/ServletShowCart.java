@@ -42,7 +42,7 @@ public class ServletShowCart extends HttpServlet {
 
                 if (session.getAttribute("user") != null) {
                     /** Dopo aver inserito il nuovo prodotto, mi faccio restituire tutta la lista di oggetti presenti nel carrello */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*, shops.*, users.first_name, users.LAST_NAME FROM cart, shops, users, products WHERE users.ID = "+ session.getAttribute("userID") +" and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME, cart.amount FROM cart, shops, users, products WHERE users.ID = '"+ session.getAttribute("userID") +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
                     
                     /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
                     // -------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
@@ -76,13 +76,12 @@ public class ServletShowCart extends HttpServlet {
                         jsonObj += "\"price\": \"" + results.getString(4) + "\",";
                         jsonObj += "\"category\": \"" + results.getString(6) + "\",";
                         jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
-                        jsonObj += "\"quantita\": \"" + results.getString(8) + "\",";
+                        jsonObj += "\"quantita\": \"" + results.getString(20) + "\",";
 
                         jsonObj += "\"id_shop\": \"" + results.getString(10) + "\",";
                         jsonObj += "\"shop\": \"" + results.getString(11) + "\",";
                         jsonObj += "\"description\": \"" + results.getString(12) + "\",";
                         jsonObj += "\"web_site\": \"" + results.getString(13) + "\",";
-                        jsonObj += "\"global_value\": \"" + results.getString(14) + "\",";
                         jsonObj += "\"id_owner\": \"" + results.getString(15) + "\",";
                         jsonObj += "\"first_name\": \"" + results.getString(18) + "\",";
                         jsonObj += "\"last_name\": \"" + results.getString(19) + "\",";

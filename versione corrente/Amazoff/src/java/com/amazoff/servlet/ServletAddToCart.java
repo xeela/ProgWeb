@@ -63,10 +63,11 @@ public class ServletAddToCart extends HttpServlet {
                         if(!isPresent.isBeforeFirst())
                         {
                             /** Interrogo il per inserire nel carrello dell'utente, l'id del prodotto specificato */
-                            PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED) VALUES ("
+                            PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED, AMOUNT) VALUES ("
                                     + session.getAttribute("userID") + ", "
                                     + productReceived + ", "
-                                    + "'" + MyDatabaseManager.GetCurrentDate() + "');", connection);   
+                                    + "'" + MyDatabaseManager.GetCurrentDate() + "',"
+                                    + " 1);", connection);   
                         }
                         /*else
                         {
