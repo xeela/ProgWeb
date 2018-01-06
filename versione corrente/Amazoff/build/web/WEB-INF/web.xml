@@ -70,6 +70,10 @@
         <servlet-class>com.amazoff.servlet.ServletAjaxCarrello</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ServletPopulateShopPage</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletPopulateShopPage</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServletDopoRegistrazione</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletDopoRegistrazione</servlet-class>
     </servlet>
@@ -180,6 +184,10 @@
     <servlet-mapping>
         <servlet-name>ServletAjaxNotifiche</servlet-name>
         <url-pattern>/ServletAjaxNotifiche</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPopulateShopPage</servlet-name>
+        <url-pattern>/ServletPopulateShopPage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletPayPage</servlet-name>
