@@ -31,13 +31,19 @@
             
             function LogJson() {
                 jsonProdotto = ${jsonProdotti};
-                console.log(jsonProdotto);
+                var url_string = window.location.href;
+                var url = new URL(url_string);
+                var id = url.searchParams.get("id");
                 
-                
-                PopulateData();
-                PopolaReviews();
-                PopolaCarousel();                
-                Autocomplete("product");
+                if(jsonProdotto == {} || jsonProdotto.result[0].id != id)
+                    window.location.replace("/Amazoff/ServletPopulateProductPage?id=" + id);           
+                else
+                {             
+                    PopulateData();
+                    PopolaReviews();
+                    PopolaCarousel();                
+                    Autocomplete("product");
+                }
             }
 
             function PopolaReviews() {

@@ -32,7 +32,6 @@ public class ServletPopulateProductPage extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
             String idReceived = request.getParameter("id");
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
