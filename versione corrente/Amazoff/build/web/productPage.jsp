@@ -102,9 +102,22 @@
                 toAdd += "     </div>";
                 toAdd += "</div>";
         
-                toAdd += "<a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotto.result[0].id + "\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</a></div>";
+                toAdd += "<a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotto.result[0].id + "&requested=" + quantita + "\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</a></div>";
 
                 $("#div_dati").html(toAdd);
+            }
+            
+            function aggiungi(id_prod, amount)
+            {
+                quantita++;
+                PopulateData();
+            }
+            
+            function rimuovi(id_prod, amount)
+            {
+                if(quantita > 1)
+                    quantita--;
+                PopulateData();
             }
 
             function PopolaCarousel() {

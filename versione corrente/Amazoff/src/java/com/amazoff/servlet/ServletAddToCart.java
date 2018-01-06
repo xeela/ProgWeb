@@ -42,6 +42,7 @@ public class ServletAddToCart extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
             String productReceived = request.getParameter("productID");
+            String requested = request.getParameter("requested");
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
@@ -67,7 +68,7 @@ public class ServletAddToCart extends HttpServlet {
                                     + session.getAttribute("userID") + ", "
                                     + productReceived + ", "
                                     + "'" + MyDatabaseManager.GetCurrentDate() + "',"
-                                    + " 1);", connection);   
+                                    + requested + ");", connection);   
                         }
                         /*else
                         {
