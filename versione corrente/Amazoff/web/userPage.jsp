@@ -282,6 +282,14 @@
                 return false;
             }
         </script>    
+        
+        <!-- script gestione sezione "DATI NEGOZIO" -->
+        <script>
+            CheckShopData()
+            {
+                if 
+            }
+        </script>
     </head>
     <body class="bodyStyle" onload="Autocomplete('product'); document.getElementById('btnVendi').addEventListener ('click', checkProductData, false); ">
 
@@ -482,7 +490,7 @@
                     </div>
                 </div>                                    
 
-                <!-- tabella di 2 righe, con 3 colonne, che mostrano 6 prodotti -->
+                <!-- corpo della pagina con i dati dell'utente, negozio etc -->
                 <div class='tmargin'>
                     <div class="page">
                         <ul class="list-group">
@@ -678,11 +686,101 @@
                                             </div>                                                  
                                         </div>
                                     </div>
+                                   <!--
                                     <a href=".jsp" class="list-group-item">
                                         <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                         Negozio TO DO...
                                     </a>
+                                   -->
+                                    <div class="list-group-item">  
+                                        <div id="negozio" role="tablist" aria-multiselectable="true">
+                                            Dati Negozio 
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseNegozio" aria-expanded="true" 
+                                               aria-controls="collapseNegozio" >
+                                                <span class='glyphicon glyphicon-option-vertical'></span>
+                                            </a>
+                                            <div id="collapseNegozio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                                <div class="row">
+                                                    <div class="col-lg-3"></div>
+                                                    <div class="col-lg-6">
+                                                        <h3 style="text-align: center">Aggiorna i dati del tuo Business:</h3>
+                                                        <form  style="text-align: center" class="form-group" id="ShopForm" name="ShopForm" action="ServletUpdateNegozio" method="POST" >
+                                                            <div class="row">
+                                                                
+                                                            </div>
+                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                <b>Nome del Negozio</b>
+                                                                <input id="shop_website" type="text" name="shop_name" class="form-control" value="<%if(session.getAttribute("shop_name") != null){%><%= session.getAttribute("shop_name")%><%} else {}%>" placeholder="<%if(session.getAttribute("shop_name") != null){%> <%= session.getAttribute("shop_name")%><% }else{%>Nome negozio<%}%>" aria-describedby="sizing-addon2">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <b>Descrizione</b>
+                                                                <input id="shop_description" type="text" name="shop_description" class="form-control" value ="<%if(session.getAttribute("shop_description") != null){%><%= session.getAttribute("shop_description")%><%} else {} %>" placeholder="<%if(session.getAttribute("shop_description") != null){%> <%= session.getAttribute("shop_description")%><% }else{%>Descrizione negozio<%}%>" aria-describedby="sizing-addon2">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <b>sito web</b>
+                                                                <input id="shop_website" type="url" name="shop_website" class="form-control" value ="<%if(session.getAttribute("shop_website") != null){%><%= session.getAttribute("shop_website")%><%} else {} %>" placeholder="<%if(session.getAttribute("shop_website") != null){%> <%= session.getAttribute("shop_website")%><% }else{%>Website<%}%>" aria-describedby="sizing-addon2">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <p></p>
+                                                                <b>Giorni di apertura</b>
+                                                                    <div>
+                                                                        <input name="mon" type="checkbox" value="true"/> Lunedì 
+                                                                        <input name="tue" type="checkbox" value="true"/> Martedì
+                                                                        <input name="wed" type="checkbox" value="true"/> Mercoledì 
+                                                                        <input name="thu" type="checkbox" value="true"/> Giovedì  
+                                                                        <input name="fri" type="checkbox" value="true"/> Venerdì   
+                                                                        <input name="sat" type="checkbox" value="true"/> Sabato   
+                                                                        <input name="sun" type="checkbox" value="true"/> Domenica   
 
+                                                                    </div>
+                                                            </div>
+
+
+                                                        </form>
+                                                         <div class="form-group tmargin">
+                                                                <button id="btnRegistrati" class="btn btn-default" onclick="if(CheckShopData()){document.getElementById('ShopForm').submit();}" >Aggiorna dati</button>
+                                                                <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
+                                                            </div>
+
+                                                        <div class="alert alert-danger alert-dismissible" style="<% 
+                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %> visibility: visible<%} else {%>visibility:hidden<%}%>" id="alertRegistrati" role="alert">
+
+                                                                <!-- div che visualizza il messaggio di errore durante il login -->
+                                                                <% 
+                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %>   
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
+                                                                <% } %>
+
+                                                        </div>
+                                                                    <%
+                                                                    session.setAttribute("errorMessage", Errors.resetError);
+                                                                %>
+                                                    </div>
+                                                </div>
+                                            </div>                                                  
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                     <div id="sellNewProduct" class="list-group-item">
                                         <div role="tablist" aria-multiselectable="true">
                                             Vendi prodotto 
