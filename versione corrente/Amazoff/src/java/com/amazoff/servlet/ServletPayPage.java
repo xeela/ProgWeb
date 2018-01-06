@@ -33,7 +33,8 @@ public class ServletPayPage extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userIDReceived = request.getParameter("userID");
+            HttpSession session = request.getSession();
+            String userIDReceived = session.getAttribute("userID").toString();
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
@@ -53,7 +54,6 @@ public class ServletPayPage extends HttpServlet {
                 if(results.isAfterLast()) 
                 {
                     /** ALLORA: memorizzo l'errore in modo da poterlo mostrare all'utente */
-                    HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
                     response.sendRedirect(request.getContextPath() + "/");
                     connection.close();
@@ -88,7 +88,6 @@ public class ServletPayPage extends HttpServlet {
                 if(results.isAfterLast()) 
                 {
                     /** ALLORA: ritorno alla pagina solo il json con l'indirizzo. E l'errore riguardo il metodo di pagamento */
-                    HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
                     response.sendRedirect(request.getContextPath() + "/");
                     connection.close();
@@ -117,7 +116,6 @@ public class ServletPayPage extends HttpServlet {
                 jsonObj += "}";
                 
                 
-                HttpSession session = request.getSession();
                 session.setAttribute("jsonPayPage", jsonObj);  
                 
                 /** Estraggo dal db tutti i prodotti che l'utente ha salvato nel carrello */
@@ -144,7 +142,6 @@ public class ServletPayPage extends HttpServlet {
             else
             {
                 /** In caso di errore dovuto alla connessione, lo memorizzo, così da poterlo comunicare all'utente nella pagina corretta */
-                HttpSession session = request.getSession();
                 //session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/payPage"); 
             }

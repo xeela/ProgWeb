@@ -9,6 +9,7 @@ import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.Integer.parseInt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -90,13 +91,35 @@ public class ServletAjaxUpdateProductQuantity extends HttpServlet {
     
                 if(addOrRemove.equals("add"))
                 {
-                    MyDatabaseManager.EseguiStatement("UPDATE cart SET amount = amount + 1 WHERE id_user = " + idUser + " AND id_product = " + idProductReceived + ";", connection);
-                    risposta = "true";
+                    int available = 0, requested = 0;
+                    ResultSet results =  MyDatabaseManager.EseguiQuery("SELECT products.AVAILABLE, cart.AMOUNT FROM cart, products WHERE cart.id_product = products.id and cart.id_user = " + idUser + " and products.id = " + idProductReceived + ";", connection);
+                    while (results.next()) {
+                        available = parseInt(results.getString(1));
+                        requested = parseInt(results.getString(2));
+                    }
+                    if(requested + 1 <= available)
+                    {
+                        MyDatabaseManager.EseguiStatement("UPDATE cart SET amount = amount + 1 WHERE id_user = " + idUser + " AND id_product = " + idProductReceived + ";", connection);
+                        risposta = "true";
+                    }
+                    else
+                        risposta = "false";
                 }
                 else if(addOrRemove.equals("remove"))
                 {
-                    MyDatabaseManager.EseguiStatement("UPDATE cart SET amount = amount - 1 WHERE id_user = " + idUser + " AND id_product = " + idProductReceived + ";", connection);
-                    risposta = "true";
+                    int requested = 0;
+                    ResultSet results =  MyDatabaseManager.EseguiQuery("SELECT cart.AMOUNT FROM cart WHERE cart.id_user = " + idUser + " and cart.id_product = " + idProductReceived + ";", connection);
+                    while (results.next()) {
+                        requested = parseInt(results.getString(1));
+                    }
+                    if(requested - 1 > 0)
+                    {
+                        MyDatabaseManager.EseguiStatement("UPDATE cart SET amount = amount - 1 WHERE id_user = " + idUser + " AND id_product = " + idProductReceived + ";", connection);
+                        risposta = "true";
+                    }
+                    else
+                        risposta = "false";
+
                 }
                 else
                 {
