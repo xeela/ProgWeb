@@ -76,6 +76,7 @@ public class ServletShowCart extends HttpServlet {
                         jsonObj += "\"price\": \"" + results.getString(4) + "\",";
                         jsonObj += "\"category\": \"" + results.getString(6) + "\",";
                         jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
+                        jsonObj += "\"quantita\": \"" + results.getString(8) + "\",";
 
                         jsonObj += "\"id_shop\": \"" + results.getString(10) + "\",";
                         jsonObj += "\"shop\": \"" + results.getString(11) + "\",";
