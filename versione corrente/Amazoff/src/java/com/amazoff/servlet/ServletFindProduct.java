@@ -73,7 +73,7 @@ public class ServletFindProduct extends HttpServlet {
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id = sub.id AND products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
-                                + "AND sold = 0 "
+                                + "AND products.available > 0 "
                                 + "AND avg >= " + recensioneReceived + " "
                                 + "AND products.ritiro = 1 "
                                 + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
@@ -88,7 +88,7 @@ public class ServletFindProduct extends HttpServlet {
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id_shop = shops.id "
-                                + "AND sold = 0 "
+                                + "AND products.available > 0 "
                                 + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                                 + "AND products.ID = sub.id AND avg >= " + recensioneReceived + " AND ";
                     }
@@ -104,7 +104,7 @@ public class ServletFindProduct extends HttpServlet {
                             + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
                             + "FROM products, shops, shops_coordinates, users, pictures "
                             + "WHERE products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
-                            + "AND sold = 0 "
+                            + "AND products.available > "
                             + "AND products.ritiro = 1 "
                             + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                             + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
@@ -115,7 +115,7 @@ public class ServletFindProduct extends HttpServlet {
                             + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
                             + "FROM products, shops, users, pictures "
                             + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
-                            + "AND sold = 0 "
+                            + "AND products.available > 0 "
                             + "AND products.id_shop = shops.id AND ";
                 }
                 
@@ -212,12 +212,6 @@ public class ServletFindProduct extends HttpServlet {
                 
                 HttpSession session = request.getSession();
 
-                /*
-                // crasha se non sei loggato, perchè non riesce a trovare l'attributo userID...
-                String userID = session.getAttribute("userID").toString();
-                session.setAttribute("jsonNotifiche",Notifications.GetJson(userID, connection));
-                 */
-                // TMP
                 //String userID = session.getAttribute("userID").toString();
                 if (session.getAttribute("userID") != null) {
                     session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));

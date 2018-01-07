@@ -48,6 +48,7 @@ public class ServletLogin extends HttpServlet {
             String username = "";
             String userID = "";
             String dbPwd = "";
+            String email = "";
             String categoriaUser = "";  /** = 0, utente registrato
                                         * = 1, utente venditore
                                         * = 2, utente admin */
@@ -60,17 +61,17 @@ public class ServletLogin extends HttpServlet {
                 /** Controllo quale metodo sta usando l'utente per eseguire il login */
                 /** SE ha usato la mail */
                 if(userReceived.contains("@"))
-                    results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID, username FROM users WHERE email = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
+                    results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID, username, email FROM users WHERE email = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
                 /** OPPURE se ha usato il suo username */
                 else
-                    results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID, username FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
+                    results = MyDatabaseManager.EseguiQuery("SELECT pass, userType, first_name, last_name, ID, username, email FROM users WHERE username = '" + MyDatabaseManager.EscapeCharacters(userReceived) + "';", connection);
                 
                 if(results.isAfterLast()) /** se non c'è un utente con quel nome/mail */
                 {
                     /** ALLORA: memorizzo l'errore in modo da mostrarlo all'utente nella pagina di login */
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
-                    response.sendRedirect(request.getContextPath() + "/");
+                    response.sendRedirect(request.getContextPath() + "/loginPage.jsp");
                     connection.close();
                     return;
                 }
@@ -82,6 +83,7 @@ public class ServletLogin extends HttpServlet {
                     lname = results.getString(4); 
                     userID = results.getString(5);
                     username = results.getString(6);
+                    email = results.getString(7);
                 }
                 
                 /** Controllo se la password inserita dall'utente è corretta */
@@ -94,6 +96,7 @@ public class ServletLogin extends HttpServlet {
                     session.setAttribute("categoria_user", categoriaUser);
                     session.setAttribute("fname", fname);
                     session.setAttribute("lname", lname);
+                    session.setAttribute("email", email);
                     session.setAttribute("errorMessage", Errors.resetError);
                     //TMP
                     //Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
@@ -115,13 +118,13 @@ public class ServletLogin extends HttpServlet {
             {
                 HttpSession session = request.getSession();
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); 
+                response.sendRedirect(request.getContextPath() + "/loginPage.jsp"); 
             }
         }catch (SQLException ex) {
             MyDatabaseManager.LogError(request.getParameter("username"), "ServletLogin", ex.toString());
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/"); 
+            response.sendRedirect(request.getContextPath() + "/loginPage.jsp"); 
         }
     }
 

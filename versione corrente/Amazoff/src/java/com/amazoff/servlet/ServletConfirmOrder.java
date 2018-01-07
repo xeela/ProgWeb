@@ -3,6 +3,7 @@ package com.amazoff.servlet;
 import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.Integer.parseInt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,14 +55,15 @@ public class ServletConfirmOrder extends HttpServlet {
                 boolean possoFareOrdine = true;
                 
                 /** Controllo che i prodotti che sto cercando di comprare siano "non venduti". Questo serve perchè magari in 2 hanno il prodotto nel carrello, il primo lo compra, e quando ci prova il secondo deve dare errore*/
-                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT sold, products.id FROM products, cart WHERE cart.id_user = " + userID + " and products.id = cart.id_product;", connection);
+                ResultSet results = MyDatabaseManager.EseguiQuery("SELECT available, products.id, amount FROM products, cart WHERE cart.id_user = " + userID + " and products.id = cart.id_product;", connection);
                 while(results.next())
                 {
-                    //Se il prodotto è già venduto, lo tolgo dal carrello e rimando l'utente alla pagina del carrello
+                    //Se non ci sono abbastanza scorte di un prodotto, lo tolgo dal carrello e rimando l'utente alla pagina del carrello
                     //TODO: Settare anche un messaggio di errore per l'utente
-                    String sold = results.getString(1);
+                    int available = parseInt(results.getString(1));
+                    int requested = parseInt(results.getString(3));
                     String productID = results.getString(2);
-                    if(sold.equals("1"))
+                    if(requested > available)
                     {
                        MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = " + userID + " AND id_product = " + productID + ";", connection);
                        possoFareOrdine = false; 
@@ -80,21 +82,22 @@ public class ServletConfirmOrder extends HttpServlet {
                     if(idOrderRS.next())
                         orderID = idOrderRS.getInt(1);
 
-                    /** Prendo i prodotti nel carrello e li aggiungo all'ordine corrente. Inoltre, li segno come venduti nella tabella products */
-                    results = MyDatabaseManager.EseguiQuery("SELECT id_product FROM cart WHERE id_user = " + userID + ";", connection);
+                    /** Prendo i prodotti nel carrello e li aggiungo all'ordine corrente. Inoltre, riduco la loro disponibilità (available) nella tabella products */
+                    results = MyDatabaseManager.EseguiQuery("SELECT id_product, amount FROM cart WHERE id_user = " + userID + ";", connection);
                     while(results.next())
                     {
                         String productID = results.getString(1);
-                        MyDatabaseManager.EseguiStatement("INSERT INTO orders_products (order_id, product_id) VALUES (" + orderID + ", " + productID + ");", connection);
-                        //Segno il prodotto come venduto
-                        MyDatabaseManager.EseguiStatement("UPDATE products SET sold = 1 WHERE id = " + productID + ";", connection);
+                        int requested = parseInt(results.getString(2));
+                        MyDatabaseManager.EseguiStatement("INSERT INTO orders_products (order_id, product_id, amount) VALUES (" + orderID + ", " + productID + ", " + requested + ");", connection);
+                        //Riduco la disponibilità del prodotto
+                        MyDatabaseManager.EseguiStatement("UPDATE products SET available = available - " + requested + " WHERE id = " + productID + ";", connection);
                     }
 
                     /** Tolgo i prodotti dal carrello e annullo la variabile json, così che venga ricreata la volta dopo*/
                     MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = " + userID + ";", connection);
                     session.setAttribute("shoppingCartProducts", "");
                     
-                    //****** TODO: quando cìè l'errore, questo dovrebbe essere passato tramite la session.setAttribute *******/
+                    //****** TODO: quando c'è l'errore, questo dovrebbe essere passato tramite la session.setAttribute *******/
                     response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=ok&id="+orderID);      
                 }
                 else

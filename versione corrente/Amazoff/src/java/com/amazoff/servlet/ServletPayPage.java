@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
+import com.amazoff.classes.Notifications;
 import java.sql.Connection;
 
 /**
@@ -32,7 +33,8 @@ public class ServletPayPage extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String userIDReceived = (request.getSession().getAttribute("userID")).toString();
+            HttpSession session = request.getSession();
+            String userIDReceived = session.getAttribute("userID").toString();
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
@@ -52,7 +54,6 @@ public class ServletPayPage extends HttpServlet {
                 if(results.isAfterLast()) 
                 {
                     /** ALLORA: memorizzo l'errore in modo da poterlo mostrare all'utente */
-                    HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
                     response.sendRedirect(request.getContextPath() + "/");
                     connection.close();
@@ -87,7 +88,6 @@ public class ServletPayPage extends HttpServlet {
                 if(results.isAfterLast()) 
                 {
                     /** ALLORA: ritorno alla pagina solo il json con l'indirizzo. E l'errore riguardo il metodo di pagamento */
-                    HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
                     response.sendRedirect(request.getContextPath() + "/");
                     connection.close();
@@ -116,7 +116,6 @@ public class ServletPayPage extends HttpServlet {
                 jsonObj += "}";
                 
                 
-                HttpSession session = request.getSession();
                 session.setAttribute("jsonPayPage", jsonObj);  
                 
                 /** Estraggo dal db tutti i prodotti che l'utente ha salvato nel carrello */
@@ -128,6 +127,14 @@ public class ServletPayPage extends HttpServlet {
                 
                 /** Memorizzo l'oggetto json in una variabile di sessione da cui recuperare i dati per visualizzarli prima di completare l'acquisto */
                 session.setAttribute("shoppingCartProducts", jsonObj);
+                
+                // creo l'oggetto notifiche aggiornate, da mandare alla pagina
+                if (session.getAttribute("userID") != null) {
+                    session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
+                } else {
+                    session.setAttribute("jsonNotifiche", "{\"notifications\": []}");
+                }
+                
                 connection.close();
                 
                 response.sendRedirect(request.getContextPath() + "/payPage.jsp");       
@@ -135,7 +142,6 @@ public class ServletPayPage extends HttpServlet {
             else
             {
                 /** In caso di errore dovuto alla connessione, lo memorizzo, così da poterlo comunicare all'utente nella pagina corretta */
-                HttpSession session = request.getSession();
                 //session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/payPage"); 
             }

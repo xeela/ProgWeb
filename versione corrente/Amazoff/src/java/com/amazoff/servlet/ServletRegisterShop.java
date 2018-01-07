@@ -82,9 +82,9 @@ public class ServletRegisterShop extends HttpServlet {
                         + "'" + name + "',"
                         + "'" + description + "',"
                         + "'" + website + "',"
-                        + "0,"
-                        + session.getAttribute("userID") + ","
-                        + session.getAttribute("userID") + ","
+                        + "0,'"
+                        + session.getAttribute("userID") + "','"
+                        + session.getAttribute("userID") + "',"
                         + "'" + businessDays
                         +"');", connection);
                 ResultSet RS = MyDatabaseManager.EseguiQuery("SELECT LAST_INSERT_ID()", connection);
@@ -93,17 +93,17 @@ public class ServletRegisterShop extends HttpServlet {
                     ShopID = RS.getInt(1);
                 }
                 /** memorizzo i dati della posizione geografica del negozio appena creato */
-                MyDatabaseManager.EseguiStatement("INSERT INTO shops_coordinates(ID_SHOP, ID_COORDINATE, Lat, Lng, Citta)"
+                MyDatabaseManager.EseguiStatement("INSERT INTO shops_coordinates(ID_SHOP, ID_COORDINATE, Lat, Lng)"
                         + " VALUES("
-                        + ShopID + ","
-                        + ShopID + ","
-                        + "" + lat + ","
-                        + "" + lng + ","
-                        + "'"+ citta +"');", connection);
+                        + (int)ShopID + ","
+                        + (int)ShopID + ","
+                        + "'" + lat + "',"
+                        + "'" + lng 
+                        +"');", connection);
                 
                 MyDatabaseManager.EseguiStatement("UPDATE users SET USERTYPE = 1 WHERE ID ="+session.getAttribute("userID"), connection);
                 connection.close();
-                
+                session.setAttribute("categoria_user", "1");
                 /** SE è andato tutto bene rimando alla home del sito */
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
             }

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
+    Document   : searchPage
     Created on : 19-set-2017, 10.56.58
-    Author     : Davide
+    Author     : Davide Farina
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
@@ -26,10 +26,11 @@
 
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-        <script type="text/javascript">
+        <script>
             var productSearched = "${searchedProduct}";
             var jsonProdotti = ${jsonProdotti};
-            var jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
+            var jsonNotifiche = ${jsonNotifiche}; 
+            
         </script>
         <title>Amazoff</title>
     </head>
@@ -453,6 +454,7 @@
 
     <script>
         LogJson();
+        
         // When the user scrolls down 20px from the top of the document, show the button
         window.onscroll = function () {
             scrollFunction()
@@ -475,7 +477,10 @@
         // crea l'html per il button delle notifiche
         function inserisciNotifiche()
         {
+            console.log("INserisci notifiche");
             console.log(jsonNotifiche);
+            console.log("-----");
+            
             var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
             var notificationCount = 0;
             var notifiche = "";
@@ -525,11 +530,14 @@
 
         // gestione POPOVER button notifiche
         $(document).ready(function () {
-            $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
             $('[data-toggle="popover"]').popover({
                 container: 'body'
             });
         });
+        
+        // inizializzo menu notifiche
+        $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
+
 
     </script>
 </body>

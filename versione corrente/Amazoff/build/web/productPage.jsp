@@ -1,7 +1,7 @@
 <%-- 
     Document   : productPage
     Created on : 19-set-2017, 10.56.58
-    Author     : Davide
+    Author     : Davide Farina
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,15 +23,27 @@
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         
-        <script type="text/javascript">
+        <script>
+            var quantita = 1;
             var jsonProdotto;
+            var jsonNotifiche = ${jsonNotifiche};
+            console.log(jsonNotifiche);
+            
             function LogJson() {
                 jsonProdotto = ${jsonProdotti};
-                console.log(jsonProdotto);
-                PopulateData();
-                PopolaReviews();
-                PopolaCarousel();                
-                Autocomplete("product");
+                var url_string = window.location.href;
+                var url = new URL(url_string);
+                var id = url.searchParams.get("id");
+                
+                if(jsonProdotto == {} || jsonProdotto.result[0].id != id)
+                    window.location.replace("/Amazoff/ServletPopulateProductPage?id=" + id);           
+                else
+                {             
+                    PopulateData();
+                    PopolaReviews();
+                    PopolaCarousel();                
+                    Autocomplete("product");
+                }
             }
 
             function PopolaReviews() {
@@ -49,16 +61,8 @@
                         toAdd += "<div class=\"row panel panel-default\"> ";
                         toAdd += "         <div class=\"col-lg-12\">";
                         toAdd += "             <div class=\"col-xs-12 col-lg-2\" style=\"background-color: aqua\" >";
-                        // TODO: cambiare il tipo di stella in base al numero di stelle tot (global value)
-                        /*toAdd += "                 <span class=\"glyphicon glyphicon-star\"></span> ";
-                         toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
-                         toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
-                         toAdd += "                 <span class=\"glyphicon glyphicon-star-empty\"></span>";
-                         toAdd += "                  <span class=\"glyphicon glyphicon-star-empty\"></span> ";*/
-
+                        // Cambiare il tipo di stella in base al numero di stelle tot (global value)
                         toAdd += insertStartsInReview(jsonProdotto.result[0].reviews[i].global_value);
-
-                        //toAdd += " global_value: " + jsonProdotto.result[0].reviews[i].global_value;
                         toAdd += "             </div>";
                         toAdd += "             <p><b>"+ jsonProdotto.result[0].reviews[i].name +":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
                         toAdd += "         </div>";
@@ -95,9 +99,31 @@
                 toAdd += "<p name=\"linkmappa\" ><a href='ServletShowShopOnMap?id="+ jsonProdotto.result[0].id_shop +"'>Vedi negozio su mappa</a></p>";
                 toAdd += "<p name=\"prezzo\">Prezzo: " + jsonProdotto.result[0].price + " €</p>";
                 toAdd += "<p name=\"venditore\" >Venditore: "+ jsonProdotto.result[0].first_name +" " + jsonProdotto.result[0].last_name + "</p> <a href=\""+jsonProdotto.result[0].web_site+"\">Sito web "+jsonProdotto.result[0].shop+"</a><p> Negozio id:" + jsonProdotto.result[0].id_shop + "</a></p>";
-                toAdd += "<a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotto.result[0].id + "\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</a></div>";
+                // buttons + , - , remove
+                toAdd += " <div class=\"col-xs-12 col-sm-6\" >";
+                toAdd += "    <div>";
+                toAdd += "         <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi("+id_product+", " + quantita + ")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
+                toAdd += "         <p class=\"btn col-lg-3\" id=\"quantita"+id_product+"\">"+quantita+"</p>";
+                toAdd += "         <button class=\"btn btn-danger col-lg-3\" onclick=\"rimuovi("+id_product+"," + quantita + ")\"><span class=\"glyphicon glyphicon-minus\"></span></button>";
+                toAdd += "     </div>";
+                toAdd += "</div>";
+        
+                toAdd += "<a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotto.result[0].id + "&requested=" + quantita + "\" class=\"btn btn-warning\"><span class=\"glyphicon glyphicon-shopping-cart\"></span> Aggiungi al carrello</a></div>";
 
                 $("#div_dati").html(toAdd);
+            }
+            
+            function aggiungi(id_prod, amount)
+            {
+                quantita++;
+                PopulateData();
+            }
+            
+            function rimuovi(id_prod, amount)
+            {
+                if(quantita > 1)
+                    quantita--;
+                PopulateData();
             }
 
             function PopolaCarousel() {
@@ -110,17 +136,10 @@
                     else
                         toAdd += "<div class=\"item\" data-slide-number=\"" + i + "\">";
 
-                    /* NON  VA, ma non serve più, era per [5+]
-                     toAddMiniature += "<div class=\"col-md-4\">";
-                     toAddMiniature += "<a class=\"thumbnail\" id=\"carousel-selector-"+i+"\">";
-                     toAddMiniature += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/"+ jsonProdotto.result[0].pictures[i].path +"\"></a></div>";                                      
-                     */
-
                     toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/" + jsonProdotto.result[0].pictures[i].path + "\"></div>";
                 }
 
                 $("#div_carousel").html(toAdd);
-                //$("#div_carousel_miniature").html(toAddMiniature);
             }
         </script> 
         <title>Amazoff</title>
@@ -183,14 +202,6 @@
                             <div>
                                 <form id="formSearch" class="input-group" method="get" action="/Amazoff/ServletFindProduct" >
                                 <div class="input-group-btn">
-                                    <!-- <button type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="glyphicon glyphicon-filter"></span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-left hidden-xs"> 
-                                      <li><a href="#">Vicinanza</a></li>
-                                      <li><a href="#">Prezzo</a></li>
-                                      <li><a href="#">Recensione</a></li>
-                                    </ul> -->
 
                                     <div role="tablist" aria-multiselectable="true">
                                         <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
@@ -292,20 +303,20 @@
                                 </div>
                                                 
                                 <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                                     <% try {
-                                             //userType = (session.getAttribute("categoria_user")).toString();
-                                             if (userType.equals("1") || userType.equals("2")) {
-                                                %>
-                                                <div class="col-lg-3">
-                                                    <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
-                                                        <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-                                                     </a>
-                                                 </div> 
-                                                <%
-                                                        }
-                                                    } catch (Exception ex) {
-                                                    }
-                                   %>
+                                <% try {
+                                    //userType = (session.getAttribute("categoria_user")).toString();
+                                    if (userType.equals("1") || userType.equals("2")) {
+                                %>
+                                <div class="col-lg-3">                                                    
+                                    <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
+                                        <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> </span>
+                                    </button>   
+                                </div> 
+                                <%
+                                        }
+                                    } 
+                                    catch (Exception ex) { }
+                                %> 
                                 
                                 <div class="col-lg-2">
                                    <a href="ServletShowCart" type="button" class="btn btn-default btn-md">
@@ -450,7 +461,15 @@
                             <p name="recensioni" >#num recensioni</p>
                             <p name="linkmappa" >Vedi su mappa</p>
                             <p name="prezzo">Prezzo</p>
-                            <p name="venditore" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
+                            <p name="venditore" >Nome venditore <a href="url_venditore.html">Negozio</a></p>  
+                            
+                            <!--<div class="col-xs-12 col-sm-6" >
+                                <div>
+                                    <button class="btn btn-primary col-lg-3" onclick="aggiungi("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")"><span class="glyphicon glyphicon-plus"></span></button>
+                                    <p class="btn col-lg-3" id=\"quantita"+id_oggetto+">"+ cart.products[i].quantita + "</p>
+                                    <button class="btn btn-danger col-lg-3" onclick="rimuovi("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")"><span class="glyphicon glyphicon-minus"></span></button>
+                                </div>
+                            </div> -->
                             <button class="btn btn-warning"><span class="glyphicon glyphicon-shopping-cart"></span> Aggiungi al carrello</button>
                         </div>
                    </div>
@@ -597,18 +616,67 @@
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }
 
-            <!-- CODICE per la gestione del CAROUSEL delle immagini -->
-            $("#myCarousel").carousel({
-                interval: 5000
-            });
+            // crea l'html per il button delle notifiche
+            function inserisciNotifiche()
+            {
+                console.log(jsonNotifiche);
+                var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
+                var notificationCount = 0;
+                var notifiche = "";
+                var idNotifica;
+                for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+                {
+                    idNotifica = jsonNotifiche.notifications[i].id;
+                    toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
+                    toAdd += "<p>";
+                    switch (jsonNotifiche.notifications[i].type)
+                    {
+                        case "0":
+                            toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
+                            break;
+                        case "1":
+                            toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
+                            break;
+                        default:
+                            break;
+                    }
 
-            //NON SERVE PIU:   Handles the carousel thumbnails
-            $('[id^=carousel-selector-]').click( function(){
-                var id = this.id.substr(this.id.lastIndexOf("-") + 1);
-                var id = parseInt(id);
-                $("#myCarousel").carousel(id);
+                    if (jsonNotifiche.notifications[i].already_read === "0") {
+                        //toAdd += "<p style=\"color: red\">";
+                        notificationCount++;
+                        toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                        toAdd += "<div class=\"dotsEndSentence\"><b>" + jsonNotifiche.notifications[i].description + "</b></div>";
+                    } else {
+                        toAdd += "</p>";
+                        toAdd += "<div class=\"dotsEndSentence\">" + jsonNotifiche.notifications[i].description + "</div>";
+
+                    }
+
+                    // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
+                    toAdd += "</a><hr>";
+
+                }
+                toAdd += "</div>";
+                toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
+
+                if (notificationCount > 99)
+                    notificationCount = "99+";
+                $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+                $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+
+                return toAdd;
+            }
+
+            // gestione POPOVER button notifiche
+            $(document).ready(function () {
+                $('[data-toggle="popover"]').popover({
+                    container: 'body'
+                });
             });
-            // FINE carousel
+            
+            // inizializzazione delle notifiche e del suo button.
+            $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
+
         </script>
     </body>
 </html>

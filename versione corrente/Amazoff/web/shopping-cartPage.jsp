@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
+    Document   : shopping-cartPage
     Created on : 19-set-2017, 10.56.58
-    Author     : Davide
+    Author     : Francesco Bruschetti
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
         <script src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        <!--<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>-->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
         <script type="text/javascript" src="js/json_sort.js"></script>
@@ -28,12 +28,14 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <script type="text/javascript">
             var cart;
-            var idUser = "<%= session.getAttribute("userID") %>"; // NON VA, anche se l'utente è loggato
+            var jsonNotifiche = ${jsonNotifiche};
+            var idUser = "<%= session.getAttribute("userID") %>"; 
             
             function LogCart()
             {
                 cart = ${shoppingCartProducts};
                 console.log(cart);
+                
                 AggiungiProdotti(cart);                
                 Autocomplete("product");
             }
@@ -72,16 +74,22 @@
                         toAdd += "                        <div class=\"row\">";
                         toAdd += "                            <h4 id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</h4>";
                         //toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
-                        toAdd += "                            <a id=\"linkmappa" + id_oggetto + "\" href=\"ServletShowShopOnMap?id="+cart.products[i].id_shop+"\" class=\"col-xs-12 col-lg-3\">Vedi su mappa TODO</a> <a href=\""+cart.products[i].web_site+"\" class=\"col-xs-12 col-lg-3\">Negozio: "+cart.products[i].shop+"</a>";
+                        toAdd += "                            <a id=\"linkmappa" + id_oggetto + "\" href=\"ServletShowShopOnMap?id="+cart.products[i].id_shop+"\" class=\"col-xs-12 col-lg-3\">Vedi negozio su mappa</a> <a href=\""+cart.products[i].web_site+"\" class=\"col-xs-12 col-lg-3\">Sito Negozio: "+cart.products[i].shop+"</a>";
                         toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
-                        toAdd += "                            <div class=\"col-xs-12\"><button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button></div>";
+                        toAdd += "                            <p class=\"col-lg-12\" name=\"venditore" + id_oggetto + "\" >Venditore: "+ cart.products[i].last_name +" "+ cart.products[i].first_name +"</p>";
+                        // codice html dei bottoni + , - , remove
+                        toAdd += "                            <div class=\"col-xs-12 col-sm-6\" >";
+                        toAdd += "                                <div>";
+                        toAdd += "                                    <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi("+id_oggetto+")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
+                        toAdd += "                                    <p class=\"btn col-lg-3\" id=\"quantita"+id_oggetto+"\">"+ cart.products[i].quantita + "</p>";
+                        toAdd += "                                    <button class=\"btn btn-danger col-lg-3\" onclick=\"rimuovi("+id_oggetto+")\"><span class=\"glyphicon glyphicon-minus\"></span></button>";
+                        toAdd += "                                </div>";
+                        toAdd += "                             </div>";
+                        toAdd += "                            <div class=\"col-xs-12 tmargin\"><button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button></div>";
                         toAdd += "                        </div>";
                         toAdd += "                   </div>";
                         toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
                         toAdd += "            </div>";
-                        //toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
-                        //toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
-                        //toAdd += "            </div>";
                         toAdd += "        </a>";
                         toAdd += "</div>";
                     }
@@ -291,19 +299,19 @@
                             </div>
                             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                             <% try {
-                                    //userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("1") || userType.equals("2")) {
+                                //userType = (session.getAttribute("categoria_user")).toString();
+                                if (userType.equals("1") || userType.equals("2")) {
                             %>
-                            <div class="col-lg-3">
-                                <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">
-                                    <span class="badge"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> 11</span>
-                                </a>
+                            <div class="col-lg-3">                                                    
+                                <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
+                                    <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> </span>
+                                </button>   
                             </div> 
                             <%
                                     }
-                                } catch (Exception ex) {
-                                }
-                            %>                
+                                } 
+                                catch (Exception ex) { }
+                            %>               
                         </div>
                     </div>
 
@@ -405,31 +413,32 @@
                 <!-- PRODOTTI nel CARRELLO -->
                 <div class="tmargin col-xs-12">
                     <div class="" id="zonaProdotti">
-                        <!--<div class="row">
-                            <a href="productPage.jsp?id=id_oggetto" id="id_oggetto">
-                                    <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
-                                        <img src="images/img1.jpg" style="max-height: 100px; " alt="...">
-                                    </div>
-                                        <div class="col-xs-8 col-md-5 col-lg-6">
-
-                                            <div class="row">
-                                                <p id="nome+" class="col-lg-12" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto--
-
-                                                <p id="stelle+" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni+" >#num recensioni</p>
-                                                <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
-                                                <h5 class="col-lg-12" id="prezzo+">Prezzo</h5>                               
-                                            </div>                        
-
+                        <!-- <div class="row"> 
+                                <a href="ServletPopulateProductPage?id=" id="">
+                                        <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px;">
+                                            <img class="imgResize" src="UploadedImages/default.jpg" alt="...">
                                         </div>
-                                    
-                                <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
-                                </div>   
-                                <div class="col-xs-8 col-md-3 col-lg-2" > 
-                                        <button class="btn btn-warning"><span class="glyphicon glyphicon-trash"></span></button>
-                                </div>
-                            </a>
+                                            <div class="col-xs-8 col-md-7 col-lg-9">
+                                                <div class="row">
+                                                   <h4 id="nome" class="col-lg-12" > + cart.products[i].name + </h4>
+                                                    <a id="linkmappa" href="ServletShowShopOnMap?id=" class="col-xs-12 col-lg-3">Vedi negozio su mappa</a> <a href="" class="col-xs-12 col-lg-3">Sito Negozio: </a>
+                                                    <h5 class="col-lg-12" id="prezzo">Prezzo: </h5>
+                                                    <p class="col-lg-12" name="venditore" >Venditore: </p>
+                                                    <div class="col-xs-12 col-sm-6" >
+                                                        <div >
+                                                            <button class="btn btn-primary col-lg-3" onclick="alert('incrementa')"><span class="glyphicon glyphicon-plus"></span></button>
+                                                            <p class="btn col-lg-3" id="numProduct+idlettodaldb">1</p>
+                                                            <button class="btn btn-danger col-lg-3" onclick="alert('decrementa')"><span class="glyphicon glyphicon-minus"></span></button>
+                                                        </div>
+                                                     </div>
+                                                        
+                                                    <div class="col-xs-12 tmargin"><button class="btn btn-warning" onclick="removeFromCart()"><span class="glyphicon glyphicon-trash"></span> Rimuovi</button></div>
+                                                </div>
+                                           </div>
+                                    <div class="col-xs-4 col-lg-3" style="min-height:100px; ">
+                                    </div>
+                                </a>
                         </div> -->
-
                     </div>  
                     <!-- footer -->
                     <footer style="background-color: #fc5d5d">
@@ -525,6 +534,104 @@
             {
                 window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
             }
+            
+            
+            // crea l'html per il button delle notifiche
+            function inserisciNotifiche()
+            {
+                console.log(jsonNotifiche);
+                var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
+                var notificationCount = 0;
+                var notifiche = "";
+                var idNotifica;
+                for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+                {
+                    idNotifica = jsonNotifiche.notifications[i].id;
+                    toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
+                    toAdd += "<p>";
+                    switch (jsonNotifiche.notifications[i].type)
+                    {
+                        case "0":
+                            toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
+                            break;
+                        case "1":
+                            toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (jsonNotifiche.notifications[i].already_read === "0") {
+                        //toAdd += "<p style=\"color: red\">";
+                        notificationCount++;
+                        toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                        toAdd += "<div class=\"dotsEndSentence\"><b>" + jsonNotifiche.notifications[i].description + "</b></div>";
+                    } else {
+                        toAdd += "</p>";
+                        toAdd += "<div class=\"dotsEndSentence\">" + jsonNotifiche.notifications[i].description + "</div>";
+
+                    }
+
+                    // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
+                    toAdd += "</a><hr>";
+
+                }
+                toAdd += "</div>";
+                toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
+
+                if (notificationCount > 99)
+                    notificationCount = "99+";
+                $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+                $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+
+                return toAdd;
+            }
+
+            function aggiungi(id_prod)
+            {
+                $.post('ServletAjaxUpdateProductQuantity', { 
+                        _whatToDo : "add",
+                        _idProdotto: id_prod
+                }, function(data) {
+                    var resp = data.split('$');
+                    if(resp[0] == "true")
+                    {
+                        cart = JSON.parse(resp[1]);
+                        console.log(cart);
+                        AggiungiProdotti(cart);  
+                    }
+                }).fail(function () {
+                    alert("ERR");
+                });
+            }
+            
+            function rimuovi(id_prod)
+            {
+                $.post('ServletAjaxUpdateProductQuantity', { 
+                        _whatToDo : "remove",
+                        _idProdotto: id_prod
+                }, function(data) {
+                    var resp = data.split('$');
+                    if(resp[0] == "true")
+                    {
+                        cart = JSON.parse(resp[1]);
+                        console.log(cart);
+                        AggiungiProdotti(cart);  
+                    }
+                }).fail(function () {
+                    alert("ERR");
+                });
+            }
+
+            // gestione POPOVER button notifiche
+            $(document).ready(function () {
+                $('[data-toggle="popover"]').popover({
+                    container: 'body'
+                });
+            });
+            
+            // inizializzazione delle notifiche e del suo button.
+            $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
         </script>
     </body>
 </html>

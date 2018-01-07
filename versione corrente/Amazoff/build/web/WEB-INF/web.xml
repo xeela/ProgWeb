@@ -70,6 +70,10 @@
         <servlet-class>com.amazoff.servlet.ServletAjaxCarrello</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ServletPopulateShopPage</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletPopulateShopPage</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServletDopoRegistrazione</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletDopoRegistrazione</servlet-class>
     </servlet>
@@ -112,6 +116,14 @@
     <servlet>
         <servlet-name>ServletShowShopOnMap</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletShowShopOnMap</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SerlvetAjaxGetNotifications</servlet-name>
+        <servlet-class>com.amazoff.servlet.SerlvetAjaxGetNotifications</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAjaxUpdateProductQuantity</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletAjaxUpdateProductQuantity</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
@@ -174,6 +186,10 @@
         <url-pattern>/ServletAjaxNotifiche</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ServletPopulateShopPage</servlet-name>
+        <url-pattern>/ServletPopulateShopPage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ServletPayPage</servlet-name>
         <url-pattern>/ServletPayPage</url-pattern>
     </servlet-mapping>
@@ -212,6 +228,14 @@
     <servlet-mapping>
         <servlet-name>ServletUpdateCredentials</servlet-name>
         <url-pattern>/ServletUpdateCredentials</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SerlvetAjaxGetNotifications</servlet-name>
+        <url-pattern>/SerlvetAjaxGetNotifications</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAjaxUpdateProductQuantity</servlet-name>
+        <url-pattern>/ServletAjaxUpdateProductQuantity</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -2,6 +2,7 @@ package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
+import com.amazoff.classes.Notifications;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -41,7 +42,7 @@ public class ServletShowCart extends HttpServlet {
 
                 if (session.getAttribute("user") != null) {
                     /** Dopo aver inserito il nuovo prodotto, mi faccio restituire tutta la lista di oggetti presenti nel carrello */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*, shops.*, users.first_name, users.LAST_NAME FROM cart, shops, users, products WHERE users.ID = '"+ session.getAttribute("userID") +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME, cart.amount FROM cart, shops, users, products WHERE users.ID = '"+ session.getAttribute("userID") +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
                     
                     /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
                     // -------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
@@ -75,14 +76,15 @@ public class ServletShowCart extends HttpServlet {
                         jsonObj += "\"price\": \"" + results.getString(4) + "\",";
                         jsonObj += "\"category\": \"" + results.getString(6) + "\",";
                         jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
+                        jsonObj += "\"quantita\": \"" + results.getString(20) + "\",";
 
-                        jsonObj += "\"id_shop\": \"" + results.getString(9) + "\",";
-                        jsonObj += "\"shop\": \"" + results.getString(10) + "\",";
-                        jsonObj += "\"description\": \"" + results.getString(11) + "\",";
-                        jsonObj += "\"web_site\": \"" + results.getString(12) + "\",";
-                        jsonObj += "\"id_owner\": \"" + results.getString(14) + "\",";
-                        jsonObj += "\"first_name\": \"" + results.getString(16) + "\",";
-                        jsonObj += "\"last_name\": \"" + results.getString(17) + "\",";
+                        jsonObj += "\"id_shop\": \"" + results.getString(10) + "\",";
+                        jsonObj += "\"shop\": \"" + results.getString(11) + "\",";
+                        jsonObj += "\"description\": \"" + results.getString(12) + "\",";
+                        jsonObj += "\"web_site\": \"" + results.getString(13) + "\",";
+                        jsonObj += "\"id_owner\": \"" + results.getString(15) + "\",";
+                        jsonObj += "\"first_name\": \"" + results.getString(18) + "\",";
+                        jsonObj += "\"last_name\": \"" + results.getString(19) + "\",";
 
 
                         /** in base al prodotto, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
@@ -136,10 +138,12 @@ public class ServletShowCart extends HttpServlet {
                             isFirstTime = false;
                             
                             value = cart[i].getValue();
+                            
                             results = MyDatabaseManager.EseguiQuery("SELECT products.*, shops.* FROM shops, products WHERE products.id_shop = shops.id and products.id = " + value + ";", connection);
                             
                             results.next();
                             
+                            ///// QUESTA CODICE VA AGGIORNATO, prendento i corretti "results.getString(2)"
                             jsonObj += "{";
                             jsonObj += "\"id\": \"" + value + "\",";
                             jsonObj += "\"name\": \"" + results.getString(2) + "\",";
@@ -188,6 +192,12 @@ public class ServletShowCart extends HttpServlet {
                     }
                 }
                                 
+                if (session.getAttribute("userID") != null) {
+                    session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
+                } else {
+                    session.setAttribute("jsonNotifiche", "{\"notifications\": []}");
+                }
+                
                 connection.close();
                 session.setAttribute("shoppingCartProducts", jsonObj);
                 response.sendRedirect(request.getContextPath() + "/shopping-cartPage.jsp");

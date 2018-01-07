@@ -1,9 +1,10 @@
 <%-- 
-    Document   : index
+    Document   : userPage
     Created on : 19-set-2017, 10.56.58
-    Author     : Davide
+    Author     : Davide Farina
 --%>
 
+<%@page import="com.amazoff.classes.Errors"%>
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.*" %>
 <!DOCTYPE html>
@@ -88,6 +89,15 @@
                     //alert(newPwd);
                     document.RegisterForm.hashedPassword.value = newPwd;
                     document.RegisterForm.newpwd.value = "";
+                    
+                    var oldPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash($('#oldpwd').val()));
+                    for (var i = 0; i < 10000; i++)
+                        oldPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldPwd));
+                    //alert(newPwd);
+                    document.RegisterForm.oldhashedPassword.value = oldPwd;
+                    document.RegisterForm.oldpwd.value = "";
+                    
+                    
                     return true;
                 }
                 return false;
@@ -272,6 +282,14 @@
                 return false;
             }
         </script>    
+        
+        <!-- script gestione sezione "DATI NEGOZIO" -->
+        <script>
+            CheckShopData()
+            {
+                if 
+            }
+        </script>
     </head>
     <body class="bodyStyle" onload="Autocomplete('product'); document.getElementById('btnVendi').addEventListener ('click', checkProductData, false); ">
 
@@ -472,7 +490,7 @@
                     </div>
                 </div>                                    
 
-                <!-- tabella di 2 righe, con 3 colonne, che mostrano 6 prodotti -->
+                <!-- corpo della pagina con i dati dell'utente, negozio etc -->
                 <div class='tmargin'>
                     <div class="page">
                         <ul class="list-group">
@@ -492,16 +510,16 @@
                                                 <form  style="text-align: center" class="form-group" id="RegisterForm" name="RegisterForm" action="ServletUpdateCredentials" method="POST" >
 
                                                     <div class="form-group">
-                                                        <input id="email" type="text" name="email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
+                                                        <input id="email" type="text" name="email" class="form-control" value="<%if(session.getAttribute("email") != null){%><%= session.getAttribute("email")%><%} else {}%>" placeholder="<%if(session.getAttribute("email") != null){%> <%= session.getAttribute("email")%><% }else{%>Email<%}%>" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input id="username" type="text" name="username" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
+                                                        <input id="username" type="text" name="username" class="form-control" value="<%if(session.getAttribute("user") != null){%><%= session.getAttribute("user")%><%} else {}%>" placeholder="<%if(session.getAttribute("user") != null){%> <%= session.getAttribute("user")%><% }else{%>Username<%}%>" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input id="nameRegister" type="text" name="name" class="form-control" placeholder="Nome" aria-describedby="sizing-addon2">
+                                                        <input id="nameRegister" type="text" name="name" class="form-control" value ="<%if(session.getAttribute("fname") != null){%><%= session.getAttribute("fname")%><%} else {} %>" placeholder="<%if(session.getAttribute("fname") != null){%> <%= session.getAttribute("fname")%><% }else{%>Nome<%}%>" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group">
-                                                        <input id="surnameRegister" type="text" name="surname" class="form-control" placeholder="Cognome" aria-describedby="sizing-addon2">
+                                                        <input id="surnameRegister" type="text" name="surname" class="form-control" value ="<%if(session.getAttribute("lname") != null){%><%= session.getAttribute("lname")%><%} else {} %>" placeholder="<%if(session.getAttribute("lname") != null){%> <%= session.getAttribute("lname")%><% }else{%>Cognome<%}%>" aria-describedby="sizing-addon2">
                                                     </div>
                                                     <div class="form-group input-group">
                                                         <input id="oldpwd" type="password"  class="form-control" placeholder="Vecchia password" aria-describedby="sizing-addon2">
@@ -522,6 +540,7 @@
                                                     <div class="form-group input-group">
                                                         <input id="newpwdconfirm" type="password" class="form-control" placeholder="Ripeti password" aria-describedby="sizing-addon2">
                                                         <input id="hashedPassword" type="hidden" name="hashedPassword" value="pigreco" />
+                                                        <input id="oldhashedPassword" type="hidden" name="oldhashedPassword" value="pigreco" />
                                                         <span class="input-group-btn">
                                                             <a id="btnpwdRegisterConfirm" class="btn btn-default" type="button" title="Mostra password" onclick="show_hide_pass('newpwdconfirm')">
                                                                 <span id="spanpwdRegisterConfirm" class="glyphicon glyphicon-eye-open"></span>
@@ -535,21 +554,21 @@
                                                         <button id="btnRegistrati" class="btn btn-default" onclick="if(HashPasswordRegister()){document.getElementById('RegisterForm').submit();}" >Aggiorna dati</button>
                                                         <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
                                                     </div>
-                                                    
-                                                <div class="alert alert-danger alert-dismissible" style="visibility: hidden" id="alertRegistrati" role="alert">
+                                                 
+                                                <div class="alert alert-danger alert-dismissible" style="<% 
+                                                            if(session.getAttribute("errorMessage") != Errors.resetError) { %> visibility: visible<%} else {%>visibility:hidden<%}%>" id="alertRegistrati" role="alert">
                         
                                                         <!-- div che visualizza il messaggio di errore durante il login -->
                                                         <% 
-                                                            if(session.getAttribute("errorMessage") != null) { %>
-                                                            <div class="alert alert-danger alert-dismissible" id="alertRegistrati" role="alert">
+                                                            if(session.getAttribute("errorMessage") != Errors.resetError) { %>   
                                                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                                 <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
-                                                            </div>
-                                                        <% } 
-                                                            session.setAttribute("errorMessage", null);
-                                                        %>
+                                                        <% } %>
 
                                                 </div>
+                                                            <%
+                                                            session.setAttribute("errorMessage", Errors.resetError);
+                                                        %>
                                             </div>
                                         </div>
                                     </div>                                                  
@@ -610,7 +629,13 @@
                                                             <input name="sun" type="checkbox" value="true"/> Domenica   <br/>
 
                                                         </div>
+                                                        <p></p>
                                                     </div>
+                                                    <div class="row">
+                                                        <p><b>Città</b></p>
+                                                        <input type="text" name="citta" placeholder="..." class="col-lg-10"/>
+                                                    </div>
+                                                    <div class="row"></div>
                                                     <INPUT TYPE='submit' VALUE='Crea Negozio' class="btn col-lg-4 col-lg-offset-3" />
                                                 </div>   
                                                 <div class="col-lg-6 col-md-6 col-sm-6  ">
@@ -661,11 +686,101 @@
                                             </div>                                                  
                                         </div>
                                     </div>
+                                   <!--
                                     <a href=".jsp" class="list-group-item">
                                         <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                                         Negozio TO DO...
                                     </a>
+                                   -->
+                                    <div class="list-group-item">  
+                                        <div id="negozio" role="tablist" aria-multiselectable="true">
+                                            Dati Negozio 
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseNegozio" aria-expanded="true" 
+                                               aria-controls="collapseNegozio" >
+                                                <span class='glyphicon glyphicon-option-vertical'></span>
+                                            </a>
+                                            <div id="collapseNegozio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                                <div class="row">
+                                                    <div class="col-lg-3"></div>
+                                                    <div class="col-lg-6">
+                                                        <h3 style="text-align: center">Aggiorna i dati del tuo Business:</h3>
+                                                        <form  style="text-align: center" class="form-group" id="ShopForm" name="ShopForm" action="ServletUpdateNegozio" method="POST" >
+                                                            <div class="row">
+                                                                
+                                                            </div>
+                                                            
+                                                            
+                                                            <div class="form-group">
+                                                                <b>Nome del Negozio</b>
+                                                                <input id="shop_website" type="text" name="shop_name" class="form-control" value="<%if(session.getAttribute("shop_name") != null){%><%= session.getAttribute("shop_name")%><%} else {}%>" placeholder="<%if(session.getAttribute("shop_name") != null){%> <%= session.getAttribute("shop_name")%><% }else{%>Nome negozio<%}%>" aria-describedby="sizing-addon2">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <b>Descrizione</b>
+                                                                <input id="shop_description" type="text" name="shop_description" class="form-control" value ="<%if(session.getAttribute("shop_description") != null){%><%= session.getAttribute("shop_description")%><%} else {} %>" placeholder="<%if(session.getAttribute("shop_description") != null){%> <%= session.getAttribute("shop_description")%><% }else{%>Descrizione negozio<%}%>" aria-describedby="sizing-addon2">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <b>sito web</b>
+                                                                <input id="shop_website" type="url" name="shop_website" class="form-control" value ="<%if(session.getAttribute("shop_website") != null){%><%= session.getAttribute("shop_website")%><%} else {} %>" placeholder="<%if(session.getAttribute("shop_website") != null){%> <%= session.getAttribute("shop_website")%><% }else{%>Website<%}%>" aria-describedby="sizing-addon2">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <p></p>
+                                                                <b>Giorni di apertura</b>
+                                                                    <div>
+                                                                        <input name="mon" type="checkbox" value="true"/> Lunedì 
+                                                                        <input name="tue" type="checkbox" value="true"/> Martedì
+                                                                        <input name="wed" type="checkbox" value="true"/> Mercoledì 
+                                                                        <input name="thu" type="checkbox" value="true"/> Giovedì  
+                                                                        <input name="fri" type="checkbox" value="true"/> Venerdì   
+                                                                        <input name="sat" type="checkbox" value="true"/> Sabato   
+                                                                        <input name="sun" type="checkbox" value="true"/> Domenica   
 
+                                                                    </div>
+                                                            </div>
+
+
+                                                        </form>
+                                                         <div class="form-group tmargin">
+                                                                <button id="btnRegistrati" class="btn btn-default" onclick="if(CheckShopData()){document.getElementById('ShopForm').submit();}" >Aggiorna dati</button>
+                                                                <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
+                                                            </div>
+
+                                                        <div class="alert alert-danger alert-dismissible" style="<% 
+                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %> visibility: visible<%} else {%>visibility:hidden<%}%>" id="alertRegistrati" role="alert">
+
+                                                                <!-- div che visualizza il messaggio di errore durante il login -->
+                                                                <% 
+                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %>   
+                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                        <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
+                                                                <% } %>
+
+                                                        </div>
+                                                                    <%
+                                                                    session.setAttribute("errorMessage", Errors.resetError);
+                                                                %>
+                                                    </div>
+                                                </div>
+                                            </div>                                                  
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                     <div id="sellNewProduct" class="list-group-item">
                                         <div role="tablist" aria-multiselectable="true">
                                             Vendi prodotto 
@@ -883,7 +998,8 @@
                         console.log("ServletAjaxNotifiche " + data);
 
                     }).fail(function () {
-                    });
+                    });                    
+                    
                 </script>
-                </body>
-                </html>
+</body>
+</html>

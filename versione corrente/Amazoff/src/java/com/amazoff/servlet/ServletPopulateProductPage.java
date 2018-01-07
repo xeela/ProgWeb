@@ -2,6 +2,7 @@ package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
 import com.amazoff.classes.MyDatabaseManager;
+import com.amazoff.classes.Notifications;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -31,7 +32,6 @@ public class ServletPopulateProductPage extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
             String idReceived = request.getParameter("id");
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
@@ -158,9 +158,17 @@ public class ServletPopulateProductPage extends HttpServlet {
                 }
                 jsonObj += "]}";
                 
+                HttpSession session = request.getSession();
+                
+                // creo l'oggetto notifiche aggiornate, da mandare alla pagina
+                if (session.getAttribute("userID") != null) {
+                    session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
+                } else {
+                    session.setAttribute("jsonNotifiche", "{\"notifications\": []}");
+                }
+                
                 connection.close();
                 
-                HttpSession session = request.getSession();  
                 session.setAttribute("jsonProdotti", jsonObj);
                 response.sendRedirect(request.getContextPath() + "/productPage.jsp?id="+idReceived+""); 
             }
