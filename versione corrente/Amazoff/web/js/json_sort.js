@@ -75,8 +75,43 @@ function AggiungiProdotti() {
     $("#zonaProdotti").html(toAdd);
 }
 
-/*// dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
- function cercaProdotto(txt)
- {
- window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
- }*/
+function AggiungiOrdini() {
+    var toAdd = "";
+    var id_oggetto = -1;
+    var path = "default.jpg";
+
+    for (var i = 0; i < jsonProdotti.orders.length; i++)
+    {
+        id_oggetto = jsonProdotti.orders[i].id;
+        toAdd += "<p name=\"id_ordine" + id_oggetto + "\">Numero ordine: </p>" + jsonProdotti.orders[i].products[0].order_id + "</p>";
+        for (var j = 0; j < jsonProdotti.orders[i].products.length; j++) {
+            toAdd += "<div class=\"row\">";
+            toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"form" + id_oggetto + "\" onclick=\"$('#form" + id_oggetto + "').submit();\"> ";
+            toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
+            if(jsonProdotti.orders[i].products[j].pictures.length == 0)
+                path = "default.jpg";
+            else
+                path = jsonProdotti.orders[i].products[j].pictures[0].path; // visualizzo solo la prima immagine del prodotto
+            toAdd += "<img src=\"UploadedImages/" + path + "\" style=\"max-height: 100px; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
+            toAdd += "</div>";
+            toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
+            toAdd += "<p name=\"data_ordine" + id_oggetto + "\">Data ordine: </p>" + jsonProdotti.orders[i].products[j].order_date + "</p>";
+            toAdd += "<p name=\"nome" + id_oggetto + "\" >" + jsonProdotti.orders[i].products[j].name + "</p>";
+            toAdd += "<p name=\"stelle" + id_oggetto + "\">Voto totale</p>";
+            toAdd += "<p name=\"recensioni" + id_oggetto + "\">Tot recensioni: "+ jsonProdotti.orders[i].products[j].num_reviews +"</p>";
+            toAdd += "<p name=\"linkmappa" + id_oggetto + "\" ><a href='ServletShowShopOnMap?id="+jsonProdotti.orders[i].products[j].id_shop+"'>Vedi su mappa</a></p>";
+            toAdd += "<p name=\"prezzo" + id_oggetto + "\">Prezzo: " + jsonProdotti.orders[i].products[j].price + "€</p>";
+            toAdd += "<p name=\"venditore" + id_oggetto + "\" >Venditore: "+ jsonProdotti.orders[i].products[j].last_name +" "+ jsonProdotti.orders[i].products[j].first_name +"</p>";
+            toAdd += "<p><a href=\""+jsonProdotti.orders[i].products[j].site_url+"\">Sito Negozio: "+jsonProdotti.orders[i].products[j].shop_name+"</a></p>";
+            toAdd += "</div>";
+            toAdd += "<p><a href=\"ServletRecensione?id="+jsonProdotti.orders[i].products[j].product_id+"\" class=\"btn btn-primary\" role=\"button\">Lascia recensione</a></p>";
+            toAdd += "</div></form><hr>";
+        }
+    }
+
+    $("#zonaProdotti").html(toAdd);
+}
+
+function Recensione(id){
+    
+}

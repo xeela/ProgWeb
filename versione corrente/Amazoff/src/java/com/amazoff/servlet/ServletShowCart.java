@@ -40,7 +40,7 @@ public class ServletShowCart extends HttpServlet {
             if (MyDatabaseManager.cpds != null) {
                 Connection connection = MyDatabaseManager.CreateConnection();
 
-                if (session.getAttribute("user") != null) {
+                if (session.getAttribute("userID") != null) {
                     /** Dopo aver inserito il nuovo prodotto, mi faccio restituire tutta la lista di oggetti presenti nel carrello */
                     ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME, cart.amount FROM cart, shops, users, products WHERE users.ID = '"+ session.getAttribute("userID") +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
                     
@@ -152,10 +152,10 @@ public class ServletShowCart extends HttpServlet {
                             jsonObj += "\"category\": \"" + results.getString(6) + "\",";
                             jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
 
-                            jsonObj += "\"id_shop\": \"" + results.getString(9) + "\",";
-                            jsonObj += "\"shop\": \"" + results.getString(10) + "\",";
-                            jsonObj += "\"description\": \"" + results.getString(11) + "\",";
-                            jsonObj += "\"web_site\": \"" + results.getString(12) + "\",";
+                            jsonObj += "\"id_shop\": \"" + results.getString(10) + "\",";
+                            jsonObj += "\"shop\": \"" + results.getString(11) + "\",";
+                            jsonObj += "\"description\": \"" + results.getString(12) + "\",";
+                            jsonObj += "\"web_site\": \"" + results.getString(13) + "\",";
                             
                             /** in base al prodotto, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
                             resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + value + ";", connection);

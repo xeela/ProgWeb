@@ -25,4 +25,5 @@ public class Errors {
     static public String noProductFound = "Non è stato trovato un prodotto con quel nome";
     static public String noShopFound = "Non è stato trovato un negozio vicino a te";
     static public String emailAlreadyExists = "L'indirizzo email inserito è già associato ad un altro utente";
+    static public String noOrdersFound = "Non è stato ancora effettuato alcun ordine";
 }

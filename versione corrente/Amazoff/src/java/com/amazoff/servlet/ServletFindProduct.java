@@ -131,13 +131,13 @@ public class ServletFindProduct extends HttpServlet {
                 // esegue sempre
                 switch (categoriaReceived) {
                     case "product":
-                        query += "products.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
+                        query += "products.name LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ORDER BY products.price ASC;";
                         break;
                     case "seller": 
-                        query += "shops.name = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
+                        query += "shops.name LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ORDER BY products.price ASC;";
                         break;
                     case "category":                    
-                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
+                        query += "products.category LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ORDER BY products.price ASC;";
                         break;
                     default:
                         break;
