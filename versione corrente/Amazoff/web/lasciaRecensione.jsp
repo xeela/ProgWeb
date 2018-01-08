@@ -29,9 +29,37 @@
             var jsonNotifiche = ${jsonNotifiche};
             var jsonReview = ${jsonReview};
             
+            function submitForm(){
+                $("#review_form").submit();
+            }
+            
             $(document).ready(function() {
-                $('#product').html(jsonReview.name_product);
-                $('#recensione').html(jsonReview.description);
+                $('#id_product').val(jsonReview.id_product);
+                $('#name_product').val(jsonReview.name_product);
+                
+                if(jsonReview.id_review !== null){
+                    $('#id_review').val(jsonReview.id_review);
+                    $('#titolo').val(jsonReview.title);
+                    $('#recensione').val(jsonReview.description);
+                    $('input:radio[name=quality_rating]').filter('[value="' + jsonReview.quality + '"]').prop('checked', true);
+                    $('input:radio[name=service_rating]').filter('[value="' + jsonReview.service + '"]').prop('checked', true);
+                    $('input:radio[name=value_rating]').filter('[value="' + jsonReview.value + '"]').prop('checked', true);
+                    $('input:radio[name=global_rating]').filter('[value="' + jsonReview.global + '"]').prop('checked', true);
+                }
+                
+                if(jsonReview.in_db === "true"){
+                    $('#to_update').val("true");
+                } else {
+                    $('#to_update').val("false");
+                }
+                
+                var text_length = $('#recensione').val().length;
+                $('#textarea_feedback').html(text_length + '/250 caratteri');
+
+                $('#recensione').keyup(function() {
+                    var text_length = $('#recensione').val().length;
+                    $('#textarea_feedback').html(text_length + '/250 caratteri');                    
+                });
             });
         </script>
         <title>Amazoff</title>
@@ -345,9 +373,68 @@
                     <!-- corpo della pagina contenente i risultati della ricerca -->
                     <div class="tmargin col-xs-12 col-sm-10">
                         <div id="div_recensione">
-                            <p>Scrivi una recensione per <span id="product">-prodotto-</span>:</p>
-                            <p><textarea id="recensione" cols="40" rows="5" placeholder="Scrivi..."></textarea></p>
-                            <p><a href='' class='btn btn-default' role='button'>Invia</a></p>
+                            <form id="review_form" action="ServletUpdateReview" method="post">
+                            <p>Scrivi una recensione per <span id="name_product">-prodotto-</span>:</p>
+                            <p><textarea name="review_name" id="titolo" rows="1" maxlength="50" placeholder="Titolo..."></textarea></p>
+                            <p><textarea name="review_text" id="recensione" rows="5" maxlength="250" placeholder="Descrizione..."></textarea></p>
+                            <p id="textarea_feedback"></p>
+                            <p>Qualità</p>
+                            <p class="rating one">
+                                <input type="radio" id="star5-1" name="quality_rating" value="5.0" /><label class = "full" for="star5-1" title="Perfetto - 5 stars"></label>
+                                <input type="radio" id="star4half-1" name="quality_rating" value="4.5" /><label class="half" for="star4half-1" title="Buono - 4.5 stars"></label>
+                                <input type="radio" id="star4-1" name="quality_rating" value="4.0" /><label class = "full" for="star4-1" title="Buono - 4 stars"></label>
+                                <input type="radio" id="star3half-1" name="quality_rating" value="3.5" /><label class="half" for="star3half-1" title="Medio - 3.5 stars"></label>
+                                <input type="radio" id="star3-1" name="quality_rating" value="3.0" /><label class = "full" for="star3-1" title="Medio - 3 stars"></label>
+                                <input type="radio" id="star2half-1" name="quality_rating" value="2.5" /><label class="half" for="star2half-1" title="Non buono - 2.5 stars"></label>
+                                <input type="radio" id="star2-1" name="quality_rating" value="2.0" /><label class = "full" for="star2-1" title="Non buono - 2 stars"></label>
+                                <input type="radio" id="star1half-1" name="quality_rating" value="1.5" /><label class="half" for="star1half-1" title="Non buono - 1.5 stars"></label>
+                                <input type="radio" id="star1-1" name="quality_rating" value="1.0" /><label class = "full" for="star1-1" title="Orribile - 1 star"></label>
+                                <input type="radio" id="starhalf-1" name="quality_rating" value="0.5" /><label class="half" for="starhalf-1" title="Orribile - 0.5 stars"></label>
+                            </p>
+                            <p>Servizio</p>
+                            <p class="rating two">
+                                <input type="radio" id="star5-2" name="service_rating" value="5.0" /><label class = "full" for="star5-2" title="Perfetto - 5 stars"></label>
+                                <input type="radio" id="star4half-2" name="service_rating" value="4.5" /><label class="half" for="star4half-2" title="Buono - 4.5 stars"></label>
+                                <input type="radio" id="star4-2" name="service_rating" value="4.0" /><label class = "full" for="star4-2" title="Buono - 4 stars"></label>
+                                <input type="radio" id="star3half-2" name="service_rating" value="3.5" /><label class="half" for="star3half-2" title="Medio - 3.5 stars"></label>
+                                <input type="radio" id="star3-2" name="service_rating" value="3.0" /><label class = "full" for="star3-2" title="Medio - 3 stars"></label>
+                                <input type="radio" id="star2half-2" name="service_rating" value="2.5" /><label class="half" for="star2half-2" title="Non buono - 2.5 stars"></label>
+                                <input type="radio" id="star2-2" name="service_rating" value="2.0" /><label class = "full" for="star2-2" title="Non buono - 2 stars"></label>
+                                <input type="radio" id="star1half-2" name="service_rating" value="1.5" /><label class="half" for="star1half-2" title="Non buono - 1.5 stars"></label>
+                                <input type="radio" id="star1-2" name="service_rating" value="1.0" /><label class = "full" for="star1-2" title="Orribile - 1 star"></label>
+                                <input type="radio" id="starhalf-2" name="service_rating" value="0.5" /><label class="half" for="starhalf-2" title="Orribile - 0.5 stars"></label>
+                            </p>
+                            <p>Rapporto qualità prezzo</p>
+                            <p class="rating three">
+                                <input type="radio" id="star5-3" name="value_rating" value="5.0" /><label class = "full" for="star5-3" title="Perfetto - 5 stars"></label>
+                                <input type="radio" id="star4half-3" name="value_rating" value="4.5" /><label class="half" for="star4half-3" title="Buono - 4.5 stars"></label>
+                                <input type="radio" id="star4-3" name="value_rating" value="4.0" /><label class = "full" for="star4-3" title="Buono - 4 stars"></label>
+                                <input type="radio" id="star3half-3" name="value_rating" value="3.5" /><label class="half" for="star3half-3" title="Medio - 3.5 stars"></label>
+                                <input type="radio" id="star3-3" name="value_rating" value="3.0" /><label class = "full" for="star3-3" title="Medio - 3 stars"></label>
+                                <input type="radio" id="star2half-3" name="value_rating" value="2.5" /><label class="half" for="star2half-3" title="Non buono - 2.5 stars"></label>
+                                <input type="radio" id="star2-3" name="value_rating" value="2.0" /><label class = "full" for="star2-3" title="Non buono - 2 stars"></label>
+                                <input type="radio" id="star1half-3" name="value_rating" value="1.5" /><label class="half" for="star1half-3" title="Non buono - 1.5 stars"></label>
+                                <input type="radio" id="star1-3" name="value_rating" value="1.0" /><label class = "full" for="star1-3" title="Orribile - 1 star"></label>
+                                <input type="radio" id="starhalf-3" name="value_rating" value="0.5" /><label class="half" for="starhalf-3" title="Orribile - 0.5 stars"></label>
+                            </p>
+                            <p>Giudizio globale</p>
+                            <p class="rating four">
+                                <input type="radio" id="star5-4" name="global_rating" value="5.0" /><label class = "full" for="star5-4" title="Perfetto - 5 stars"></label>
+                                <input type="radio" id="star4half-4" name="global_rating" value="4.5" /><label class="half" for="star4half-4" title="Buono - 4.5 stars"></label>
+                                <input type="radio" id="star4-4" name="global_rating" value="4.0" /><label class = "full" for="star4-4" title="Buono - 4 stars"></label>
+                                <input type="radio" id="star3half-4" name="global_rating" value="3.5" /><label class="half" for="star3half-4" title="Medio - 3.5 stars"></label>
+                                <input type="radio" id="star3-4" name="global_rating" value="3.0" /><label class = "full" for="star3-4" title="Medio - 3 stars"></label>
+                                <input type="radio" id="star2half-4" name="global_rating" value="2.5" /><label class="half" for="star2half-4" title="Non buono - 2.5 stars"></label>
+                                <input type="radio" id="star2-4" name="global_rating" value="2.0" /><label class = "full" for="star2-4" title="Non buono - 2 stars"></label>
+                                <input type="radio" id="star1half-4" name="global_rating" value="1.5" /><label class="half" for="star1half-4" title="Non buono - 1.5 stars"></label>
+                                <input type="radio" id="star1-4" name="global_rating" value="1.0" /><label class = "full" for="star1-4" title="Orribile - 1 star"></label>
+                                <input type="radio" id="starhalf-4" name="global_rating" value="0.5" /><label class="half" for="starhalf-4" title="Orribile - 0.5 stars"></label>
+                            </p>
+                            <p><a class='btn btn-default' role='button' onclick="submitForm()">Invia</a></p>
+                            <p name="id_review" display="none"></p>
+                            <p name="id_product" display="none"></p>
+                            <p name="to_update" display="none"></p>
+                            </form>
                         </div>
                     </div> 
 

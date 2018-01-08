@@ -131,7 +131,11 @@
     </servlet>
     <servlet>
         <servlet-name>ServletRecensione</servlet-name>
-        <servlet-class>com.amazoff.servlet.ServletRecensione</servlet-class>
+        <servlet-class>com.amazoff.servlet.ServletRetrieveReview</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletUpdateReview</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletUpdateReview</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
@@ -252,6 +256,10 @@
     <servlet-mapping>
         <servlet-name>ServletRecensione</servlet-name>
         <url-pattern>/ServletRecensione</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletUpdateReview</servlet-name>
+        <url-pattern>/ServletUpdateReview</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

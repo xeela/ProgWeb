@@ -95,8 +95,8 @@ function AggiungiOrdini() {
             toAdd += "<img src=\"UploadedImages/" + path + "\" style=\"max-height: 100px; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
             toAdd += "</div>";
             toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
-            toAdd += "<p name=\"data_ordine" + id_oggetto + "\">Data ordine: </p>" + jsonProdotti.orders[i].products[j].order_date + "</p>";
             toAdd += "<p name=\"nome" + id_oggetto + "\" >" + jsonProdotti.orders[i].products[j].name + "</p>";
+            toAdd += "<p name=\"data_ordine" + id_oggetto + "\">Data ordine: </p>" + jsonProdotti.orders[i].products[j].order_date + "</p>";
             toAdd += "<p name=\"stelle" + id_oggetto + "\">Voto totale</p>";
             toAdd += "<p name=\"recensioni" + id_oggetto + "\">Tot recensioni: "+ jsonProdotti.orders[i].products[j].num_reviews +"</p>";
             toAdd += "<p name=\"linkmappa" + id_oggetto + "\" ><a href='ServletShowShopOnMap?id="+jsonProdotti.orders[i].products[j].id_shop+"'>Vedi su mappa</a></p>";

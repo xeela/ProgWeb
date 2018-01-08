@@ -26,4 +26,6 @@ public class Errors {
     static public String noShopFound = "Non è stato trovato un negozio vicino a te";
     static public String emailAlreadyExists = "L'indirizzo email inserito è già associato ad un altro utente";
     static public String noOrdersFound = "Non è stato ancora effettuato alcun ordine";
+    static public String updateUnsuccessful = "Nessun record aggiornato nel database";
+    static public String insertUnsuccessful = "Nessun record aggiunto al database";
 }
