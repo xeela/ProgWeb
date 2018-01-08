@@ -64,6 +64,7 @@ public class ServletFindProduct extends HttpServlet {
                                 + " users.LAST_NAME, users.FIRST_NAME, " 
                                 + " shops.NAME, shops.WEB_SITE_URL," 
                                 + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
+                                + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_blobal_value "
                                 + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                                 + "* COS(RADIANS(" + userLat + ")) "
                                 + "* COS(RADIANS(lng - " + userLng + ")) "
@@ -84,6 +85,7 @@ public class ServletFindProduct extends HttpServlet {
                                 + " users.LAST_NAME, users.FIRST_NAME, "
                                 + " shops.NAME, shops.WEB_SITE_URL," 
                                 + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
+                                + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_blobal_value "
                                 + "FROM products, shops, users, pictures,"
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
@@ -97,6 +99,7 @@ public class ServletFindProduct extends HttpServlet {
                             + " users.LAST_NAME, users.FIRST_NAME, "
                             + " shops.NAME, shops.WEB_SITE_URL," 
                             + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
+                            + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_blobal_value "
                             + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                             + "* COS(RADIANS(" + userLat + ")) "
                             + "* COS(RADIANS(lng - " + userLng + ")) "
@@ -112,7 +115,8 @@ public class ServletFindProduct extends HttpServlet {
                     query += "SELECT DISTINCT products.*,  "
                             + " users.LAST_NAME, users.FIRST_NAME, "
                             + " shops.NAME, shops.WEB_SITE_URL," 
-                            + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
+                            + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews, "
+                            + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_blobal_value "
                             + "FROM products, shops, users, pictures "
                             + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                             + "AND products.available > 0 "
@@ -176,11 +180,12 @@ public class ServletFindProduct extends HttpServlet {
                     jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
                     jsonObj += "\"category\": \"" + results.getString(6) + "\",";
                     jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
-                    jsonObj += "\"last_name\": \"" + results.getString(9) + "\","; /* dati del venditore */
-                    jsonObj += "\"first_name\": \"" + results.getString(10) + "\",";
-                    jsonObj += "\"shop_name\": \"" + results.getString(11) + "\",";
-                    jsonObj += "\"site_url\": \"" + results.getString(12) + "\",";
-                    jsonObj += "\"num_reviews\": \"" + results.getString(13) + "\",";
+                    jsonObj += "\"last_name\": \"" + results.getString(10) + "\","; /* dati del venditore */
+                    jsonObj += "\"first_name\": \"" + results.getString(11) + "\",";
+                    jsonObj += "\"shop_name\": \"" + results.getString(12) + "\",";
+                    jsonObj += "\"site_url\": \"" + results.getString(13) + "\",";
+                    jsonObj += "\"num_reviews\": \"" + results.getString(14) + "\",";
+                    jsonObj += "\"global_value_avg\": \""+ results.getString(15) +"\",";
                         
                     // richiedo le immagini per questo prodotto
                     jsonObj += "\"pictures\": [";

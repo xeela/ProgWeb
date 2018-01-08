@@ -59,7 +59,7 @@ function AggiungiProdotti() {
         toAdd += "</div>";
         toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
         toAdd += "<p name=\"nome" + id_oggetto + "\" >" + jsonProdotti.products[i].name + "</p>";
-        toAdd += "<p name=\"stelle" + id_oggetto + "\">Voto totale</p>";
+        toAdd += "<p name=\"stelle" + id_oggetto + "\">Voto totale: "+ jsonProdotti.products[i].global_value_avg +"</p>";
         toAdd += "<p name=\"recensioni" + id_oggetto + "\">Tot recensioni: "+ jsonProdotti.products[i].num_reviews +"</p>";
         toAdd += "<p name=\"linkmappa" + id_oggetto + "\" ><a href='ServletShowShopOnMap?id="+jsonProdotti.products[i].id_shop+"'>Vedi su mappa</a></p>";
         toAdd += "<p name=\"prezzo" + id_oggetto + "\">Prezzo: " + jsonProdotti.products[i].price + "€</p>";

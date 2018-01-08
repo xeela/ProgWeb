@@ -75,13 +75,13 @@ public class ServletPopulateProductPage extends HttpServlet {
                     jsonObj += "\"category\": \"" + results.getString(6) + "\",";
                     jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
                     
-                    jsonObj += "\"id_shop\": \"" + results.getString(9) + "\",";
-                    jsonObj += "\"shop\": \"" + results.getString(10) + "\",";
-                    jsonObj += "\"description\": \"" + results.getString(11) + "\",";
-                    jsonObj += "\"web_site\": \"" + results.getString(12) + "\",";
-                    jsonObj += "\"id_owner\": \"" + results.getString(14) + "\",";
-                    jsonObj += "\"first_name\": \"" + results.getString(18) + "\",";
-                    jsonObj += "\"last_name\": \"" + results.getString(19) + "\",";
+                    jsonObj += "\"id_shop\": \"" + results.getString(10) + "\",";
+                    jsonObj += "\"shop\": \"" + results.getString(11) + "\",";
+                    jsonObj += "\"description\": \"" + results.getString(12) + "\",";
+                    jsonObj += "\"web_site\": \"" + results.getString(13) + "\",";
+                    jsonObj += "\"id_owner\": \"" + results.getString(15) + "\",";
+                    jsonObj += "\"first_name\": \"" + results.getString(19) + "\",";
+                    jsonObj += "\"last_name\": \"" + results.getString(20) + "\",";
                     
                     
                     /** in base al prodotto, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
