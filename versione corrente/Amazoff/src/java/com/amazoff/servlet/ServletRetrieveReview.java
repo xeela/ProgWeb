@@ -65,15 +65,17 @@ public class ServletRetrieveReview extends HttpServlet {
                         } else{
                             while (results.next()) {
                                 jsonObj += "{";
+                                jsonObj += "\"data\":[{";
                                 jsonObj += "\"in_db\": \"false\",";
                                 jsonObj += "\"id_product\": \"" + results.getString(1) + "\",";
                                 jsonObj += "\"name_product\": \"" + results.getString(2) + "\"";
-                                jsonObj += "}";
+                                jsonObj += "}]}";
                             }
                         }
                     } else {
                         while (results.next()) {
                             jsonObj += "{";
+                            jsonObj += "\"data\":[{";
                             jsonObj += "\"in_db\": \"true\",";
                             jsonObj += "\"id_review\": \"" + results.getString(1) + "\",";
                             jsonObj += "\"global\": \"" + results.getString(2) + "\",";
@@ -86,7 +88,7 @@ public class ServletRetrieveReview extends HttpServlet {
                             jsonObj += "\"id_product\": \"" + results.getString(9) + "\",";
                             jsonObj += "\"id_creator\": \"" + results.getString(10) + "\",";
                             jsonObj += "\"name_product\": \"" + results.getString(12) + "\"";
-                            jsonObj += "}";
+                            jsonObj += "}]}";
                         }
                     }                
                     connection.close();

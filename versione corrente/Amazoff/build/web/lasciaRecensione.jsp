@@ -28,37 +28,38 @@
         <script>
             var jsonNotifiche = ${jsonNotifiche};
             var jsonReview = ${jsonReview};
-            
-            function submitForm(){
+
+            function submitForm() {
                 $("#review_form").submit();
             }
-            
-            $(document).ready(function() {
-                $('#id_product').val(jsonReview.id_product);
-                $('#name_product').val(jsonReview.name_product);
-                
-                if(jsonReview.id_review !== null){
-                    $('#id_review').val(jsonReview.id_review);
-                    $('#titolo').val(jsonReview.title);
-                    $('#recensione').val(jsonReview.description);
-                    $('input:radio[name=quality_rating]').filter('[value="' + jsonReview.quality + '"]').prop('checked', true);
-                    $('input:radio[name=service_rating]').filter('[value="' + jsonReview.service + '"]').prop('checked', true);
-                    $('input:radio[name=value_rating]').filter('[value="' + jsonReview.value + '"]').prop('checked', true);
-                    $('input:radio[name=global_rating]').filter('[value="' + jsonReview.global + '"]').prop('checked', true);
+
+            $(document).ready(function () {
+                $('#id_product').val(jsonReview.data[0].id_product);
+                $('#name_product').val(jsonReview.data[0].name_product);
+                $('#name_product').html(jsonReview.data[0].name_product);
+
+                if (jsonReview.data[0].id_review !== null) {
+                    $('#id_review').val(jsonReview.data[0].id_review);
+                    $('#titolo').val(jsonReview.data[0].title);
+                    $('#recensione').val(jsonReview.data[0].description);
+                    $('input:radio[name=quality_rating]').filter('[value="' + jsonReview.data[0].quality + '"]').prop('checked', true);
+                    $('input:radio[name=service_rating]').filter('[value="' + jsonReview.data[0].service + '"]').prop('checked', true);
+                    $('input:radio[name=value_rating]').filter('[value="' + jsonReview.data[0].value + '"]').prop('checked', true);
+                    $('input:radio[name=global_rating]').filter('[value="' + jsonReview.data[0].global + '"]').prop('checked', true);
                 }
-                
-                if(jsonReview.in_db === "true"){
+
+                if (jsonReview.data[0].in_db === "true") {
                     $('#to_update').val("true");
                 } else {
                     $('#to_update').val("false");
                 }
-                
+
                 var text_length = $('#recensione').val().length;
                 $('#textarea_feedback').html(text_length + '/250 caratteri');
 
-                $('#recensione').keyup(function() {
+                $('#recensione').keyup(function () {
                     var text_length = $('#recensione').val().length;
-                    $('#textarea_feedback').html(text_length + '/250 caratteri');                    
+                    $('#textarea_feedback').html(text_length + '/250 caratteri');
                 });
             });
         </script>
@@ -161,7 +162,7 @@
 
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
                                     <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
-                                    
+
                                     <div class="input-group-btn">
                                         <!--<select class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search_category">Select category<span class="caret"></span></button>
                                             <option value="product">Product</option>
@@ -212,41 +213,41 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <%
-                                                if(userType.equals("0")) // registrato
-                                                        {
-                                                            %>
-                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                            <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
-                                                            <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                            <%
-                                                        }
-                                                        else if(userType.equals("1")) // venditore
-                                                        {
-                                                            %>
-                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
-                                                            <li><a href="userPage.jsp">Negozio</a></li>
-                                                            <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
-                                                            <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                            <%
-                                                        }
-                                                        else if(userType.equals("2")) //admin
-                                                        {
-                                                            %>
-                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                            <%
-                                                        }
-                                                        else { %>
-                                                            <li><a href="loginPage.jsp">Accedi</a></li>
-                                                            <li><a href="loginPage.jsp">Registrati</a></li>
-                                                        <%  } %>
+                                                if (userType.equals("0")) // registrato
+                                                {
+                                            %>
+                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                            <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                            <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
+                                            <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                <%
+                                                } else if (userType.equals("1")) // venditore
+                                                {
+                                                %>
+                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                            <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                                            <li><a href="userPage.jsp">Negozio</a></li>
+                                            <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
+                                            <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                <%
+                                                } else if (userType.equals("2")) //admin
+                                                {
+                                                %>
+                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                            <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                <%
+                                                } else { %>
+                                            <li><a href="loginPage.jsp">Accedi</a></li>
+                                            <li><a href="loginPage.jsp">Registrati</a></li>
+                                                <%  } %>
                                         </ul>  
                                     </div>
                                 </div>
@@ -374,66 +375,66 @@
                     <div class="tmargin col-xs-12 col-sm-10">
                         <div id="div_recensione">
                             <form id="review_form" action="ServletUpdateReview" method="post">
-                            <p>Scrivi una recensione per <span id="name_product">-prodotto-</span>:</p>
-                            <p><textarea name="review_name" id="titolo" rows="1" maxlength="50" placeholder="Titolo..."></textarea></p>
-                            <p><textarea name="review_text" id="recensione" rows="5" maxlength="250" placeholder="Descrizione..."></textarea></p>
-                            <p id="textarea_feedback"></p>
-                            <p>Qualità</p>
-                            <p class="rating one">
-                                <input type="radio" id="star5-1" name="quality_rating" value="5.0" /><label class = "full" for="star5-1" title="Perfetto - 5 stars"></label>
-                                <input type="radio" id="star4half-1" name="quality_rating" value="4.5" /><label class="half" for="star4half-1" title="Buono - 4.5 stars"></label>
-                                <input type="radio" id="star4-1" name="quality_rating" value="4.0" /><label class = "full" for="star4-1" title="Buono - 4 stars"></label>
-                                <input type="radio" id="star3half-1" name="quality_rating" value="3.5" /><label class="half" for="star3half-1" title="Medio - 3.5 stars"></label>
-                                <input type="radio" id="star3-1" name="quality_rating" value="3.0" /><label class = "full" for="star3-1" title="Medio - 3 stars"></label>
-                                <input type="radio" id="star2half-1" name="quality_rating" value="2.5" /><label class="half" for="star2half-1" title="Non buono - 2.5 stars"></label>
-                                <input type="radio" id="star2-1" name="quality_rating" value="2.0" /><label class = "full" for="star2-1" title="Non buono - 2 stars"></label>
-                                <input type="radio" id="star1half-1" name="quality_rating" value="1.5" /><label class="half" for="star1half-1" title="Non buono - 1.5 stars"></label>
-                                <input type="radio" id="star1-1" name="quality_rating" value="1.0" /><label class = "full" for="star1-1" title="Orribile - 1 star"></label>
-                                <input type="radio" id="starhalf-1" name="quality_rating" value="0.5" /><label class="half" for="starhalf-1" title="Orribile - 0.5 stars"></label>
-                            </p>
-                            <p>Servizio</p>
-                            <p class="rating two">
-                                <input type="radio" id="star5-2" name="service_rating" value="5.0" /><label class = "full" for="star5-2" title="Perfetto - 5 stars"></label>
-                                <input type="radio" id="star4half-2" name="service_rating" value="4.5" /><label class="half" for="star4half-2" title="Buono - 4.5 stars"></label>
-                                <input type="radio" id="star4-2" name="service_rating" value="4.0" /><label class = "full" for="star4-2" title="Buono - 4 stars"></label>
-                                <input type="radio" id="star3half-2" name="service_rating" value="3.5" /><label class="half" for="star3half-2" title="Medio - 3.5 stars"></label>
-                                <input type="radio" id="star3-2" name="service_rating" value="3.0" /><label class = "full" for="star3-2" title="Medio - 3 stars"></label>
-                                <input type="radio" id="star2half-2" name="service_rating" value="2.5" /><label class="half" for="star2half-2" title="Non buono - 2.5 stars"></label>
-                                <input type="radio" id="star2-2" name="service_rating" value="2.0" /><label class = "full" for="star2-2" title="Non buono - 2 stars"></label>
-                                <input type="radio" id="star1half-2" name="service_rating" value="1.5" /><label class="half" for="star1half-2" title="Non buono - 1.5 stars"></label>
-                                <input type="radio" id="star1-2" name="service_rating" value="1.0" /><label class = "full" for="star1-2" title="Orribile - 1 star"></label>
-                                <input type="radio" id="starhalf-2" name="service_rating" value="0.5" /><label class="half" for="starhalf-2" title="Orribile - 0.5 stars"></label>
-                            </p>
-                            <p>Rapporto qualità prezzo</p>
-                            <p class="rating three">
-                                <input type="radio" id="star5-3" name="value_rating" value="5.0" /><label class = "full" for="star5-3" title="Perfetto - 5 stars"></label>
-                                <input type="radio" id="star4half-3" name="value_rating" value="4.5" /><label class="half" for="star4half-3" title="Buono - 4.5 stars"></label>
-                                <input type="radio" id="star4-3" name="value_rating" value="4.0" /><label class = "full" for="star4-3" title="Buono - 4 stars"></label>
-                                <input type="radio" id="star3half-3" name="value_rating" value="3.5" /><label class="half" for="star3half-3" title="Medio - 3.5 stars"></label>
-                                <input type="radio" id="star3-3" name="value_rating" value="3.0" /><label class = "full" for="star3-3" title="Medio - 3 stars"></label>
-                                <input type="radio" id="star2half-3" name="value_rating" value="2.5" /><label class="half" for="star2half-3" title="Non buono - 2.5 stars"></label>
-                                <input type="radio" id="star2-3" name="value_rating" value="2.0" /><label class = "full" for="star2-3" title="Non buono - 2 stars"></label>
-                                <input type="radio" id="star1half-3" name="value_rating" value="1.5" /><label class="half" for="star1half-3" title="Non buono - 1.5 stars"></label>
-                                <input type="radio" id="star1-3" name="value_rating" value="1.0" /><label class = "full" for="star1-3" title="Orribile - 1 star"></label>
-                                <input type="radio" id="starhalf-3" name="value_rating" value="0.5" /><label class="half" for="starhalf-3" title="Orribile - 0.5 stars"></label>
-                            </p>
-                            <p>Giudizio globale</p>
-                            <p class="rating four">
-                                <input type="radio" id="star5-4" name="global_rating" value="5.0" /><label class = "full" for="star5-4" title="Perfetto - 5 stars"></label>
-                                <input type="radio" id="star4half-4" name="global_rating" value="4.5" /><label class="half" for="star4half-4" title="Buono - 4.5 stars"></label>
-                                <input type="radio" id="star4-4" name="global_rating" value="4.0" /><label class = "full" for="star4-4" title="Buono - 4 stars"></label>
-                                <input type="radio" id="star3half-4" name="global_rating" value="3.5" /><label class="half" for="star3half-4" title="Medio - 3.5 stars"></label>
-                                <input type="radio" id="star3-4" name="global_rating" value="3.0" /><label class = "full" for="star3-4" title="Medio - 3 stars"></label>
-                                <input type="radio" id="star2half-4" name="global_rating" value="2.5" /><label class="half" for="star2half-4" title="Non buono - 2.5 stars"></label>
-                                <input type="radio" id="star2-4" name="global_rating" value="2.0" /><label class = "full" for="star2-4" title="Non buono - 2 stars"></label>
-                                <input type="radio" id="star1half-4" name="global_rating" value="1.5" /><label class="half" for="star1half-4" title="Non buono - 1.5 stars"></label>
-                                <input type="radio" id="star1-4" name="global_rating" value="1.0" /><label class = "full" for="star1-4" title="Orribile - 1 star"></label>
-                                <input type="radio" id="starhalf-4" name="global_rating" value="0.5" /><label class="half" for="starhalf-4" title="Orribile - 0.5 stars"></label>
-                            </p>
-                            <p><a class='btn btn-default' role='button' onclick="submitForm()">Invia</a></p>
-                            <p name="id_review" display="none"></p>
-                            <p name="id_product" display="none"></p>
-                            <p name="to_update" display="none"></p>
+                                <p>Scrivi una recensione per <span id="name_product">-prodotto-</span>:</p>
+                                <p><textarea name="review_name" id="titolo" rows="1" maxlength="50" placeholder="Titolo..."></textarea></p>
+                                <p><textarea name="review_text" id="recensione" rows="5" maxlength="250" placeholder="Descrizione..."></textarea></p>
+                                <p id="textarea_feedback"></p>
+                                <p>Qualità</p>
+                                <p class="rating one">
+                                    <input type="radio" id="star5-1" name="quality_rating" value="5.0" /><label class = "full" for="star5-1" title="Perfetto - 5 stars"></label>
+                                    <input type="radio" id="star4half-1" name="quality_rating" value="4.5" /><label class="half" for="star4half-1" title="Buono - 4.5 stars"></label>
+                                    <input type="radio" id="star4-1" name="quality_rating" value="4.0" /><label class = "full" for="star4-1" title="Buono - 4 stars"></label>
+                                    <input type="radio" id="star3half-1" name="quality_rating" value="3.5" /><label class="half" for="star3half-1" title="Medio - 3.5 stars"></label>
+                                    <input type="radio" id="star3-1" name="quality_rating" value="3.0" /><label class = "full" for="star3-1" title="Medio - 3 stars"></label>
+                                    <input type="radio" id="star2half-1" name="quality_rating" value="2.5" /><label class="half" for="star2half-1" title="Non buono - 2.5 stars"></label>
+                                    <input type="radio" id="star2-1" name="quality_rating" value="2.0" /><label class = "full" for="star2-1" title="Non buono - 2 stars"></label>
+                                    <input type="radio" id="star1half-1" name="quality_rating" value="1.5" /><label class="half" for="star1half-1" title="Non buono - 1.5 stars"></label>
+                                    <input type="radio" id="star1-1" name="quality_rating" value="1.0" /><label class = "full" for="star1-1" title="Orribile - 1 star"></label>
+                                    <input type="radio" id="starhalf-1" name="quality_rating" value="0.5" /><label class="half" for="starhalf-1" title="Orribile - 0.5 stars"></label>
+                                </p>
+                                <p>Servizio</p>
+                                <p class="rating two">
+                                    <input type="radio" id="star5-2" name="service_rating" value="5.0" /><label class = "full" for="star5-2" title="Perfetto - 5 stars"></label>
+                                    <input type="radio" id="star4half-2" name="service_rating" value="4.5" /><label class="half" for="star4half-2" title="Buono - 4.5 stars"></label>
+                                    <input type="radio" id="star4-2" name="service_rating" value="4.0" /><label class = "full" for="star4-2" title="Buono - 4 stars"></label>
+                                    <input type="radio" id="star3half-2" name="service_rating" value="3.5" /><label class="half" for="star3half-2" title="Medio - 3.5 stars"></label>
+                                    <input type="radio" id="star3-2" name="service_rating" value="3.0" /><label class = "full" for="star3-2" title="Medio - 3 stars"></label>
+                                    <input type="radio" id="star2half-2" name="service_rating" value="2.5" /><label class="half" for="star2half-2" title="Non buono - 2.5 stars"></label>
+                                    <input type="radio" id="star2-2" name="service_rating" value="2.0" /><label class = "full" for="star2-2" title="Non buono - 2 stars"></label>
+                                    <input type="radio" id="star1half-2" name="service_rating" value="1.5" /><label class="half" for="star1half-2" title="Non buono - 1.5 stars"></label>
+                                    <input type="radio" id="star1-2" name="service_rating" value="1.0" /><label class = "full" for="star1-2" title="Orribile - 1 star"></label>
+                                    <input type="radio" id="starhalf-2" name="service_rating" value="0.5" /><label class="half" for="starhalf-2" title="Orribile - 0.5 stars"></label>
+                                </p>
+                                <p>Rapporto qualità prezzo</p>
+                                <p class="rating three">
+                                    <input type="radio" id="star5-3" name="value_rating" value="5.0" /><label class = "full" for="star5-3" title="Perfetto - 5 stars"></label>
+                                    <input type="radio" id="star4half-3" name="value_rating" value="4.5" /><label class="half" for="star4half-3" title="Buono - 4.5 stars"></label>
+                                    <input type="radio" id="star4-3" name="value_rating" value="4.0" /><label class = "full" for="star4-3" title="Buono - 4 stars"></label>
+                                    <input type="radio" id="star3half-3" name="value_rating" value="3.5" /><label class="half" for="star3half-3" title="Medio - 3.5 stars"></label>
+                                    <input type="radio" id="star3-3" name="value_rating" value="3.0" /><label class = "full" for="star3-3" title="Medio - 3 stars"></label>
+                                    <input type="radio" id="star2half-3" name="value_rating" value="2.5" /><label class="half" for="star2half-3" title="Non buono - 2.5 stars"></label>
+                                    <input type="radio" id="star2-3" name="value_rating" value="2.0" /><label class = "full" for="star2-3" title="Non buono - 2 stars"></label>
+                                    <input type="radio" id="star1half-3" name="value_rating" value="1.5" /><label class="half" for="star1half-3" title="Non buono - 1.5 stars"></label>
+                                    <input type="radio" id="star1-3" name="value_rating" value="1.0" /><label class = "full" for="star1-3" title="Orribile - 1 star"></label>
+                                    <input type="radio" id="starhalf-3" name="value_rating" value="0.5" /><label class="half" for="starhalf-3" title="Orribile - 0.5 stars"></label>
+                                </p>
+                                <p>Giudizio globale</p>
+                                <p class="rating four">
+                                    <input type="radio" id="star5-4" name="global_rating" value="5.0" /><label class = "full" for="star5-4" title="Perfetto - 5 stars"></label>
+                                    <input type="radio" id="star4half-4" name="global_rating" value="4.5" /><label class="half" for="star4half-4" title="Buono - 4.5 stars"></label>
+                                    <input type="radio" id="star4-4" name="global_rating" value="4.0" /><label class = "full" for="star4-4" title="Buono - 4 stars"></label>
+                                    <input type="radio" id="star3half-4" name="global_rating" value="3.5" /><label class="half" for="star3half-4" title="Medio - 3.5 stars"></label>
+                                    <input type="radio" id="star3-4" name="global_rating" value="3.0" /><label class = "full" for="star3-4" title="Medio - 3 stars"></label>
+                                    <input type="radio" id="star2half-4" name="global_rating" value="2.5" /><label class="half" for="star2half-4" title="Non buono - 2.5 stars"></label>
+                                    <input type="radio" id="star2-4" name="global_rating" value="2.0" /><label class = "full" for="star2-4" title="Non buono - 2 stars"></label>
+                                    <input type="radio" id="star1half-4" name="global_rating" value="1.5" /><label class="half" for="star1half-4" title="Non buono - 1.5 stars"></label>
+                                    <input type="radio" id="star1-4" name="global_rating" value="1.0" /><label class = "full" for="star1-4" title="Orribile - 1 star"></label>
+                                    <input type="radio" id="starhalf-4" name="global_rating" value="0.5" /><label class="half" for="starhalf-4" title="Orribile - 0.5 stars"></label>
+                                </p>
+                                <p><a class='btn btn-default' role='button' onclick="submitForm()">Invia</a></p>
+                                <p name="id_review" display="none"></p>
+                                <p name="id_product" display="none"></p>
+                                <p name="to_update" display="none"></p>
                             </form>
                         </div>
                     </div> 
@@ -442,7 +443,7 @@
                     <!-- back to top button -->
                     <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                    
+
                     <div class="col-xs-12 col-lg-12">
                         <!-- footer TODO -->
                         <footer style="background-color: #fc5d5d">
@@ -453,35 +454,35 @@
                                     <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
                                     <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
                                     <%
-                                        if(userType.equals("0")) // registrato
+                                        if (userType.equals("0")) // registrato
                                         {
                                     %>
-                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
-                                            <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
-                                            <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
-                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
+                                    <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
+                                    <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
 
-                                    <%  }
-                                        else if(userType.equals("1")) // venditore
-                                        {  %>
-                                            <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
-                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
-                                            <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
-                                            <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
-                                    <%  }
-                                        else if(userType.equals("2")) // admin
-                                        {  %> 
-                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                                    <%  }
-                                        else // non loggato
-                                        {  %>    
-                                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
-                                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
-                                    <%  }  %>        
+                                    <%  } else if (userType.equals("1")) // venditore
+                                    {  %>
+                                    <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
+                                    <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
+                                    <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
+                                    <%  } else if (userType.equals("2")) // admin
+                                    {  %> 
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <%  } else // non loggato
+                                    {  %>    
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
+                                    <%  }%>        
                                 </div>
                                 <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
                                     <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
@@ -500,8 +501,8 @@
 
                 </div>
             </div>
-            
-                            
+
+
 
             <!-- barra bianca a dx -->
             <div class="hidden-xs col-lg-1"></div>
@@ -509,94 +510,94 @@
 
 
 
-    <script>
-        console.log(jsonReview);
-        console.log(jsonNotifiche);
-                
-        // When the user scrolls down 20px from the top of the document, show the button
-        window.onscroll = function () {
-            scrollFunction()
-        };
-
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                document.getElementById("btnTop").style.display = "block";
-            } else {
-                document.getElementById("btnTop").style.display = "none";
-            }
-        }
-
-        // When the user clicks on the button, scroll to the top of the document
-        function topFunction() {
-            document.body.scrollTop = 0; // For Chrome, Safari and Opera 
-            document.documentElement.scrollTop = 0; // For IE and Firefox
-        }
-
-        // crea l'html per il button delle notifiche
-        function inserisciNotifiche()
-        {
-            console.log("INserisci notifiche");
+        <script>
+            console.log(jsonReview);
             console.log(jsonNotifiche);
-            console.log("-----");
-            
-            var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
-            var notificationCount = 0;
-            var notifiche = "";
-            var idNotifica;
-            for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
-            {
-                idNotifica = jsonNotifiche.notifications[i].id;
-                toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
-                toAdd += "<p>";
-                switch (jsonNotifiche.notifications[i].type)
-                {
-                    case "0":
-                        toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
-                        break;
-                    case "1":
-                        toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
-                        break;
-                    default:
-                        break;
-                }
 
-                if (jsonNotifiche.notifications[i].already_read === "0") {
-                    //toAdd += "<p style=\"color: red\">";
-                    notificationCount++;
-                    toAdd += " <b style=\"color: red\">NEW!</b> </p>";
-                    toAdd += "<div class=\"dotsEndSentence\"><b>" + jsonNotifiche.notifications[i].description + "</b></div>";
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function () {
+                scrollFunction()
+            };
+
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("btnTop").style.display = "block";
                 } else {
-                    toAdd += "</p>";
-                    toAdd += "<div class=\"dotsEndSentence\">" + jsonNotifiche.notifications[i].description + "</div>";
+                    document.getElementById("btnTop").style.display = "none";
+                }
+            }
+
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+                document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+                document.documentElement.scrollTop = 0; // For IE and Firefox
+            }
+
+            // crea l'html per il button delle notifiche
+            function inserisciNotifiche()
+            {
+                console.log("INserisci notifiche");
+                console.log(jsonNotifiche);
+                console.log("-----");
+
+                var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
+                var notificationCount = 0;
+                var notifiche = "";
+                var idNotifica;
+                for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+                {
+                    idNotifica = jsonNotifiche.notifications[i].id;
+                    toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
+                    toAdd += "<p>";
+                    switch (jsonNotifiche.notifications[i].type)
+                    {
+                        case "0":
+                            toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
+                            break;
+                        case "1":
+                            toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (jsonNotifiche.notifications[i].already_read === "0") {
+                        //toAdd += "<p style=\"color: red\">";
+                        notificationCount++;
+                        toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                        toAdd += "<div class=\"dotsEndSentence\"><b>" + jsonNotifiche.notifications[i].description + "</b></div>";
+                    } else {
+                        toAdd += "</p>";
+                        toAdd += "<div class=\"dotsEndSentence\">" + jsonNotifiche.notifications[i].description + "</div>";
+
+                    }
+
+                    // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
+                    toAdd += "</a><hr>";
 
                 }
+                toAdd += "</div>";
+                toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
 
-                // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
-                toAdd += "</a><hr>";
+                if (notificationCount > 99)
+                    notificationCount = "99+";
+                $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+                $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
 
+                return toAdd;
             }
-            toAdd += "</div>";
-            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
 
-            if (notificationCount > 99)
-                notificationCount = "99+";
-            $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
-            $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
-
-            return toAdd;
-        }
-
-        // gestione POPOVER button notifiche
-        $(document).ready(function () {
-            $('[data-toggle="popover"]').popover({
-                container: 'body'
+            // gestione POPOVER button notifiche
+            $(document).ready(function () {
+                $('[data-toggle="popover"]').popover({
+                    container: 'body'
+                });
             });
-        });
-        
-        // inizializzo menu notifiche
-        $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
+
+            // inizializzo menu notifiche
+            $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
 
 
-    </script>
-</body>
+        </script>
+    </body>
 </html>

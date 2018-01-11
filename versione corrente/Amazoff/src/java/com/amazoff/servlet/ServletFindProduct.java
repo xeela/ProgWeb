@@ -54,23 +54,23 @@ public class ServletFindProduct extends HttpServlet {
             if (MyDatabaseManager.cpds != null) {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
-                ResultSet results = null, resultsImages = null;
+                ResultSet results, resultsImages;
                 String query = "";
                 
                 if(recensioneReceived != null){
                     /** in caso l'utente abbia specificato il filtro della distanza, i prodotti cercati saranno in un determinato raggio dalla sua posizione */
                     if(distanzaReceived != null){
                         query += "SELECT DISTINCT products.*, "
-                                + " users.LAST_NAME, users.FIRST_NAME, " 
-                                + " shops.NAME, shops.WEB_SITE_URL," 
-                                + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
-                                + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_blobal_value "
+                                + "users.LAST_NAME, users.FIRST_NAME, " 
+                                + "shops.NAME, shops.WEB_SITE_URL, " 
+                                + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews, "
+                                + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value, "
                                 + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                                 + "* COS(RADIANS(" + userLat + ")) "
                                 + "* COS(RADIANS(lng - " + userLng + ")) "
                                 + "+ SIN(RADIANS(lat)) "
                                 + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
-                                + "FROM products, shops, shops_coordinates, users, , pictures, "
+                                + "FROM products, shops, shops_coordinates, users, pictures, "
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
                                 + "WHERE products.id = sub.id AND products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
@@ -82,10 +82,10 @@ public class ServletFindProduct extends HttpServlet {
                     } else {
                         /** ALTRIMENTI, verranno restituiti tutti i prodotti che soddifano il criterio di ricerca per recensione */
                         query += "SELECT DISTINCT products.*, "
-                                + " users.LAST_NAME, users.FIRST_NAME, "
-                                + " shops.NAME, shops.WEB_SITE_URL," 
-                                + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
-                                + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_blobal_value "
+                                + "users.LAST_NAME, users.FIRST_NAME, "
+                                + "shops.NAME, shops.WEB_SITE_URL, " 
+                                + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews, "
+                                + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value "
                                 + "FROM products, shops, users, pictures,"
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
@@ -96,10 +96,10 @@ public class ServletFindProduct extends HttpServlet {
                     }
                 } else if(distanzaReceived != null){
                     query += "SELECT DISTINCT products.*, "
-                            + " users.LAST_NAME, users.FIRST_NAME, "
-                            + " shops.NAME, shops.WEB_SITE_URL," 
-                            + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews "
-                            + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_blobal_value "
+                            + "users.LAST_NAME, users.FIRST_NAME, "
+                            + "shops.NAME, shops.WEB_SITE_URL, " 
+                            + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews, "
+                            + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value, "
                             + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                             + "* COS(RADIANS(" + userLat + ")) "
                             + "* COS(RADIANS(lng - " + userLng + ")) "
@@ -107,16 +107,16 @@ public class ServletFindProduct extends HttpServlet {
                             + "* SIN(RADIANS(" + userLat + "))))) AS dist_in_km "
                             + "FROM products, shops, shops_coordinates, users, pictures "
                             + "WHERE products.id_shop = shops.id AND shops_coordinates.id_shop = shops.id "
-                            + "AND products.available > "
+                            + "AND products.available > 0 "
                             + "AND products.ritiro = 1 "
                             + "AND products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                             + "HAVING dist_in_km <= " + distanzaReceived + " AND ";
                 } else {
-                    query += "SELECT DISTINCT products.*,  "
-                            + " users.LAST_NAME, users.FIRST_NAME, "
-                            + " shops.NAME, shops.WEB_SITE_URL," 
+                    query += "SELECT DISTINCT products.*, "
+                            + "users.LAST_NAME, users.FIRST_NAME, "
+                            + "shops.NAME, shops.WEB_SITE_URL," 
                             + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews, "
-                            + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_blobal_value "
+                            + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value "
                             + "FROM products, shops, users, pictures "
                             + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                             + "AND products.available > 0 "
@@ -141,7 +141,7 @@ public class ServletFindProduct extends HttpServlet {
                         query += "shops.name LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ORDER BY products.price ASC;";
                         break;
                     case "category":                    
-                        query += "products.category LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ORDER BY products.price ASC;";
+                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
                         break;
                     default:
                         break;

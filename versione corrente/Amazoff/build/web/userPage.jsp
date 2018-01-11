@@ -81,7 +81,7 @@
                 } else
                 {
                     console.log($('#newpwd').val());
-                     console.log("password ok");
+                    console.log("password ok");
                     //$("#progressBar").css("display", "block");
                     var newPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash($('#newpwd').val()));
                     for (var i = 0; i < 10000; i++)
@@ -89,15 +89,15 @@
                     //alert(newPwd);
                     document.RegisterForm.hashedPassword.value = newPwd;
                     document.RegisterForm.newpwd.value = "";
-                    
+
                     var oldPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash($('#oldpwd').val()));
                     for (var i = 0; i < 10000; i++)
                         oldPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(oldPwd));
                     //alert(newPwd);
                     document.RegisterForm.oldhashedPassword.value = oldPwd;
                     document.RegisterForm.oldpwd.value = "";
-                    
-                    
+
+
                     return true;
                 }
                 return false;
@@ -225,7 +225,7 @@
                     latLng.lat(),
                     latLng.lng()
                 ].join(';');
-                
+
             }
             function initialize() {
                 latLng = new google.maps.LatLng(41.9, 12.5);
@@ -266,32 +266,33 @@
 
             // Onload handler to fire off the app.
             google.maps.event.addDomListener(window, 'load', initialize);
-            function checkProductData(){
+            function checkProductData() {
                 /*console.log(document.getElementById("prname").value);
-                    console.log(document.getElementById("prdesc").value);
-                    console.log(document.getElementById("prprice").value);
-                    console.log(parseFloat(document.getElementById("prprice").value));*/
-                if(document.getElementById("prname").value !== "" && document.getElementById("prname").value !== undefined &&
-                   document.getElementById("prdesc").value !== "" && document.getElementById("prname").value !== undefined &&
-                   document.getElementById("prprice").value !== "" && document.getElementById("prname").value !== undefined &&
-                       !isNaN(parseFloat(document.getElementById("prprice").value)))
-                       
+                 console.log(document.getElementById("prdesc").value);
+                 console.log(document.getElementById("prprice").value);
+                 console.log(parseFloat(document.getElementById("prprice").value));*/
+                if (document.getElementById("prname").value !== "" && document.getElementById("prname").value !== undefined &&
+                        document.getElementById("prdesc").value !== "" && document.getElementById("prname").value !== undefined &&
+                        document.getElementById("prprice").value !== "" && document.getElementById("prname").value !== undefined &&
+                        !isNaN(parseFloat(document.getElementById("prprice").value)))
+
                 {
                     return true;
                 }
                 return false;
             }
         </script>    
-        
+
         <!-- script gestione sezione "DATI NEGOZIO" -->
         <script>
             CheckShopData()
             {
-                if 
+                if
             }
         </script>
     </head>
-    <body class="bodyStyle" onload="Autocomplete('product'); document.getElementById('btnVendi').addEventListener ('click', checkProductData, false); ">
+    <body class="bodyStyle" onload="Autocomplete('product');
+            document.getElementById('btnVendi').addEventListener('click', checkProductData, false);">
 
         <div class="container-fluid tmargin">
 
@@ -343,7 +344,7 @@
 
                                 <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
                                 <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
-                                
+
                                 <div class="input-group-btn">
                                     <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
@@ -548,27 +549,29 @@
                                                         </span>
                                                     </div>
 
-                                                    
+
                                                 </form>
-                                                 <div class="form-group tmargin">
-                                                        <button id="btnRegistrati" class="btn btn-default" onclick="if(HashPasswordRegister()){document.getElementById('RegisterForm').submit();}" >Aggiorna dati</button>
-                                                        <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
-                                                    </div>
-                                                 
+                                                <div class="form-group tmargin">
+                                                    <button id="btnRegistrati" class="btn btn-default" onclick="if (HashPasswordRegister()) {
+                                                                document.getElementById('RegisterForm').submit();
+                                                            }" >Aggiorna dati</button>
+                                                    <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
+                                                </div>
+
                                                 <div class="alert alert-danger alert-dismissible" style="<% 
                                                             if(session.getAttribute("errorMessage") != Errors.resetError) { %> visibility: visible<%} else {%>visibility:hidden<%}%>" id="alertRegistrati" role="alert">
-                        
-                                                        <!-- div che visualizza il messaggio di errore durante il login -->
-                                                        <% 
+
+                                                    <!-- div che visualizza il messaggio di errore durante il login -->
+                                                    <% 
                                                             if(session.getAttribute("errorMessage") != Errors.resetError) { %>   
-                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
-                                                        <% } %>
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
+                                                    <% } %>
 
                                                 </div>
-                                                            <%
-                                                            session.setAttribute("errorMessage", Errors.resetError);
-                                                        %>
+                                                <%
+                                                session.setAttribute("errorMessage", Errors.resetError);
+                                                %>
                                             </div>
                                         </div>
                                     </div>                                                  
@@ -598,9 +601,9 @@
                                             <div class="row">
                                                 <div class="col-sm-4 col-sm-offset-2">
                                                     <div class="row">
-                                                            <h3 class="">Inserisci Dati Negozio</h3>
+                                                        <h3 class="">Inserisci Dati Negozio</h3>
                                                     </div>
-                                                    
+
                                                     <div class="row">
                                                         <p></p>
                                                         <b>Nome</b>
@@ -614,7 +617,7 @@
                                                     <div class="row">
                                                         <p></p>
                                                         <b>Website</b>
-                                                            <p><input type="url" name="website" placeholder="URL" class="col-lg-10"/></p>
+                                                        <p><input type="url" name="website" placeholder="URL" class="col-lg-10"/></p>
                                                     </div>
                                                     <div class="row">
                                                         <p></p>
@@ -655,351 +658,355 @@
                                                 </div>
                                             </div>
                                             <br/><br/><br/>
-                                            
+
                                         </form>
                                     </div>         
                                 </div>
                             </div>
-                                    <%
-                                    } else if (userType.equals("1")) // venditore
-                                    { %>
-                                    <!--<a href="profilePage.jsp" class="list-group-item">
-                                      <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                      Profilo
-                                    </a> -->
-                                    <div id="notifiche" class="list-group-item">
-                                        <div role="tablist" aria-multiselectable="true">
-                                            Notifiche 
-                                            <a data-toggle="collapse" data-parent="#accordion"
-                                               href="#collapseNotifiche" aria-expanded="true" 
-                                               aria-controls="collapseNotifiche" >
-                                                <span class='glyphicon glyphicon-option-vertical'></span>
-                                            </a>
-
-                                            <div id="collapseNotifiche" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                                <div class="row">
-                                                    <div class="col-lg-2"></div>
-                                                    <div id="div_notifiche" class="col-lg-8">
-
-                                                    </div>    
-                                                </div>
-                                            </div>                                                  
-                                        </div>
-                                    </div>
-                                   <!--
-                                    <a href=".jsp" class="list-group-item">
-                                        <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                        Negozio TO DO...
+                            <%
+                            } else if (userType.equals("1")) // venditore
+                            { %>
+                            <!--<a href="profilePage.jsp" class="list-group-item">
+                              <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                              Profilo
+                            </a> -->
+                            <div id="notifiche" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">
+                                    Notifiche 
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseNotifiche" aria-expanded="true" 
+                                       aria-controls="collapseNotifiche" >
+                                        <span class='glyphicon glyphicon-option-vertical'></span>
                                     </a>
-                                   -->
-                                    <div class="list-group-item">  
-                                        <div id="negozio" role="tablist" aria-multiselectable="true">
-                                            Dati Negozio 
-                                            <a data-toggle="collapse" data-parent="#accordion"
-                                               href="#collapseNegozio" aria-expanded="true" 
-                                               aria-controls="collapseNegozio" >
-                                                <span class='glyphicon glyphicon-option-vertical'></span>
-                                            </a>
-                                            <div id="collapseNegozio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                                                <div class="row">
-                                                    <div class="col-lg-3"></div>
-                                                    <div class="col-lg-6">
-                                                        <h3 style="text-align: center">Aggiorna i dati del tuo Business:</h3>
-                                                        <form  style="text-align: center" class="form-group" id="ShopForm" name="ShopForm" action="ServletUpdateNegozio" method="POST" >
-                                                            <div class="row">
-                                                                
-                                                            </div>
-                                                            
-                                                            
-                                                            <div class="form-group">
-                                                                <b>Nome del Negozio</b>
-                                                                <input id="shop_website" type="text" name="shop_name" class="form-control" value="<%if(session.getAttribute("shop_name") != null){%><%= session.getAttribute("shop_name")%><%} else {}%>" placeholder="<%if(session.getAttribute("shop_name") != null){%> <%= session.getAttribute("shop_name")%><% }else{%>Nome negozio<%}%>" aria-describedby="sizing-addon2">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <b>Descrizione</b>
-                                                                <input id="shop_description" type="text" name="shop_description" class="form-control" value ="<%if(session.getAttribute("shop_description") != null){%><%= session.getAttribute("shop_description")%><%} else {} %>" placeholder="<%if(session.getAttribute("shop_description") != null){%> <%= session.getAttribute("shop_description")%><% }else{%>Descrizione negozio<%}%>" aria-describedby="sizing-addon2">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <b>sito web</b>
-                                                                <input id="shop_website" type="url" name="shop_website" class="form-control" value ="<%if(session.getAttribute("shop_website") != null){%><%= session.getAttribute("shop_website")%><%} else {} %>" placeholder="<%if(session.getAttribute("shop_website") != null){%> <%= session.getAttribute("shop_website")%><% }else{%>Website<%}%>" aria-describedby="sizing-addon2">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <p></p>
-                                                                <b>Giorni di apertura</b>
-                                                                    <div>
-                                                                        <input name="mon" type="checkbox" value="true"/> Lunedì 
-                                                                        <input name="tue" type="checkbox" value="true"/> Martedì
-                                                                        <input name="wed" type="checkbox" value="true"/> Mercoledì 
-                                                                        <input name="thu" type="checkbox" value="true"/> Giovedì  
-                                                                        <input name="fri" type="checkbox" value="true"/> Venerdì   
-                                                                        <input name="sat" type="checkbox" value="true"/> Sabato   
-                                                                        <input name="sun" type="checkbox" value="true"/> Domenica   
 
-                                                                    </div>
-                                                            </div>
+                                    <div id="collapseNotifiche" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="row">
+                                            <div class="col-lg-2"></div>
+                                            <div id="div_notifiche" class="col-lg-8">
+
+                                            </div>    
+                                        </div>
+                                    </div>                                                  
+                                </div>
+                            </div>
+                            <!--
+                             <a href=".jsp" class="list-group-item">
+                                 <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                                 Negozio TO DO...
+                             </a>
+                            -->
+                            <div class="list-group-item">  
+                                <div id="negozio" role="tablist" aria-multiselectable="true">
+                                    Dati Negozio 
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseNegozio" aria-expanded="true" 
+                                       aria-controls="collapseNegozio" >
+                                        <span class='glyphicon glyphicon-option-vertical'></span>
+                                    </a>
+                                    <div id="collapseNegozio" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="row">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-6">
+                                                <h3 style="text-align: center">Aggiorna i dati del tuo Business:</h3>
+                                                <form  style="text-align: center" class="form-group" id="ShopForm" name="ShopForm" action="ServletUpdateNegozio" method="POST" >
+                                                    <div class="row">
+
+                                                    </div>
 
 
-                                                        </form>
-                                                         <div class="form-group tmargin">
-                                                                <button id="btnRegistrati" class="btn btn-default" onclick="if(CheckShopData()){document.getElementById('ShopForm').submit();}" >Aggiorna dati</button>
-                                                                <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
-                                                            </div>
-
-                                                        <div class="alert alert-danger alert-dismissible" style="<% 
-                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %> visibility: visible<%} else {%>visibility:hidden<%}%>" id="alertRegistrati" role="alert">
-
-                                                                <!-- div che visualizza il messaggio di errore durante il login -->
-                                                                <% 
-                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %>   
-                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                        <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
-                                                                <% } %>
+                                                    <div class="form-group">
+                                                        <b>Nome del Negozio</b>
+                                                        <input id="shop_website" type="text" name="shop_name" class="form-control" value="<%if(session.getAttribute("shop_name") != null){%><%= session.getAttribute("shop_name")%><%} else {}%>" placeholder="<%if(session.getAttribute("shop_name") != null){%> <%= session.getAttribute("shop_name")%><% }else{%>Nome negozio<%}%>" aria-describedby="sizing-addon2">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <b>Descrizione</b>
+                                                        <input id="shop_description" type="text" name="shop_description" class="form-control" value ="<%if(session.getAttribute("shop_description") != null){%><%= session.getAttribute("shop_description")%><%} else {} %>" placeholder="<%if(session.getAttribute("shop_description") != null){%> <%= session.getAttribute("shop_description")%><% }else{%>Descrizione negozio<%}%>" aria-describedby="sizing-addon2">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <b>sito web</b>
+                                                        <input id="shop_website" type="url" name="shop_website" class="form-control" value ="<%if(session.getAttribute("shop_website") != null){%><%= session.getAttribute("shop_website")%><%} else {} %>" placeholder="<%if(session.getAttribute("shop_website") != null){%> <%= session.getAttribute("shop_website")%><% }else{%>Website<%}%>" aria-describedby="sizing-addon2">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <p></p>
+                                                        <b>Giorni di apertura</b>
+                                                        <div>
+                                                            <input name="mon" type="checkbox" value="true"/> Lunedì 
+                                                            <input name="tue" type="checkbox" value="true"/> Martedì
+                                                            <input name="wed" type="checkbox" value="true"/> Mercoledì 
+                                                            <input name="thu" type="checkbox" value="true"/> Giovedì  
+                                                            <input name="fri" type="checkbox" value="true"/> Venerdì   
+                                                            <input name="sat" type="checkbox" value="true"/> Sabato   
+                                                            <input name="sun" type="checkbox" value="true"/> Domenica   
 
                                                         </div>
-                                                                    <%
-                                                                    session.setAttribute("errorMessage", Errors.resetError);
-                                                                %>
                                                     </div>
+
+
+                                                </form>
+                                                <div class="form-group tmargin">
+                                                    <button id="btnRegistrati" class="btn btn-default" onclick="if (CheckShopData()) {
+                                                                document.getElementById('ShopForm').submit();
+                                                            }" >Aggiorna dati</button>
+                                                    <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
                                                 </div>
-                                            </div>                                                  
-                                        </div>
-                                    </div>
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    <div id="sellNewProduct" class="list-group-item">
-                                        <div role="tablist" aria-multiselectable="true">
-                                            Vendi prodotto 
-                                            <a data-toggle="collapse" data-parent="#accordion"
-                                               href="#collapseSellNewProduct" aria-expanded="true" 
-                                               aria-controls="collapseSellProduct" >
-                                                <span class='glyphicon glyphicon-option-vertical'></span>
-                                            </a>
 
-                                            <div id="collapseSellNewProduct" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                                <div class="row">
-                                                    <div class="col-lg-3"></div>
-                                                    <div class="col-lg-6">
-                                                        <h3 class="alignCenter">Cosa vuoi vendere?</h3>
-                                                        <form id="vendiForm" ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct' >
-                                                            <div class="form-group">
-                                                                <input id="prname" name="nome" type="text" class="form-control" placeholder="Nome Prodotto" aria-describedby="basic-addon1"></input>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <input id="prdesc" name="descrizione" type="text" class="form-control" placeholder="Descrizione" aria-describedby="basic-addon1"></input>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <input id="prprice" name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1"></input>
-                                                            </div>
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Categoria<span class="caret"></span></button>
-                                                                <ul class="dropdown-menu scrollable-menu" role="menu" name ="categoria">
-                                                                    <li><a href="#" value="0" selected="selected"> Abbigliamento</a></li>
-                                                                    <li><a href="#" value="1"> Alimentari</a></li>
-                                                                    <li><a href="#" value="2"> Auto</a></li>
-                                                                    <li><a href="#" value="3"> Bellezza</a></li>
-                                                                    <li><a href="#" value="4"> Cancelleria</a></li>
-                                                                    <li><a href="#" value="5"> Casa</a></li>
-                                                                    <li><a href="#" value="6"> CD</a></li>
-                                                                    <li><a href="#" value="7"> Elettronica</a></li>
-                                                                    <li><a href="#" value="8"> Fai Da Te</a></li>
-                                                                    <li><a href="#" value="9"> Film</a></li>
-                                                                    <li><a href="#" value="10"> Giochi</a></li>
-                                                                    <li><a href="#" value="11"> Gioielli</a></li>
-                                                                    <li><a href="#" value="12"> Illuminazione</a></li>
-                                                                    <li><a href="#" value="13"> Informatica</a></li>
-                                                                    <li><a href="#" value="14"> Libri</a></li>
-                                                                    <li><a href="#" value="15"> Musica</a></li>
-                                                                    <li><a href="#" value="16"> Orologi</a></li>
-                                                                    <li><a href="#" value="17"> Salute</a></li>
-                                                                    <li><a href="#" value="18"> Sport</a></li>
-                                                                    <li><a href="#" value="19"> Valigie</a></li>
-                                                                    <li><a href="#" value="20"> Videogiochi</a></li>
-                                                                </ul>
-                                                            </div>
-                                                            <p>Tipo di consegna:</p>
-                                                            <div class="form-group">
-                                                                <div class="radio">
-                                                                    <label><input value="spedizione" type="radio" name="consegna" checked>Spedizione standard</label>
-                                                                    
-                                                                  </div>
-                                                                  <div class="radio">
-                                                                    <label><input value="ritiro" type="radio" name="consegna" >Ritiro in sede</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1" accept=".jpg, .jpeg, .png, .gif">
-                                                                <!-- [5+] Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1"> -->
-                                                            </div>
-                                                            
-                                                            <div class="form-group">
-                                                                <!--<input TYPE='submit' hidden="true" NAME='productPic1' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
-                                                            --></div>
-                                                        </form>
-                                                        <button id="btnVendi" type='button' class="btn-primary" onclick="if(checkProductData()){document.getElementById('vendiForm').submit();}">Aggiungi Prodotto</button>
+                                                <div class="alert alert-danger alert-dismissible" style="<% 
+                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %> visibility: visible<%} else {%>visibility:hidden<%}%>" id="alertRegistrati" role="alert">
 
-                                                    </div>    
+                                                    <!-- div che visualizza il messaggio di errore durante il login -->
+                                                    <% 
+                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %>   
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
+                                                    <% } %>
+
                                                 </div>
-                                            </div>                                                  
+                                                <%
+                                                session.setAttribute("errorMessage", Errors.resetError);
+                                                %>
+                                            </div>
                                         </div>
-                                    </div>
-
-
-                                    <a id="gestisciProdotti" href=".jsp" class="list-group-item">
-                                        <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                        Gestisci prodotti
-                                    </a>
-                                    <%
-                                    } else if (userType.equals("2")) //admin
-                                    { %>
-                                    <div class="list-group-item">
-                                        <div role="tablist" aria-multiselectable="true">
-                                            Notifiche TMP 2
-                                            <a data-toggle="collapse" data-parent="#accordion"
-                                               href="#collapseTwo" aria-expanded="true" 
-                                               aria-controls="collapseTwo" >
-                                                <span class='glyphicon glyphicon-option-vertical'></span>
-                                            </a>
-
-                                            <div id="collapseTwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                                <div class="row">
-                                                    <div class="col-lg-3"></div>
-                                                    <div class="col-lg-6">
-                                                        <h3 class="alignCenter">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. </h3>
-                                                    </div>    
-                                                </div>
-                                            </div>                                                  
-                                        </div>
-                                    </div>
-                                    <% } %>
-
-                                    <a id="esci" href="/Amazoff/ServletLogout" class="list-group-item active">
-                                        <span class="badge"><span class='glyphicon glyphicon-log-out'></span></span>
-                                        Esci
-                                    </a>
-
-                                    </ul>   
+                                    </div>                                                  
                                 </div>
                             </div>
 
-                            <!-- back to top button -->
-                            <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                            <!-- footer --
-                            <footer style="background-color: red">
-                                <p>&copy; Company 2017</p>
-                            </footer> -->
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div id="sellNewProduct" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">
+                                    Vendi prodotto 
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseSellNewProduct" aria-expanded="true" 
+                                       aria-controls="collapseSellProduct" >
+                                        <span class='glyphicon glyphicon-option-vertical'></span>
+                                    </a>
+
+                                    <div id="collapseSellNewProduct" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="row">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-6">
+                                                <h3 class="alignCenter">Cosa vuoi vendere?</h3>
+                                                <form id="vendiForm" ENCTYPE='multipart/form-data' method='POST' action='ServletAddProduct' >
+                                                    <div class="form-group">
+                                                        <input id="prname" name="nome" type="text" class="form-control" placeholder="Nome Prodotto" aria-describedby="basic-addon1"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input id="prdesc" name="descrizione" type="text" class="form-control" placeholder="Descrizione" aria-describedby="basic-addon1"></input>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input id="prprice" name="prezzo" type="text" class="form-control" placeholder="Prezzo" aria-describedby="basic-addon1"></input>
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Categoria<span class="caret"></span></button>
+                                                        <ul class="dropdown-menu scrollable-menu" role="menu" name ="categoria">
+                                                            <li><a href="#" value="0" selected="selected"> Abbigliamento</a></li>
+                                                            <li><a href="#" value="1"> Alimentari</a></li>
+                                                            <li><a href="#" value="2"> Auto</a></li>
+                                                            <li><a href="#" value="3"> Bellezza</a></li>
+                                                            <li><a href="#" value="4"> Cancelleria</a></li>
+                                                            <li><a href="#" value="5"> Casa</a></li>
+                                                            <li><a href="#" value="6"> CD</a></li>
+                                                            <li><a href="#" value="7"> Elettronica</a></li>
+                                                            <li><a href="#" value="8"> Fai Da Te</a></li>
+                                                            <li><a href="#" value="9"> Film</a></li>
+                                                            <li><a href="#" value="10"> Giochi</a></li>
+                                                            <li><a href="#" value="11"> Gioielli</a></li>
+                                                            <li><a href="#" value="12"> Illuminazione</a></li>
+                                                            <li><a href="#" value="13"> Informatica</a></li>
+                                                            <li><a href="#" value="14"> Libri</a></li>
+                                                            <li><a href="#" value="15"> Musica</a></li>
+                                                            <li><a href="#" value="16"> Orologi</a></li>
+                                                            <li><a href="#" value="17"> Salute</a></li>
+                                                            <li><a href="#" value="18"> Sport</a></li>
+                                                            <li><a href="#" value="19"> Valigie</a></li>
+                                                            <li><a href="#" value="20"> Videogiochi</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <p>Tipo di consegna:</p>
+                                                    <div class="form-group">
+                                                        <div class="radio">
+                                                            <label><input value="spedizione" type="radio" name="consegna" checked>Spedizione standard</label>
+
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label><input value="ritiro" type="radio" name="consegna" >Ritiro in sede</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input TYPE='file' NAME='productPic' class="btn btn-default form-control" aria-describedby="basic-addon1" accept=".jpg, .jpeg, .png, .gif">
+                                                        <!-- [5+] Multiple file:<input multiple TYPE='file' NAME='productPic3' class="btn btn-default form-control" aria-describedby="basic-addon1"> -->
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <!--<input TYPE='submit' hidden="true" NAME='productPic1' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
+                                                        --></div>
+                                                </form>
+                                                <button id="btnVendi" type='button' class="btn-primary" onclick="if (checkProductData()) {
+                                                            document.getElementById('vendiForm').submit();
+                                                        }">Aggiungi Prodotto</button>
+
+                                            </div>    
+                                        </div>
+                                    </div>                                                  
+                                </div>
+                            </div>
+
+
+                            <a id="gestisciProdotti" href=".jsp" class="list-group-item">
+                                <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
+                                Gestisci prodotti
+                            </a>
+                            <%
+                            } else if (userType.equals("2")) //admin
+                            { %>
+                            <div class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">
+                                    Notifiche TMP 2
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseTwo" aria-expanded="true" 
+                                       aria-controls="collapseTwo" >
+                                        <span class='glyphicon glyphicon-option-vertical'></span>
+                                    </a>
+
+                                    <div id="collapseTwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="row">
+                                            <div class="col-lg-3"></div>
+                                            <div class="col-lg-6">
+                                                <h3 class="alignCenter">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. </h3>
+                                            </div>    
+                                        </div>
+                                    </div>                                                  
+                                </div>
+                            </div>
+                            <% } %>
+
+                            <a id="esci" href="/Amazoff/ServletLogout" class="list-group-item active">
+                                <span class="badge"><span class='glyphicon glyphicon-log-out'></span></span>
+                                Esci
+                            </a>
+
+                        </ul>   
                     </div>
-
-                    <!-- barra bianca a dx -->
-                    <div class="hidden-xs col-lg-1"></div>
                 </div>
 
+                <!-- back to top button -->
+                <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
+
+                <!-- footer --
+                <footer style="background-color: red">
+                    <p>&copy; Company 2017</p>
+                </footer> -->
+
+            </div>
+
+            <!-- barra bianca a dx -->
+            <div class="hidden-xs col-lg-1"></div>
+        </div>
 
 
-                <script>
-                    // When the user scrolls down 20px from the top of the document, show the button
-                    window.onscroll = function () {
-                        scrollFunction()
-                    };
 
-                    function scrollFunction() {
-                        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                            document.getElementById("btnTop").style.display = "block";
-                        } else {
-                            document.getElementById("btnTop").style.display = "none";
-                        }
-                    }
+        <script>
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function () {
+                scrollFunction()
+            };
 
-                    // When the user clicks on the button, scroll to the top of the document
-                    function topFunction() {
-                        document.body.scrollTop = 0; // For Chrome, Safari and Opera 
-                        document.documentElement.scrollTop = 0; // For IE and Firefox
-                    }
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("btnTop").style.display = "block";
+                } else {
+                    document.getElementById("btnTop").style.display = "none";
+                }
+            }
 
-                    function inserisciNotifiche()
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+                document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+                document.documentElement.scrollTop = 0; // For IE and Firefox
+            }
+
+            function inserisciNotifiche()
+            {
+                var toAdd = "";
+                var idNotifica;
+
+                for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+                {
+                    idNotifica = jsonNotifiche.notifications[i].id;
+                    toAdd += "<div id=\"notifica" + idNotifica + "\" class=\"panel-group\" role=\"tablist\" aria-multiselectable=\"true\">";
+                    switch (jsonNotifiche.notifications[i].type)
                     {
-                        var toAdd = "";
-                        var idNotifica;
-
-                        for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
-                        {
-                            idNotifica = jsonNotifiche.notifications[i].id;
-                            toAdd += "<div id=\"notifica" + idNotifica + "\" class=\"panel-group\" role=\"tablist\" aria-multiselectable=\"true\">";
-                            switch (jsonNotifiche.notifications[i].type)
-                            {
-                                case "0":
-                                    toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
-                                    break;
-                                case "1":
-                                    toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
-                                    break;
-                                default:
-                                    break;
-                            }
-                            toAdd += jsonNotifiche.notifications[i].description;
-                            toAdd += "      <div id=\"collapse" + idNotifica + "\" class=\"panel-collapse collapse out\" role=\"tabpanel\" aria-labelledby=\"heading" + idNotifica + "\">";
-                            toAdd += "tutto il messaggio. per ora non esiste un campo nel db in cui è salvato. E' solo presente una 'descrizione' = " + jsonNotifiche.notifications[i].description;
-                            toAdd += "      </div>";
-                            toAdd += "      <br>";
-                            toAdd += "      <a data-toggle=\"collapse\" data-parent=\"#accordion\"";
-                            toAdd += "         href=\"#collapse" + idNotifica + "\" aria-expanded=\"true\" aria-controls=\"collapse" + idNotifica + "\">";
-                            toAdd += "         <span class=\"glyphicon glyphicon-option-horizontal\"></span>";
-                            toAdd += "      </a>";
-                            toAdd += " </div>";
-                        }
-
-                        return toAdd;
+                        case "0":
+                            toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
+                            break;
+                        case "1":
+                            toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
+                            break;
+                        default:
+                            break;
                     }
+                    toAdd += jsonNotifiche.notifications[i].description;
+                    toAdd += "      <div id=\"collapse" + idNotifica + "\" class=\"panel-collapse collapse out\" role=\"tabpanel\" aria-labelledby=\"heading" + idNotifica + "\">";
+                    toAdd += "tutto il messaggio. per ora non esiste un campo nel db in cui è salvato. E' solo presente una 'descrizione' = " + jsonNotifiche.notifications[i].description;
+                    toAdd += "      </div>";
+                    toAdd += "      <br>";
+                    toAdd += "      <a data-toggle=\"collapse\" data-parent=\"#accordion\"";
+                    toAdd += "         href=\"#collapse" + idNotifica + "\" aria-expanded=\"true\" aria-controls=\"collapse" + idNotifica + "\">";
+                    toAdd += "         <span class=\"glyphicon glyphicon-option-horizontal\"></span>";
+                    toAdd += "      </a>";
+                    toAdd += " </div>";
+                }
 
-                    <% // se viene passato alla pagina il valore a=active, rende visibile la riga relativa al valore v
-                        // --> dice sempre null 
-                        if (request.getParameter("v") != null) {
-                    %>
-                            $('#collapse<%=request.getParameter("v")%>').addClass('in');
-                    <%
-                        }
-                    %>
+                return toAdd;
+            }
 
-                    var idNotifica, jsonNotifiche;
-                    <% if (request.getParameter("v") != null && request.getParameter("notificationId") != null) {%>
-                        jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
-                        console.log(jsonNotifiche);
-                        $("#div_notifiche").html(inserisciNotifiche());
-                        idNotifica = <%=request.getParameter("notificationId")%>;
-                    <% } else { %>   
-                        if(jsonNotifiche == undefined)
-                        {
-                            $("#div_notifiche").html("Nessuna notifica trovata.");
-                        }
-                        
-                    <% } %>
+            <% // se viene passato alla pagina il valore a=active, rende visibile la riga relativa al valore v
+                // --> dice sempre null 
+                if (request.getParameter("v") != null) {
+            %>
+            $('#collapse<%=request.getParameter("v")%>').addClass('in');
+            <%
+                }
+            %>
 
-                    // chiamata ajax per settare la notifica cliccata come "LETTA"
-                    $.post('ServletAjaxNotifiche', {
-                        idNotification: idNotifica
-                    }, function (data) {
+            var idNotifica, jsonNotifiche;
+            <% if (request.getParameter("v") != null && request.getParameter("notificationId") != null) {%>
+            jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
+            console.log(jsonNotifiche);
+            $("#div_notifiche").html(inserisciNotifiche());
+            idNotifica = <%=request.getParameter("notificationId")%>;
+            <% } else { %>
+            if (jsonNotifiche == undefined)
+            {
+                $("#div_notifiche").html("Nessuna notifica trovata.");
+            }
 
-                        console.log("ServletAjaxNotifiche " + data);
+            <% } %>
 
-                    }).fail(function () {
-                    });                    
-                    
-                </script>
-</body>
+            // chiamata ajax per settare la notifica cliccata come "LETTA"
+            $.post('ServletAjaxNotifiche', {
+                idNotification: idNotifica
+            }, function (data) {
+
+                console.log("ServletAjaxNotifiche " + data);
+
+            }).fail(function () {
+            });
+
+        </script>
+    </body>
 </html>

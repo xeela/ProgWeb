@@ -19,17 +19,31 @@ function impostaRecensione(value){
 function impostaDistanza(obj){
     var dist = obj.value;
     
-    if($("#distanzaRicerca").length){
-        $("#distanzaRicerca").val(dist);
+    if(dist === ""){
+        if($("#distanzaRicerca").length){
+            $("#distanzaRicerca").remove();
+        }
+        
+        if($("#latRicerca").length){
+            $("#latRicerca").remove();
+        }
+        
+        if($("#lngRicerca").length){
+            $("#lngRicerca").remove();
+        }
     } else {
-        $("#parametriRicerca").append('<input id="distanzaRicerca" name="distanzaRicerca" type="text" style="display:none;" value="">');
-        $("#distanzaRicerca").val(dist);
-    }
-    
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(impostaLatLng);
-    } else {
-        alert("Geolocation is not supported by this browser");
+        if($("#distanzaRicerca").length){
+            $("#distanzaRicerca").val(dist);
+        } else {
+            $("#parametriRicerca").append('<input id="distanzaRicerca" name="distanzaRicerca" type="text" style="display:none;" value="">');
+            $("#distanzaRicerca").val(dist);
+        }
+        
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(impostaLatLng);
+        } else {
+            alert("Geolocation is not supported by this browser");
+        }
     }
 }
 
@@ -97,7 +111,7 @@ function impostaMax(obj) {
 }
 
 function isNumberKey(evt){
-    var charCode = (evt.which) ? evt.which : event.keyCode;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
     if ((charCode > 31) && (charCode < 48 || charCode > 57)){
         return false;
     } else {

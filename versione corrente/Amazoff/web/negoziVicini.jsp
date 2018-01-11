@@ -1,97 +1,96 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Negozi vicini</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <head>
+        <title>Negozi vicini</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.css">
-    <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
-    <script type="text/javascript" src="js/search-autocomplete.js"></script>
-    <script type="text/javascript" src="js/parametri-ricerca.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">
+        <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
+        <script type="text/javascript" src="js/search-autocomplete.js"></script>
+        <script type="text/javascript" src="js/parametri-ricerca.js"></script>
 
-    <link rel="stylesheet" href="css/amazoffStyle.css">
+        <link rel="stylesheet" href="css/amazoffStyle.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAubIH7U4eTK9xVgfusufE2fu0LG8Xq5ao&callback=initMap"></script>
-    <script type="text/javascript" src="js/geolocation-marker.js"></script>
-    
-    <script>
-        var jsonNegozi;
-        
-        function LogJson(){
-            jsonNegozi = ${jsonNegozi};
-            console.log(jsonNegozi);
-            Autocomplete("product");
-        }
-        
-        function initMap(){
-            LogJson();
-            if (navigator.geolocation){
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var pos = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude
+
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAubIH7U4eTK9xVgfusufE2fu0LG8Xq5ao&callback=initMap"></script>
+        <script type="text/javascript" src="js/geolocation-marker.js"></script>
+
+        <script>
+            var jsonNegozi;
+
+            function LogJson() {
+                jsonNegozi = ${jsonNegozi};
+                console.log(jsonNegozi);
+                Autocomplete("product");
+            }
+
+            function initMap() {
+                LogJson();
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
                         };
 
-                    var map, GeoMarker;
+                        var map, GeoMarker;
 
-                    var mapOptions = {
-                      zoom: 10,
-                      center: pos,
-                      mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                    map = new google.maps.Map(document.getElementById('mia_mappa'), mapOptions);
-
-                    GeoMarker = new GeolocationMarker();
-                    GeoMarker.setCircleOptions({fillColor: '#808080'});
-
-                    google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
-                      map.setCenter(this.getPosition());
-                    });
-
-                    google.maps.event.addListener(GeoMarker, 'geolocation_error', function(e) {
-                      alert('Problemi nel recuperare la posizione: ' + e.message);
-                    });
-
-                    GeoMarker.setMap(map);
-                    
-                    var marker;
-                    var shopPos;
-        
-                    for (var i = 0; i < jsonNegozi.shops.length; i++) {
-                        shopPos = {
-                            lat: parseFloat(jsonNegozi.shops[i].lat),
-                            lng: parseFloat(jsonNegozi.shops[i].lng)
+                        var mapOptions = {
+                            zoom: 10,
+                            center: pos,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
                         };
-                        
-                        marker = new google.maps.Marker({
-                            position: shopPos,
-                            map: map,
-                            title: jsonNegozi.shops[i].name
+                        map = new google.maps.Map(document.getElementById('mia_mappa'), mapOptions);
+
+                        GeoMarker = new GeolocationMarker();
+                        GeoMarker.setCircleOptions({fillColor: '#808080'});
+
+                        google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function () {
+                            map.setCenter(this.getPosition());
                         });
-                    }
-                });
+
+                        google.maps.event.addListener(GeoMarker, 'geolocation_error', function (e) {
+                            alert('Problemi nel recuperare la posizione: ' + e.message);
+                        });
+
+                        GeoMarker.setMap(map);
+
+                        var marker;
+                        var shopPos;
+
+                        for (var i = 0; i < jsonNegozi.shops.length; i++) {
+                            shopPos = {
+                                lat: parseFloat(jsonNegozi.shops[i].lat),
+                                lng: parseFloat(jsonNegozi.shops[i].lng)
+                            };
+
+                            marker = new google.maps.Marker({
+                                position: shopPos,
+                                map: map,
+                                title: jsonNegozi.shops[i].name
+                            });
+                        }
+                    });
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
             }
-            else{
-                alert("Geolocation is not supported by this browser.");
+        </script>
+        <style type="text/css">
+            div#mia_mappa {
+                width: 1000px;
+                height: 500px;
+                margin: 50px auto;
             }
-        }
-    </script>
-	<style type="text/css">
-		div#mia_mappa {
-		  width: 1000px;
-		  height: 500px;
-		  margin: 50px auto;
-		}
-	</style>
-  </head>
-  <body  class="bodyStyle" onload="initMap()">
-            <div class="container-fluid tmargin">
+        </style>
+    </head>
+    <body  class="bodyStyle" onload="initMap()">
+        <div class="container-fluid tmargin">
 
             <!-- barra bianca a sx -->
             <div class="hidden-xs col-lg-1"></div>
@@ -186,7 +185,7 @@
 
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
                                     <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
-                                    
+
                                     <div class="input-group-btn">
                                         <!--<select class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search_category">Select category<span class="caret"></span></button>
                                             <option value="product">Product</option>
@@ -237,41 +236,41 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <%
-                                                if(userType.equals("0")) // registrato
-                                                        {
-                                                            %>
-                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                            <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
-                                                            <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                            <%
-                                                        }
-                                                        else if(userType.equals("1")) // venditore
-                                                        {
-                                                            %>
-                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
-                                                            <li><a href="userPage.jsp">Negozio</a></li>
-                                                            <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
-                                                            <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                            <%
-                                                        }
-                                                        else if(userType.equals("2")) //admin
-                                                        {
-                                                            %>
-                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                            <%
-                                                        }
-                                                        else { %>
-                                                            <li><a href="loginPage.jsp">Accedi</a></li>
-                                                            <li><a href="loginPage.jsp">Registrati</a></li>
-                                                        <%  } %>
+                                                if (userType.equals("0")) // registrato
+                                                {
+                                            %>
+                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                            <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                            <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
+                                            <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                <%
+                                                } else if (userType.equals("1")) // venditore
+                                                {
+                                                %>
+                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                            <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                                            <li><a href="userPage.jsp">Negozio</a></li>
+                                            <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
+                                            <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                <%
+                                                } else if (userType.equals("2")) //admin
+                                                {
+                                                %>
+                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                            <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                <%
+                                                } else { %>
+                                            <li><a href="loginPage.jsp">Accedi</a></li>
+                                            <li><a href="loginPage.jsp">Registrati</a></li>
+                                                <%  } %>
                                         </ul>  
                                     </div>
                                 </div>
@@ -394,10 +393,10 @@
                             </div>
                         </div>
                     </div>
-                      
+
                     <!-- MAPPA -->
                     <div id="mia_mappa">Attendo posizione...</div>
-                                
+
                     <!-- back to top button -->
                     <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
@@ -411,35 +410,35 @@
                                     <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
                                     <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
                                     <%
-                                        if(userType.equals("0")) // registrato
+                                        if (userType.equals("0")) // registrato
                                         {
                                     %>
-                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
-                                            <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
-                                            <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
-                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
+                                    <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
+                                    <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
 
-                                    <%  }
-                                        else if(userType.equals("1")) // venditore
-                                        {  %>
-                                            <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
-                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
-                                            <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
-                                            <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
-                                    <%  }
-                                        else if(userType.equals("2")) // admin
-                                        {  %> 
-                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                                    <%  }
-                                        else // non loggato
-                                        {  %>    
-                                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
-                                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
-                                    <%  }  %>        
+                                    <%  } else if (userType.equals("1")) // venditore
+                                    {  %>
+                                    <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
+                                    <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
+                                    <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
+                                    <%  } else if (userType.equals("2")) // admin
+                                    {  %> 
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <%  } else // non loggato
+                                    {  %>    
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
+                                    <%  }%>        
                                 </div>
                                 <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
                                     <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
@@ -458,9 +457,9 @@
 
                 </div>
             </div>
-            
+
             <!-- barra bianca a dx -->
             <div class="hidden-xs col-lg-1"></div>
         </div>
-  </body>
+    </body>
 </html>

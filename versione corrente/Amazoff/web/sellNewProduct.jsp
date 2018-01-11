@@ -94,7 +94,7 @@
 
                                 <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
                                 <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
-                                
+
                                 <div class="input-group-btn">
                                     <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
@@ -143,40 +143,43 @@
                                         <%
                                             if (userType.equals("0")) // registrato
                                             {
-                                                        %>
-                                                        <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
-                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                        <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
-                                                        <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
-                                                        <li role="separator" class="divider"></li>
-                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                        <%
-                                                    }
-                                                    else if(userType.equals("1")) // venditore
-                                                    {
-                                                        %>
-                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
-                                                        <li><a href="userPage.jsp">Negozio</a></li>
-                                                        <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
-                                                        <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
-                                                        <li role="separator" class="divider"></li>
-                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                        <%
-                                                    }
-                                                    else if(userType.equals("2")) //admin
-                                                    {
-                                                        %>
-                                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
-                                                        <li role="separator" class="divider"></li>
-                                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                        <%
-                                                    }
-                                                    else { %>
-                                                        <li><a href="loginPage.jsp">Accedi</a></li>
-                                                        <li><a href="loginPage.jsp">Registrati</a></li>
-                                                    <%  } %>
+                                        %>
+                                        <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
+                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                        <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                        <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
+                                        <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                            <%
+                                        }
+                                        else if(userType.equals("1")) // venditore
+                                        {
+                                            %>
+                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                        <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                                        <li><a href="userPage.jsp">Negozio</a></li>
+                                        <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
+                                        <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                            <%
+                                        }
+                                        else if(userType.equals("2")) //admin
+                                        {
+                                            %>
+                                        <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                        <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                            <%
+                                        }
+                                        else { %>
+                                        <li><a href="loginPage.jsp">Accedi</a></li>
+                                        <li><a href="loginPage.jsp">Registrati</a></li>
+                                            <%  } %>
 
                                     </ul> 
                                 </div>
@@ -267,8 +270,8 @@
                                                 </li>
                                                 <li>Prezzo 
                                                     <p>
-                                                            <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
-                                                            <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
                                                     </p>
                                                 </li>
                                                 <li>Recensione
@@ -349,38 +352,41 @@
                                 if(userType.equals("0")) // registrato
                                 {
                             %>
-                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
-                                    <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
-                                    <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
-                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                            <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
+                            <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
+                            <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
+                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
 
                             <%  }
                                 else if(userType.equals("1")) // venditore
                                 {  %>
-                                    <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
-                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
-                                    <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
-                                    <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
+                            <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
+                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                            <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
+                            <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
+                            <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
                             <%  }
                                 else if(userType.equals("2")) // admin
                                 {  %> 
-                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                            <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
                             <%  }
                                 else // non loggato
                                 {  %>    
-                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
-                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
+                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
+                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
                             <%  }  %>        
                         </div>
                         <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
                             <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
                             <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Venditore</a></p>
                         </div>
-                        
+
                         <div class="col-xs-4"><h5><b>Logout</b></h5>
                             <p><a href="ServletLogout"><span class="glyphicon glyphicon-menu-right"></span> ESCI</a></p>
                         </div>

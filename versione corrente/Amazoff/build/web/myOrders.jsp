@@ -123,7 +123,7 @@
 
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
                                     <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
-                                    
+
                                     <div class="input-group-btn">
                                         <!--<select class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search_category">Select category<span class="caret"></span></button>
                                             <option value="product">Product</option>
@@ -174,41 +174,41 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <%
-                                                if(userType.equals("0")) // registrato
-                                                        {
-                                                            %>
-                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                            <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
-                                                            <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                            <%
-                                                        }
-                                                        else if(userType.equals("1")) // venditore
-                                                        {
-                                                            %>
-                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
-                                                            <li><a href="userPage.jsp">Negozio</a></li>
-                                                            <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
-                                                            <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                            <%
-                                                        }
-                                                        else if(userType.equals("2")) //admin
-                                                        {
-                                                            %>
-                                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
-                                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
-                                                            <li role="separator" class="divider"></li>
-                                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
-                                                            <%
-                                                        }
-                                                        else { %>
-                                                            <li><a href="loginPage.jsp">Accedi</a></li>
-                                                            <li><a href="loginPage.jsp">Registrati</a></li>
-                                                        <%  } %>
+                                                if (userType.equals("0")) // registrato
+                                                {
+                                            %>
+                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                            <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                            <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
+                                            <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                <%
+                                                } else if (userType.equals("1")) // venditore
+                                                {
+                                                %>
+                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                            <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                                            <li><a href="userPage.jsp">Negozio</a></li>
+                                            <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
+                                            <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                <%
+                                                } else if (userType.equals("2")) //admin
+                                                {
+                                                %>
+                                            <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
+                                            <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                            <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="/Amazoff/ServletLogout">Esci</a></li>
+                                                <%
+                                                } else { %>
+                                            <li><a href="loginPage.jsp">Accedi</a></li>
+                                            <li><a href="loginPage.jsp">Registrati</a></li>
+                                                <%  } %>
                                         </ul>  
                                     </div>
                                 </div>
@@ -339,24 +339,24 @@
                             <div class="row panel panel-default">      
                                  <form method="post" action="/Amazoff/ServletPopulateProductPage" id="formid_oggetto" onclick="$('#formid_oggetto').submit();">
                                          <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; ">
-                                        <!-- <img src="images/doge.jpg" alt="" > --
-                                        immagine
-                                        </div>
-                                        <div class="col-xs-8 col-sm-7 col-md-9">
-                                            <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto--
-                                            <p id="stelle+">Voto totale</p>
-                                            <p id="recensioni+" >#num recensioni</p>
-                                            <p id="linkmappa" >Vedi su mappa</p>
-                                            <p id="prezzo+">Prezzo</p>
-                                            <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
+                            <!-- <img src="images/doge.jpg" alt="" > --
+                            immagine
+                            </div>
+                            <div class="col-xs-8 col-sm-7 col-md-9">
+                                <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto--
+                                <p id="stelle+">Voto totale</p>
+                                <p id="recensioni+" >#num recensioni</p>
+                                <p id="linkmappa" >Vedi su mappa</p>
+                                <p id="prezzo+">Prezzo</p>
+                                <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
 
-                                        </div>
-                                        <div class="hidden-xs col-sm-2 col-md-1" > 
-                                            <span  class="glyphicon glyphicon-chevron-right"></span>
-                                        </div>
-                                </form>
-                               <hr>
-                            </div> -->
+                            </div>
+                            <div class="hidden-xs col-sm-2 col-md-1" > 
+                                <span  class="glyphicon glyphicon-chevron-right"></span>
+                            </div>
+                    </form>
+                   <hr>
+                </div> -->
                         </div>
                     </div> 
 
@@ -364,7 +364,7 @@
                     <!-- back to top button -->
                     <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
-                    
+
                     <div class="col-xs-12 col-lg-12">
                         <!-- footer TODO -->
                         <footer style="background-color: #fc5d5d">
@@ -375,35 +375,35 @@
                                     <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
                                     <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
                                     <%
-                                        if(userType.equals("0")) // registrato
+                                        if (userType.equals("0")) // registrato
                                         {
                                     %>
-                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
-                                            <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
-                                            <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
-                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Rimborso / Anomalia</a></p>
+                                    <p><a href="userPage.jsp?v=CreateShop#createshop"><span class="glyphicon glyphicon-menu-right"></span> Diventa venditore</a></p>
+                                    <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
 
-                                    <%  }
-                                        else if(userType.equals("1")) // venditore
-                                        {  %>
-                                            <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
-                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                                            <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
-                                            <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
-                                            <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
-                                    <%  }
-                                        else if(userType.equals("2")) // admin
-                                        {  %> 
-                                            <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
-                                            <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                                    <%  }
-                                        else // non loggato
-                                        {  %>    
-                                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
-                                            <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
-                                    <%  }  %>        
+                                    <%  } else if (userType.equals("1")) // venditore
+                                    {  %>
+                                    <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
+                                    <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
+                                    <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
+                                    <%  } else if (userType.equals("2")) // admin
+                                    {  %> 
+                                    <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
+                                    <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
+                                    <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
+                                    <%  } else // non loggato
+                                    {  %>    
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
+                                    <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
+                                    <%  }%>        
                                 </div>
                                 <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
                                     <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
@@ -422,8 +422,8 @@
 
                 </div>
             </div>
-            
-                            
+
+
 
             <!-- barra bianca a dx -->
             <div class="hidden-xs col-lg-1"></div>
@@ -431,95 +431,95 @@
 
 
 
-    <script>
-        console.log(jsonProdotti);
-        console.log(jsonNotifiche);
-        AggiungiOrdini();
-                
-        // When the user scrolls down 20px from the top of the document, show the button
-        window.onscroll = function () {
-            scrollFunction()
-        };
-
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                document.getElementById("btnTop").style.display = "block";
-            } else {
-                document.getElementById("btnTop").style.display = "none";
-            }
-        }
-
-        // When the user clicks on the button, scroll to the top of the document
-        function topFunction() {
-            document.body.scrollTop = 0; // For Chrome, Safari and Opera 
-            document.documentElement.scrollTop = 0; // For IE and Firefox
-        }
-
-        // crea l'html per il button delle notifiche
-        function inserisciNotifiche()
-        {
-            console.log("INserisci notifiche");
+        <script>
+            console.log(jsonProdotti);
             console.log(jsonNotifiche);
-            console.log("-----");
-            
-            var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
-            var notificationCount = 0;
-            var notifiche = "";
-            var idNotifica;
-            for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
-            {
-                idNotifica = jsonNotifiche.notifications[i].id;
-                toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
-                toAdd += "<p>";
-                switch (jsonNotifiche.notifications[i].type)
-                {
-                    case "0":
-                        toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
-                        break;
-                    case "1":
-                        toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
-                        break;
-                    default:
-                        break;
-                }
+            AggiungiOrdini();
 
-                if (jsonNotifiche.notifications[i].already_read === "0") {
-                    //toAdd += "<p style=\"color: red\">";
-                    notificationCount++;
-                    toAdd += " <b style=\"color: red\">NEW!</b> </p>";
-                    toAdd += "<div class=\"dotsEndSentence\"><b>" + jsonNotifiche.notifications[i].description + "</b></div>";
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function () {
+                scrollFunction()
+            };
+
+            function scrollFunction() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    document.getElementById("btnTop").style.display = "block";
                 } else {
-                    toAdd += "</p>";
-                    toAdd += "<div class=\"dotsEndSentence\">" + jsonNotifiche.notifications[i].description + "</div>";
+                    document.getElementById("btnTop").style.display = "none";
+                }
+            }
+
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+                document.body.scrollTop = 0; // For Chrome, Safari and Opera 
+                document.documentElement.scrollTop = 0; // For IE and Firefox
+            }
+
+            // crea l'html per il button delle notifiche
+            function inserisciNotifiche()
+            {
+                console.log("INserisci notifiche");
+                console.log(jsonNotifiche);
+                console.log("-----");
+
+                var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
+                var notificationCount = 0;
+                var notifiche = "";
+                var idNotifica;
+                for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
+                {
+                    idNotifica = jsonNotifiche.notifications[i].id;
+                    toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">"; // userPage.jsp?v=Notifiche&i="+idNotifica+"#notifica" + idNotifica + "
+                    toAdd += "<p>";
+                    switch (jsonNotifiche.notifications[i].type)
+                    {
+                        case "0":
+                            toAdd += "<span class=\"glyphicon glyphicon-user\"></span>";
+                            break;
+                        case "1":
+                            toAdd += "<span class=\"glyphicon glyphicon-envelope\"></span>";
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (jsonNotifiche.notifications[i].already_read === "0") {
+                        //toAdd += "<p style=\"color: red\">";
+                        notificationCount++;
+                        toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                        toAdd += "<div class=\"dotsEndSentence\"><b>" + jsonNotifiche.notifications[i].description + "</b></div>";
+                    } else {
+                        toAdd += "</p>";
+                        toAdd += "<div class=\"dotsEndSentence\">" + jsonNotifiche.notifications[i].description + "</div>";
+
+                    }
+
+                    // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
+                    toAdd += "</a><hr>";
 
                 }
+                toAdd += "</div>";
+                toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
 
-                // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
-                toAdd += "</a><hr>";
+                if (notificationCount > 99)
+                    notificationCount = "99+";
+                $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
+                $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
 
+                return toAdd;
             }
-            toAdd += "</div>";
-            toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
 
-            if (notificationCount > 99)
-                notificationCount = "99+";
-            $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
-            $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
-
-            return toAdd;
-        }
-
-        // gestione POPOVER button notifiche
-        $(document).ready(function () {
-            $('[data-toggle="popover"]').popover({
-                container: 'body'
+            // gestione POPOVER button notifiche
+            $(document).ready(function () {
+                $('[data-toggle="popover"]').popover({
+                    container: 'body'
+                });
             });
-        });
-        
-        // inizializzo menu notifiche
-        $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
+
+            // inizializzo menu notifiche
+            $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
 
 
-    </script>
-</body>
+        </script>
+    </body>
 </html>

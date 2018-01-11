@@ -82,8 +82,8 @@ function AggiungiOrdini() {
 
     for (var i = 0; i < jsonProdotti.orders.length; i++)
     {
-        id_oggetto = jsonProdotti.orders[i].id;
-        toAdd += "<p name=\"id_ordine" + id_oggetto + "\">Numero ordine: </p>" + jsonProdotti.orders[i].products[0].order_id + "</p>";
+        id_oggetto = jsonProdotti.orders[i].products[0].order_id;
+        toAdd += "<div id='" + id_oggetto + "'><p name=\"id_ordine" + id_oggetto + "\">Numero ordine: " + jsonProdotti.orders[i].products[0].order_id + "</p>";
         for (var j = 0; j < jsonProdotti.orders[i].products.length; j++) {
             toAdd += "<div class=\"row\">";
             toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"form" + id_oggetto + "\" onclick=\"$('#form" + id_oggetto + "').submit();\"> ";
@@ -96,17 +96,13 @@ function AggiungiOrdini() {
             toAdd += "</div>";
             toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
             toAdd += "<p name=\"nome" + id_oggetto + "\" >" + jsonProdotti.orders[i].products[j].name + "</p>";
-            toAdd += "<p name=\"data_ordine" + id_oggetto + "\">Data ordine: </p>" + jsonProdotti.orders[i].products[j].order_date + "</p>";
-            toAdd += "<p name=\"stelle" + id_oggetto + "\">Voto totale</p>";
-            toAdd += "<p name=\"recensioni" + id_oggetto + "\">Tot recensioni: "+ jsonProdotti.orders[i].products[j].num_reviews +"</p>";
-            toAdd += "<p name=\"linkmappa" + id_oggetto + "\" ><a href='ServletShowShopOnMap?id="+jsonProdotti.orders[i].products[j].id_shop+"'>Vedi su mappa</a></p>";
-            toAdd += "<p name=\"prezzo" + id_oggetto + "\">Prezzo: " + jsonProdotti.orders[i].products[j].price + "€</p>";
-            toAdd += "<p name=\"venditore" + id_oggetto + "\" >Venditore: "+ jsonProdotti.orders[i].products[j].last_name +" "+ jsonProdotti.orders[i].products[j].first_name +"</p>";
-            toAdd += "<p><a href=\""+jsonProdotti.orders[i].products[j].site_url+"\">Sito Negozio: "+jsonProdotti.orders[i].products[j].shop_name+"</a></p>";
-            toAdd += "</div>";
+            toAdd += "<p name=\"data_ordine" + id_oggetto + "\">Data ordine: " + jsonProdotti.orders[i].products[j].order_date + "</p>";
+            toAdd += "<p name=\"prezzo" + id_oggetto + "\">Prezzo: " + jsonProdotti.orders[i].products[j].price + " €</p>";
             toAdd += "<p><a href=\"ServletRecensione?id="+jsonProdotti.orders[i].products[j].product_id+"\" class=\"btn btn-primary\" role=\"button\">Lascia recensione</a></p>";
+            toAdd += "</div>";
             toAdd += "</div></form><hr>";
         }
+        toAdd += "</div>";
     }
 
     $("#zonaProdotti").html(toAdd);
