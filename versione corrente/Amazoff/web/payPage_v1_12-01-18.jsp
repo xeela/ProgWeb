@@ -39,8 +39,6 @@
             var jsonDatiUtente;
             var cartReceived;
             var datiok = false; // dati utente e carta di credito
-            
-            var showFormIndirizzo = true; // diventa false se non ci sono prodotti da spedire
             ottieniJson();
 
             function ottieniJson()
@@ -100,57 +98,30 @@
                 // visualizzo i prodotti del carrello, da quello aggiunto più di recente al più vecchio
                 for (var i = cart.products.length - 1; i >= 0; i--)
                 {
-                    console.log((cart.products[i].path));
                     id_oggetto = cart.products[i].id;
                     toAdd += "<div class=\"row\">";
                     toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
                     toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
-                    if (!(cart.products[i].path == undefined)) // se non è presente l'img nel db
-                        toAdd += "<img src=\"UploadedImages/default.jpg\" alt=\"...\">"; // allora carico quella di default
-                    else
-                        toAdd += "   <img src=\"UploadedImages/" + cart.products[i].path + "\" style=\"max-height: 100px; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
-                    
+                    toAdd += "                    <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
                     toAdd += "                </div>";
                     toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
                     toAdd += "                        <div class=\"row\">";
-                    toAdd += "                            <h3 id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name;
-                    
-                    if(cart.products[i].ritiro == "0") {
-                        toAdd += "  <span class=\"badge badge-secondary\">Ritiro in negozio</span></h3>";
-                    }
-                    else
-                    {
-                        toAdd += "  <span class=\"badge badge-primary\">Spedizione</span></p>";
-                        showFormIndirizzo = false; 
-                    }
-                    
-                    toAdd += "                            <h5 class=\"col-lg-12  col-lg-6\" id=\"prezzo" + id_oggetto + "\">Prezzo per unità: " + cart.products[i].price + " €</h5>";
-                    toAdd += "                            <h5 class=\"col-lg-12  col-lg-6\" id=\"amount" + id_oggetto + "\">Quantità: " + cart.products[i].amount + "</h5>";
-                    toAdd += "                            <h3 class=\"col-lg-12 \" id=\"tot" + id_oggetto + "\">Prezzo TOTALE: " + cart.products[i].tot + " €</h3>";
-            
+                    toAdd += "                            <p id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</p>";
+                    toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
+                    toAdd += "                            <p id=\"linkmappa" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Vedi su mappa</p> <a href=\"url_venditore.html\" class=\"col-xs-12 col-lg-3\">Negozio</a>";
+                    toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
                     toAdd += "                        </div>";
                     toAdd += "                   </div>";
                     toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
                     toAdd += "            </div>";
                     toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
-                    toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button>";
+                    toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
                     toAdd += "            </div>";
                     toAdd += "        </a>";
                     toAdd += "</div>";
                 }
 
                 $("#zonaProdotti").html(toAdd);
-                $("#totale_carrello").html("<h2>Totale carrello: " + cart.totCart + " €");
-                
-                if(!showFormIndirizzo)
-                {
-                    datiIndirizzo = "true"; // considero validi i dati dell'indirizzo --> che non mi serviranno
-                    // nascondo la form
-                    document.getElementById("div_datiSpedizione").style.visibility = "hidden";
-                    
-                    // TMP: dovra essere tolto il controllo sul tipo di Ritiro prodotti
-                    checkModalita("ritiro");
-                }
             }
 
             function RiempiBarraRicerca()
@@ -648,19 +619,13 @@
                                         </div>
                                 </a>
                             </div>-->
-                        </div>
-                        <div id="totale_carrello" class="col-xs-12"></div>
+                        </div>                                                                    
                     </div>
 
                     <!-- RIEPILOGO / inserisci nuovo INDIRIZZO -->
-                    <div class="row col-xs-12 col-md-6 col-lg-6" id="div_datiSpedizione">
+                    <div class="row col-xs-12 col-md-6 col-lg-6">
                         <div class="col-lg-12" >
-                            <h3>Indirizzo di spedizione 
-                                <!-- POP OVER: TO DO. Sarebbe meglio che, in caso di mancanza prodotti "spediti", che la form scomparisse 
-                                <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover_info" data-placement="top" data-content="L'indirizzo va specificato per tutti i prodotti che verranno spediti">
-                                <span class="glyphicon glyphicon-info-sign"></span>
-                                </button>-->
-                            </h3>
+                            <h3>Indirizzo di spedizione</h3>
                             <div class="row col-xs-12" >
                                 <div class="form-group" id="IndirizzoForm" name="FormIndirizzo" >
                                     <input name="paese" id="paese" type="text" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
@@ -715,19 +680,19 @@
                                     </div>
                                 </div>
 
-                                <button class="btn btn-primary" onclick="checkDatiCarta()">Conferma metodo pagamento</button>
+                                <button class="btn btn-primary" onclick="checkDatiCarta()">Conferma indirizzo</button>
                             </div>
                         </div>
                     </div>
 
 
                     <form action="ServletConfirmOrder" method="POST" >
-                        <!--<div class="row col-xs-12 alignCenter">
+                        <div class="row col-xs-12 alignCenter">
                             <h3>Seleziona la modalità di acquisto:</h3>
                             <button id="spedizione" class="btn btn-default" onclick="checkModalita('spedizione')">Spedizione</button>
                             <button id="ritiro" class="btn btn-default" onclick="checkModalita('ritiro')">Ritira in negozio</button>
                             <input type="text" name="modalita" id="txtmodalita" style="visibility: hidden; width: 0px; height: 0px" >
-                        </div> -->
+                        </div> 
 
                         <div class="row col-xs-12 alignCenter" style="margin-top: 10px" >
                             <!-- TO DO: finche l'utente non inserisce i dati richiesti, non viene sbloccato il button.
@@ -889,7 +854,7 @@
             // inserisco i dati dell'utente e della carta, nella pagina
             AggiungiDatiUtente();
             AggiungiDatiMetodoPagamento();
-            AggiungiProdotti(jsonDatiUtente); //cartReceived);
+            AggiungiProdotti(cartReceived);
 
             // inizializzazione del bottone per l'acquisto
             enabledBtnAcquista("inizializzazione");

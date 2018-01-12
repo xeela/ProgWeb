@@ -161,6 +161,7 @@ public class ServletFindProduct extends HttpServlet {
                 //aggiungo i prodotti al json
                 // ------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                 
+                String gloabl_value_avg = "";
                 boolean isFirstTime = true, isFirstTimeImg = true;
                 String id_product = "";
                 jsonObj += "{";
@@ -172,6 +173,7 @@ public class ServletFindProduct extends HttpServlet {
                     isFirstTime = false; 
                         
                     id_product = results.getString(1);
+                    gloabl_value_avg = results.getString(15);
                     jsonObj += "{";
                     jsonObj += "\"id\": \"" + id_product + "\",";
                     jsonObj += "\"name\": \"" + results.getString(2) + "\",";
@@ -185,7 +187,10 @@ public class ServletFindProduct extends HttpServlet {
                     jsonObj += "\"shop_name\": \"" + results.getString(12) + "\",";
                     jsonObj += "\"site_url\": \"" + results.getString(13) + "\",";
                     jsonObj += "\"num_reviews\": \"" + results.getString(14) + "\",";
-                    jsonObj += "\"global_value_avg\": \""+ results.getString(15) +"\",";
+                    if(gloabl_value_avg == null){
+                        gloabl_value_avg = "0";
+                    }
+                    jsonObj += "\"global_value_avg\": \""+ gloabl_value_avg +"\",";
                         
                     // richiedo le immagini per questo prodotto
                     jsonObj += "\"pictures\": [";

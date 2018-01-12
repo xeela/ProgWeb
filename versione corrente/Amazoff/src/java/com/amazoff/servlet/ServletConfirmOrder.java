@@ -97,6 +97,9 @@ public class ServletConfirmOrder extends HttpServlet {
                     MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = " + userID + ";", connection);
                     session.setAttribute("shoppingCartProducts", "");
                     
+                    // TODO: qui mando la notifica all'utente, con il collegamento al riepilogo ordine   
+                    
+                    
                     //****** TODO: quando c'è l'errore, questo dovrebbe essere passato tramite la session.setAttribute *******/
                     response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=ok&id="+orderID);      
                 }
