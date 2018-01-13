@@ -1,6 +1,7 @@
 package com.amazoff.servlet;
 
 import com.amazoff.classes.MyDatabaseManager;
+import com.amazoff.classes.Notifications;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
@@ -97,8 +98,10 @@ public class ServletConfirmOrder extends HttpServlet {
                     MyDatabaseManager.EseguiStatement("DELETE FROM cart WHERE id_user = " + userID + ";", connection);
                     session.setAttribute("shoppingCartProducts", "");
                     
-                    // TODO: qui mando la notifica all'utente, con il collegamento al riepilogo ordine   
+                    session.setAttribute("id_order", orderID); /** memorizzo l'id ordine anche nella sessione */
                     
+                    /** mando la notifica all'utente, con il collegamento al riepilogo ordine   */
+                    Notifications.SendNotification(userID, String.valueOf(orderID), Notifications.NotificationType.ORDER_COMPLETE, "/Amazoff/ServletMyOrders?id="+orderID, connection);
                     
                     //****** TODO: quando c'è l'errore, questo dovrebbe essere passato tramite la session.setAttribute *******/
                     response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=ok&id="+orderID);      

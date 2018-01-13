@@ -52,7 +52,7 @@
                 if (!(cart.products.length > 0) || cart == undefined)
                 {
                     toAdd = "<div>";
-                    toAdd += "Nessun prodotto presente nel carrello.";
+                    toAdd += "<h2>Nessun prodotto presente nel carrello.</h2>";
                     toAdd += "</div>";
                 } else
                 {
@@ -180,7 +180,7 @@
                                         String userType = "";
                                         try {
                                             userType = (session.getAttribute("categoria_user")).toString();
-                                            if (userType.equals("1") || userType.equals("2")) {
+                                            if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                                     %>
                                     <span class="badge iconSize imgCenter"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
                                                 <%
@@ -262,6 +262,7 @@
                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                                         <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                         <li role="separator" class="divider"></li>
@@ -302,7 +303,7 @@
                             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                             <% try {
                                 //userType = (session.getAttribute("categoria_user")).toString();
-                                if (userType.equals("1") || userType.equals("2")) {
+                                if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                             %>
                             <div class="col-lg-3">                                                    
                                 <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">

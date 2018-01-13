@@ -84,7 +84,7 @@ public class ServletRegister extends HttpServlet {
                     
                     String userID = String.valueOf(MyDatabaseManager.GetID_User(userReceived));
                     
-                    Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp?v=Notifiche", connection);
+                    Notifications.SendNotification(userID, "-1", Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp?v=Notifiche", connection);
                     
                     
                     connection.close();

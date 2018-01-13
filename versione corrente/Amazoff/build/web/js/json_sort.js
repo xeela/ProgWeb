@@ -83,7 +83,7 @@ function AggiungiOrdini() {
     for (var i = 0; i < jsonProdotti.orders.length; i++)
     {
         id_oggetto = jsonProdotti.orders[i].products[0].order_id;
-        toAdd += "<div id='" + id_oggetto + "'><p name=\"id_ordine" + id_oggetto + "\">Numero ordine: " + jsonProdotti.orders[i].products[0].order_id + "</p>";
+        toAdd += "<div id='" + id_oggetto + "'><h3 name=\"id_ordine" + id_oggetto + "\">Numero ordine: " + jsonProdotti.orders[i].products[0].order_id + "</h3>";
         for (var j = 0; j < jsonProdotti.orders[i].products.length; j++) {
             toAdd += "<div class=\"row\">";
             toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"form" + id_oggetto + "\" onclick=\"$('#form" + id_oggetto + "').submit();\"> ";

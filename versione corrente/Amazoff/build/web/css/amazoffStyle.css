@@ -22,6 +22,10 @@
     color:#eeeeee;
 }
 
+.badge-info {
+  background-color: #3a87ad;
+}
+
 .maxlength {
   overflow: hidden;
   max-width: 18ch;
