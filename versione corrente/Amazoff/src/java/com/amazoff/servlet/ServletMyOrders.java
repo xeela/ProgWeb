@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
@@ -54,7 +49,7 @@ public class ServletMyOrders extends HttpServlet {
                 
                 if (session.getAttribute("userID") != null) {
                     /** Interrogo il Db per farmi restituire i dettagli del prodotto specificato */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT orders.*, products.*, owner.*, shops.* FROM orders, users AS user, users AS owner, orders_products, products, shops WHERE user.ID = " + session.getAttribute("userID") + " AND orders.who_ordered = user.id AND orders_products.order_id = orders.id AND products.id = orders_products.product_id AND products.id_shop = shops.id AND shops.ID_OWNER = owner.id ORDER BY orders.id;", connection);
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT orders.*, products.*, owner.*, shops.* FROM orders, users AS user, users AS owner, orders_products, products, shops WHERE user.ID = " + session.getAttribute("userID") + " AND orders.who_ordered = user.id AND orders_products.order_id = orders.id AND products.id = orders_products.product_id AND products.id_shop = shops.id AND shops.ID_OWNER = owner.id ORDER BY orders.id DESC;", connection);
 
                     /** se non c'è il prodotto specificato */
                     if(results.isAfterLast()) 
@@ -126,10 +121,25 @@ public class ServletMyOrders extends HttpServlet {
                 }
                 jsonObj += "]}";
 
+                
+                /** controllo se la pagina degli ordini è stata chiamata da una notifica. */                
+                if(request.getParameter("notificationId") != null)
+                {
+                    String idNotifica = request.getParameter("notificationId").toString();
+                    /** aggiorno il valore della notifica e lo metto a "LETTA" */
+                    MyDatabaseManager.EseguiStatement("UPDATE notifications SET already_read = 1 WHERE ID = " + idNotifica +";", connection);
+                }
+                                
                 connection.close();
 
+                
+                
                 session.setAttribute("jsonProdotti", jsonObj);
-                response.sendRedirect(request.getContextPath() + "/myOrders.jsp"); 
+                
+                if(request.getParameter("id") != null)
+                    response.sendRedirect(request.getContextPath() + "/myOrders.jsp#"+request.getParameter("id")); 
+                else
+                    response.sendRedirect(request.getContextPath() + "/myOrders.jsp");
             }            
             else
             {

@@ -22,6 +22,10 @@
     color:#eeeeee;
 }
 
+.badge-info {
+  background-color: #3a87ad;
+}
+
 .maxlength {
   overflow: hidden;
   max-width: 18ch;
@@ -38,6 +42,11 @@
 
 .searchBar
 { }
+
+/* permette di cambiare il cursore del mouse e impostare l'icona della mano  */
+.hovertable {
+    cursor: pointer;
+}
 
 .imgResize{ 
   width: auto; 

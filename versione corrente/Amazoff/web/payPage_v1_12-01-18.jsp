@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
-    Created on : 19-set-2017, 10.56.58
-    Author     : Davide Farina
+    Document   : payPage
+    Created on : 28-Oct-2017, 12:54:23
+    Author     : Francesco Bruschetti
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
@@ -26,44 +26,98 @@
 
         <link rel="stylesheet" href="css/amazoffStyle.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-        
-        <!-- serve per lo spinner nel button notifiche -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        
+
         <title>Amazoff</title>
-        <script type="text/javascript">
-            var jsonProdotti, jsonNotifiche;
-            var searchedProduct = null;
+        <script>
             var userID = "<%= session.getAttribute("userID")%>";
+            var modalita = "null"; // vale: spedizione oppure ritiro. null se non ancora selezionata
+            var datiIndirizzo = "false"; // true = validi. false = non validi
+            var datiCarta = "false";
+            var jsonNotifiche = ${jsonNotifiche};
 
-            function LogJson() {
-                jsonProdotti = ${jsonProdottiIndex};
-                //console.log(jsonProdotti);
+            // ottengo i dati json contenenti i dati dell'utente
+            var jsonDatiUtente;
+            var cartReceived;
+            var datiok = false; // dati utente e carta di credito
+            ottieniJson();
 
-                RiempiBarraRicerca();
-                AggiungiProdotti();
-                Autocomplete("product");
+            function ottieniJson()
+            {
+                jsonDatiUtente = ${jsonPayPage};
+                cartReceived = ${shoppingCartProducts};
+
+                console.log(jsonDatiUtente);
+                console.log(cartReceived);
+
             }
 
-            function AggiungiProdotti() {
+            // funzione che inserisce nella form, l'indirizzo dell'utente
+            function AggiungiDatiUtente() {
+                if (jsonDatiUtente.addressdata.length != 0)
+                {
+                    var toAdd = "";
+
+                    if (jsonDatiUtente.addressdata.length > 0) {
+                        datiIndirizzo = "true";
+                        $("#paese").val(jsonDatiUtente.addressdata[0].town);
+                        $("#indirizzo").val(jsonDatiUtente.addressdata[0].address);
+                        $("#citta").val(jsonDatiUtente.addressdata[0].city);
+                        $("#provincia").val(jsonDatiUtente.addressdata[0].province);
+                        $("#cap").val(jsonDatiUtente.addressdata[0].postal_code);
+                    }
+                }
+            }
+
+            // funzione che inserisce nella form, i dati della carta di credito
+            function AggiungiDatiMetodoPagamento() {
+                if (jsonDatiUtente.paymentdata.length != 0)
+                {
+                    var toAdd = "";
+                    console.log("2");
+                    console.log("a: " + jsonDatiUtente.paymentdata[0].owner);
+                    console.log("b: " + jsonDatiUtente.paymentdata[0].card_number);
+                    console.log("c: " + jsonDatiUtente.paymentdata[0].exp_month);
+                    console.log("d: " + jsonDatiUtente.paymentdata[0].exp_year);
+                    if (jsonDatiUtente.paymentdata.length > 0) {
+                        datiCarta = "true";
+
+                        $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);
+                        $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);
+
+                        $("#mesescadenza").val("" + jsonDatiUtente.paymentdata[0].exp_month);
+                        $("#annoscadenza").val("" + jsonDatiUtente.paymentdata[0].exp_year);
+                    }
+                }
+            }
+
+            function AggiungiProdotti(cart)
+            {
                 var toAdd = "";
                 var id_oggetto = -1;
 
-                for (var i = 0; i < jsonProdotti.products.length; i++)
+                // visualizzo i prodotti del carrello, da quello aggiunto più di recente al più vecchio
+                for (var i = cart.products.length - 1; i >= 0; i--)
                 {
-                    id_oggetto = jsonProdotti.products[i].id;
-                    toAdd += "<div class=\"col-sm-6 col-md-4\">";
-                    toAdd += "<div class=\"thumbnail\">";
-                    if (!(jsonProdotti.products[i].pictures.length > 0) || jsonProdotti.products[i].pictures[0].path == undefined)
-                        toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"...\">";
-                    else
-                        toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotti.products[i].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
-                    toAdd += "<div class=\"caption\">";
-                    toAdd += "<h3 class=\"maxlength dotsEndSentence\" title=\"" + jsonProdotti.products[i].name + "\">" + jsonProdotti.products[i].name + "</h3>";
-                    toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
-                    toAdd += "<p><a href=\"ServletPopulateProductPage?id=" + jsonProdotti.products[i].id + "\" class=\"btn btn-primary\" role=\"button\">Vedi prodotto</a> <a href=\"/Amazoff/ServletAddToCart?productID=" + jsonProdotti.products[i].id + "&requested=1\" class=\"btn btn-default\" role=\"button\">Aggiungi al carrello</a></p>";
-                    toAdd += "</div>";
-                    toAdd += "</div>";
+                    id_oggetto = cart.products[i].id;
+                    toAdd += "<div class=\"row\">";
+                    toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
+                    toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                    toAdd += "                    <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
+                    toAdd += "                </div>";
+                    toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
+                    toAdd += "                        <div class=\"row\">";
+                    toAdd += "                            <p id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</p>";
+                    toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
+                    toAdd += "                            <p id=\"linkmappa" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Vedi su mappa</p> <a href=\"url_venditore.html\" class=\"col-xs-12 col-lg-3\">Negozio</a>";
+                    toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
+                    toAdd += "                        </div>";
+                    toAdd += "                   </div>";
+                    toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                    toAdd += "            </div>";
+                    toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
+                    toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
+                    toAdd += "            </div>";
+                    toAdd += "        </a>";
                     toAdd += "</div>";
                 }
 
@@ -76,44 +130,146 @@
                 $("#txtCerca").val(searchedProduct);
             }
 
-            $(document).ready(function () {
-                $("#carouselNegozi").click(function () {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(redirectWithPosition);
-                    } else {
-                        alert("Geolocation is not supported by this browser");
-                    }
-                });
-
-                function redirectWithPosition(position) {
-                    var lat = position.coords.latitude;
-                    var lng = position.coords.longitude;
-
-                    window.location.href = 'ServletFindShops?userLat=' + lat + "&userLng=" + lng;
-                }
-            });
-
-            function checkForNewNotifications()
+            /* funzione che visualizza / nasconde la form della carta di credito in base al tipo di acquisto */
+            function checkModalita(selectedMode)
             {
-                console.log("Notification for userID: " + userID);
-                $.post('SerlvetAjaxGetNotifications', {
-                    _idUser: userID,
-                }, function (data) {
-                    jsonNotifiche = JSON.parse(data); // converto da stringa a oggetto json
+                modalita = selectedMode;
 
-                    // chiamo la funzione "inserisciNotifiche()" che ritorna il codice dello stile e funzionamento delle notifiche
-                    // prendo il codice html e lo inserisco nel corpo del popover
-                    $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
-                }).fail(function () {
+                if (modalita === "ritiro") {
+                    $("#div_creditcard").fadeOut("slow", function () {  /* Animation complete.*/
+                    });
+                    document.getElementById("ritiro").disabled = true;
+                    document.getElementById("spedizione").disabled = false;
+                } else
+                {
+                    $("#div_creditcard").fadeIn("slow", function () {  /* Animation complete.*/
+                    });
+                    document.getElementById("spedizione").disabled = true;
+                    document.getElementById("ritiro").disabled = false;
+                }
+                enabledBtnAcquista(modalita);
+            }
 
-                });
+            function enabledBtnAcquista(op)
+            {
+                //alert("STATO: " + op + " " + datiIndirizzo + " " + datiCarta);
+                if (op == "ritiro") {
+                    if (datiIndirizzo == "true") {
+                        document.getElementById("btnCompletaAcquisto").disabled = false;
+                        document.getElementById("txtmodalita").value = modalita;
+                    }
+                } else if (op == "spedizione") {
+                    if (datiIndirizzo == "true" && datiCarta == "true") {
+                        document.getElementById("btnCompletaAcquisto").disabled = false;
+                        document.getElementById("txtmodalita").value = modalita;
+                    } else {
+                        document.getElementById("btnCompletaAcquisto").disabled = true;
+                        document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito dati validi prima di continuare.";
+                    }
+                }
+            }
+
+            function  completaOrdine(stato)
+            {
+                window.location = "ServletConfirmOrder";
+            }
+
+            // chiamata ajax che controlla che i dati siano stati modificati correttamente
+            function checkDatiIndirizzo()
+            {
+                //$("#indirizzoLoading").html("<i class=\"fa fa-spinner fa-spin\"></i>");
+                var paese = $("#paese").val();
+                var indirizzo = $("#indirizzo").val();
+                var citta = $("#citta").val();
+                var provincia = $("#provincia").val();
+                var cap = $("#cap").val();
+
+                if (paese == "" || indirizzo == "" || citta == "" || provincia == "" || cap == "")
+                {
+                    enabledBtnAcquista("null");
+                    alert("Completa tutti i campi prima di continuare");
+
+                    return false; // uno o più campi sono vuoti
+                } else {
+
+                    $.post('ServletAjaxPayPage', {
+                        _op: "indirizzo",
+                        _user: userID,
+                        _paese: paese,
+                        _indirizzo: indirizzo,
+                        _citta: citta,
+                        _provincia: provincia,
+                        _cap: cap,
+                        _ritiroOspedizione: modalita
+                    }, function (data) {
+                        datiIndirizzo = data;
+                        //alert(datiIndirizzo);
+                        // se i dati ricevuti sono validi, ed è gia stata scelta la modalità di acq. ALLORA controllo se sbloccare il btnAcq
+                        if ((datiIndirizzo) && modalita != "null") {
+                            enabledBtnAcquista(modalita);
+                        }
+
+                    }).fail(function () {
+                        alert("ERR");
+                    });
+                }
+                //$("#").html("<span class=\"glyphicon glyphicon-user\"></span>");
+                //return false;
+            }
+
+            function checkDatiCarta()
+            {
+                //$("#indirizzoLoading").html("<i class=\"fa fa-spinner fa-spin\"></i>");
+                var intestatario = $("#intestatario").val();
+                var numerocarta = $("#numerocarta").val();
+                var meseScadenza = $("#mesescadenza").val();
+                var annoScadenza = $("#annoscadenza").val();
+
+                if (intestatario == "" || numerocarta == "" || meseScadenza == "" || annoScadenza == "")
+                {
+                    enabledBtnAcquista("null");
+                    alert("Completa tutti i campi prima di continuare");
+                    return false; // uno o più campi sono vuoti
+                } else {
+
+                    $.post('ServletAjaxPayPageCard', {
+                        _intestatario: intestatario,
+                        _numerocarta: numerocarta,
+                        _meseScadenza: meseScadenza,
+                        _annoScadenza: annoScadenza,
+                        _ritiroOspedizione: modalita,
+                    }, function (data) {
+                        datiCarta = data;
+                        //alert(datiCarta);
+                        // se i dati ricevuti sono validi, ed è gia stata scelta la modalità di acq. ALLORA controllo se sbloccare il btnAcq
+                        if ((datiCarta) && modalita != "null") {
+                            enabledBtnAcquista(modalita);
+                        }
+                    }).fail(function () {
+                        alert("ERR");
+                    });
+                }
+                //$("#").html("<span class=\"glyphicon glyphicon-user\"></span>");
+                //return false;
+            }
+
+            function datiModificati(div)
+            {
+                if (div == "indirizzo")
+                    datiIndirizzo = "false";
+                else
+                    datiCarta = "false";
+
+                enabledBtnAcquista("in_attesa_validazione");
+
             }
         </script>
 
     </head>
-    <body class="bodyStyle" onload="LogJson()">
+    <body class="bodyStyle" onload="Autocomplete('product')">
 
         <div class="container-fluid tmargin">
+
             <!-- barra bianca a sx -->
             <div class="hidden-xs col-lg-1"></div>
 
@@ -132,11 +288,14 @@
                                 <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
                                     <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
                                         <spam class="glyphicon glyphicon-user"> 
-                                            <%
-                                                try {
+                                            <% 
+                                            try {
                                                     String user = (session.getAttribute("user")).toString();
-
-                                                } catch (Exception ex) {
+                                            %>
+                                            <!-- memorizzo l'id dell'utente, cosi da usarlo per controllare i suoi dati (indirizzo e carta) -->
+                                            <script>user = "<%=user%>"</script> 
+                                            <%
+                                                }catch(Exception ex){
                                             %>
                                             Accedi 
                                             <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
@@ -150,28 +309,28 @@
 
                                 <div class="col-xs-6 hidden-lg">
                                     <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                                    <%
+                                    <% 
                                         String userType = "";
                                         try {
-                                            userType = (session.getAttribute("categoria_user")).toString();
-                                            if (userType.equals("0") ||userType.equals("1") || userType.equals("2")) {
+                                                userType = (session.getAttribute("categoria_user")).toString();
+                                                if(userType.equals("1") || userType.equals("2"))
+                                                {
                                     %>
                                     <a href="notificationPage.jsp">
                                         <span class="badge iconSize imgCenter" id="totNotifichexs"> 
-                                            <spam class="glyphicon glyphicon-inbox"></spam> 
-                                             <i class="fa fa-spinner fa-spin" ></i> 
+                                            <spam class="glyphicon glyphicon-inbox"></spam>
+                                            99+
                                         </span>
                                     </a>
 
                                     <%
-                                            }
-                                        } catch (Exception ex) {
-                                        }
+                                }
+                            }catch(Exception ex){   }
                                     %> 
                                 </div>                    
 
                                 <div class="col-xs-3 hidden-lg iconSize imgCenter" >
-                                    <a href="ServletShowCart">
+                                    <a href="ServletAddToCart"">
                                         <spam class="glyphicon glyphicon-shopping-cart"></spam>
                                     </a>
                                 </div>
@@ -195,10 +354,7 @@
                                 </div>
 
                                 <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-
-                                <div id="parametriRicerca">
-                                    <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
-                                </div>
+                                <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
 
                                 <div class="input-group-btn">
                                     <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
@@ -221,7 +377,7 @@
                             <div class="dropdownUtente col-lg-7" >
                                 <div class="btn-group">
                                     <a href="userPage.jsp" class="btn btn-default maxlength dotsEndSentence" type="button" id="btnAccediRegistrati" >
-                                        <%
+                                        <% 
                                             userType = "";
                                             String user = "", fname = "", lname = "";
                                             try {
@@ -230,9 +386,9 @@
                                                 fname = (session.getAttribute("fname")).toString();
                                                 lname = (session.getAttribute("lname")).toString();
                                         %>
-                                        <%= fname + " " + lname%>
-                                        <%
-                                        } catch (Exception ex) {
+                                        <%= fname + " " + lname %>
+                                        <% 
+                                            }catch(Exception ex){
                                         %>
                                         Accedi / Registrati
 
@@ -247,32 +403,33 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <%
-                                            if (userType.equals("0")) // registrato
+                                            if(userType.equals("0")) // registrato
                                             {
                                         %>
                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
-                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                                         <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                             <%
-                                            } else if (userType.equals("1")) // venditore
-                                            {
+                                        }
+                                        else if(userType.equals("1")) // venditore
+                                        {
                                             %>
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
-                                        <li><a href="userPage.jsp?v=Notifiche#notifiche">Notifiche</a></li>
+                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp">Negozio</a></li>
                                         <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
                                         <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                             <%
-                                            } else if (userType.equals("2")) //admin
-                                            {
+                                        }
+                                        else if(userType.equals("2")) //admin
+                                        {
                                             %>
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
@@ -280,11 +437,11 @@
                                         <li role="separator" class="divider"></li>
                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                             <%
-                                            } else { %>
+                                        }
+                                        else { %>
                                         <li><a href="loginPage.jsp">Accedi</a></li>
                                         <li><a href="loginPage.jsp">Registrati</a></li>
-                                            <% }
-                                            %>
+                                            <%  } %>
 
                                     </ul> 
                                 </div>
@@ -292,18 +449,18 @@
 
                             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                             <% try {
-                                    //userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
+                                //userType = (session.getAttribute("categoria_user")).toString();
+                                if (userType.equals("1") || userType.equals("2")) {
                             %>
                             <div class="col-lg-3">                                                    
                                 <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
-                                    <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> <i class="fa fa-spinner fa-spin" ></i> </span>
+                                    <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> </span>
                                 </button>   
                             </div> 
                             <%
                                     }
-                                } catch (Exception ex) {
-                                }
+                                } 
+                                catch (Exception ex) { }
                             %> 
 
 
@@ -328,7 +485,7 @@
                                                 <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanza(this)" onkeypress="return isNumberKey(event)"> 
                                             </p>
                                         </li>
-                                        <li>Prezzo
+                                        <li>Prezzo 
                                             <p>
                                                 <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
                                                 <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
@@ -408,67 +565,150 @@
                             </nav>
                         </div>
                     </div>
-                </div>
 
-                <!-- carousel -->
-                <div class="panel row tmargin hidden-xs">
-                    <div class="col-lg-12">
-                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                            <!-- Indicators --
-                            <ol class="carousel-indicators">
-                              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                              <li data-target="#myCarousel" data-slide-to="1"></li>
-                              <li data-target="#myCarousel" data-slide-to="2"></li>
-                            </ol>-->
+                    <!-- CORPO pagina -->           
+                    <!-- RIEPILOGO ORDINE -->
+                    <div class="tmargin">
+                        <h3>Riepilogo carrello</h3>
+                        <div class="col-xs-12" id="zonaProdotti">
+                            <!-- Prodotti di prova -->
+                            <!--<div class="row">
+                                <a href="ServletPopulateProductPage?id=id_oggetto" id="id_oggetto">
+                                        <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
+                                            <img src="UploadedImages/image3.jpg" style="max-height: 100px;" alt="...">
+                                        </div>
+                                        <div class="col-xs-8 col-md-5 col-lg-6">
+                                            <div class="row">
+                                                <p id="nome" class="col-lg-12">Nome</p>
+                                                <p id="stelle" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni" >#num recensioni</p>
+                                                <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
+                                                <h5 class="col-lg-12" id="prezzo+">Prezzo €</h5>                               
+                                            </div>                        
+                                        </div>
+                                </a>
+                            </div>
+                            
+                            <div class="row">
+                                <a href="ServletPopulateProductPage?id=id_oggetto" id="id_oggetto">
+                                        <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
+                                            <img src="UploadedImages/image1.jpg" style="max-height: 100px;" alt="...">
+                                        </div>
+                                        <div class="col-xs-8 col-md-5 col-lg-6">
+                                            <div class="row">
+                                                <p id="nome" class="col-lg-12">Nome</p>
+                                                <p id="stelle" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni" >#num recensioni</p>
+                                                <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
+                                                <h5 class="col-lg-12" id="prezzo+">Prezzo €</h5>                               
+                                            </div>                        
+                                        </div>
+                                </a>
+                            </div>
+                            
+                            <div class="row">
+                                <a href="ServletPopulateProductPage?id=id_oggetto" id="id_oggetto">
+                                        <div class="thumbnail col-xs-4 col-lg-3" style="min-height:100px; ">
+                                            <img src="UploadedImages/image.jpg" style="max-height: 100px;" alt="...">
+                                        </div>
+                                        <div class="col-xs-8 col-md-5 col-lg-6">
+                                            <div class="row">
+                                                <p id="nome" class="col-lg-12">Nome</p>
+                                                <p id="stelle" class="col-xs-12 col-lg-3">Voto totale</p> <p  class="col-xs-12 col-lg-9" id="recensioni" >#num recensioni</p>
+                                                <p id="linkmappa" class="col-xs-12 col-lg-3">Vedi su mappa</p> <a href="url_venditore.html" class="col-xs-12 col-lg-3">Negozio</a>
+                                                <h5 class="col-lg-12" id="prezzo+">Prezzo €</h5>                               
+                                            </div>                        
+                                        </div>
+                                </a>
+                            </div>-->
+                        </div>                                                                    
+                    </div>
 
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner" role="listbox">
+                    <!-- RIEPILOGO / inserisci nuovo INDIRIZZO -->
+                    <div class="row col-xs-12 col-md-6 col-lg-6">
+                        <div class="col-lg-12" >
+                            <h3>Indirizzo di spedizione</h3>
+                            <div class="row col-xs-12" >
+                                <div class="form-group" id="IndirizzoForm" name="FormIndirizzo" >
+                                    <input name="paese" id="paese" type="text" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
+                                    <input name="indirizzo" id="indirizzo" onchange="datiModificati('indirizzo')" type="text" class="form-control" placeholder="Indirizzo" aria-describedby="sizing-addon2">
+                                    <input name="citta" id="citta" type="text" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Città" aria-describedby="sizing-addon2">
+                                    <input name="provincia" id="provincia" onchange="datiModificati('indirizzo')" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
+                                    <input name="cap" id="cap" type="number" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
 
-                                <div class="item active">
-                                    <a id="carouselNegozi" role="button">
-                                        <img src="images/trova_venditori.jpg" alt="Trova i venditori">
-                                    </a>
-                                    <!--<div class="carousel-caption">
-                                      <h3>Chania</h3>
-                                      <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
-                                    </div>-->
-                                </div>
-
-                                <div class="item">
-                                    <img src="images/tecnologia.jpg" alt="Chania">
-                                </div>
-
-                                <div class="item">
-                                    <img src="images/diventa_venditore.jpg" alt="Chania">
-                                </div>
-
+                                    <button class="btn btn-primary" onclick="checkDatiIndirizzo()">Conferma indirizzo</button>
+                                </div> 
                             </div>
 
-                            <!-- Left and right controls -->
-                            <a class="left carousel-control col-lg-2" href="#myCarousel" role="button" data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="right carousel-control col-lg-2" href="#myCarousel" role="button" data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
+                        </div>
+                    </div>    
+
+                    <!-- RIEPILOGO / inserisci nuovi DATI CARTA CREDITO -->
+                    <div class="row col-xs-12 col-md-6 col-lg-6" id="div_creditcard" >
+                        <div class="col-lg-12">    
+                            <h3>Carta di credito</h3>
+                            <div class="row col-xs-12">
+                                <input name="intestatario" id="intestatario" onchange="datiModificati('carta')" type="text" class="form-control" placeholder="Intestatario" aria-describedby="sizing-addon2">
+                                <input name="numerocarta" id="numerocarta" onchange="datiModificati('carta')" type="number" class="form-control" placeholder="Numero carta" aria-describedby="sizing-addon2">
+
+                                <div style="align: left">Data di scadenza</div>
+                                <div>
+                                    <div class="dropdown" style="display: inline-block">
+                                        <select name="mesescadenza" id="mesescadenza" onchange="datiModificati('carta')" class="btn btn-default dropdown-toggle" type="button" >
+                                            <%
+                                                  String codice = "";
+                                                  for (int i = 1; i <= 12; i++)
+                                                  {
+                                                      codice += "<option value=\""+i+"\"><li>"+i+"</li></option>";
+                                                  }
+                                            %>
+                                            <%= codice %>
+                                        </select>
+                                    </div>
+                                    <div class="dropdown" style="display: inline-block;align: rigth ">
+
+                                        <select name="annoscadenza" id="annoscadenza" onchange="datiModificati('carta')"  class="btn btn-default dropdown-toggle" type="button" >
+                                            <%
+                                                codice = "";
+                                                int year = new java.util.Date().getYear() + 1900 ;
+                                                for (int i = year; i <= year + 20; i++)
+                                                {
+                                                    codice += "<option value=\""+i+"\"><li>"+i+"</li></option>";
+                                                }
+                                            %>
+                                            <%= codice %>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary" onclick="checkDatiCarta()">Conferma indirizzo</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- tabella di 2 righe, con 3 colonne, che mostrano 6 prodotti -->
-                <div class="row">
-                    <div class="page" id="zonaProdotti">
 
-                    </div>
-                </div>
+                    <form action="ServletConfirmOrder" method="POST" >
+                        <div class="row col-xs-12 alignCenter">
+                            <h3>Seleziona la modalità di acquisto:</h3>
+                            <button id="spedizione" class="btn btn-default" onclick="checkModalita('spedizione')">Spedizione</button>
+                            <button id="ritiro" class="btn btn-default" onclick="checkModalita('ritiro')">Ritira in negozio</button>
+                            <input type="text" name="modalita" id="txtmodalita" style="visibility: hidden; width: 0px; height: 0px" >
+                        </div> 
+
+                        <div class="row col-xs-12 alignCenter" style="margin-top: 10px" >
+                            <!-- TO DO: finche l'utente non inserisce i dati richiesti, non viene sbloccato il button.
+                                Se i dati sono già presenti perché vengono caricati dalla servlet, il btn è attivo
+                                Se l'utente modifica i dati, devo controllare che siano ancora validi prima di lasciargli completare l'ordine -->
+                            <button type="submit" id="btnCompletaAcquisto" onclick="completaOrdine('ok')" class="btn btn-primary" disabled="true">Completa l'acquisto</button>
+
+                        </div>   
+                    </form>
+                </div> 
 
                 <!-- back to top button -->
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
                 <!-- footer -->
-                <footer style="background-color: #fc5d5d">
+                <footer style="background-color: #fc5d5d" class="tmargin">
                     <div class="row">
                         <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
                             <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
@@ -476,7 +716,7 @@
                             <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
                             <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
                             <%
-                                if (userType.equals("0")) // registrato
+                                if(userType.equals("0")) // registrato
                                 {
                             %>
                             <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
@@ -486,8 +726,9 @@
                             <!-- NON SO SE SERVE. In teoria si. SE si va aggiunto anche nei menu a tendina -->
                             <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
 
-                            <%  } else if (userType.equals("1")) // venditore
-                            {  %>
+                            <%  }
+                                else if(userType.equals("1")) // venditore
+                                {  %>
                             <!-- UTENTE SE "VENDITORE" -> porta alla pag. ALTRIM. passa per la login -->
                             <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                             <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
@@ -495,16 +736,18 @@
                             <p><a href="userPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Negozio</a></p>
                             <p><a href="userPage.jsp?v=SellNewProduct#sellNewProduct"><span class="glyphicon glyphicon-menu-right"></span> Vendi Prodotto</a></p>
                             <p><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti"><span class="glyphicon glyphicon-menu-right"></span> Gestisci prodotti</a></p>
-                            <%  } else if (userType.equals("2")) // admin
-                            {  %> 
+                            <%  }
+                                else if(userType.equals("2")) // admin
+                                {  %> 
                             <p><a href="userPage.jsp?v=Profile#profilo"><span class="glyphicon glyphicon-menu-right"></span> Profilo</a></p>
                             <p><a href="ServletMyOrders"><span class="glyphicon glyphicon-menu-right"></span> Miei ordini</a></p>
                             <p><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"><span class="glyphicon glyphicon-menu-right"></span> Notifiche</a></p>
-                            <%  } else // non loggato
-                            {  %>    
+                            <%  }
+                                else // non loggato
+                                {  %>    
                             <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Accedi</a></p>
                             <p><a href="loginPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Registrati</a></p>
-                            <%  }%>        
+                            <%  }  %>        
                         </div>
                         <div class="hidden-xs col-sm-4"><h5><b>Categorie</b></h5>
                             <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Oggetto</a></p>
@@ -529,7 +772,7 @@
 
 
         <script>
-            // When the user scrolls down 20px from t                            he top of the document, show the button
+            // When the user scrolls down 20px from the top of the document, show the button
             window.onscroll = function () {
                 scrollFunction()
             };
@@ -548,12 +791,6 @@
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }
 
-            // dato un elemento text input, reindirizza alla pagina searchPage passando in get il valore nella txt
-            function cercaProdotto(txt)
-            {
-                document.getElementById("formSearch").action = "/Amazoff/Ser                            vletFindProduct?p=" + document.getElementById(txt).value
-                //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
-            }
 
             // crea l'html per il button delle notifiche
             function inserisciNotifiche()
@@ -563,7 +800,6 @@
                 var notificationCount = 0;
                 var notifiche = "";
                 var idNotifica;
-
                 for (var i = jsonNotifiche.notifications.length - 1; i >= 0; i--)
                 {
                     idNotifica = jsonNotifiche.notifications[i].id;
@@ -601,7 +837,6 @@
 
                 if (notificationCount > 99)
                     notificationCount = "99+";
-
                 $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
                 $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
 
@@ -615,11 +850,18 @@
                 });
             });
 
-            // se l'utente è loggato, chiedo alla servlet le notifiche
-            if (userID != "null")
-            {
-                checkForNewNotifications();
-            }
+
+            // inserisco i dati dell'utente e della carta, nella pagina
+            AggiungiDatiUtente();
+            AggiungiDatiMetodoPagamento();
+            AggiungiProdotti(cartReceived);
+
+            // inizializzazione del bottone per l'acquisto
+            enabledBtnAcquista("inizializzazione");
+
+            // inizializzazione delle notifiche e del suo button.
+            $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
+
         </script>
     </body>
 </html>

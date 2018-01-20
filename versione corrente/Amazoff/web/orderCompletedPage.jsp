@@ -31,8 +31,8 @@
             <h1 id="iconaOrdine"></h1>
             <h1 id="statoOrdine"></h1>
             <hr>
-            <h4 id="id_ordine">ID ordine</h4>
-            <h4 id='emailOrdine'>E' stata mandata una email di conferma dell'ordine</h4>
+            <h4 id="id_ordine">ID ordine: <%=request.getParameter("id")%></h4>
+            <h4 id='emailOrdine'>E' stata mandata una notifica di conferma dell'ordine.</h4>
             <hr>
             <div>
                 <p style="display: inline; align: left;"><b>Verrai reindirizzato alla Home tra: </b></p>

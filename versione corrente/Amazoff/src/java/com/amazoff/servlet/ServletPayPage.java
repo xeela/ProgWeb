@@ -43,6 +43,7 @@ public class ServletPayPage extends HttpServlet {
             }
         
             String jsonObj = "";
+            float totale_carrello = 0;
             boolean isFirstTime = true;
             if(MyDatabaseManager.cpds != null)
             {
@@ -113,17 +114,46 @@ public class ServletPayPage extends HttpServlet {
                     }
                     jsonObj += "]";
                 }
-                jsonObj += "}";
+                                
                 
-                
-                session.setAttribute("jsonPayPage", jsonObj);  
                 
                 /** Estraggo dal db tutti i prodotti che l'utente ha salvato nel carrello */
-                results = MyDatabaseManager.EseguiQuery("SELECT products.id, name, description, price FROM products, cart "
-                    + "WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = products.ID;", connection);
+                results = MyDatabaseManager.EseguiQuery("SELECT products.id, products.name, products.description, products.price, products.ritiro, cart.amount, pictures.path FROM products, cart, pictures "
+                    + "WHERE cart.ID_USER = " + session.getAttribute("userID") + " AND cart.ID_PRODUCT = products.ID AND pictures.ID_PRODUCT = products.ID  ORDER BY products.RITIRO DESC;", connection);
                 
                 /** Inserisco i prodotti nel json */
-                jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                //----- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
+                jsonObj += ",\"products\":[";
+                isFirstTime = true;
+                int amount = 0;
+                float price = 0;
+                while (results.next()) {
+                        if(!isFirstTime)            
+                            jsonObj += ", ";
+                        isFirstTime = false;
+                        
+                        price = Float.parseFloat(results.getString(4));
+                        amount = Integer.parseInt(results.getString(6));
+                        totale_carrello += (price * amount);
+                                
+                        jsonObj += "{";
+                        jsonObj += "\"id_product\": \"" + results.getString(1) + "\","; 
+                        jsonObj += "\"name\": \"" + results.getString(2) + "\",";  
+                        jsonObj += "\"description\": \"" + results.getString(3) + "\","; 
+                        jsonObj += "\"ritiro\": \"" + results.getString(5) + "\","; 
+                        jsonObj += "\"path\": \"" + results.getString(7) + "\","; 
+                        jsonObj += "\"price\": \"" + price + "\",";
+                        jsonObj += "\"amount\": \"" + amount + "\",";
+                        jsonObj += "\"tot\": \"" + (price * amount) + "\"";
+                        jsonObj += "}";
+                    }
+                
+                jsonObj += "],";
+                jsonObj += "totCart: \""+ totale_carrello +"\"}";
+                
+                /** memorizzo i dati in unsa sessione, cosi da visualizzarli come riepilogo ordine, in PayPage */
+                session.setAttribute("jsonPayPage", jsonObj);  
+                
                 
                 /** Memorizzo l'oggetto json in una variabile di sessione da cui recuperare i dati per visualizzarli prima di completare l'acquisto */
                 session.setAttribute("shoppingCartProducts", jsonObj);

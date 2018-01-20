@@ -14,23 +14,27 @@ public class Notifications {
 
     public enum NotificationType {NEW_USER, ORDER_COMPLETE, NEW_REVIEW};
     
-    public static void SendNotification(String userID, NotificationType type, String link, Connection connection) throws SQLException
+    /** OSSSS: altroID varia in base al tipo di notifica.
+     * vale = -1 se type = New_user oppure = NEW_REVIEW
+     * vale = orderID se type = ORDER_COMPLETE
+     */
+    public static void SendNotification(String userID, String altroID, NotificationType type, String link, Connection connection) throws SQLException
     {
         MyDatabaseManager.EseguiStatement("INSERT INTO notifications(ID_USER, TYPE, DESCRIPTION, DATE_ADDED, LINK, ALREADY_READ) VALUES ("
                                         + userID + ","
                                         + type.ordinal() + "," 
-                                        + "'" + GetDescriptionFromType(type) + "',"
+                                        + "'" + GetDescriptionFromType(type, altroID) + "',"
                                         + "'" + MyDatabaseManager.GetCurrentDate() + "',"
                                         + "'" + link + "',"
                                         + 0 + ");", connection);
     }
     
-    private static String GetDescriptionFromType(NotificationType type)
+    private static String GetDescriptionFromType(NotificationType type, String ID)
     {
         switch(type)
         {
             case NEW_USER: return "Benvenuto!";
-            case ORDER_COMPLETE: return "Il tuo ordine è andato a buon fine!";
+            case ORDER_COMPLETE: return "Il tuo ordine è andato a buon fine! (ID: "+ ID +")";
             case NEW_REVIEW: return "E' stata postata una nuova recensione. Leggila ora!";
             default: return "";
         }

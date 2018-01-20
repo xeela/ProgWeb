@@ -99,7 +99,7 @@ public class ServletLogin extends HttpServlet {
                     session.setAttribute("email", email);
                     session.setAttribute("errorMessage", Errors.resetError);
                     //TMP
-                    //Notifications.SendNotification(userID, Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
+                    //Notifications.SendNotification(userID, "-1", Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp", connection);
                     //END TMP
                     response.sendRedirect(request.getContextPath() + "/");
                     

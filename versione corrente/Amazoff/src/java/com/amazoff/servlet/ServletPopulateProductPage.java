@@ -63,6 +63,7 @@ public class ServletPopulateProductPage extends HttpServlet {
                 jsonObj += "{";
                 jsonObj += "\"result\":[";
                 while (results.next()) {
+                    
                     if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
                         jsonObj += ", ";
                     isFirstTime = false;
@@ -129,7 +130,7 @@ public class ServletPopulateProductPage extends HttpServlet {
                     }
                     
                     /** ALTRIMENTI: memorizzo le recensioni e i relativi dati (numero di stelle, testo recensione) */
-                    float tot_avg_value = 0, num_reviews = 0;
+                    float tot_reviews_value = 0, num_reviews = 0, global_value_avg = 0;
                     jsonObj += "\"reviews\":[";
                     while (resultsReviews.next()) {
                         num_reviews += 1;
@@ -148,13 +149,16 @@ public class ServletPopulateProductPage extends HttpServlet {
                         jsonObj += "\"date_creation\": \"" + resultsReviews.getString(8) + "\",";
                         jsonObj += "\"id_creator\": \"" + resultsReviews.getString(10) + "\"";
                         jsonObj += "}";
-                        tot_avg_value += Float.valueOf(resultsReviews.getString(2));
+                        tot_reviews_value += Float.valueOf(resultsReviews.getString(2));
                     }
                     isFirstTimeImg = true;
                     jsonObj += "],";
                                         
                     jsonObj += "\"num_reviews\": \"" + num_reviews + "\",";
-                    jsonObj += "\"global_value_avg\": \"" + tot_avg_value / num_reviews + "\"}";
+                    if(num_reviews > 0){
+                        global_value_avg = (tot_reviews_value / num_reviews);
+                    }
+                    jsonObj += "\"global_value_avg\": \"" + global_value_avg + "\"}";
                 }
                 jsonObj += "]}";
                 

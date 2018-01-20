@@ -30,7 +30,6 @@
             var productSearched = "${searchedProduct}";
             var jsonProdotti = ${jsonProdotti};
             var jsonNotifiche = ${jsonNotifiche};
-
         </script>
         <title>Amazoff</title>
     </head>
@@ -61,7 +60,6 @@
                                                 <%
                                                     try {
                                                         String user = (session.getAttribute("user")).toString();
-
                                                     } catch (Exception ex) {
                                                 %>
                                                 Accedi 
@@ -80,7 +78,7 @@
                                             String userType = "";
                                             try {
                                                 userType = (session.getAttribute("categoria_user")).toString();
-                                                if (userType.equals("1") || userType.equals("2")) {
+                                                if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                                         %>
                                         <a href="notificationPage.jsp">
                                             <span class="badge iconSize imgCenter" id="totNotifichexs"> 
@@ -373,7 +371,6 @@
                                 <p id="linkmappa" >Vedi su mappa</p>
                                 <p id="prezzo+">Prezzo</p>
                                 <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
-
                             </div>
                             <div class="hidden-xs col-sm-2 col-md-1" > 
                                 <span  class="glyphicon glyphicon-chevron-right"></span>
@@ -460,12 +457,10 @@
 
         <script>
             LogJson();
-
             // When the user scrolls down 20px from the top of the document, show the button
             window.onscroll = function () {
                 scrollFunction()
             };
-
             function scrollFunction() {
                 if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                     document.getElementById("btnTop").style.display = "block";
@@ -473,20 +468,17 @@
                     document.getElementById("btnTop").style.display = "none";
                 }
             }
-
             // When the user clicks on the button, scroll to the top of the document
             function topFunction() {
                 document.body.scrollTop = 0; // For Chrome, Safari and Opera 
                 document.documentElement.scrollTop = 0; // For IE and Firefox
             }
-
             // crea l'html per il button delle notifiche
             function inserisciNotifiche()
             {
                 console.log("INserisci notifiche");
                 console.log(jsonNotifiche);
                 console.log("-----");
-
                 var toAdd = "<div style=\"height: 300px; overflow-y:auto;\">";
                 var notificationCount = 0;
                 var notifiche = "";
@@ -507,7 +499,6 @@
                         default:
                             break;
                     }
-
                     if (jsonNotifiche.notifications[i].already_read === "0") {
                         //toAdd += "<p style=\"color: red\">";
                         notificationCount++;
@@ -516,35 +507,26 @@
                     } else {
                         toAdd += "</p>";
                         toAdd += "<div class=\"dotsEndSentence\">" + jsonNotifiche.notifications[i].description + "</div>";
-
                     }
-
                     // ---> toAdd += "<div>"+ jsonNotifiche.notifications[i].date_added +"</div>";
                     toAdd += "</a><hr>";
-
                 }
                 toAdd += "</div>";
                 toAdd += "<div><a href=\"userPage.jsp?v=Notifiche&notificationId=tutte#notifiche\">Vedi tutte</a></div>";
-
                 if (notificationCount > 99)
                     notificationCount = "99+";
                 $("#totNotifichexs").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
                 $("#totNotifiche").html("<span class=\"glyphicon glyphicon-inbox\"></span> " + notificationCount);
-
                 return toAdd;
             }
-
             // gestione POPOVER button notifiche
             $(document).ready(function () {
                 $('[data-toggle="popover"]').popover({
                     container: 'body'
                 });
             });
-
             // inizializzo menu notifiche
             $('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
-
-
         </script>
     </body>
 </html>

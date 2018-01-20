@@ -64,7 +64,7 @@
                                 String userType = "";
                                 try {
                                     userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("1") || userType.equals("2")) {
+                                    if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                             %>
                             <div class="col-xs-2 hidden-lg" style="text-align: right;">
                                 <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
@@ -147,6 +147,7 @@
                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                                         <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                         <li role="separator" class="divider"></li>
@@ -188,7 +189,7 @@
                             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                             <% try {
                                     //userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("1") || userType.equals("2")) {
+                                    if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                             %>
                             <div class="col-lg-3">
                                 <a href="notificationPage.jsp" type="button" class="btn btn-default btn-md">

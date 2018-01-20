@@ -26,12 +26,15 @@
 
         <link rel="stylesheet" href="css/amazoffStyle.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        
+        <!-- serve per lo spinner nel button notifiche -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <title>Amazoff</title>
         <script>
             var userID = "<%= session.getAttribute("userID")%>";
-            var modalita = "null"; // vale: spedizione oppure ritiro. null se non ancora selezionata
-            var datiIndirizzo = "false"; // true = validi. false = non validi
+            var modalita = "null"; // vale: "entrambi" oppure "ritiro".
+            var datiIndirizzo = "true"; // true = validi. false = non validi
             var datiCarta = "false";
             var jsonNotifiche = ${jsonNotifiche};
 
@@ -39,6 +42,8 @@
             var jsonDatiUtente;
             var cartReceived;
             var datiok = false; // dati utente e carta di credito
+            
+            var showFormIndirizzo = false; // diventa true se ci sono prodotti da spedire
             ottieniJson();
 
             function ottieniJson()
@@ -48,7 +53,6 @@
 
                 console.log(jsonDatiUtente);
                 console.log(cartReceived);
-
             }
 
             // funzione che inserisce nella form, l'indirizzo dell'utente
@@ -73,14 +77,8 @@
                 if (jsonDatiUtente.paymentdata.length != 0)
                 {
                     var toAdd = "";
-                    console.log("2");
-                    console.log("a: " + jsonDatiUtente.paymentdata[0].owner);
-                    console.log("b: " + jsonDatiUtente.paymentdata[0].card_number);
-                    console.log("c: " + jsonDatiUtente.paymentdata[0].exp_month);
-                    console.log("d: " + jsonDatiUtente.paymentdata[0].exp_year);
+                               
                     if (jsonDatiUtente.paymentdata.length > 0) {
-                        datiCarta = "true";
-
                         $("#intestatario").val(jsonDatiUtente.paymentdata[0].owner);
                         $("#numerocarta").val(jsonDatiUtente.paymentdata[0].card_number);
 
@@ -95,33 +93,63 @@
                 var toAdd = "";
                 var id_oggetto = -1;
 
+                console.log(cart.products);
+
                 // visualizzo i prodotti del carrello, da quello aggiunto più di recente al più vecchio
                 for (var i = cart.products.length - 1; i >= 0; i--)
                 {
-                    id_oggetto = cart.products[i].id;
-                    toAdd += "<div class=\"row\">";
+                    id_oggetto = cart.products[i].id_product;
+
+                    toAdd += "<div class=\"row thumbnail\">";
                     toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
-                    toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
-                    toAdd += "                    <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" alt=\"...\">";
+                    toAdd += "                <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                    if (cart.products[i].path == undefined) // se non è presente l'img nel db
+                        toAdd += "<img src=\"UploadedImages/default.jpg\" alt=\"Immagina non trovata\">"; // allora carico quella di default
+                    else
+                        toAdd += "   <img class=\"alignCenter\" src=\"UploadedImages/" + cart.products[i].path + "\" style=\"max-height: 100px;\" onerror=\"this.src='UploadedImages/default.jpg'\">"; <!--  -->
+                    
                     toAdd += "                </div>";
                     toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
                     toAdd += "                        <div class=\"row\">";
-                    toAdd += "                            <p id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</p>";
-                    toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
-                    toAdd += "                            <p id=\"linkmappa" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Vedi su mappa</p> <a href=\"url_venditore.html\" class=\"col-xs-12 col-lg-3\">Negozio</a>";
-                    toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
+                    toAdd += "                            <h3 id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name;
+                    
+                    if(cart.products[i].ritiro == "0") {
+                        toAdd += "  <span class=\"badge badge-success\" style=\"background-color: #468847;\">Ritiro in negozio</span></h3>";
+                    }
+                    else
+                    {
+                        toAdd += "  <span class=\"badge badge-info\" style=\"background-color: #3a87ad;\">Spedizione</span></p>";
+                        showFormIndirizzo = true; /** ci sono prodotti che vengono spediti -> serve l'indirizzo */
+                        datiIndirizzo = "false"; /** serve per impedire all'utente di procedere con l'acquisto, finche non conferma anche i dati dell'indirizzo */
+                    }
+                    
+                    toAdd += "                            <h5 class=\"col-lg-12  col-lg-6\" id=\"prezzo" + id_oggetto + "\">Prezzo per unità: " + cart.products[i].price + " €</h5>";
+                    toAdd += "                            <h5 class=\"col-lg-12  col-lg-6\" id=\"amount" + id_oggetto + "\">Quantità: " + cart.products[i].amount + "</h5>";
+                    toAdd += "                            <h4 class=\"col-lg-12 \" id=\"tot" + id_oggetto + "\">Prezzo TOTALE: " + cart.products[i].tot + " €</h4>";
+            
                     toAdd += "                        </div>";
                     toAdd += "                   </div>";
                     toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
                     toAdd += "            </div>";
-                    toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
-                    toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span></button>";
-                    toAdd += "            </div>";
+                    //toAdd += "           <div class=\"col-xs-8 col-md-3 col-lg-2\" >";
+                    //toAdd += "                   <button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button>";
+                    //toAdd += "            </div>";
                     toAdd += "        </a>";
                     toAdd += "</div>";
                 }
 
                 $("#zonaProdotti").html(toAdd);
+                $("#totale_carrello").html("<h2>Totale carrello: " + cart.totCart + " €");
+                
+                if(!showFormIndirizzo)
+                {
+                    datiIndirizzo = "true"; // considero validi i dati dell'indirizzo --> che non mi serviranno
+                    // nascondo la form
+                    document.getElementById("div_datiSpedizione").hidden = "true";
+                    
+                    // TMP: dovra essere tolto il controllo sul tipo di Ritiro prodotti
+                    //checkModalita("ritiro");
+                }
             }
 
             function RiempiBarraRicerca()
@@ -131,34 +159,34 @@
             }
 
             /* funzione che visualizza / nasconde la form della carta di credito in base al tipo di acquisto */
-            function checkModalita(selectedMode)
+            /*function checkModalita(selectedMode)
             {
                 modalita = selectedMode;
 
                 if (modalita === "ritiro") {
-                    $("#div_creditcard").fadeOut("slow", function () {  /* Animation complete.*/
+                    $("#div_creditcard").fadeOut("slow", function () {  /* Animation complete.*
                     });
                     document.getElementById("ritiro").disabled = true;
                     document.getElementById("spedizione").disabled = false;
                 } else
                 {
-                    $("#div_creditcard").fadeIn("slow", function () {  /* Animation complete.*/
+                    $("#div_creditcard").fadeIn("slow", function () {  /* Animation complete. *
                     });
                     document.getElementById("spedizione").disabled = true;
                     document.getElementById("ritiro").disabled = false;
                 }
                 enabledBtnAcquista(modalita);
-            }
+            }*/
 
             function enabledBtnAcquista(op)
             {
                 //alert("STATO: " + op + " " + datiIndirizzo + " " + datiCarta);
-                if (op == "ritiro") {
-                    if (datiIndirizzo == "true") {
-                        document.getElementById("btnCompletaAcquisto").disabled = false;
-                        document.getElementById("txtmodalita").value = modalita;
-                    }
-                } else if (op == "spedizione") {
+                //if (op == "ritiro") {
+                //    if (datiIndirizzo == "true") {
+                //        document.getElementById("btnCompletaAcquisto").disabled = false;
+                //        document.getElementById("txtmodalita").value = modalita;
+                //    }
+                //} else if (op == "entrambi") {
                     if (datiIndirizzo == "true" && datiCarta == "true") {
                         document.getElementById("btnCompletaAcquisto").disabled = false;
                         document.getElementById("txtmodalita").value = modalita;
@@ -166,7 +194,7 @@
                         document.getElementById("btnCompletaAcquisto").disabled = true;
                         document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito dati validi prima di continuare.";
                     }
-                }
+                //}
             }
 
             function  completaOrdine(stato)
@@ -177,7 +205,8 @@
             // chiamata ajax che controlla che i dati siano stati modificati correttamente
             function checkDatiIndirizzo()
             {
-                //$("#indirizzoLoading").html("<i class=\"fa fa-spinner fa-spin\"></i>");
+                /*$("#btnDatiIndirizzo").html("Conferma indirizzo <i class=\"fa fa-spinner fa-spin\"></i>");*/
+                
                 var paese = $("#paese").val();
                 var indirizzo = $("#indirizzo").val();
                 var citta = $("#citta").val();
@@ -202,11 +231,17 @@
                         _cap: cap,
                         _ritiroOspedizione: modalita
                     }, function (data) {
+                        
                         datiIndirizzo = data;
                         //alert(datiIndirizzo);
                         // se i dati ricevuti sono validi, ed è gia stata scelta la modalità di acq. ALLORA controllo se sbloccare il btnAcq
-                        if ((datiIndirizzo) && modalita != "null") {
+                        if (datiIndirizzo) {
+                            alert("Dati confermati correttamente.");
                             enabledBtnAcquista(modalita);
+                        }
+                        else
+                        {
+                            alert("Errore! C'è stato un errore durante la conferma dei dati.");
                         }
 
                     }).fail(function () {
@@ -219,7 +254,8 @@
 
             function checkDatiCarta()
             {
-                //$("#indirizzoLoading").html("<i class=\"fa fa-spinner fa-spin\"></i>");
+                /*$("#spinnerCarta").style.visibility = "visible"; /** rendo visibile lo spinner di caricamento */
+                
                 var intestatario = $("#intestatario").val();
                 var numerocarta = $("#numerocarta").val();
                 var meseScadenza = $("#mesescadenza").val();
@@ -240,17 +276,21 @@
                         _ritiroOspedizione: modalita,
                     }, function (data) {
                         datiCarta = data;
-                        //alert(datiCarta);
+                        
                         // se i dati ricevuti sono validi, ed è gia stata scelta la modalità di acq. ALLORA controllo se sbloccare il btnAcq
-                        if ((datiCarta) && modalita != "null") {
+                        if (datiCarta) {
+                            alert("Dati confermati correttamente.");
                             enabledBtnAcquista(modalita);
                         }
+                        else
+                        {
+                            alert("Errore! C'è stato un errore durante la conferma dei dati.");
+                        }
+                        
                     }).fail(function () {
                         alert("ERR");
                     });
                 }
-                //$("#").html("<span class=\"glyphicon glyphicon-user\"></span>");
-                //return false;
             }
 
             function datiModificati(div)
@@ -313,7 +353,7 @@
                                         String userType = "";
                                         try {
                                                 userType = (session.getAttribute("categoria_user")).toString();
-                                                if(userType.equals("1") || userType.equals("2"))
+                                                if(userType.equals("0") || userType.equals("1") || userType.equals("2"))
                                                 {
                                     %>
                                     <a href="notificationPage.jsp">
@@ -409,6 +449,7 @@
                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                                         <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                         <li role="separator" class="divider"></li>
@@ -450,7 +491,7 @@
                             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                             <% try {
                                 //userType = (session.getAttribute("categoria_user")).toString();
-                                if (userType.equals("1") || userType.equals("2")) {
+                                if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                             %>
                             <div class="col-lg-3">                                                    
                                 <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
@@ -619,13 +660,18 @@
                                         </div>
                                 </a>
                             </div>-->
-                        </div>                                                                    
+                        </div>
+                        <div id="totale_carrello" class="col-xs-12"></div>
                     </div>
 
                     <!-- RIEPILOGO / inserisci nuovo INDIRIZZO -->
-                    <div class="row col-xs-12 col-md-6 col-lg-6">
+                    <div class="row col-xs-12 col-md-6 col-lg-6" id="div_datiSpedizione">
                         <div class="col-lg-12" >
-                            <h3>Indirizzo di spedizione</h3>
+                            <h3>Indirizzo di spedizione 
+                                <a class="btn btn-secondary" data-container="body" data-toggle="formIndirizzo" data-placement="top" data-content="L'indirizzo va specificato per tutti i prodotti che verranno spediti">
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                </a>
+                            </h3>
                             <div class="row col-xs-12" >
                                 <div class="form-group" id="IndirizzoForm" name="FormIndirizzo" >
                                     <input name="paese" id="paese" type="text" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Paese (si può anche fare a meno)" aria-describedby="sizing-addon2">
@@ -634,7 +680,7 @@
                                     <input name="provincia" id="provincia" onchange="datiModificati('indirizzo')" type="text" class="form-control" placeholder="Provincia" aria-describedby="sizing-addon2">
                                     <input name="cap" id="cap" type="number" onchange="datiModificati('indirizzo')" class="form-control" placeholder="Codice postale" aria-describedby="sizing-addon2">
 
-                                    <button class="btn btn-primary" onclick="checkDatiIndirizzo()">Conferma indirizzo</button>
+                                    <button id="btnDatiIndirizzo" class="btn btn-primary" onclick="checkDatiIndirizzo()">Conferma indirizzo</button>
                                 </div> 
                             </div>
 
@@ -644,7 +690,11 @@
                     <!-- RIEPILOGO / inserisci nuovi DATI CARTA CREDITO -->
                     <div class="row col-xs-12 col-md-6 col-lg-6" id="div_creditcard" >
                         <div class="col-lg-12">    
-                            <h3>Carta di credito</h3>
+                            <h3>Carta di credito
+                                <a class="btn btn-secondary" data-container="body" data-toggle="formCarta" data-placement="top" data-content="Specifica i dati della carta di credito. Paga subito e completa l'acquisto. Potrai ritirare i prodotti che, non vengono spediti, direttamente in negozio.">
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                </a>
+                            </h3>
                             <div class="row col-xs-12">
                                 <input name="intestatario" id="intestatario" onchange="datiModificati('carta')" type="text" class="form-control" placeholder="Intestatario" aria-describedby="sizing-addon2">
                                 <input name="numerocarta" id="numerocarta" onchange="datiModificati('carta')" type="number" class="form-control" placeholder="Numero carta" aria-describedby="sizing-addon2">
@@ -680,19 +730,19 @@
                                     </div>
                                 </div>
 
-                                <button class="btn btn-primary" onclick="checkDatiCarta()">Conferma indirizzo</button>
+                                <button class="btn btn-primary" onclick="checkDatiCarta()">Conferma metodo pagamento</button>
                             </div>
                         </div>
                     </div>
 
 
                     <form action="ServletConfirmOrder" method="POST" >
-                        <div class="row col-xs-12 alignCenter">
+                        <!--<div class="row col-xs-12 alignCenter">
                             <h3>Seleziona la modalità di acquisto:</h3>
                             <button id="spedizione" class="btn btn-default" onclick="checkModalita('spedizione')">Spedizione</button>
                             <button id="ritiro" class="btn btn-default" onclick="checkModalita('ritiro')">Ritira in negozio</button>
                             <input type="text" name="modalita" id="txtmodalita" style="visibility: hidden; width: 0px; height: 0px" >
-                        </div> 
+                        </div> -->
 
                         <div class="row col-xs-12 alignCenter" style="margin-top: 10px" >
                             <!-- TO DO: finche l'utente non inserisce i dati richiesti, non viene sbloccato il button.
@@ -849,12 +899,22 @@
                     container: 'body'
                 });
             });
+            
+            // gestione popover "form indirizzo".
+            $(function () {
+                $('[data-toggle="formIndirizzo"]').popover();
+            });
+            
+            // gestione popover "form carta di credito".
+            $(function () {
+                $('[data-toggle="formCarta"]').popover();
+            });
 
 
             // inserisco i dati dell'utente e della carta, nella pagina
             AggiungiDatiUtente();
             AggiungiDatiMetodoPagamento();
-            AggiungiProdotti(cartReceived);
+            AggiungiProdotti(jsonDatiUtente); 
 
             // inizializzazione del bottone per l'acquisto
             enabledBtnAcquista("inizializzazione");

@@ -26,6 +26,10 @@
 
         <link rel="stylesheet" href="css/amazoffStyle.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        
+        <!-- serve per lo spinner nel button notifiche -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
         <title>Amazoff</title>
         <script type="text/javascript">
             var jsonProdotti, jsonNotifiche;
@@ -150,12 +154,12 @@
                                         String userType = "";
                                         try {
                                             userType = (session.getAttribute("categoria_user")).toString();
-                                            if (userType.equals("1") || userType.equals("2")) {
+                                            if (userType.equals("0") ||userType.equals("1") || userType.equals("2")) {
                                     %>
                                     <a href="notificationPage.jsp">
                                         <span class="badge iconSize imgCenter" id="totNotifichexs"> 
-                                            <spam class="glyphicon glyphicon-inbox"></spam>
-                                            99+
+                                            <spam class="glyphicon glyphicon-inbox"></spam> 
+                                             <i class="fa fa-spinner fa-spin" ></i> 
                                         </span>
                                     </a>
 
@@ -249,6 +253,7 @@
                                         <!-- PER ORA: se metto anche #profile, la pagina non si carica sull'oggetto con quel tag, ne prende i valori in get -->
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp">Rimborso / Anomalia</a></li>
                                         <li><a href="userPage.jsp?v=CreateShop#createshop">Diventa venditore</a></li>
                                         <li role="separator" class="divider"></li>
@@ -288,11 +293,11 @@
                             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                             <% try {
                                     //userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("1") || userType.equals("2")) {
+                                    if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                             %>
                             <div class="col-lg-3">                                                    
                                 <button class="btn" title="Notifiche" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="">
-                                    <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> </span>
+                                    <span class="badge" id="totNotifiche"><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> <i class="fa fa-spinner fa-spin" ></i> </span>
                                 </button>   
                             </div> 
                             <%
@@ -605,7 +610,6 @@
 
             // gestione POPOVER button notifiche
             $(document).ready(function () {
-                //$('[data-toggle="popover"]').attr('data-content', inserisciNotifiche());
                 $('[data-toggle="popover"]').popover({
                     container: 'body'
                 });
