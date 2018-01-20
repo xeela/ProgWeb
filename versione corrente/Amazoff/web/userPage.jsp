@@ -210,7 +210,8 @@
                 document.getElementById('info').innerHTML = [
                     latLng.lat(),
                     latLng.lng()
-                ].join(', ');
+                ].join(';');
+                console.log(document.getElementById('info').innerHTML);
             }
 
             function updateMarkerAddress(str) {
@@ -221,10 +222,10 @@
                 //    latLng.lat(),
                 //    latLng.lng()
                 //  ].join(';'));
-                document.getElementById('info2').value = [
-                    latLng.lat(),
-                    latLng.lng()
-                ].join(';');
+                var coordinatesshop = document.getElementById('info').innerHTML;
+                alert(coordinatesshop);
+                document.getElementById('info2').innerHTML = coordinatesshop;
+                alert(document.getElementById('info2').innerHTML);
 
             }
             function initialize() {
@@ -284,12 +285,6 @@
         </script>    
 
         <!-- script gestione sezione "DATI NEGOZIO" -->
-        <script>
-            CheckShopData()
-            {
-                if
-            }
-        </script>
     </head>
     <body class="bodyStyle" onload="Autocomplete('product');
             document.getElementById('btnVendi').addEventListener('click', checkProductData, false);">
@@ -597,7 +592,7 @@
 
                                     <div id="collapseCreateShop" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 
-                                        <form id="myform" onsubmit="sendCoordinates()" ENCTYPE='multipart/form-data' method='GET' action='ServletRegisterShop'>
+                                        <form id="myform"  ENCTYPE='multipart/form-data' method='GET' action='ServletRegisterShop'>
                                             <div class="row">
                                                 <div class="col-sm-4 col-sm-offset-2">
                                                     <div class="row">
@@ -639,27 +634,28 @@
                                                         <input type="text" name="citta" placeholder="..." class="col-lg-10"/>
                                                     </div>
                                                     <div class="row"></div>
-                                                    <INPUT TYPE='submit' VALUE='Crea Negozio' class="btn col-lg-4 col-lg-offset-3" />
+                                                    
                                                 </div>   
                                                 <div class="col-lg-6 col-md-6 col-sm-6  ">
                                                     <h3 class="alignLeft">Posizione Geografica</h3>
                                                     <div id="mapCanvas" class="col-sm-6 " style="max-width: 100%" ></div>
-                                                    <!--<div id="infoPanel" >
+                                                    <div id="infoPanel" >
                                                       <b>Marker status:</b>
                                                        <div id="markerStatus"><i>Click and drag the marker.</i></div>
                                                        <b>Current position:</b>
-                                                       <div id="info"></div>
+                                                       <div  name="coordinate" id="info"></div>
                                                        <b>Closest matching address:</b>
                                                        <div id="address"></div>
-                                                   </div>-->
+                                                   </div>
                                                     <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
-
-                                                    <input type="hidden" name="coordinate" id="info2"></input>
+                                                    <INPUT TYPE='submit' VALUE='Creaqq Negozio' class="btn col-lg-4 col-lg-offset-3" />
+                                                    <!--<input type="hidden" name="coordinate" id="info2"></input>-->
                                                 </div>
                                             </div>
                                             <br/><br/><br/>
 
                                         </form>
+                                        <input type="button" onclick="sendCoordinates(); document.getElementById('myform').submit();">Crea Negozio</button>
                                     </div>         
                                 </div>
                             </div>
@@ -864,12 +860,6 @@
                                     </div>                                                  
                                 </div>
                             </div>
-
-
-                            <a id="gestisciProdotti" href=".jsp" class="list-group-item">
-                                <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                Gestisci prodotti
-                            </a>
                             <%
                             } else if (userType.equals("2")) //admin
                             { %>
