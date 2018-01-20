@@ -162,7 +162,7 @@
                                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp">Negozio</a></li>
                                         <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
-                                        <li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>
+                                        <!--<li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>-->
                                         <li role="separator" class="divider"></li>
                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
                                             <%
