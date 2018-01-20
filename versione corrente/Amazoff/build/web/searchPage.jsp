@@ -78,7 +78,7 @@
                                             String userType = "";
                                             try {
                                                 userType = (session.getAttribute("categoria_user")).toString();
-                                                if (userType.equals("1") || userType.equals("2")) {
+                                                if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                                         %>
                                         <a href="notificationPage.jsp">
                                             <span class="badge iconSize imgCenter" id="totNotifichexs"> 
