@@ -43,6 +43,11 @@
 .searchBar
 { }
 
+/* permette di cambiare il cursore del mouse e impostare l'icona della mano  */
+.hovertable {
+    cursor: pointer;
+}
+
 .imgResize{ 
   width: auto; 
   height: auto; 

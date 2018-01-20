@@ -61,21 +61,21 @@
                     for (var i = cart.products.length - 1; i >= 0; i--)
                     {
                         id_oggetto = cart.products[i].id;
-                        toAdd += "<div class=\"row\">";
+                        toAdd += "<div class=\"row thumbnail\">";
                         toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
-                        toAdd += "                <div class=\"thumbnail col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                        toAdd += "                <div class=\"col-xs-5 col-sm-3 col-md-3\" style=\"min-height:100px; \">";
                         if (!(cart.products[i].pictures.length > 0) || cart.products[i].pictures[0].path == undefined)
-                            toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"...\">";
+                            toAdd += "                  <img src=\"UploadedImages/default.jpg\" style=\"max-height: 100px; \" alt=\"Immagine non trovata.\">";
                         else
-                            toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
+                            toAdd += "                  <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
                         toAdd += "                </div>";
-                        toAdd += "                    <div class=\"col-xs-8 col-md-7 col-lg-9\">";
-                        toAdd += "                        <div class=\"row\">";
+                        toAdd += "                <div class=\"col-xs-7 col-md-7 col-lg-9\">";
+                        toAdd += "                      <div class=\"row\">";
                         toAdd += "                            <h4 id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</h4>";
-                        //toAdd += "                            <p id=\"stelle" + id_oggetto + "\" class=\"col-xs-12 col-lg-3\">Voto totale</p> <p  class=\"col-xs-12 col-lg-9\" id=\"recensioni" + id_oggetto + "\" >#num recensioni</p>";
                         toAdd += "                            <a id=\"linkmappa" + id_oggetto + "\" href=\"ServletShowShopOnMap?id=" + cart.products[i].id_shop + "\" class=\"col-xs-12 col-lg-3\">Vedi negozio su mappa</a> <a href=\"" + cart.products[i].web_site + "\" class=\"col-xs-12 col-lg-3\">Sito Negozio: " + cart.products[i].shop + "</a>";
                         toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
                         toAdd += "                            <p class=\"col-lg-12\" name=\"venditore" + id_oggetto + "\" >Venditore: " + cart.products[i].last_name + " " + cart.products[i].first_name + "</p>";
+                        
                         // codice html dei bottoni + , - , remove
                         toAdd += "                            <div class=\"col-xs-12 col-sm-6\" >";
                         toAdd += "                                <div>";
@@ -84,7 +84,7 @@
                         toAdd += "                                    <button class=\"btn btn-danger col-lg-3\" onclick=\"rimuovi(" + id_oggetto + ")\"><span class=\"glyphicon glyphicon-minus\"></span></button>";
                         toAdd += "                                </div>";
                         toAdd += "                             </div>";
-                        toAdd += "                            <div class=\"col-xs-12 tmargin\"><button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button></div>";
+                        toAdd += "                             <div class=\"col-xs-12 tmargin\"><button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button></div>";
                         toAdd += "                        </div>";
                         toAdd += "                   </div>";
                         toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
