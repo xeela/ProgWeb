@@ -63,11 +63,11 @@ function impostaLatLng(position){
 }
 
 function impostaMin(obj) {
-    var min = obj.value;
+    var min = parseInt(obj.value);
     var remove = false;
 
     if($("#prezzoMaxRicerca").length){
-        if(min > $("#prezzoMaxRicerca").val()){
+        if(min > parseInt($("#prezzoMaxRicerca").val())){
             alert("Il prezzo minimo deve essere minore del prezzo massimo!");
             obj.value = "";
             remove = true;
@@ -75,23 +75,23 @@ function impostaMin(obj) {
     }
 
     if($("#prezzoMinRicerca").length){
-        if((min == "") || remove){
+        if((min === "") || remove){
             $("#prezzoMinRicerca").remove();
         } else {
             $("#prezzoMinRicerca").val(min);
         }
-    } else if ((min != "") && !remove){
+    } else if ((min !== "") && !remove){
         $("#parametriRicerca").append('<input id="prezzoMinRicerca" name="prezzoMinRicerca" type="text" style="display:none;" value="">');
         $("#prezzoMinRicerca").val(min);
     }
 }
 
 function impostaMax(obj) {
-    var max = obj.value;
+    var max = parseInt(obj.value);
     var remove = false;
 
     if($("#prezzoMinRicerca").length){
-        if(max < $("#prezzoMinRicerca").val()){
+        if(max < parseInt($("#prezzoMinRicerca").val())){
             alert("Il prezzo massimo deve essere maggiore del prezzo minimo!");
             obj.value = "";
             remove = true;
@@ -99,12 +99,12 @@ function impostaMax(obj) {
     }
 
     if($("#prezzoMaxRicerca").length){
-        if((max == "") || remove){
+        if((max === "") || remove){
             $("#prezzoMaxRicerca").remove();
         } else {
             $("#prezzoMaxRicerca").val(max);
         }
-    } else if ((max != "") && !remove){
+    } else if ((max !== "") && !remove){
         $("#parametriRicerca").append('<input id="prezzoMaxRicerca" name="prezzoMaxRicerca" type="text" style="display:none;" value="">');
         $("#prezzoMaxRicerca").val(max);
     }
