@@ -5,12 +5,12 @@ function RadioSwitch(value){
 
 function impostaRecensione(value){
     if($("#recensioneRicerca").length){
-        if(value == "all"){
+        if(value === "all"){
             $("#recensioneRicerca").remove();
         } else{
             $("#recensioneRicerca").val(value);
         }
-    } else if (value != 'all'){
+    } else if (value !== 'all'){
         $("#parametriRicerca").append('<input id="recensioneRicerca" name="recensioneRicerca" type="text" style="display:none;" value="">');
         $("#recensioneRicerca").val(value);
     }
