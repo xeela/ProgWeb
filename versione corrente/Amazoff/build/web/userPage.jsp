@@ -275,10 +275,11 @@
                 if (document.getElementById("prname").value !== "" && document.getElementById("prname").value !== undefined &&
                         document.getElementById("prdesc").value !== "" && document.getElementById("prname").value !== undefined &&
                         document.getElementById("prprice").value !== "" && document.getElementById("prname").value !== undefined &&
-                        !isNaN(parseFloat(document.getElementById("prprice").value)))
+                        !isNaN(document.getElementById("prprice").value))
 
                 {
-                    return true;
+                    //if(typeof document.getElementById("prprice").value === 'number' && isFinite(document.getElementById("prprice").value))
+                        return true;
                 }
                 return false;
             }
@@ -864,25 +865,25 @@
                             <%
                             } else if (userType.equals("2")) //admin
                             { %>
-                            <div class="list-group-item">
-                                <div role="tablist" aria-multiselectable="true">
-                                    Notifiche TMP 2
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseTwo" aria-expanded="true" 
-                                       aria-controls="collapseTwo" >
-                                        <span class='glyphicon glyphicon-option-vertical'></span>
-                                    </a>
+                                    <div id="notifiche" class="list-group-item">
+                                        <div role="tablist" aria-multiselectable="true">
+                                            Notifiche 
+                                            <a data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseNotifiche" aria-expanded="true" 
+                                               aria-controls="collapseNotifiche" >
+                                                <span class='glyphicon glyphicon-option-vertical'></span>
+                                            </a>
 
-                                    <div id="collapseTwo" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                        <div class="row">
-                                            <div class="col-lg-3"></div>
-                                            <div class="col-lg-6">
-                                                <h3 class="alignCenter">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur? [33] At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. </h3>
-                                            </div>    
+                                            <div id="collapseNotifiche" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                                <div class="row">
+                                                    <div class="col-lg-2"></div>
+                                                    <div id="div_notifiche" class="col-lg-8">
+
+                                                    </div>    
+                                                </div>
+                                            </div>                                                  
                                         </div>
-                                    </div>                                                  
-                                </div>
-                            </div>
+                                    </div>
                             <% } %>
 
                             <a id="esci" href="/Amazoff/ServletLogout" class="list-group-item active">
@@ -939,6 +940,7 @@
                 {
                     idNotifica = jsonNotifiche.notifications[i].id;
                     toAdd += "<div id=\"notifica" + idNotifica + "\" class=\"panel-group\" role=\"tablist\" aria-multiselectable=\"true\">";
+                     
                     switch (jsonNotifiche.notifications[i].type)
                     {
                         case "0":
@@ -950,7 +952,16 @@
                         default:
                             break;
                     }
+                    if (jsonNotifiche.notifications[i].already_read === "0") {
+                        //toAdd += "<p style=\"color: red\">";
+                        toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                    } else {
+                        toAdd += "</p>";
+
+                    }
+                    toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">";
                     toAdd += jsonNotifiche.notifications[i].description;
+                    toAdd += "</a>";
                     toAdd += "      <div id=\"collapse" + idNotifica + "\" class=\"panel-collapse collapse out\" role=\"tabpanel\" aria-labelledby=\"heading" + idNotifica + "\">";
                     toAdd += "tutto il messaggio. per ora non esiste un campo nel db in cui è salvato. E' solo presente una 'descrizione' = " + jsonNotifiche.notifications[i].description;
                     toAdd += "      </div>";
@@ -960,6 +971,7 @@
                     toAdd += "         <span class=\"glyphicon glyphicon-option-horizontal\"></span>";
                     toAdd += "      </a>";
                     toAdd += " </div>";
+                    
                 }
 
                 return toAdd;
