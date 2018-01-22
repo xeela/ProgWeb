@@ -82,6 +82,13 @@ public class MyDatabaseManager {
         return results;
     }
 
+    static public int EseguiUpdate(String query, Connection connection) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String sql = query;
+        int results = stmt.executeUpdate(sql);
+        return results;
+    }
+    
     static public PreparedStatement EseguiStatement(String query, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         ps.executeUpdate();

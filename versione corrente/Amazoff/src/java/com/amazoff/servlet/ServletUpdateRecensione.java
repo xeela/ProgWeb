@@ -1,0 +1,183 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.amazoff.servlet;
+
+import com.amazoff.classes.Errors;
+import com.amazoff.classes.MyDatabaseManager;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ *
+ * @author Cate
+ */
+public class ServletUpdateRecensione extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            String id_recensione = request.getParameter("id_review");
+            String id_prodotto = request.getParameter("id_product");
+            String titolo = request.getParameter("review_name");
+            String recensione = request.getParameter("review_text");
+            String quality = request.getParameter("quality_rating");
+            String service = request.getParameter("service_rating");
+            String value = request.getParameter("value_rating");
+            String global = request.getParameter("global_rating");
+            String to_update = request.getParameter("to_update");
+            String to_delete = request.getParameter("to_delete");
+            HttpSession session = request.getSession();
+            
+            
+            // LOG
+            Logger logger = Logger.getLogger("MyLog");  
+            FileHandler fh;  
+
+            try {  
+
+                // This block configure the logger with handler and formatter  
+                fh = new FileHandler("C:/Windows/Temp/MyLogFile3.log");
+                logger.addHandler(fh);
+                SimpleFormatter formatter = new SimpleFormatter();  
+                fh.setFormatter(formatter);  
+
+                // the following statement is used to log any messages  
+                logger.info("My first log");  
+
+            } catch (SecurityException | IOException e) {  
+            }  
+
+            logger.info(id_recensione);
+            
+            
+            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
+            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
+            {
+                MyDatabaseManager mydb = new MyDatabaseManager();
+            }
+        
+            if(MyDatabaseManager.cpds != null)
+            {
+                Connection connection = MyDatabaseManager.CreateConnection();
+                
+                if (session.getAttribute("userID") != null) {
+                    if(to_delete.equals("true")) {
+                        int results = MyDatabaseManager.EseguiUpdate("DELETE FROM reviews WHERE id = " + id_recensione + ";", connection);
+                        
+                        if(results == 0){
+                            session.setAttribute("errorMessage", Errors.deleteUnsuccessful);
+                            response.sendRedirect(request.getContextPath() + "/");
+                        }
+                    } else {
+                        /** Interrogo il Db per farmi restituire i dettagli del prodotto specificato */
+                        if(to_update.equals("true")){
+                            int results = MyDatabaseManager.EseguiUpdate("UPDATE reviews SET description = '" + recensione + "'"
+                                    + ", name = '" + titolo + "'"
+                                    + ", global_value = " + global
+                                    + ", quality = " + quality
+                                    + ", service = " + service
+                                    + ", value_for_money = " + value
+                                    + " WHERE id = " + id_recensione + ";", connection);
+
+                            /** se l'update non è andata a buon fine */
+                            if(results == 0) {
+                                session.setAttribute("errorMessage", Errors.updateUnsuccessful);
+                                response.sendRedirect(request.getContextPath() + "/");
+                            }
+                        } else {
+                            int results = MyDatabaseManager.EseguiUpdate("INSERT INTO reviews (global_value, quality, service, value_for_money, name, description, id_product, id_creator) VALUES ("
+                                    + global + ", "
+                                    + quality + ", "
+                                    + service + ", "
+                                    + value + ", '"
+                                    + titolo + "', '"
+                                    + recensione + "', "
+                                    + id_prodotto + ", "
+                                    + session.getAttribute("userID") + ");", connection);
+
+                            /** se l'insert non è andata a buon fine */
+                            if(results == 0) {
+                                session.setAttribute("errorMessage", Errors.insertUnsuccessful);
+                                response.sendRedirect(request.getContextPath() + "/");
+                            }
+                        }
+                    }
+                    connection.close();
+
+                    response.sendRedirect(request.getContextPath() + "/ServletMyOrders");
+                }
+            } else {
+                session.setAttribute("errorMessage", Errors.dbConnection);
+                response.sendRedirect(request.getContextPath() + "/");
+            }
+        }catch (SQLException ex) {
+            HttpSession session = request.getSession();
+            session.setAttribute("errorMessage", Errors.dbQuery);
+            response.sendRedirect(request.getContextPath() + "/");
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}

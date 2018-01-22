@@ -265,6 +265,7 @@
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
                                         <li><a href="userPage.jsp?v=Notifiche#notifiche">Notifiche</a></li>
+                                        <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp">Negozio</a></li>
                                         <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
                                         <!--<li><a href="userPage.jsp?v=GestisciProdotti#gestisciProdotti">Gestisci prodotti</a></li>-->
@@ -552,6 +553,7 @@
             function cercaProdotto(txt)
             {
                 document.getElementById("formSearch").action = "/Amazoff/Ser                            vletFindProduct?p=" + document.getElementById(txt).value
+                document.getElementById("formSearch").action = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value
                 //window.location = "/Amazoff/ServletFindProduct?p=" + document.getElementById(txt).value;
             }
 

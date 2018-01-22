@@ -28,4 +28,5 @@ public class Errors {
     static public String noOrdersFound = "Non è stato ancora effettuato alcun ordine";
     static public String updateUnsuccessful = "Nessun record aggiornato nel database";
     static public String insertUnsuccessful = "Nessun record aggiunto al database";
+    static public String deleteUnsuccessful = "Nessun record eliminato dal database";
 }
