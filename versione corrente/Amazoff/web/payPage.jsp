@@ -103,10 +103,13 @@
                     toAdd += "<div class=\"row thumbnail\">";
                     toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
                     toAdd += "                <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                    toAdd += "                <div class=\"col-xs-4 col-lg-3\">";
                     if (cart.products[i].path == undefined) // se non è presente l'img nel db
                         toAdd += "<img src=\"UploadedImages/default.jpg\" alt=\"Immagina non trovata\">"; // allora carico quella di default
+                        toAdd += "<img src=\"UploadedImages/default.jpg\" style=\"max-width:100%; \" alt=\"Immagina non trovata\">"; // allora carico quella di default
                     else
                         toAdd += "   <img class=\"alignCenter\" src=\"UploadedImages/" + cart.products[i].path + "\" style=\"max-height: 100px;\" onerror=\"this.src='UploadedImages/default.jpg'\">"; <!--  -->
+                        toAdd += "   <img src=\"UploadedImages/" + cart.products[i].path + "\" style=\"max-width:100%; \" onerror=\"this.src='UploadedImages/default.jpg'\">"; <!--  -->
                     
                     toAdd += "                </div>";
                     toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
@@ -193,6 +196,7 @@
                     } else {
                         document.getElementById("btnCompletaAcquisto").disabled = true;
                         document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito dati validi prima di continuare.";
+                        document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito e confermato i dati prima di continuare.";
                     }
                 //}
             }

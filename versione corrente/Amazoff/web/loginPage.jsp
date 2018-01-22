@@ -128,14 +128,17 @@
             function checkResetEmail()
             {
                 document.getElementById("btnRipristina").disabled = true;
+                document.getElementById("loadingSpinner").hidden = false;
 
                 var mail = document.getElementById("inputEmail").value;
                 //console.log(mail.length < 6);
                 //console.log("||"+ !mail.includes("@"));
+                
                 if (mail.length < 6 || !mail.includes("@"))
                 {
                     document.getElementById("alertResetPassword").style.visibility = "visible";
                     document.getElementById("btnRipristina").disabled = false;
+                    document.getElementById("loadingSpinner").hidden = true;
                 } else {
                     document.getElementById("alertResetPassword").style.visibility = "hidden";
 
@@ -157,6 +160,8 @@
                     });
                     return false;
 
+                    /** Invio i dati della form, alla servlet */
+                    $("#mvEmailForm").submit();
                 }
             }
 
@@ -407,6 +412,7 @@
                         </button>
                         <h4 class="modal-title" id="myModalLabel">
                             Ripristina la password
+                            Ripristina la password 
                         </h4>
                     </div>
 
@@ -414,6 +420,7 @@
                     <div class="modal-body">
 
                         <form class="form-horizontal" role="form">
+                        <form action="ServletAjaxEmailExists" method="POST" class="form-horizontal" role="form" id="mvEmailForm">
                             <div class="form-group">
                                 <label  class="col-sm-2 control-label"
                                         for="inputEmail3">Email</label>
@@ -422,18 +429,25 @@
                                            id="inputEmail" placeholder="Inserisci Email"/>
                                     <label  class="control-label">Ti verrà mandata una email con cui ripristinare la password.</label>  
 
+                                           id="inputEmail" name="_email" placeholder="Inserisci Email"/>
+                                </div>
+                                <div class="col-xs-12">
+                                    <h4 id="mvMessage" style="visibility: hidden">Ti è stata mandata una email dalla quale potrai ripristinare la password.</h4>  
                                 </div>
                             </div>
 
                         </form>
+                        
                         <div class="alert alert-danger alert-dismissible" style="visibility: hidden" id="alertResetPassword" role="alert">
                             Indizizzo e-Mail non valido
+                            Errore durante la procedura di reset della password. Riprovare!
                         </div>
 
                     </div>
 
                     <!-- Modal Footer -->
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnRipristina" onclick="checkResetEmail()">Ripristina <i id="loadingSpinner" hidden="true" class="fa fa-spinner fa-spin" ></i></button>
                         <button type="button" class="btn btn-default" id="btnAnnulla" data-dismiss="modal">Annulla</button>
                         <button type="button" class="btn btn-primary" id="btnRipristina" onclick="checkResetEmail()">Ripristina</button>
                     </div>

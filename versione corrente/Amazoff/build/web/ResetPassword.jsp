@@ -73,6 +73,7 @@
 
                 document.getElementById("hashedPassword").value = newPwd;
                 document.getElementById("hashedPassword").value = "";
+
                 return true;
             }
 
