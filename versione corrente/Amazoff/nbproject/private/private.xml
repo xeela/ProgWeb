@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Caterina/Documents/GitKraken/ProgWeb/versione%20corrente/Amazoff/web/index.jsp</file>
-            <file>file:/C:/Users/Caterina/Documents/GitKraken/ProgWeb/versione%20corrente/Amazoff/web/js/parametri-ricerca.js</file>
-            <file>file:/C:/Users/Caterina/Documents/GitKraken/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletSegnalazione.java</file>
-            <file>file:/C:/Users/Caterina/Documents/GitKraken/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/classes/Notifications.java</file>
+            <file>file:/C:/Users/Caterina/Documents/GitKraken/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletUpdateRecensione.java</file>
+            <file>file:/C:/Users/Caterina/Documents/GitKraken/ProgWeb/versione%20corrente/Amazoff/web/lasciaRecensione.jsp</file>
         </group>
     </open-files>
 </project-private>

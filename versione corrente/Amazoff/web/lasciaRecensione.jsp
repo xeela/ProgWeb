@@ -28,26 +28,29 @@
         <script>
             var jsonNotifiche = ${jsonNotifiche};
             var jsonReview = ${jsonReview};
-
-            function submitForm() {
-                $("#review_form").submit();
+            
+            function submitElimina(){
+                $('#to_delete').val("true");
+                $('#review_form').submit();
             }
-
+            
             $(document).ready(function () {
                 $('#id_product').val(jsonReview.data[0].id_product);
                 $('#name_product').val(jsonReview.data[0].name_product);
-                $('#name_product').html(jsonReview.data[0].name_product);
-
-                if (jsonReview.data[0].id_review !== null) {
+                $('#name_product_text').html(jsonReview.data[0].name_product);
+                
+                if (jsonReview.data[0].in_db === "true") {
+                    $('#salva').attr("disabled", false);
+                    $('#elimina').attr("disabled", false);
                     $('#id_review').val(jsonReview.data[0].id_review);
                     $('#titolo').val(jsonReview.data[0].title);
                     $('#recensione').val(jsonReview.data[0].description);
-                    $('input:radio[name=quality_rating]').filter('[value="' + jsonReview.data[0].quality + '"]').prop('checked', true);
-                    $('input:radio[name=service_rating]').filter('[value="' + jsonReview.data[0].service + '"]').prop('checked', true);
-                    $('input:radio[name=value_rating]').filter('[value="' + jsonReview.data[0].value + '"]').prop('checked', true);
-                    $('input:radio[name=global_rating]').filter('[value="' + jsonReview.data[0].global + '"]').prop('checked', true);
+                    $('input:radio[name="quality_rating"]').filter('[value="' + jsonReview.data[0].quality + '"]').prop('checked', true);
+                    $('input:radio[name="service_rating"]').filter('[value="' + jsonReview.data[0].service + '"]').prop('checked', true);
+                    $('input:radio[name="value_rating"]').filter('[value="' + jsonReview.data[0].value + '"]').prop('checked', true);
+                    $('input:radio[name="global_rating"]').filter('[value="' + jsonReview.data[0].global + '"]').prop('checked', true);
                 }
-
+                
                 if (jsonReview.data[0].in_db === "true") {
                     $('#to_update').val("true");
                 } else {
@@ -60,6 +63,17 @@
                 $('#recensione').keyup(function () {
                     var text_length = $('#recensione').val().length;
                     $('#textarea_feedback').html(text_length + '/250 caratteri');
+                });
+                
+                $('[id^=star]').on("change", function() {
+                    if (($('input:radio[name="quality_rating"]:checked').length > 0) && 
+                        ($('input:radio[name="service_rating"]:checked').length > 0) && 
+                        ($('input:radio[name="value_rating"]:checked').length > 0) &&
+                        ($('input:radio[name="global_rating"]:checked').length > 0)) {
+                        $('#salva').attr('disabled', false);
+                    } else {
+                        $('#salva').attr('disabled', true);
+                    }
                 });
             });
         </script>
@@ -376,10 +390,10 @@
                     <!-- corpo della pagina contenente i risultati della ricerca -->
                     <div class="tmargin col-xs-12 col-sm-10">
                         <div id="div_recensione">
-                            <form id="review_form" action="ServletUpdateReview" method="post">
-                                <p>Scrivi una recensione per <span id="name_product">-prodotto-</span>:</p>
-                                <p><textarea name="review_name" id="titolo" rows="1" maxlength="50" placeholder="Titolo..."></textarea></p>
-                                <p><textarea name="review_text" id="recensione" rows="5" maxlength="250" placeholder="Descrizione..."></textarea></p>
+                            <form id="review_form" action="ServletUpdateRecensione" method="post">
+                                <p>Scrivi una recensione per <span id="name_product_text">-prodotto-</span>:</p>
+                                <p><textarea name="review_name" id="titolo" value="" rows="1" maxlength="50" placeholder="Titolo..."></textarea></p>
+                                <p><textarea name="review_text" id="recensione" value="" rows="5" maxlength="250" placeholder="Descrizione..."></textarea></p>
                                 <p id="textarea_feedback"></p>
                                 <p>Qualità</p>
                                 <p class="rating one">
@@ -433,10 +447,15 @@
                                     <input type="radio" id="star1-4" name="global_rating" value="1.0" /><label class = "full" for="star1-4" title="Orribile - 1 star"></label>
                                     <input type="radio" id="starhalf-4" name="global_rating" value="0.5" /><label class="half" for="starhalf-4" title="Orribile - 0.5 stars"></label>
                                 </p>
-                                <p><a class='btn btn-default' role='button' onclick="submitForm()">Invia</a></p>
-                                <p name="id_review" display="none"></p>
-                                <p name="id_product" display="none"></p>
-                                <p name="to_update" display="none"></p>
+                                <input type="text" name="id_review" id="id_review" style="display:none" value="">
+                                <input type="text" name="id_product" id="id_product" style="display:none" value="">
+                                <input type="text" name="name_product" id="name_product" style="display:none" value="">
+                                <input type="text" name="to_update" id="to_update" style="display:none" value="">
+                                <input type="text" name="to_delete" id="to_delete" style="display:none" value="">
+                                <p>
+                                    <button id="salva" class="btn btn-default" type="submit" disabled="true">Salva</button>
+                                    <button id="elimina" class="btn btn-default" disabled="true" onclick="submitElimina()">Elimina</button>
+                                </p>
                             </form>
                         </div>
                     </div> 
