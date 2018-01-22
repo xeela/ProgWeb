@@ -61,23 +61,18 @@
                     for (var i = cart.products.length - 1; i >= 0; i--)
                     {
                         id_oggetto = cart.products[i].id;
-                        toAdd += "<div class=\"row thumbnail\">";
                         toAdd += "<div class=\"row thumbnail hovertable\">";
                         toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
-                        toAdd += "                <div class=\"col-xs-5 col-sm-3 col-md-3\" style=\"min-height:100px; \">";
                         toAdd += "                <div class=\"col-xs-5 col-sm-3 col-md-3\">";
                         if (!(cart.products[i].pictures.length > 0) || cart.products[i].pictures[0].path == undefined)
-                            toAdd += "                  <img src=\"UploadedImages/default.jpg\" style=\"max-height: 100px; \" alt=\"Immagine non trovata.\">";
                             toAdd += "                  <img src=\"UploadedImages/default.jpg\" style=\"max-width:100%; \" alt=\"Immagine non trovata.\">";
                         else
-                            toAdd += "                  <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-height: 100px; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
                             toAdd += "                  <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-width:100%; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
                         toAdd += "                </div>";
                         toAdd += "                <div class=\"col-xs-7 col-md-7 col-lg-9\">";
                         toAdd += "                      <div class=\"row\">";
                         toAdd += "                            <h4 id=\"nome" + id_oggetto + "\" class=\"col-lg-12\" >" + cart.products[i].name + "</h4>";
                         toAdd += "                            <a id=\"linkmappa" + id_oggetto + "\" href=\"ServletShowShopOnMap?id=" + cart.products[i].id_shop + "\" class=\"col-xs-12 col-lg-3\">Vedi negozio su mappa</a> <a href=\"" + cart.products[i].web_site + "\" class=\"col-xs-12 col-lg-3\">Sito Negozio: " + cart.products[i].shop + "</a>";
-                        toAdd += "                            <h5 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h5>";
                         toAdd += "                            <h4 class=\"col-lg-12\" id=\"prezzo" + id_oggetto + "\">Prezzo: " + cart.products[i].price + " €</h4>";
                         toAdd += "                            <p class=\"col-lg-12\" name=\"venditore" + id_oggetto + "\" >Venditore: " + cart.products[i].last_name + " " + cart.products[i].first_name + "</p>";
                         
@@ -92,8 +87,6 @@
                         toAdd += "                             <div class=\"col-xs-12 tmargin\"><button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button></div>";
                         toAdd += "                        </div>";
                         toAdd += "                   </div>";
-                        toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
-                        toAdd += "            </div>";
                         //toAdd += "            <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
                         //toAdd += "            </div>";
                         toAdd += "        </a>";
@@ -189,12 +182,6 @@
                                             userType = (session.getAttribute("categoria_user")).toString();
                                             if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                                     %>
-                                    <span class="badge iconSize imgCenter"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</span>
-                                                <%
-                                                        }
-                                                    } catch (Exception ex) {
-                                                    }
-                                                %> 
                                     <a href="notificationPage.jsp">
                                             <span class="badge iconSize imgCenter" id="totNotifichexs"> 
                                                 <spam class="glyphicon glyphicon-inbox"></spam>

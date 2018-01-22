@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.EmailUtility;
@@ -25,11 +20,6 @@ import javax.servlet.http.HttpSession;
  */
 public class ServletAjaxEmailExists extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-        }
     private String host;
     private String port;
     private String user;
@@ -44,14 +34,6 @@ public class ServletAjaxEmailExists extends HttpServlet {
         pass = context.getInitParameter("pass");
     }
     
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -59,9 +41,7 @@ public class ServletAjaxEmailExists extends HttpServlet {
         
         String risposta = "false";
         try (PrintWriter out = response.getWriter()) {
-        
             String emailReceived = request.getParameter("_email");
-
             HttpSession session = request.getSession();
             
             
@@ -83,9 +63,6 @@ public class ServletAjaxEmailExists extends HttpServlet {
                 }
                 else {
                     risposta = "false";
-                    while (results.next()) { // se esiste un utente con quella email, ritorno FALSE
-                        risposta = "true&/Amazoff/ResetPassword.jsp?tmp="+results.getString(2);
-                        //response.sendRedirect(request.getContextPath() + "/ResetPassword.jsp?tmp="+results.getString(2));
                     while (results.next()) { 
                         risposta = "true"; 
                         /** memorizzo l'email in una sessione */
@@ -103,16 +80,8 @@ public class ServletAjaxEmailExists extends HttpServlet {
                 risposta = "false";
             }
             
-            // ritorno il risultato alla pagina chiamante
-            response.setContentType("text/plain");
-            response.getWriter().write(risposta);
-            
             response.sendRedirect(request.getContextPath() + "/recuperoPasswordPage.jsp?s="+risposta);
         }catch (SQLException ex) {
-           // ritorno FALSE, c'è stato un errore
-            risposta = "false";
-            response.setContentType("text/plain");
-            response.getWriter().write(risposta);
             risposta = "false"; 
             response.sendRedirect(request.getContextPath() + "/recuperoPasswordPage.jsp?s="+risposta);
         }

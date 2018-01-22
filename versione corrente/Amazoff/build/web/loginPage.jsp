@@ -21,7 +21,6 @@
             var condizioniAccettate = false;
             var usernameUnique = false;
             var emailUnique = false;
-            ;
 
             function MostraErrore(text)
             {
@@ -131,6 +130,7 @@
                 document.getElementById("loadingSpinner").hidden = false;
 
                 var mail = document.getElementById("inputEmail").value;
+                
                 if (mail.length < 6 || !mail.includes("@"))
                 {
                     document.getElementById("alertResetPassword").style.visibility = "visible";
@@ -138,24 +138,6 @@
                     document.getElementById("loadingSpinner").hidden = true;
                 } else {
                     document.getElementById("alertResetPassword").style.visibility = "hidden";
-
-                    // chiama ajax che controlla se la email è presente nel db
-                    $.post('ServletAjaxEmailExists', {
-                        _email: mail
-                    }, function (data) {
-
-                        if (data.indexOf("true") >= 0) {
-                            var dati = data.split('&');
-                            document.getElementById("modalViewResetPwd").innerHTML += "<h4><a href=" + dati[1] + " style='text-decoration: underline'>Clicca per Accedere</a> con la password temporanea e aggiornare i dati</h4>";
-
-                        } else {
-                            document.getElementById("alertResetPassword").style.visibility = "visible";
-                        }
-                        return false;
-                    }).fail(function () {
-                        return false;
-                    });
-                    return false;
 
                     /** Invio i dati della form, alla servlet */
                     $("#mvEmailForm").submit();
@@ -408,7 +390,6 @@
                             <span class="sr-only">Close</span>
                         </button>
                         <h4 class="modal-title" id="myModalLabel">
-                            Ripristina la password
                             Ripristina la password 
                         </h4>
                     </div>
@@ -416,16 +397,12 @@
                     <!-- Modal Body -->
                     <div class="modal-body">
 
-                        <form class="form-horizontal" role="form">
                         <form action="ServletAjaxEmailExists" method="POST" class="form-horizontal" role="form" id="mvEmailForm">
                             <div class="form-group">
                                 <label  class="col-sm-2 control-label"
                                         for="inputEmail3">Email</label>
                                 <div class="col-sm-10" id="modalViewResetPwd">
                                     <input type="email" class="form-control" 
-                                           id="inputEmail" placeholder="Inserisci Email"/>
-                                    <label  class="control-label">Ti verrà mandata una email con cui ripristinare la password.</label>  
-
                                            id="inputEmail" name="_email" placeholder="Inserisci Email"/>
                                 </div>
                                 <div class="col-xs-12">
@@ -436,7 +413,6 @@
                         </form>
                         
                         <div class="alert alert-danger alert-dismissible" style="visibility: hidden" id="alertResetPassword" role="alert">
-                            Indizizzo e-Mail non valido
                             Errore durante la procedura di reset della password. Riprovare!
                         </div>
 
@@ -446,7 +422,6 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="btnRipristina" onclick="checkResetEmail()">Ripristina <i id="loadingSpinner" hidden="true" class="fa fa-spinner fa-spin" ></i></button>
                         <button type="button" class="btn btn-default" id="btnAnnulla" data-dismiss="modal">Annulla</button>
-                        <button type="button" class="btn btn-primary" id="btnRipristina" onclick="checkResetEmail()">Ripristina</button>
                     </div>
                 </div>
             </div>
