@@ -72,7 +72,7 @@
                     newPwd = sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(newPwd));
 
                 document.getElementById("hashedPassword").value = newPwd;
-                document.getElementById("hashedPassword").value = "";
+
                 return true;
             }
 

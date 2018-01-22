@@ -128,9 +128,6 @@
                                     </div>
 
                                     <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-                                    <div id="parametriRicerca">
-                                        <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
-                                    </div>
                                     <div class="input-group-btn">
                                         <!--<select class="btn btn-default dropdown-toggle hidden-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="search_category">Select category<span class="caret"></span></button>
                                             <option value="product">Product</option>

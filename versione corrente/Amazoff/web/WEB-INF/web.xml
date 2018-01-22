@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <!-- SMTP settings -->
+    <context-param>
+        <param-name>host</param-name>
+        <param-value>smtp.gmail.com</param-value>
+    </context-param>
+ 
+    <context-param>
+        <param-name>port</param-name>
+        <param-value>587</param-value>
+    </context-param>
+ 
+    <context-param>
+        <param-name>user</param-name>
+        <param-value>progweb17@gmail.com</param-value>
+    </context-param>
+ 
+    <context-param>
+        <param-name>pass</param-name>
+        <param-value>Amazoff17</param-value>
+    </context-param>
+    <!-- FINE SETUP -->
+    
     <!-- FILTER -->
     <filter>
         <filter-name>NotLoggedFilter</filter-name>
@@ -131,11 +153,11 @@
     </servlet>
     <servlet>
         <servlet-name>ServletRecensione</servlet-name>
-        <servlet-class>com.amazoff.servlet.ServletRecensione</servlet-class>
+        <servlet-class>com.amazoff.servlet.ServletRetrieveReview</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletUpdateRecensione</servlet-name>
-        <servlet-class>com.amazoff.servlet.ServletUpdateRecensione</servlet-class>
+        <servlet-name>ServletUpdateReview</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletUpdateReview</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
@@ -258,8 +280,8 @@
         <url-pattern>/ServletRecensione</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ServletUpdateRecensione</servlet-name>
-        <url-pattern>/ServletUpdateRecensione</url-pattern>
+        <servlet-name>ServletUpdateReview</servlet-name>
+        <url-pattern>/ServletUpdateReview</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

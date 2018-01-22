@@ -5,12 +5,12 @@ function RadioSwitch(value){
 
 function impostaRecensione(value){
     if($("#recensioneRicerca").length){
-        if(value === "all"){
+        if(value == "all"){
             $("#recensioneRicerca").remove();
         } else{
             $("#recensioneRicerca").val(value);
         }
-    } else if (value !== 'all'){
+    } else if (value != 'all'){
         $("#parametriRicerca").append('<input id="recensioneRicerca" name="recensioneRicerca" type="text" style="display:none;" value="">');
         $("#recensioneRicerca").val(value);
     }
@@ -63,11 +63,11 @@ function impostaLatLng(position){
 }
 
 function impostaMin(obj) {
-    var min = parseInt(obj.value);
+    var min = obj.value;
     var remove = false;
 
     if($("#prezzoMaxRicerca").length){
-        if(min > parseInt($("#prezzoMaxRicerca").val())){
+        if(min > $("#prezzoMaxRicerca").val()){
             alert("Il prezzo minimo deve essere minore del prezzo massimo!");
             obj.value = "";
             remove = true;
@@ -75,23 +75,23 @@ function impostaMin(obj) {
     }
 
     if($("#prezzoMinRicerca").length){
-        if((min === "") || remove){
+        if((min == "") || remove){
             $("#prezzoMinRicerca").remove();
         } else {
             $("#prezzoMinRicerca").val(min);
         }
-    } else if ((min !== "") && !remove){
+    } else if ((min != "") && !remove){
         $("#parametriRicerca").append('<input id="prezzoMinRicerca" name="prezzoMinRicerca" type="text" style="display:none;" value="">');
         $("#prezzoMinRicerca").val(min);
     }
 }
 
 function impostaMax(obj) {
-    var max = parseInt(obj.value);
+    var max = obj.value;
     var remove = false;
 
     if($("#prezzoMinRicerca").length){
-        if(max < parseInt($("#prezzoMinRicerca").val())){
+        if(max < $("#prezzoMinRicerca").val()){
             alert("Il prezzo massimo deve essere maggiore del prezzo minimo!");
             obj.value = "";
             remove = true;
@@ -99,12 +99,12 @@ function impostaMax(obj) {
     }
 
     if($("#prezzoMaxRicerca").length){
-        if((max === "") || remove){
+        if((max == "") || remove){
             $("#prezzoMaxRicerca").remove();
         } else {
             $("#prezzoMaxRicerca").val(max);
         }
-    } else if ((max !== "") && !remove){
+    } else if ((max != "") && !remove){
         $("#parametriRicerca").append('<input id="prezzoMaxRicerca" name="prezzoMaxRicerca" type="text" style="display:none;" value="">');
         $("#prezzoMaxRicerca").val(max);
     }

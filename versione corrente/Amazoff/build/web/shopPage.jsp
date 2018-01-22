@@ -186,9 +186,8 @@
                                 </div>
 
                                 <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-                                <div id="parametriRicerca">
-                                    <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
-                                </div>
+                                <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
+
                                 <div class="input-group-btn">
                                     <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"

@@ -102,11 +102,11 @@
 
                     toAdd += "<div class=\"row thumbnail\">";
                     toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
-                    toAdd += "                <div class=\"col-xs-4 col-lg-3\" style=\"min-height:100px; \">";
+                    toAdd += "                <div class=\"col-xs-4 col-lg-3\">";
                     if (cart.products[i].path == undefined) // se non è presente l'img nel db
-                        toAdd += "<img src=\"UploadedImages/default.jpg\" alt=\"Immagina non trovata\">"; // allora carico quella di default
+                        toAdd += "<img src=\"UploadedImages/default.jpg\" style=\"max-width:100%; \" alt=\"Immagina non trovata\">"; // allora carico quella di default
                     else
-                        toAdd += "   <img class=\"alignCenter\" src=\"UploadedImages/" + cart.products[i].path + "\" style=\"max-height: 100px;\" onerror=\"this.src='UploadedImages/default.jpg'\">"; <!--  -->
+                        toAdd += "   <img src=\"UploadedImages/" + cart.products[i].path + "\" style=\"max-width:100%; \" onerror=\"this.src='UploadedImages/default.jpg'\">"; <!--  -->
                     
                     toAdd += "                </div>";
                     toAdd += "                    <div class=\"col-xs-8 col-md-5 col-lg-6\">";
@@ -192,7 +192,7 @@
                         document.getElementById("txtmodalita").value = modalita;
                     } else {
                         document.getElementById("btnCompletaAcquisto").disabled = true;
-                        document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito dati validi prima di continuare.";
+                        document.getElementById("btnCompletaAcquisto").title = "Controlla di aver inserito e confermato i dati prima di continuare.";
                     }
                 //}
             }
@@ -394,9 +394,6 @@
                                 </div>
 
                                 <input id="txtCerca" name="txtCerca" type="text" class="form-control" aria-label="..." placeholder="Cosa vuoi cercare?">
-                                <div id="parametriRicerca">
-                                    <input id="categoriaRicerca" name="categoriaRicerca" type="text" style="display:none;" value="product">
-                                </div>
                                 <div class="input-group-btn">
                                     <a type="button" class="btn btn-default dropdown-toggle hidden-xs" data-toggle="collapse" data-parent="#accordion"
                                        href="#collapseFilter" aria-expanded="false "  aria-haspopup="true"
@@ -738,19 +735,8 @@
 
 
                     <form action="ServletConfirmOrder" method="POST" >
-                        <!--<div class="row col-xs-12 alignCenter">
-                            <h3>Seleziona la modalità di acquisto:</h3>
-                            <button id="spedizione" class="btn btn-default" onclick="checkModalita('spedizione')">Spedizione</button>
-                            <button id="ritiro" class="btn btn-default" onclick="checkModalita('ritiro')">Ritira in negozio</button>
-                            <input type="text" name="modalita" id="txtmodalita" style="visibility: hidden; width: 0px; height: 0px" >
-                        </div> -->
-
                         <div class="row col-xs-12 alignCenter" style="margin-top: 10px" >
-                            <!-- TO DO: finche l'utente non inserisce i dati richiesti, non viene sbloccato il button.
-                                Se i dati sono già presenti perché vengono caricati dalla servlet, il btn è attivo
-                                Se l'utente modifica i dati, devo controllare che siano ancora validi prima di lasciargli completare l'ordine -->
                             <button type="submit" id="btnCompletaAcquisto" onclick="completaOrdine('ok')" class="btn btn-primary" disabled="true">Completa l'acquisto</button>
-
                         </div>   
                     </form>
                 </div> 
