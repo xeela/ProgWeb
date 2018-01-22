@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class Notifications {
 
-    public enum NotificationType {NEW_USER, ORDER_COMPLETE, NEW_REVIEW};
+    public enum NotificationType {NEW_USER, ORDER_COMPLETE, NEW_REVIEW, ANOMALY};
     
     /** OSSSS: altroID varia in base al tipo di notifica.
      * vale = -1 se type = New_user oppure = NEW_REVIEW
@@ -36,6 +36,7 @@ public class Notifications {
             case NEW_USER: return "Benvenuto!";
             case ORDER_COMPLETE: return "Il tuo ordine è andato a buon fine! (ID: "+ ID +")";
             case NEW_REVIEW: return "E' stata postata una nuova recensione. Leggila ora!";
+            case ANOMALY: return "Anomalia segnalata per l'oggetto venduto con ID: " + ID;
             default: return "";
         }
     }

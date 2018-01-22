@@ -1,27 +1,17 @@
-var products, categories, sellers;
+var items;
 
 function Autocomplete(categoria){
     $.post('ServletAjaxAutocomplete', {
         _categoria: categoria
     },
     function(data) {
-        switch(categoria){
-        case 'product': products = data.split(",");
-            break;
-        case 'category': categories = data.split(",");
-            break;
-        case 'seller': sellers = data.split(",");
-            break;
-        default: 
-            break;
-        }
+        items = data.split(",");
     }).fail(function () {
         alert("ajax error");
     });
 }
 
-
-$(function () {
+$(function () {    
     /*
     var products = [
         'aventador',
@@ -96,19 +86,14 @@ $(function () {
         
         if ($param === 'product') {
             Autocomplete("product");
-            $('#txtCerca').autocomplete({
-                lookup: products
-            });
         } else if ($param === 'category') {
             Autocomplete("category");
-            $('#txtCerca').autocomplete({
-                lookup: categories  
-            });
         } else if ($param === 'seller') {
             Autocomplete("seller");
-            $('#txtCerca').autocomplete({
-                lookup: sellers
-            });
         }
+        
+        $('#txtCerca').autocomplete({
+            lookup: items
+        });
     });
 });

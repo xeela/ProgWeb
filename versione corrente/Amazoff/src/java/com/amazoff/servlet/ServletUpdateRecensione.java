@@ -10,11 +10,7 @@ import com.amazoff.classes.MyDatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,28 +47,6 @@ public class ServletUpdateRecensione extends HttpServlet {
             String to_update = request.getParameter("to_update");
             String to_delete = request.getParameter("to_delete");
             HttpSession session = request.getSession();
-            
-            
-            // LOG
-            Logger logger = Logger.getLogger("MyLog");  
-            FileHandler fh;  
-
-            try {  
-
-                // This block configure the logger with handler and formatter  
-                fh = new FileHandler("C:/Windows/Temp/MyLogFile3.log");
-                logger.addHandler(fh);
-                SimpleFormatter formatter = new SimpleFormatter();  
-                fh.setFormatter(formatter);  
-
-                // the following statement is used to log any messages  
-                logger.info("My first log");  
-
-            } catch (SecurityException | IOException e) {  
-            }  
-
-            logger.info(id_recensione);
-            
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
