@@ -56,6 +56,10 @@
         <servlet-class>com.amazoff.servlet.ServletUpdateCredentials</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ServletUpdateBusiness</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletUpdateBusiness</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ServletFindProduct</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletFindProduct</servlet-class>
     </servlet>
@@ -266,6 +270,10 @@
     <servlet-mapping>
         <servlet-name>ServletUpdateCredentials</servlet-name>
         <url-pattern>/ServletUpdateCredentials</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletUpdateBusiness</servlet-name>
+        <url-pattern>/ServletUpdateBusiness</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SerlvetAjaxGetNotifications</servlet-name>

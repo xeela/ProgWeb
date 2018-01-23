@@ -44,8 +44,12 @@ public class ServletRegisterShop extends HttpServlet {
             String website = request.getParameter("website");
             String location = request.getParameter("coordinate");
             String citta = request.getParameter("citta");
-            String lat = location.split(";")[0];
-            String lng = location.split(";")[1];
+            String lat = "0";
+            String lng = "0";
+            if(location.contains(";")){
+                lat = location.split(";")[0];
+                lng = location.split(";")[1];
+            }
             String[]days = new String[7];
             days[0]= request.getParameter("mon");
             days[1] = request.getParameter("tue");
