@@ -40,9 +40,16 @@ public class ServletSegnalazione extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
             String userID = session.getAttribute("userID").toString();
+            String recupera = request.getParameter("id");
             String orderID = request.getParameter("orderId");
             String productID = request.getParameter("productId");
             String objectID = "";
+            int insert = 0;
+            String is_admin = "";
+            String in_db = "";
+            String anomalyID = "";
+            String jsonObj = "";
+            ResultSet results;
             
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
             {
@@ -53,28 +60,81 @@ public class ServletSegnalazione extends HttpServlet {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 if (userID != null) {
-                    
-                    /** Interrogo il Db per farmi restituire i dettagli del prodotto specificato */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT id FROM orders_products WHERE order_id = " + orderID + " AND product_id = " + productID + ";", connection);
-                
-                    while(results.next()) {
-                        objectID = results.getString(1);
-                    }
-                    
-                    results = MyDatabaseManager.EseguiQuery("SELECT id FROM users WHERE usertype = 2;", connection);
-                    
-                    while(results.next()) {
-                        Notifications.SendNotification(results.getString(1), objectID, Notifications.NotificationType.ANOMALY, "", connection);    // da inserire link alla pagina di gestione anomalie
-                    }
-                     
-                    results = MyDatabaseManager.EseguiQuery("SELECT shops.id_owner FROM orders_products, products, shops WHERE orders_products.product_id = products.id AND products.id_shop = shops.id AND order_id = " + orderID + " AND product_id = " + productID + ";", connection);
-                
-                    while(results.next()) {
-                        Notifications.SendNotification(results.getString(1), objectID, Notifications.NotificationType.ANOMALY, "", connection); // da inserire link
+                    if(recupera != null){
+                        // controlla che l'utente sia admin
+                        results = MyDatabaseManager.EseguiQuery("SELECT usertype FROM users WHERE id = " + userID + ";", connection);
+                                                        
+                        while(results.next()){
+                            is_admin = results.getString(1);
+                        }
+                        
+                        if(is_admin.equals("2")){
+                            results = MyDatabaseManager.EseguiQuery("SELECT anomalies.object_id, products.name, orders.order_date, anomalies.date, u.id, u.username, s.id "
+                                    + "FROM anomalies, orders_products, orders, users as u, users as s, products, shops "
+                                    + "WHERE anomalies.object_id = orders_products.id AND orders_products.order_id = orders.id AND "
+                                    + "orders.who_ordered = u.id AND orders_products.product_id = products.id AND "
+                                    + "products.id_shop = shops.id AND shops.id_owner = s.id AND "
+                                    + "anomalies.id = " + recupera + ";", connection);
+
+                            while(results.next()){
+                                jsonObj += "{";
+                                jsonObj += "'data':[{";
+                                jsonObj += "'anomaly_id':'" + recupera + "',";
+                                jsonObj += "'object_id':'" + results.getString(1) + "',";
+                                jsonObj += "'product_name':'" + results.getString(2) + "',";
+                                jsonObj += "'sold_date':'" + results.getString(3) + "',";
+                                jsonObj += "'anomaly_date':'" + results.getString(4) + "',";
+                                jsonObj += "'user_id':'" + results.getString(5) + "',";
+                                jsonObj += "'user_name':'" + results.getString(6) + "',";
+                                jsonObj += "'seller_id':'" + results.getString(7) + "'";
+                                jsonObj += "}]}";
+                            }
+
+                            connection.close();
+                            session.setAttribute("jsonAnomaly", jsonObj);
+                            response.sendRedirect(request.getContextPath() + "/gestisciAnomalia.jsp");
+                        } else {
+                            connection.close();
+                            response.sendRedirect(request.getContextPath() + "/");
+                        }
+                    } else {
+                        results = MyDatabaseManager.EseguiQuery("SELECT orders_products.id, anomalies.id FROM orders_products, anomalies WHERE orders_products.id = anomalies.object_id AND order_id = " + orderID + " AND product_id = " + productID + ";", connection);
+
+                        while(results.next()) {
+                            objectID = results.getString(1);
+                            in_db = results.getString(2);
+                        }
+                        
+                        if(in_db.equals("")){
+                            insert = MyDatabaseManager.EseguiUpdate("INSERT INTO anomalies (object_id, solved) VALUES (" + objectID + ", 0);", connection);
+                        
+                            if(insert != 0){
+                                /*
+                                results = MyDatabaseManager.EseguiQuery("SELECT id FROM anomalies WHERE object_id = " + objectID + ";", connection);
+
+                                while(results.next()){
+                                    anomalyID = results.getString(1);
+                                }
+
+                                results = MyDatabaseManager.EseguiQuery("SELECT id FROM users WHERE usertype = 2;", connection);
+
+                                while(results.next()) {
+                                    Notifications.SendNotification(results.getString(1), objectID, Notifications.NotificationType.ANOMALY, "/Amazoff/ServletSegnalazione?id=" + anomalyID, connection);
+                                }
+
+                                results = MyDatabaseManager.EseguiQuery("SELECT shops.id_owner FROM orders_products, products, shops WHERE orders_products.product_id = products.id AND products.id_shop = shops.id AND order_id = " + orderID + " AND product_id = " + productID + ";", connection);
+
+                                while(results.next()) {
+                                    Notifications.SendNotification(results.getString(1), objectID, Notifications.NotificationType.ANOMALY, "", connection);
+                                }
+                                */
+                            }
+                        }
+                        
+                        connection.close();
+                        response.sendRedirect(request.getContextPath() + "/ServletMyOrders");
                     }
                 }
-                connection.close();
-                response.sendRedirect(request.getContextPath() + "/ServletMyOrders");
             } else {
                 session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/");

@@ -1,3 +1,9 @@
+<%-- 
+    Document   : gestisciAnomalia.jsp
+    Created on : 23-gen-2018, 10.38.38
+    Author     : Caterina
+--%>
+
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.*" %>
 <!DOCTYPE html>
@@ -15,14 +21,28 @@
         <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>-->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
-        <script type="text/javascript" src="js/json_sort.js"></script>
         <script type="text/javascript" src="js/parametri-ricerca.js"></script>
 
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <script>
-            var jsonProdotti = ${jsonProdotti};
             var jsonNotifiche = ${jsonNotifiche};
+            var jsonAnomaly = ${jsonAnomaly};
+            
+            $(document).ready(function(){
+                $('#anomaly_id_text').html(jsonAnomaly.data[0].anomaly_id);
+                $('#user_text').html(jsonAnomaly.data[0].user_name);
+                $('#object_text').html(jsonAnomaly.data[0].product_name);
+                $('#sold_date_text').html(jsonAnomaly.data[0].sold_date);
+                $('#anomaly_date_text').html(jsonAnomaly.data[0].anomaly_date);
+                $('#user_anomaly').val(jsonAnomaly.data[0].user_id);
+                $('#seller').val(jsonAnomaly.data[0].seller_id);
+                $('#anomaly_id').val(jsonAnomaly.data[0].anomaly_id);
+                
+                $('input[name="radio_action"]').change(function() {
+                    $('#risolvi').attr('disabled', false);
+                });
+            });
         </script>
         <title>Amazoff</title>
     </head>
@@ -337,36 +357,32 @@
 
                     <!-- corpo della pagina contenente i risultati della ricerca -->
                     <div class="tmargin col-xs-12 col-sm-10">
-                        <div id="zonaProdotti">
-                            <!-- LAYOUT --
-                            <div class="row panel panel-default">      
-                                 <form method="post" action="/Amazoff/ServletPopulateProductPage" id="formid_oggetto" onclick="$('#formid_oggetto').submit();">
-                                         <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; ">
-                            <!-- <img src="images/doge.jpg" alt="" > --
-                            immagine
-                            </div>
-                            <div class="col-xs-8 col-sm-7 col-md-9">
-                                <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto--
-                                <p id="stelle+">Voto totale</p>
-                                <p id="recensioni+" >#num recensioni</p>
-                                <p id="linkmappa" >Vedi su mappa</p>
-                                <p id="prezzo+">Prezzo</p>
-                                <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
-
-                            </div>
-                            <div class="hidden-xs col-sm-2 col-md-1" > 
-                                <span  class="glyphicon glyphicon-chevron-right"></span>
-                            </div>
-                    </form>
-                   <hr>
-                </div> -->
+                        <div id="div_anomalia">
+                            <form id="anomaly_form" action="ServletGestisciAnomalia" method="post">
+                                <p><h2>Dati segnalazione</h2></p>
+                                <p>ID segnalazione: <span id="anomaly_id_text">-n-</span></p>
+                                <p>Utente: <span id="user_text">-user-</span></p>
+                                <p>Oggetto venduto: <span id="object_text">-object-</span></p>
+                                <p>Data vendita: <span id="sold_date_text">-date-</span></p>
+                                <p>Data segnalazione: <span id="anomaly_date_text">-date-</span></p>
+                                <p>Azione:</p>
+                                <p>
+                                    <input type="radio" name="radio_action" value="1" /> Rimborso<br/>
+                                    <input type="radio" name="radio_action" value="2" /> Segnalazione negativa venditore<br/>
+                                    <input type="radio" name="radio_action" value="3" /> Rigetta<br/>
+                                </p>
+                                <input type="text" name="user_anomaly" id="user_anomaly" style="display:none" value=""> <!-- utente a cui inviare una notifica di risoluzione -->
+                                <input type="text" name="seller" id="seller" style="display:none" value="">   <!-- venditore dell'oggetto a cui inviare una notifica di risoluzione -->
+                                <input type="text" name="anomaly_id" id="anomaly_id" style="display:none" value="">
+                                <p>
+                                    <button id="risolvi" class="btn btn-default" type="submit" disabled="true">Risolvi</button>
+                                </p>
+                            </form>
                         </div>
                     </div> 
 
-
                     <!-- back to top button -->
                     <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
-
 
                     <div class="col-xs-12 col-lg-12">
                         <!-- footer TODO -->
@@ -435,9 +451,8 @@
 
 
         <script>
-            console.log(jsonProdotti);
+            console.log(jsonAnomaly);
             console.log(jsonNotifiche);
-            AggiungiOrdini();
 
             // When the user scrolls down 20px from the top of the document, show the button
             window.onscroll = function () {

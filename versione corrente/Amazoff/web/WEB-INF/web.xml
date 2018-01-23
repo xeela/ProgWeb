@@ -5,23 +5,19 @@
         <param-name>host</param-name>
         <param-value>smtp.gmail.com</param-value>
     </context-param>
- 
     <context-param>
         <param-name>port</param-name>
         <param-value>587</param-value>
     </context-param>
- 
     <context-param>
         <param-name>user</param-name>
         <param-value>progweb17@gmail.com</param-value>
     </context-param>
- 
     <context-param>
         <param-name>pass</param-name>
         <param-value>Amazoff17</param-value>
     </context-param>
     <!-- FINE SETUP -->
-    
     <!-- FILTER -->
     <filter>
         <filter-name>NotLoggedFilter</filter-name>
@@ -167,6 +163,14 @@
         <servlet-name>ServletSegnalazione</servlet-name>
         <servlet-class>com.amazoff.servlet.ServletSegnalazione</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletGestisciAnomalia</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletGestisciAnomalia</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletRecuperaAnomalie</servlet-name>
+        <servlet-class>com.amazoff.servlet.ServletRecuperaAnomalie</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -298,6 +302,14 @@
     <servlet-mapping>
         <servlet-name>ServletSegnalazione</servlet-name>
         <url-pattern>/ServletSegnalazione</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGestisciAnomalia</servlet-name>
+        <url-pattern>/ServletGestisciAnomalia</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletRecuperaAnomalie</servlet-name>
+        <url-pattern>/ServletRecuperaAnomalie</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/E:/DATI/UNIVERSITA/Sito%20Web/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletIndexProducts.java</file>
             <file>file:/E:/DATI/UNIVERSITA/Sito%20Web/ProgWeb/versione%20corrente/Amazoff/web/index_dark.jsp</file>
             <file>file:/E:/DATI/UNIVERSITA/Sito%20Web/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletRegister.java</file>
@@ -44,6 +45,11 @@
             <file>file:/E:/DATI/UNIVERSITA/Sito%20Web/ProgWeb/versione%20corrente/Amazoff/web/orderCompletedPage.jsp</file>
             <file>file:/E:/DATI/UNIVERSITA/Sito%20Web/ProgWeb/versione%20corrente/Amazoff/web/WEB-INF/web.xml</file>
             <file>file:/E:/DATI/UNIVERSITA/Sito%20Web/ProgWeb/versione%20corrente/Amazoff/web/loginPage_backup.jsp</file>
+=======
+            <file>file:/C:/Users/Caterina/Documents/GitKraken/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletGestisciAnomalia.java</file>
+            <file>file:/C:/Users/Caterina/Documents/GitKraken/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletSegnalazione.java</file>
+            <file>file:/C:/Users/Caterina/Documents/GitKraken/ProgWeb/versione%20corrente/Amazoff/web/gestisciAnomalia.jsp</file>
+>>>>>>> 0a5b3862ccd57dc12f2fd070d93f774241a34756
         </group>
     </open-files>
 </project-private>

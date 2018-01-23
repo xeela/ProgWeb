@@ -277,6 +277,7 @@
                                             %>
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
+                                        <li><a href="ServletRecuperaAnomalie">Gestione anomalie</a></li>
                                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li><a href="/Amazoff/ServletLogout">Esci</a></li>
