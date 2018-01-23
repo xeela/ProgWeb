@@ -202,20 +202,19 @@
             }
 
             function updateMarkerStatus(str) {
-                document.getElementById('markerStatus').innerHTML = str;
             }
 
             function updateMarkerPosition(latLng) {
 
-                document.getElementById('info').innerHTML = [
+                document.getElementById('info2').innerHTML = [
                     latLng.lat(),
                     latLng.lng()
                 ].join(';');
-                console.log(document.getElementById('info').innerHTML);
+                console.log(document.getElementById('info2').innerHTML);
             }
 
             function updateMarkerAddress(str) {
-                document.getElementById('address').innerHTML = str;
+               
             }
             function sendCoordinates() {
                 //    alert([
@@ -223,9 +222,9 @@
                 //    latLng.lng()
                 //  ].join(';'));
                 var coordinatesshop = document.getElementById('info').innerHTML;
-                alert(coordinatesshop);
+                //alert(coordinatesshop);
                 document.getElementById('info2').innerHTML = coordinatesshop;
-                alert(document.getElementById('info2').innerHTML);
+                //alert(document.getElementById('info2').innerHTML);
 
             }
             function initialize() {
@@ -640,24 +639,26 @@
                                                 <div class="col-lg-6 col-md-6 col-sm-6  ">
                                                     <h3 class="alignLeft">Posizione Geografica</h3>
                                                     <div id="mapCanvas" class="col-sm-6 " style="max-width: 100%" ></div>
-                                                    <div id="infoPanel" >
+                                                   <!-- <div id="infoPanel" >
                                                       <b>Marker status:</b>
                                                        <div id="markerStatus"><i>Click and drag the marker.</i></div>
                                                        <b>Current position:</b>
                                                        <div  name="coordinate" id="info"></div>
                                                        <b>Closest matching address:</b>
                                                        <div id="address"></div>
-                                                   </div>
+                                                   </div>-->
                                                     <!--<input type="text" name="coordinate" hidden="false" id="info"/>-->
-                                                    <INPUT TYPE='submit' VALUE='Creaqq Negozio' class="btn col-lg-4 col-lg-offset-3" />
-                                                    <!--<input type="hidden" name="coordinate" id="info2"></input>-->
+                                                    
+                                                    <input type="hidden" name="coordinate" id="info2"></input>
                                                 </div>
-                                            </div>
-                                            <br/><br/><br/>
+                                                <div class="row"></div>
+                                            <INPUT TYPE='submit' VALUE='Crea Negozio' class="btn col-lg-4 col-lg-offset-3" />
+                                         </div>
+                                        <!--<input class="btn col-lg-4 col-lg-offset-3" type="button" value="Crea Negozio" onclick="sendCoordinates(); document.getElementById('myform').submit();"></button>-->
+                                           
 
-                                        </form>
-                                        <input type="button" onclick="sendCoordinates(); document.getElementById('myform').submit();">Crea Negozio</button>
-                                    </div>         
+                                    </div>       
+                                        </form>  
                                 </div>
                             </div>
                             <%
@@ -705,7 +706,7 @@
                                             <div class="col-lg-3"></div>
                                             <div class="col-lg-6">
                                                 <h3 style="text-align: center">Aggiorna i dati del tuo Business:</h3>
-                                                <form  style="text-align: center" class="form-group" id="ShopForm" name="ShopForm" action="ServletUpdateNegozio" method="POST" >
+                                                <form  style="text-align: center" class="form-group" id="ShopForm" name="ShopForm" action="ServletUpdateBusiness" method="POST" >
                                                     <div class="row">
 
                                                     </div>
@@ -737,27 +738,14 @@
 
                                                         </div>
                                                     </div>
-
+                                                    <input type="submit" value="aaa"/>
 
                                                 </form>
                                                 <div class="form-group tmargin">
-                                                    <button id="btnRegistrati" class="btn btn-default" onclick="if (CheckShopData()) {
-                                                                document.getElementById('ShopForm').submit();
-                                                            }" >Aggiorna dati</button>
+                                                    <button id="btnUpdateShop" class="btn btn-default" onclick="document.getElementById('ShopForm').submit();" >Aggiorna dati</button>
                                                     <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
                                                 </div>
 
-                                                <div class="alert alert-danger alert-dismissible" style="<% 
-                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %> visibility: visible<%} else {%>visibility:hidden<%}%>" id="alertRegistrati" role="alert">
-
-                                                    <!-- div che visualizza il messaggio di errore durante il login -->
-                                                    <% 
-                                                                    if(session.getAttribute("errorMessage") != Errors.resetError) { %>   
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <strong>Errore!</strong> <%=session.getAttribute("errorMessage")%>
-                                                    <% } %>
-
-                                                </div>
                                                 <%
                                                 session.setAttribute("errorMessage", Errors.resetError);
                                                 %>
