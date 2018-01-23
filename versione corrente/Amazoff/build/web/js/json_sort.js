@@ -130,7 +130,11 @@ function AggiungiOrdini() {
             toAdd += "<p name=\"data_ordine" + id_ordine + "\">Data ordine: " + jsonProdotti.orders[i].products[j].order_date + "</p>";
             toAdd += "<p name=\"prezzo" + id_ordine + "\">Prezzo: " + jsonProdotti.orders[i].products[j].price + " €</p>";
             toAdd += "<p><a href=\"ServletRecensione?id="+jsonProdotti.orders[i].products[j].product_id+"\" class=\"btn btn-primary\" role=\"button\">Lascia recensione</a></p>";
-            toAdd += "<p><a href=\"ServletSegnalazione?orderId="+id_ordine+"&productId="+jsonProdotti.orders[i].products[j].product_id+"\" class=\"btn btn-primary\" role=\"button\">Segnala non arrivato</a></p>";
+            if(jsonProdotti.orders[i].products[j].is_solved === "0"){
+                toAdd += "<p><a href=\"ServletSegnalazione?orderId="+id_ordine+"&productId="+jsonProdotti.orders[i].products[j].product_id+"\" class=\"btn btn-primary\" role=\"button\">Segnala non arrivato</a></p>";
+            } else{
+                toAdd += "<p><button class=\"btn btn-primary\" disabled='true'>Segnala non arrivato</button></p>";
+            }
             toAdd += "</div>";
             toAdd += "</div></form><hr>";
         }

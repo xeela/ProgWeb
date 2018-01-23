@@ -1,3 +1,9 @@
+<%-- 
+    Document   : anomaliesPage.jsp
+    Created on : 23-gen-2018, 14.18.35
+    Author     : Caterina
+--%>
+
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.*" %>
 <!DOCTYPE html>
@@ -15,14 +21,23 @@
         <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>-->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
-        <script type="text/javascript" src="js/json_sort.js"></script>
         <script type="text/javascript" src="js/parametri-ricerca.js"></script>
 
         <link rel="stylesheet" href="css/amazoffStyle.css" />
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <script>
-            var jsonProdotti = ${jsonProdotti};
             var jsonNotifiche = ${jsonNotifiche};
+            var jsonAnomalies = ${jsonAnomalies};
+            
+            $(document).ready(function(){
+                if(jsonAnomalies.data.length === 0){
+                    $('#div_anomalia').append("<p>nessuna segnalazione aperta</p>");
+                } else {
+                    for (var i = 0; i < jsonAnomalies.data.length; i++) {
+                        $('#div_anomalia').append("<a href='" + jsonAnomalies.data[i].link + "'>Segnalazione numero " + jsonAnomalies.data[i].id + "</a>");
+                    }
+                }
+            });
         </script>
         <title>Amazoff</title>
     </head>
@@ -337,36 +352,12 @@
 
                     <!-- corpo della pagina contenente i risultati della ricerca -->
                     <div class="tmargin col-xs-12 col-sm-10">
-                        <div id="zonaProdotti">
-                            <!-- LAYOUT --
-                            <div class="row panel panel-default">      
-                                 <form method="post" action="/Amazoff/ServletPopulateProductPage" id="formid_oggetto" onclick="$('#formid_oggetto').submit();">
-                                         <div class="col-xs-4 col-sm-3 col-md-2"  style="background-color: green; ">
-                            <!-- <img src="images/doge.jpg" alt="" > --
-                            immagine
-                            </div>
-                            <div class="col-xs-8 col-sm-7 col-md-9">
-                                <p id="nome+" >Nome</p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto--
-                                <p id="stelle+">Voto totale</p>
-                                <p id="recensioni+" >#num recensioni</p>
-                                <p id="linkmappa" >Vedi su mappa</p>
-                                <p id="prezzo+">Prezzo</p>
-                                <p id="venditore+" >Nome venditore <a href="url_venditore.html">Negozio</a></p>                                
-
-                            </div>
-                            <div class="hidden-xs col-sm-2 col-md-1" > 
-                                <span  class="glyphicon glyphicon-chevron-right"></span>
-                            </div>
-                    </form>
-                   <hr>
-                </div> -->
-                        </div>
+                        <p><h2>Segnalazioni aperte</h2></p>
+                        <p><div id="div_anomalia"></div></p>
                     </div> 
-
 
                     <!-- back to top button -->
                     <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
-
 
                     <div class="col-xs-12 col-lg-12">
                         <!-- footer TODO -->
@@ -435,9 +426,8 @@
 
 
         <script>
-            console.log(jsonProdotti);
+            console.log(jsonAnomalies);
             console.log(jsonNotifiche);
-            AggiungiOrdini();
 
             // When the user scrolls down 20px from the top of the document, show the button
             window.onscroll = function () {

@@ -49,7 +49,12 @@ public class ServletMyOrders extends HttpServlet {
                 
                 if (session.getAttribute("userID") != null) {
                     /** Interrogo il Db per farmi restituire i dettagli del prodotto specificato */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT orders.*, products.*, owner.*, shops.* FROM orders, users AS user, users AS owner, orders_products, products, shops WHERE user.ID = " + session.getAttribute("userID") + " AND orders.who_ordered = user.id AND orders_products.order_id = orders.id AND products.id = orders_products.product_id AND products.id_shop = shops.id AND shops.ID_OWNER = owner.id ORDER BY orders.id DESC;", connection);
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT orders.*, products.*, owner.*, shops.* "
+                            + "FROM orders, users AS user, users AS owner, orders_products, products, shops "
+                            + "WHERE user.ID = " + session.getAttribute("userID") + " AND orders.who_ordered = user.id AND "
+                            + "orders_products.order_id = orders.id AND products.id = orders_products.product_id AND "
+                            + "products.id_shop = shops.id AND shops.ID_OWNER = owner.id "
+                            + "ORDER BY orders.id DESC;", connection);
 
                     /** se non c'è il prodotto specificato */
                     if(results.isAfterLast()) 
