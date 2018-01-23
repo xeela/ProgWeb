@@ -90,8 +90,11 @@ public class ServletAjaxEmailExists extends HttpServlet {
     protected boolean sendEmail(HttpServletRequest request, String email, String pwd)
     {
         String recipient = email; //"francesco.bruschetti@yahoo.it"; 
+        String recipient = email;  
         String subject = "Richiesta reset password dimenticata";
         String content = "<a href=\"http://localhost:8080/Amazoff/ResetPassword.jsp?tmp="+ pwd +"\" >Clicca qui</a> per ripristinare la tua password"; //http://test.davidefarina.com:8080
+        /** OSS: cosi funziona solo se si usa in locale. Quando la vorremo mettere sul server, va cambiato localhost, con http://test.davidefarina.com:8080 */
+        String content = "<a href=\"http://localhost:8080/Amazoff/ResetPassword.jsp?tmp="+ pwd +"\" >Clicca qui</a> per ripristinare la tua password"; 
  
         String resultMessage = "";
  

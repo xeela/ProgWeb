@@ -157,6 +157,7 @@
                 <div class="row" > 
                     <!-- barra con: login/registrati, cerca, carrello -->
                     <div class="logo col-xs-12 col-lg-1">
+                    <div class="logo col-xs-12 col-lg-1"  >
                         <div class="row">
                             <div class="col-xs-6 col-lg-12"><a href="index.jsp">
                                     <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
@@ -164,8 +165,27 @@
                             <div class="col-xs-2 hidden-lg" style="text-align: right"> 
                                 <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
                                         <%
+                            <div class="col-xs-5 col-lg-12" >
+                                <a href="index.jsp">
+                                    <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
+                                </a>
+                            </div>
+                            <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
+                                <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
+                                    <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
+                                        <spam class="glyphicon glyphicon-user"> 
+                                            <% 
                                             try {
                                                 String user = (session.getAttribute("user")).toString();
+                                                    String user = (session.getAttribute("user")).toString();
+                                            %>
+                                            <!-- memorizzo l'id dell'utente, cosi da usarlo per controllare i suoi dati (indirizzo e carta) -->
+                                            <script>user = "<%=user%>"</script> 
+                                            <%
+                                                }catch(Exception ex){
+                                            %>
+                                            Accedi 
+                                            <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
 
                                             } catch (Exception ex) {
                                         %>
@@ -173,9 +193,41 @@
                                 <%
                                     }
                                 %>
+                                            <%
+                                                }
+                                            %>
+                                        </spam>
+                                    </a>
+                                </div>
 
+                                <div class="col-xs-6 hidden-lg">
+                                    <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                    <% 
+                                        String userType = "";
+                                        try {
+                                                userType = (session.getAttribute("categoria_user")).toString();
+                                                if(userType.equals("0") || userType.equals("1") || userType.equals("2"))
+                                                {
+                                    %>
+                                    <a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">
+                                        <span class="badge iconSize imgCenter" id="totNotifichexs"> 
+                                            <spam class="glyphicon glyphicon-inbox"></spam>
+                                            99+
+                                        </span>
+                                    </a>
 
                             </div>
+                                    <%
+                                }
+                            }catch(Exception ex){   }
+                                    %> 
+                                </div>                    
+
+                                <div class="col-xs-3 hidden-lg iconSize imgCenter" >
+                                    <a href="ServletAddToCart">
+                                        <spam class="glyphicon glyphicon-shopping-cart"></spam>
+                                    </a>
+                                </div>
 
                             <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
                             <%

@@ -81,6 +81,7 @@
                                                 if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
                                         %>
                                         <a href="notificationPage.jsp">
+                                        <a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">
                                             <span class="badge iconSize imgCenter" id="totNotifichexs"> 
                                                 <spam class="glyphicon glyphicon-inbox"></spam>
 

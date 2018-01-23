@@ -35,6 +35,7 @@
                 </div>
             </div>
             <br>
+            <!-- corpo della pagina -->
             <div class="row" style="text-align: center">
                 <div class="col-lg-8 col-lg-offset-2" id="div_alert">
                 </div>

@@ -68,6 +68,7 @@
                             %>
                             <div class="col-xs-2 hidden-lg" style="text-align: right;">
                                 <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
+                                <span class="badge"><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
                             </div>
                             <%
                                     }

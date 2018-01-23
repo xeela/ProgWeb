@@ -26,6 +26,9 @@
     <body>
         <!-- barra verticale vuota -->
         <div class="hidden-xs col-sm-4"></div>
+        <nav class="navbar navbar-light bg-faded">
+            <a class="navbar-brand" href="index.jsp"><span class="glyphicon glyphicon-home"></span> Torna alla Home </a>
+        </nav> 
 
         <div id="bodyPage" class="col-xs-12 col-sm-4" style="background-color: #33cc33">
             <h1 id="iconaOrdine"></h1>
@@ -39,8 +42,31 @@
                 <p style="display: inline; align: right;"><b id="timer">5 sec</b></p>
                 <div>
                     <h3><a href="index.jsp" style="color: blue">Torna alla Home <span class="glyphicon glyphicon-home"></span></a></h3>
+        <div class="container-fluid">
+            <div class="row" style="text-align: center">
+                <div class="col-lg-12">
+                    <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
                 </div>
+            </div>
+            <br>
+            <!-- corpo della pagina -->
+            <div class="row" style="text-align: center">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="alert alert-success" id="div_alert" role="alert">
+                        <h2 id="statoOrdine" class="alert-heading"></h2>
+                        <hr>
+                        <p id="id_ordine">ID ordine: <%=request.getParameter("id")%></p>
+                        <h4 id='emailOrdine'>E' stata mandata una notifica di conferma dell'ordine.</h4>
+                        <!-- <h4 class="mb-0" id="emailOrdine">E' stata mandata una notifica di conferma dell'ordine.</h4></h4> -->
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <script>
+            
+            /** controllo il parametro in get */
+            var stato = "<%=request.getParameter("p")%>";
 
                 <script>
                     function startTimer()
@@ -76,8 +102,21 @@
                         document.getElementById("emailOrdine").style.visibility = "hidden";
                         $("#emailOrdine").remove();
                     }
+            /** in base al parametro, creo il corpo della pagina */
+            if (stato == "ok" && (stato != null && stato != "")) {
+                document.getElementById("statoOrdine").innerText = "Ordine completato correttamente";
+                $("#div_alert").attr('class','alert alert-success');      
+            } else
+            {
+                document.getElementById("statoOrdine").innerText = "Errore durante il completamento dell' ordine";
+                document.getElementById("emailOrdine").style.visibility = "hidden";
+                $("#div_alert").attr('class','alert alert-danger');  
+            }
 
                     startTimer();
                 </script>
                 </body>
                 </html>
+        </script>
+    </body>
+</html>
