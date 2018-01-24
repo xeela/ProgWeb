@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
@@ -22,19 +17,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author DVD_01
+ * @author Davide Farina
  */
 public class ServletAjaxUpdateProductQuantity extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -42,16 +28,7 @@ public class ServletAjaxUpdateProductQuantity extends HttpServlet {
 
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -59,12 +36,7 @@ public class ServletAjaxUpdateProductQuantity extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Questa servlet si occupa di modificare la quantità richiesta, per un determinato prodotto, da un determinato utente, nella pagina di gestione del carrello
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -73,8 +45,8 @@ public class ServletAjaxUpdateProductQuantity extends HttpServlet {
         String jsonObj = "";
         HttpSession session;
         try (PrintWriter out = response.getWriter()) {
-            
             session = request.getSession();
+            /** leggo i dati ricevuti dal client */
             String idProductReceived = request.getParameter("_idProdotto");
             String idUser = session.getAttribute("userID").toString();
             String addOrRemove = request.getParameter("_whatToDo");
@@ -92,11 +64,13 @@ public class ServletAjaxUpdateProductQuantity extends HttpServlet {
                 if(addOrRemove.equals("add"))
                 {
                     int available = 0, requested = 0;
+                    /** ottengo dal db, dati riguardanti il prodotto specificato dall'utente */
                     ResultSet results =  MyDatabaseManager.EseguiQuery("SELECT products.AVAILABLE, cart.AMOUNT FROM cart, products WHERE cart.id_product = products.id and cart.id_user = " + idUser + " and products.id = " + idProductReceived + ";", connection);
                     while (results.next()) {
                         available = parseInt(results.getString(1));
                         requested = parseInt(results.getString(2));
                     }
+                    /** Prima di aumentare la quantità del prodotto, controllo che c'è ne sia un numero sufficiente nel db */
                     if(requested + 1 <= available)
                     {
                         MyDatabaseManager.EseguiStatement("UPDATE cart SET amount = amount + 1 WHERE id_user = " + idUser + " AND id_product = " + idProductReceived + ";", connection);
@@ -112,6 +86,7 @@ public class ServletAjaxUpdateProductQuantity extends HttpServlet {
                     while (results.next()) {
                         requested = parseInt(results.getString(1));
                     }
+                    /** L'utente può diminuire la quantità del prodotto, ma questa non può mai scendere sotto 1 */
                     if(requested - 1 > 0)
                     {
                         MyDatabaseManager.EseguiStatement("UPDATE cart SET amount = amount - 1 WHERE id_user = " + idUser + " AND id_product = " + idProductReceived + ";", connection);
@@ -126,14 +101,11 @@ public class ServletAjaxUpdateProductQuantity extends HttpServlet {
                     risposta = "false";
                 }
 
-                // dopo aver cambiato la quantità, aggiorno la lista json dei prodotti nel carrello */
+                /** dopo aver cambiato la quantità, aggiorno la lista json dei prodotti nel carrello */
                 if(risposta.equals("true"))
                 {
                     ResultSet results = MyDatabaseManager.EseguiQuery("SELECT products.*,shops.*,users.first_name, users.LAST_NAME, cart.amount FROM cart, shops, users, products WHERE users.ID = '"+ idUser +"' and products.id = cart.ID_PRODUCT and cart.ID_USER = users.ID and products.id_shop = shops.id;", connection);
                     
-                    /** dalla lista di oggetti, creo un json in cui sono memorizzati tutti i loro dati */                    
-                    // -------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
-                   
                     /** se non c'è il prodotto specificato */
                     if(results.isAfterLast()) 
                     {
@@ -151,7 +123,7 @@ public class ServletAjaxUpdateProductQuantity extends HttpServlet {
                     jsonObj += "{";
                     jsonObj += "\"products\":[";
                     while (results.next()) {
-                        if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
+                        if(!isFirstTime)            /** metto la virgola prima dell'oggetto solo se non è il primo */
                             jsonObj += ", ";
                         isFirstTime = false;
 
@@ -226,15 +198,10 @@ public class ServletAjaxUpdateProductQuantity extends HttpServlet {
             response.getWriter().write(risposta);
         }	
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

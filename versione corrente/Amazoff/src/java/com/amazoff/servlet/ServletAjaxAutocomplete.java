@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.MyDatabaseManager;
@@ -19,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Cate
+ * @author Caterina Battisti
  */
 @WebServlet(name = "ServletAjaxAutocomplete", urlPatterns = {"/ServletAjaxAutocomplete"})
 public class ServletAjaxAutocomplete extends HttpServlet {

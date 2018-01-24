@@ -15,14 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author Davide Farina
  */
 public class ServletDopoRegistrazione extends HttpServlet {
 
-    /**
-     * ServletDopoRegistrazione 
-     * 
+    /** 
      * Ha il compito di memorizzari i dati inseriti nella pagina afterRegistration.
      * Memorizza nel db i dati dell'indirizzo e della carta di credito forniti dall'utente successivamente alla sua registrazione
      * 
@@ -34,6 +31,7 @@ public class ServletDopoRegistrazione extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /** leggo i dati ricevuti dal client */
             String paese = request.getParameter("paese");
             String indirizzo = request.getParameter("indirizzo");
             String citta = request.getParameter("citta");

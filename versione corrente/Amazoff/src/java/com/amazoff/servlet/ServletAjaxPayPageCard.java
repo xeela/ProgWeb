@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Francesco
+ * @author Francesco Bruschetti
  */
 public class ServletAjaxPayPageCard extends HttpServlet {
 
@@ -34,8 +34,7 @@ public class ServletAjaxPayPageCard extends HttpServlet {
     }
 
     /**
-     * 
-     * Questa servlet viene chiamata quando, dalla pagina Pay page</a>,
+     * Questa servlet viene chiamata quando, dalla pagina Pay page,
      * viene richiesto di aggiornare le informazioni relative alla carta di credito dell'utente.
      * Nel caso in cui l'utente non avesse già dei dati associati al suo profilo, verranno inseriti nel db.
      * Se invece, l'utente ha già una carta registrata, i nuovi dati sovrascriveranno quelli vecchi.
@@ -50,7 +49,7 @@ public class ServletAjaxPayPageCard extends HttpServlet {
         
         String risposta = "-1";
         try (PrintWriter out = response.getWriter()) {
-            
+            /** Leggo i dati ricevuti dal client */
             String intestatarioReceived = request.getParameter("_intestatario");
             String numerocartaReceived = request.getParameter("_numerocarta");
             String meseScadenzaReceived = request.getParameter("_meseScadenza"); 
@@ -78,7 +77,7 @@ public class ServletAjaxPayPageCard extends HttpServlet {
                 /** Se l'utente non ha una carta di credito memorizzata */
                 if(esisteUtente == "false") 
                 {
-                    /** ALLORA: aggiungo un nuovo campo nel db, con i dati specificati */
+                    /** ALLORA: aggiungo una nuova entry nel db, con i dati specificati */
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO creditcards(id_utente, owner, card_number, exp_month, exp_year) " + 
                                                         "VALUES (" + MyDatabaseManager.EscapeCharacters(userIDReceived) + ", " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(intestatarioReceived) + "', " + 
@@ -100,7 +99,7 @@ public class ServletAjaxPayPageCard extends HttpServlet {
                 risposta = "true";
                 connection.close();
             }
-            else  /** ritorno FALSE, c'è stato un errore */
+            else  /** predispongo FALSE come risposta, c'è stato un errore */
             {
                 risposta = "false";
             }
