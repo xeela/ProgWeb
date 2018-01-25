@@ -59,18 +59,13 @@
                     {
                         toAdd += "<div class=\"row panel panel-default\"> ";
                         toAdd += "         <div class=\"col-lg-12\">";
-                        toAdd += "             <div class=\"col-xs-12 col-lg-2\" style=\"background-color: aqua\" >";
                         // Cambiare il tipo di stella in base al numero di stelle tot (global value)
                         toAdd += "             <div class=\"col-xs-12 col-sm-2\" >";
                         /** Cambiare il tipo di stella in base al numero di stelle tot (global value) */
-                        // Cambiare il tipo di stella in base al numero di stelle tot (global value)
                         toAdd += insertStartsInReview(jsonProdotto.result[0].reviews[i].global_value);
                         toAdd += "             </div>";
-                        toAdd += "             <p><b>" + jsonProdotto.result[0].reviews[i].name + ":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
                         toAdd += "             <div class=\"col-xs-12 col-sm-10\" >"
                         toAdd += "                  <p><b>" + jsonProdotto.result[0].reviews[i].name + ":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
-                        toAdd += "             <div class=\"col-xs-12 col-sm-10\" >";
-                        toAdd += "                 <p><b>" + jsonProdotto.result[0].reviews[i].name + ":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
                         toAdd += "             </div>";
                         toAdd += "         </div>";
                         toAdd += "</div>";
@@ -104,11 +99,9 @@
                 toAdd += "<p name=\"stelle\">Valutazione: " + jsonProdotto.result[0].global_value_avg + "</p>";
                 toAdd += "<p name=\"recensioni\" >Tot recensioni: " + jsonProdotto.result[0].num_reviews + "</p>";
                 toAdd += "<p name=\"linkmappa\" ><a href='ServletShowShopOnMap?id=" + jsonProdotto.result[0].id_shop + "'>Vedi negozio su mappa</a></p>";
-                toAdd += "<p name=\"prezzo\">Prezzo: " + jsonProdotto.result[0].price + " €</p>";
                 toAdd += "<p name=\"venditore\" >Venditore: " + jsonProdotto.result[0].first_name + " " + jsonProdotto.result[0].last_name + "</p> <a href=\"" + jsonProdotto.result[0].web_site + "\">Sito web " + jsonProdotto.result[0].shop + "</a><p> Negozio id:" + jsonProdotto.result[0].id_shop + "</a></p>";
                 toAdd += "<h4 name=\"prezzo\">Prezzo: " + jsonProdotto.result[0].price + " €</h4>";
                 // buttons + , - , remove
-                toAdd += " <div class=\"col-xs-12 col-sm-6\" >";
                 toAdd += " <div class=\"row col-xs-12 col-sm-6\" >";
                 toAdd += "    <div>";
                 toAdd += "         <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi(" + id_product + ", " + quantita + ")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
@@ -136,28 +129,7 @@
             }
 
             function PopolaCarousel() {
-                var toAdd = "", toAddMiniature = "";
-
-                for (var i = 0; i < jsonProdotto.result[0].pictures.length; i++)
-                {
-                    if (i == 0)
-                        toAdd += "<div class=\"active item\" data-slide-number=\"0\">";
-                    else
-                        toAdd += "<div class=\"item\" data-slide-number=\"" + i + "\">";
                 var toAdd = "";
-
-                    toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/" + jsonProdotto.result[0].pictures[i].path + "\"></div>";
-                }
-                if (!(jsonProdotto.result[0].pictures.length > 0 || jsonProdotto.result[0].pictures[0].path == undefined))
-                    toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/default.jsp\ alt=\"Immagine non trovata\"></div>";
-                else
-                    toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/" + jsonProdotto.result[0].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\"></div>";
-
-                $("#div_carousel").html(toAdd);
-                var toAdd = "";
-                
-                console.log("-----");
-                console.log(jsonProdotto.result[0].pictures[0].path);
                 
                 
                 if(!(jsonProdotto.result[0].pictures.length > 0 || jsonProdotto.result[0].pictures[0].path == undefined))
@@ -184,14 +156,7 @@
                 <div class="row" > 
                     <!-- barra con: login/registrati, cerca, carrello -->
                     <div class="logo col-xs-12 col-lg-1">
-                    <div class="logo col-xs-12 col-lg-1"  >
                         <div class="row">
-                            <div class="col-xs-6 col-lg-12"><a href="index.jsp">
-                                    <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
-                                </a></div>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"> 
-                                <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
-                                        <%
                             <div class="col-xs-5 col-lg-12" >
                                 <a href="index.jsp">
                                     <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
@@ -201,51 +166,15 @@
                                 <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
                                     <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
                                         <spam class="glyphicon glyphicon-user"> 
-                                            <% 
-                                    <a href="index.jsp">
-                                        <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
-                                    </a>
-                                </div>
-                                <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
-                                    <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
-                            </div>
-                            <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
-                                <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
-                                        <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
-                                            <spam class="glyphicon glyphicon-user"></spam>
-                                            <spam class="glyphicon glyphicon-user"> 
-                                                <%
-                                                    try {
-                                                        String user = (session.getAttribute("user")).toString();
-                                                    } catch (Exception ex) {
-                                                %>
-                                                Accedi 
-                                                <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
-
-                                                <%
-                                                    }
-                                                %>
-                                            </spam>
-                                        </a>
-                                        <%
-                                            try {
-                                                String user = (session.getAttribute("user")).toString();
-                                                    String user = (session.getAttribute("user")).toString();
-                                            %>
-                                            <!-- memorizzo l'id dell'utente, cosi da usarlo per controllare i suoi dati (indirizzo e carta) -->
-                                            <script>user = "<%=user%>"</script> 
                                             <%
-                                                }catch(Exception ex){
+                                                try {
+                                                    String user = (session.getAttribute("user")).toString();
+
+                                                } catch (Exception ex) {
                                             %>
                                             Accedi 
                                             <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
 
-                                            } catch (Exception ex) {
-                                        %>
-                                <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
-                                <%
-                                    }
-                                %>
                                             <%
                                                 }
                                             %>
@@ -255,81 +184,34 @@
 
                                 <div class="col-xs-6 hidden-lg">
                                     <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                                    <% 
+                                    <%
                                         String userType = "";
                                         try {
-                                                userType = (session.getAttribute("categoria_user")).toString();
-                                                if(userType.equals("0") || userType.equals("1") || userType.equals("2"))
-                                                {
+                                            userType = (session.getAttribute("categoria_user")).toString();
+                                            if (userType.equals("0") ||userType.equals("1") || userType.equals("2")) {
                                     %>
+                                    <a href="notificationPage.jsp">
                                     <a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">
                                         <span class="badge iconSize imgCenter" id="totNotifichexs"> 
-                                            <spam class="glyphicon glyphicon-inbox"></spam>
-                                            99+
+                                            <spam class="glyphicon glyphicon-inbox"></spam> 
+                                             <i class="fa fa-spinner fa-spin" ></i> 
                                         </span>
                                     </a>
 
-                            </div>
                                     <%
-                                }
-                            }catch(Exception ex){   }
+                                            }
+                                        } catch (Exception ex) {
+                                        }
                                     %> 
                                 </div>                    
 
                                 <div class="col-xs-3 hidden-lg iconSize imgCenter" >
-                                    <a href="ServletAddToCart">
+                                    <a href="ServletShowCart">
                                         <spam class="glyphicon glyphicon-shopping-cart"></spam>
                                     </a>
                                 </div>
 
-                            <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                            <%
-                                String userType = "";
-                                try {
-                                    userType = (session.getAttribute("categoria_user")).toString();
-                                    if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
-                            %>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right;">
-                                <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
-                            <div class="col-xs-6 hidden-lg">
-                                        <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
-                                        <%
-                                            String userType = "";
-                                            try {
-                                                userType = (session.getAttribute("categoria_user")).toString();
-                                                if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
-                                        %>
-                                        <a href="notificationPage.jsp">
-                                        <a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">
-                                            <span class="badge iconSize imgCenter" id="totNotifichexs"> 
-                                                <spam class="glyphicon glyphicon-inbox"></spam>
-
-                                            </span>
-                                        </a>
-
-                                        <%
-                                                }
-                                            } catch (Exception ex) {
-                                            }
-                                        %> 
-                            </div>  
-                            
-                            <div class="col-xs-3 hidden-lg iconSize imgCenter" >
-                                </div>                    
-
-                                <div class="col-xs-3 hidden-lg iconSize imgCenter" >
-                                        <a href="ServletAddToCart">
-                                            <spam class="glyphicon glyphicon-shopping-cart"></spam>
-                                        </a>
-                                </div>
                             </div>
-                            <%
-                                    }
-                                } catch (Exception ex) {
-                                }
-                            %> 
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="ServletAddToCart"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
-                        </div>
                         </div>        
                     </div>
 
@@ -577,18 +459,9 @@
                                         <div class="col-lg-12" id="carousel-bounding-box">
                                             <div class="carousel slide" id="myCarousel">
                                                 <!-- Carousel items -->
-                                                <div class="carousel-inner" id="div_carousel">
                                                 <div class="carousel-inner" id="div_productImage">
 
-                                                </div>
-
-                                                <!-- Carousel nav -->
-                                                <!--<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                                                    <span class="glyphicon glyphicon-chevron-left"></span>                                       
-                                                </a>
-                                                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                                                    <span class="glyphicon glyphicon-chevron-right"></span>                                       
-                                                </a> -->                               
+                                                </div>                     
                                             </div>
                                         </div>
 
@@ -596,94 +469,19 @@
                                     </div>
                                 </div>
                             </div><!--/Slider-->
-                        </div>                       
-
+                        </div>
+                        
+                        <!-- dettagli prodotto -->
                         <div class="col-xs-12 col-md-5 col-lg-6" id="div_dati">
-                            <p name="nome" ></p> <!-- OSS: ID: +dovra essere aggiunto dinamicamente l'id del prodotto-->
-                            <p name="stelle">Voto totale</p>
-                            <p name="recensioni" >#num recensioni</p>
-                            <p name="linkmappa" >Vedi su mappa</p>
-                            <p name="prezzo">Prezzo</p>
-                            <p name="venditore" >Nome venditore <a href="url_venditore.html">Negozio</a></p>  
 
-                            <!--<div class="col-xs-12 col-sm-6" >
-                                <div>
-                                    <button class="btn btn-primary col-lg-3" onclick="aggiungi("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")"><span class="glyphicon glyphicon-plus"></span></button>
-                                    <p class="btn col-lg-3" id=\"quantita"+id_oggetto+">"+ cart.products[i].quantita + "</p>
-                                    <button class="btn btn-danger col-lg-3" onclick="rimuovi("+id_oggetto+", "+ cart.products[i].quantita + ","+i+")"><span class="glyphicon glyphicon-minus"></span></button>
-                                </div>
-                            </div> -->
-                            <button class="btn btn-warning"><span class="glyphicon glyphicon-shopping-cart"></span> Aggiungi al carrello</button>
                         </div>
                     </div>
 
-                    <h3>Recensioni: </h3>
                     <!-- RECENSIONI -->
+                    <h3>Recensioni: </h3>
                     <div id="div_reviews">
 
-                        <!-- div contenente: recensione -->
-                        <!--CODICE ESEMPIO 
-                        <!-- codice esempio
-                        <div class="row panel panel-default">         
-                            <div class="col-lg-12">
-                                <div style="background-color: aqua" >
-                                    <span class="glyphicon glyphicon-star"></span>  
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span> 
-                                </div>
-
-                                <!-- div con testo espandibile, contenente la recensione -->
-                                <!-- div con testo espandibile, contenente la recensione --
-                                <div class="panel-group" role="tablist" aria-multiselectable="true">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a purus at felis viverra congue. Duis quis cursus ligul
-                                    <div id="collapseOne" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
-                                        Nunc pretium lacus sed dui tincidunt, eu luctus nisl viverra. Donec pretium congue sapien, nec efficitur risus egestas ut. Nam condimentum massa dolor. Suspendisse luctus non leo vehicula sagittis. Etiam placerat enim non mauris sodales, ut euismod elit sodales. Phasellus commodo at tellus non interdum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque porttitor justo non lorem lacinia, non tempor tortor bibendum. Mauris viverra magna vitae cursus imperdiet. Aliquam vehicula mi felis, in varius elit consectetur eget. Morbi neque elit, blandit in varius vitae, suscipit in nunc. Ut interdum ante eu ornare ultricies. Nam maximus faucibus porta.In hac habitasse platea dictumst. In tempus massa nec ipsum fringilla, quis elementum tellus euismod. Morbi quis metus sit amet eros semper mattis vel a sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas ullamcorper tincidunt sapien, eget maximus felis condimentum quis. Ut in semper nunc. Donec at magna lorem. Mauris dignissim justo vitae quam bibendum egestas.Vestibulum tellus neque, porttitor in placerat eget, posuere at mi. In eget tincidunt augue. Nulla elementum ornare urna. Donec id iaculis est, vel ultricies tortor. Curabitur sagittis tempus turpis in mattis. Donec ut tempus justo, vitae pharetra velit. Pellentesque ac luctus mi. Donec efficitur elementum leo, sed venenatis mauris facilisis sed. Fusce sed vulputate nunc, vitae egestas enim. Suspendisse rhoncus risus vitae ipsum hendrerit mollis. Proin ut justo justo. Cras lacinia lorem posuere laoreet finibus. Donec justo purus, consectetur lobortis volutpat vel, sodales venenatis ligula. Etiam eget interdum magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent cursus, nunc quis cursus vulputate, magna libero scelerisque lacus, vel gravida arcu mauris vitae neque. Ut eu eleifend lorem, quis feugiat arcu. Nullam condimentum faucibus tortor, ut posuere velit pellentesque nec. Praesent finibus iaculis ultrices. Etiam dolor ante, posuere vitae ex et, finibus fermentum ante. Cras eu rutrum diam. Nullam sed rutrum risus, et iaculis risus. Aenean ut nisi sagittis nibh pulvinar rhoncus ac a nunc. Suspendisse et lorem in nunc sollicitudin egestas feugiat in mi. Nam ut tellus sodales, pellentesque mi et, faucibus arcu. Proin posuere, ipsum vel pretium porta, lorem lacus finibus risus, viverra iaculis lacus massa vitae velit. Vivamus at tincidunt metus, eu interdum metus. Phasellus dolor erat, varius eu mi vel, suscipit molestie sapien. Sed fringilla dui vitae elit commodo condimentum. Phasellus consectetur enim orci, eget mattis dolor hendrerit nec. Sed tincidunt cursus ipsum, rhoncus venenatis lacus. Mauris porttitor quam nunc, id ultricies nibh euismod quis. Nam pulvinar turpis sem, quis luctus nunc ullamcorper vitae. Vestibulum nunc diam, finibus id pretium a, placerat vitae ligula. Suspendisse tristique massa vel aliquet aliquam. Vivamus euismod diam id dui pellentesque pulvinar. Ut tincidunt varius libero sit amet aliquam. Aliquam at justo nec lorem mollis euismod sit amet id erat.
-                                    </div> 
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <span class="glyphicon glyphicon-option-horizontal"></span>
-                                    </a>
-                                </div>                          
-
-                            </div>
-                        </div>
-
-                        <div class="row panel panel-default">         
-                            <div class="col-lg-12">
-                                <div class="col-xs-12 col-lg-2" style="background-color: aqua" >
-                                    <span class="glyphicon glyphicon-star"></span>  
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span> 
-                                </div>
-                                <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
-                                </div>                        
-                                <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale --
-
-                            </div>
-                        </div>
-
-                        <div class="row panel panel-default">         
-                            <div class="col-lg-12">
-                                <div class="col-xs-12 col-lg-2" style="background-color: aqua" >
-                                    <span class="glyphicon glyphicon-star"></span>  
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span> 
-                                </div>
-                                <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
-                        </div>-->
-                                <p >recensione</p>
-
-                            </div>
-                        </div>
                         
-                    </div>                    
-                        </div> -->
                     </div>                  
                 </div>
 
