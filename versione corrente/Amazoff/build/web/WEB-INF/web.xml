@@ -5,23 +5,19 @@
         <param-name>host</param-name>
         <param-value>smtp.gmail.com</param-value>
     </context-param>
- 
     <context-param>
         <param-name>port</param-name>
         <param-value>587</param-value>
     </context-param>
- 
     <context-param>
         <param-name>user</param-name>
         <param-value>progweb17@gmail.com</param-value>
     </context-param>
- 
     <context-param>
         <param-name>pass</param-name>
         <param-value>Amazoff17</param-value>
     </context-param>
     <!-- FINE SETUP -->
-    
     <!-- FILTER -->
     <filter>
         <filter-name>NotLoggedFilter</filter-name>

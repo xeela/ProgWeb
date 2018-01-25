@@ -55,7 +55,6 @@
                     toAdd += "<div class=\"col-sm-6 col-md-4\">";
                     toAdd += "<div class=\"thumbnail\">";
                     if (!(jsonProdotti.products[i].pictures.length > 0) || jsonProdotti.products[i].pictures[0].path == undefined)
-                        toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"...\">";
                         toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"Immagine non trovata\">";
                     else
                         toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotti.products[i].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
