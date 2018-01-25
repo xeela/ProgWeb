@@ -59,6 +59,7 @@
                         toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"Immagine non trovata\">";
                     else
                         toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotti.products[i].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
+                    
                     toAdd += "<div class=\"caption\">";
                     toAdd += "<h3 class=\"maxlength dotsEndSentence\" title=\"" + jsonProdotti.products[i].name + "\">" + jsonProdotti.products[i].name + "</h3>";
                     toAdd += "<h4>" + jsonProdotti.products[i].price + "€</h4>";
