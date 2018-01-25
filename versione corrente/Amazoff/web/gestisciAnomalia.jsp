@@ -1,7 +1,7 @@
 <%-- 
     Document   : gestisciAnomalia.jsp
     Created on : 23-gen-2018, 10.38.38
-    Author     : Caterina
+    Author     : Caterina Battisti
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>

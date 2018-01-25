@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Aggiorna lo stato della controversia con l'azione stabilita dall'amministratore.
  *
  * @author Caterina
  */

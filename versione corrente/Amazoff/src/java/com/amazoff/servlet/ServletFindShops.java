@@ -15,21 +15,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author Caterina
+ * In base alla posizione dell'utente (latitudine e longitudine), estrae dal database
+ * i negozi nelle vicinanze dell'utente.
+ * 
+ * @author Caterina Battisti
  */
 @WebServlet(name = "ServletFindShops", urlPatterns = {"/ServletFindShops"})
 public class ServletFindShops extends HttpServlet {
 
     /**
-     * ServletFindShops
-     * 
-     * In base alla posizione dell'utente (latitudine e longitudine), vengono estratti dal db
-     * i negozi nelle vicinanze dell'utente
-     * 
-     * @param request contiene i dati della posizione dell'utente
-     * @return jsonNegozi contenente i dati dei negozi nelle vicinanze dell'utente
-     * 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

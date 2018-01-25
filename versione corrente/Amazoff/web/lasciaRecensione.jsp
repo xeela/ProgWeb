@@ -1,7 +1,7 @@
 <%-- 
     Document   : lasciaRecensione.jsp
     Created on : 7-gen-2018, 16.04.53
-    Author     : Cate
+    Author     : Caterina Battisti
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>

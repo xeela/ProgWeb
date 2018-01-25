@@ -20,8 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author Caterina
+ * Recupera i dati della singola controversia o inserisce una nuova controversia.
+ * 
+ * @author Caterina Battisti
  */
 public class ServletSegnalazione extends HttpServlet {
 
