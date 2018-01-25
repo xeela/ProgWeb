@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Francesco
+ * @author Francesco Bruschetti
  */
 public class ServletAjaxPayPage extends HttpServlet {
 
@@ -32,11 +32,10 @@ public class ServletAjaxPayPage extends HttpServlet {
     }
 
     /**
-     * 
      * Questa servlet viene chiamata quando, dalla pagina  PayPage,
-     * viene richiesto di aggiornare le informazioni relative all'indirizzo di spedizione per i prodotti che l'utente sta per comprare
+     * viene richiesto di aggiornare le informazioni relative all'indirizzo di spedizione per i prodotti che l'utente sta per comprare.
      * Nel caso in cui l'utente non avesse già un indirizzo associato al suo profilo, verrà memorizzato quello nuovo.
-     * Se invece, l'utente ha già un indirizzo, i nuovi dati sovrascriveranno quelli vecchi
+     * Se invece, l'utente ha già un indirizzo, i nuovi dati sovrascriveranno quelli vecchi.
      * 
      * @param request variabile all'interno della quale sono memorizzati tutti i dati di cui l'utente a fatto il submit 
      * @return response all'interno della quale è contenuto TRUE se il salvataggio dei dati è andato a buon fine,
@@ -47,7 +46,7 @@ public class ServletAjaxPayPage extends HttpServlet {
             throws ServletException, IOException {
         String risposta = "-1";
         try (PrintWriter out = response.getWriter()) {
-            
+            /** Leggo i dati ricevuti dal client */
             String paeseReceived = request.getParameter("_paese");
             String indirizzoReceived = request.getParameter("_indirizzo");
             String cittaReceived = request.getParameter("_citta");
@@ -65,7 +64,7 @@ public class ServletAjaxPayPage extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                /** ottengo dal db i dati dell'indirizzo dell'utente con @param id specificato */
+                /** controllo se nel db, l'utente "userIDReceived" ha già dei dati memorizzati */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT id_utente FROM user_addresses WHERE id_utente = " + MyDatabaseManager.EscapeCharacters(userIDReceived) + ";", connection);
                                 
                 String esisteUtente = "false";
@@ -73,10 +72,10 @@ public class ServletAjaxPayPage extends HttpServlet {
                     esisteUtente = results.getString(1);
                 }
                 
-                /** Se l'utente NON esiste (quindi non ha un indirizzo associato */
+                /** Se l'utente NON ha un indirizzo associato */
                 if(esisteUtente == "false") 
                 {
-                    /** ALLORA: aggiungo un nuovo campo nel db con i dati ricevuti dalla pagina PayPage */
+                    /** ALLORA: aggiungo una nuova entry nel db con i dati ricevuti dalla pagina PayPage */
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO user_addresses(id_utente, town, city, address, province, postal_code) " + 
                                                         "VALUES (" + MyDatabaseManager.EscapeCharacters(userIDReceived) + ", " + 
                                                         "'" + MyDatabaseManager.EscapeCharacters(paeseReceived) + "', " + 
@@ -96,11 +95,11 @@ public class ServletAjaxPayPage extends HttpServlet {
                                                         "postal_code = " + MyDatabaseManager.EscapeCharacters(capReceived) + 
                                                         " WHERE id_utente = "+ userIDReceived +";", connection);
                 }
-                /** @return "true" ritorno al client un valore di OK, l'inserimento dei dati è avvenuto correttamente  */
+                /** predispongo TRUE come risposta, l'inserimento dei dati è avvenuto correttamente  */
                 risposta = "true";
                 connection.close();
             }
-            else  /** ritorno FALSE, c'è stato un errore */
+            else  /** predispongo FALSE come risposta, c'è stato un errore */
             {
                 risposta = "false";
             }
@@ -110,7 +109,7 @@ public class ServletAjaxPayPage extends HttpServlet {
             response.getWriter().write(risposta);
             
         }catch (SQLException ex) {
-            /** @return "true" ritorno al client un valore di OK, l'inserimento dei dati è avvenuto correttamente  */
+            /** ritorno il risultato alla pagina chiamante */
             risposta = "false";
             response.setContentType("text/plain");
             response.getWriter().write(risposta);

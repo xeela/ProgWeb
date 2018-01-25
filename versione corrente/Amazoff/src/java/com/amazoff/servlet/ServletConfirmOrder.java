@@ -21,11 +21,8 @@ import javax.servlet.http.HttpSession;
 public class ServletConfirmOrder extends HttpServlet {
 
     
-    /**
-     * ServletConfirmOrder
-     * 
-     * Questa servlet viene richiamata quando il cliente, dalla pagina del pagamento (payPage), 
-     * procede con l'acquisto dei prodotti
+    /*
+     * Questa servlet viene richiamata quando il cliente, dalla pagina del pagamento, procede con l'acquisto dei prodotti.
      * 
      * @param request contiene la modalità con cui l'utente intente ricevere i prodotti. 
      * @param modalita è contenuto nel parametro request ed ha memorizzato la modalità di ritiro dei prodotti (spediti a casa o ritirati in negozio) 
@@ -59,7 +56,7 @@ public class ServletConfirmOrder extends HttpServlet {
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT available, products.id, amount FROM products, cart WHERE cart.id_user = " + userID + " and products.id = cart.id_product;", connection);
                 while(results.next())
                 {
-                    //Se non ci sono abbastanza scorte di un prodotto, lo tolgo dal carrello e rimando l'utente alla pagina del carrello
+                    /** Se non ci sono abbastanza scorte di un prodotto, lo tolgo dal carrello e rimando l'utente alla pagina del carrello */
                     //TODO: Settare anche un messaggio di errore per l'utente
                     int available = parseInt(results.getString(1));
                     int requested = parseInt(results.getString(3));

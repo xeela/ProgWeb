@@ -15,25 +15,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author Davide Farina
  */
 public class ServletFindProduct extends HttpServlet {
 
-    /**
-     * SerlvetFindProduct
-     * 
-     * Questa servlet ha il compito di estrarre dal db tutti i prodotti (e le relative informazioni)
-     * che soddisfano il parametro di ricerca specificati dall'utente.
+    /** 
+     * Questa servlet ha il compito di estrarre dal db tutti i prodotti (e le relative informazioni) che soddisfano il parametro di ricerca specificati dall'utente.
      * 
      * @param request contiene i campi con cui l'utente può cercare i prodotti. Compresi gli eventuali tipi di filtri applicati e i dati per applicarli 
-     * @return
-     * 
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /** leggo i dati ricevuti dal client */
             String userReceived = request.getParameter("username"); // NULL, ma non viene mai usato
             String productReceived = request.getParameter("txtCerca");
             String categoriaReceived = request.getParameter("categoriaRicerca");
@@ -123,7 +118,6 @@ public class ServletFindProduct extends HttpServlet {
                             + "AND products.id_shop = shops.id AND ";
                 }
                 
-                // esegue solo su condizione
                 if(prezzoMinRicerca != null){
                     query += "products.price >= " + prezzoMinRicerca + " AND ";
                 }
@@ -132,7 +126,6 @@ public class ServletFindProduct extends HttpServlet {
                     query += "products.price <= " + prezzoMaxRicerca + " AND ";
                 }
                 
-                // esegue sempre
                 switch (categoriaReceived) {
                     case "product":
                         query += "products.name LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ORDER BY products.price ASC;";
@@ -149,7 +142,7 @@ public class ServletFindProduct extends HttpServlet {
                 
                 results = MyDatabaseManager.EseguiQuery(query, connection);
                 
-                if (results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                if (results.isAfterLast()) /** se non c'è un prodotto che rispetta il criterio richiesto */
                 {
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.noProductFound);
@@ -158,9 +151,7 @@ public class ServletFindProduct extends HttpServlet {
                     return;
                 }
 
-                //aggiungo i prodotti al json
-                // ------- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
-                
+                /** creo un oggetto json, in cui memorizzo i dati */
                 String gloabl_value_avg = "";
                 boolean isFirstTime = true, isFirstTimeImg = true;
                 String id_product = "";
@@ -192,7 +183,7 @@ public class ServletFindProduct extends HttpServlet {
                     }
                     jsonObj += "\"global_value_avg\": \""+ gloabl_value_avg +"\",";
                         
-                    // richiedo le immagini per questo prodotto
+                    /** richiedo le immagini per questo prodotto */
                     jsonObj += "\"pictures\": [";
                     resultsImages = MyDatabaseManager.EseguiQuery("SELECT path FROM pictures WHERE ID_PRODUCT = "+id_product+";", connection);
                 

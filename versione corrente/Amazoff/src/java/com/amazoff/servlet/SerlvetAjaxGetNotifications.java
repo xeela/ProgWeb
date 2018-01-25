@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 /**
- *
  * @author Francesco Bruschetti
  */
 public class SerlvetAjaxGetNotifications extends HttpServlet {
 
     /**
      * Servlet che restituisce tutte le notifiche dell'utente loggato
-     * 
+     * @param request contiene l'id dell'utente loggato
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -31,7 +31,7 @@ public class SerlvetAjaxGetNotifications extends HttpServlet {
         
         try (PrintWriter out = response.getWriter()) {
             
-            
+            /** leggo i dati ricevuti dal client */
             String idUser = request.getParameter("_idUser");
 
             if(idUser != null) 
@@ -45,10 +45,10 @@ public class SerlvetAjaxGetNotifications extends HttpServlet {
                 if(MyDatabaseManager.cpds != null)
                 {
                     Connection connection = MyDatabaseManager.CreateConnection();
-                        
+                    /** mi restituisce tutte le notifiche dell'utente idUser */
                     ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM notifications WHERE ID_USER = "+idUser+";", connection);
                 
-                    if (results.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                    if (results.isAfterLast()) /** se non c'è un prodotto che rispetta il criterio richiesto */
                     {
                         session = request.getSession();
                         session.setAttribute("errorMessage", Errors.noProductFound);
@@ -57,6 +57,7 @@ public class SerlvetAjaxGetNotifications extends HttpServlet {
                         return;
                     }
                     
+                    /** prendo il risultato della query e lo memorizzo in un oggetto json, che sarà poi iniviato al client */
                     boolean isFirstTime = true;
                     jsonObj += "{";
                     jsonObj += "\"notifications\":["; 
@@ -84,7 +85,7 @@ public class SerlvetAjaxGetNotifications extends HttpServlet {
                     jsonObj = "{ notifications: [] }";
                 }
             }
-            else /** id_user is null */
+            else /** id_user is null, quindi l'utente non ha effettuato il login */
             {
                 jsonObj = "{ notifications: [] }";
             }
@@ -93,7 +94,7 @@ public class SerlvetAjaxGetNotifications extends HttpServlet {
             session.setAttribute("jsonNotifiche", jsonObj);
             
             response.setContentType("text/plain");
-            response.getWriter().write(jsonObj); // ritorno alla pagina l'oggetto jsonObj: serve quando la index chiede le notifiche, serve per evitare crash se l'utente non è loggato
+            response.getWriter().write(jsonObj); /** ritorno alla pagina l'oggetto jsonObj: serve SOLO quando la index chiede le notifiche, serve per evitare crash se l'utente non è loggato */
             
         }catch (SQLException ex) { /** Gestione di errori non previsti */
             /** ritorno json vuoto se c'è stato un errore */

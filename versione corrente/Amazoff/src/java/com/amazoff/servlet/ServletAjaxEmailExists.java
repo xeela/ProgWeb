@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author Francesco Bruschetti
  */
 public class ServletAjaxEmailExists extends HttpServlet {
@@ -25,8 +24,8 @@ public class ServletAjaxEmailExists extends HttpServlet {
     private String user;
     private String pass;
  
+    /** leggo dal file web.xml, i dati necessari per stabilire la connessione con il server SMTP di google */
     public void init() {
-        // reads SMTP server setting from web.xml file
         ServletContext context = getServletContext();
         host = context.getInitParameter("host");
         port = context.getInitParameter("port");
@@ -38,13 +37,12 @@ public class ServletAjaxEmailExists extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        
         String risposta = "false";
         try (PrintWriter out = response.getWriter()) {
+            /** leggo il dato relativo all'email del destinatario */
             String emailReceived = request.getParameter("_email");
-            HttpSession session = request.getSession();
             
-            
+            HttpSession session = request.getSession();           
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
@@ -55,6 +53,7 @@ public class ServletAjaxEmailExists extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
+                /** Controllo se nel db è presente un utente con la mail specificata */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT email, passrecupero FROM users WHERE email = '" + MyDatabaseManager.EscapeCharacters(emailReceived) + "';", connection);
                 
                 if(results.isAfterLast()) 
@@ -75,7 +74,7 @@ public class ServletAjaxEmailExists extends HttpServlet {
                 }
                 connection.close();
             }
-            else  // ritorno FALSE, c'è stato un errore
+            else  /** predispongo FALSE come risposta, c'è stato un errore */
             {
                 risposta = "false";
             }
@@ -87,28 +86,24 @@ public class ServletAjaxEmailExists extends HttpServlet {
         }
     }
        
+    /** Funzione che si occupa di richiedere l'invio effettivo della email, e che controlla che tutto vada a buon fine */
     protected boolean sendEmail(HttpServletRequest request, String email, String pwd)
     {
-        String recipient = email; //"francesco.bruschetti@yahoo.it"; 
+        String recipient = email; 
         String subject = "Richiesta reset password dimenticata";
-        String content = "<a href=\"http://localhost:8080/Amazoff/ResetPassword.jsp?tmp="+ pwd +"\" >Clicca qui</a> per ripristinare la tua password"; //http://test.davidefarina.com:8080
+
+        /** OSS: cosi funziona solo se si usa in locale. Quando la vorremo mettere sul server, va cambiato localhost, con http://test.davidefarina.com:8080 */
+        String content = "<a href=\"http://localhost:8080/Amazoff/ResetPassword.jsp?tmp="+ pwd +"\" >Clicca qui</a> per ripristinare la tua password"; 
  
         String resultMessage = "";
  
         try {
-            EmailUtility.sendEmail(host, port, user, pass, recipient, subject,
-                    content);
-            //resultMessage = "The e-mail was sent successfully";
-            //request.setAttribute("statoEmail", "1");
+            /** utilizzo il medoto sendEmail, che si occupera dell'invio effettivo dell'email */
+            EmailUtility.sendEmail(host, port, user, pass, recipient, subject, content);
         } catch (Exception ex) {
             ex.printStackTrace();
-            //resultMessage = "There were an error: " + ex.getMessage();
-            //request.setAttribute("statoEmail", "0");
             return false;
-        } /*finally {
-            //request.setAttribute("Message", resultMessage);
-            //getServletContext().getRequestDispatcher("/Result.jsp").forward(request, response);
-        }*/
+        }
         
         return true;
     }

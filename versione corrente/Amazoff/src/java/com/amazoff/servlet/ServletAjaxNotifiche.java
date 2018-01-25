@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.MyDatabaseManager;
@@ -17,12 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author Francesco
+ * @author Francesco Bruschetti
  */
 public class ServletAjaxNotifiche extends HttpServlet {
 
- 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -30,8 +23,7 @@ public class ServletAjaxNotifiche extends HttpServlet {
             
         }
     }
-
-   
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -39,7 +31,7 @@ public class ServletAjaxNotifiche extends HttpServlet {
     }
 
     /**
-     * Questa servlet, riceve l'id di una notifica, e lo utilizza per settarne lo stato nel db, come "LETTA"
+     * Questa servlet, riceve l'id di una notifica e lo utilizza per settarne lo stato, nel db, come "LETTA"
      * 
      * @param request variabile all'interno della quale è contenuto l'id della notificha di cui si richiedono maggiori dettagli
      * @return response all'interno della quale è contenuto TRUE se l'operazione è stata completata correttamente
@@ -73,7 +65,7 @@ public class ServletAjaxNotifiche extends HttpServlet {
                 connection.close();
                 
             }
-            else  /** ritorno FALSE, c'è stato un errore */
+            else  /** predispongo FALSE come risposta, c'è stato un errore */
             {
                 risposta = "false";
             }

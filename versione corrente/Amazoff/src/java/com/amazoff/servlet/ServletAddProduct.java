@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.amazoff.servlet;
 
 import com.amazoff.classes.Errors;
@@ -23,17 +18,17 @@ import java.sql.PreparedStatement;
 import javax.servlet.annotation.MultipartConfig;
 /**
  *
- * @author Davide
+ * @author Davide Farina
  */
 @MultipartConfig
 public class ServletAddProduct extends HttpServlet {
     private String dirName;
     
-    /** Si occuopa di selezionare la directory in cui sono caricate le immagini sul server (se esiste). Dà errore altrimenti 
-     *Prende la directory di upload dal file web.xml */
+    /** Si occupa di selezionare la directory in cui sono caricate le immagini sul server (se esiste). Dà errore altrimenti.
+     * OSS: Lege la directory di upload dal file web.xml */
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        /** read the uploadDir from the servlet parameters */
+        /** legge il nome della cartella in cui memorizzare le immagini, leggendo il campo uploadDir nel file web.xml */
         dirName = config.getInitParameter("uploadDir");
         if (dirName == null) {
         throw new ServletException("Please supply uploadDir parameter");
@@ -57,6 +52,7 @@ public class ServletAddProduct extends HttpServlet {
             /** Funzione che prende il file specificato dall'utente e lo salva sul server */
             MultipartRequest multi = new MultipartRequest(request, getServletContext().getRealPath(dirName), 16*4096*4096, "ISO-8859-1", new DefaultFileRenamePolicy());
 
+            /** Leggo anche tutti gli altri parametri specificati dall'utente */
             String categoriaReceived = multi.getParameter("categoria");
             String nomeReceived = multi.getParameter("nome");
             String descrizioneReceived = multi.getParameter("descrizione");
@@ -69,13 +65,13 @@ public class ServletAddProduct extends HttpServlet {
             {
                 if("ritiro".equals(spedizioneReceived))
                 {
-                    ritiro = 1;
+                    ritiro = 1; /** = 1 significa che il prodotto verrà RITIRATO in negozio */
                 }
                 else
-                    ritiro = 0;
+                    ritiro = 0; /** = 0 significa che il prodotto verrà SPEDITO all'utente */
             }
             else
-                ritiro = -1;
+                ritiro = -1; /** Non è stata specificata la modalità di acquisto del prodotto */
                   
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
@@ -89,7 +85,7 @@ public class ServletAddProduct extends HttpServlet {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 /** aggiungi alla tabella products il prodotto */
-                /* QUERY: vanno aggiornati i campi. manca ritiro, venduto */
+                /* ?????????????????? QUERY: vanno aggiornati i campi. manca ritiro, venduto */
                 PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO products (name, description, price, id_shop, ritiro, sold) VALUES (" 
                             + "'" + MyDatabaseManager.EscapeCharacters(nomeReceived) + "', "
                             + "'" + MyDatabaseManager.EscapeCharacters(descrizioneReceived) + "', "
@@ -98,6 +94,7 @@ public class ServletAddProduct extends HttpServlet {
                             + ritiro + ","
                             + 0
                             + ");", connection);
+                
                 /** ottieni l'ID del prodotto appena aggiunto */
                 int productID = -1;
                 ResultSet idProdottoRS = ps.getGeneratedKeys();
@@ -115,7 +112,7 @@ public class ServletAddProduct extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
             }
             else
-            {   /** C'è stato un errore */
+            {   /** C'è stato un errore. */
                 HttpSession session = request.getSession(); 
                 session.setAttribute("errorMessage", Errors.dbConnection);
                 response.sendRedirect(request.getContextPath() + "/"); 
@@ -123,7 +120,7 @@ public class ServletAddProduct extends HttpServlet {
         }
         catch(Exception ex)
         {
-            /** C'è stato un errore non previsto */
+            /** C'è stato un errore non previsto.  */
             HttpSession session = request.getSession();
             MyDatabaseManager.LogError(session.getAttribute("user").toString(), "ServletAddProduct", ex.toString());
             response.sendRedirect(request.getContextPath() + "/"); 

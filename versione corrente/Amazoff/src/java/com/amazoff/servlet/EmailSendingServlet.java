@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author Francesco Bruschetti
+ * @author Francesco Bruschetti SERVLET NON UTILIZZATA
  */
 @WebServlet("/EmailSendingServlet")
 public class EmailSendingServlet extends HttpServlet {

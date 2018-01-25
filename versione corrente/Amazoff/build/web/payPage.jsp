@@ -357,6 +357,7 @@
                                                 {
                                     %>
                                     <a href="notificationPage.jsp">
+                                    <a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">
                                         <span class="badge iconSize imgCenter" id="totNotifichexs"> 
                                             <spam class="glyphicon glyphicon-inbox"></spam>
                                             99+
@@ -371,6 +372,7 @@
 
                                 <div class="col-xs-3 hidden-lg iconSize imgCenter" >
                                     <a href="ServletAddToCart"">
+                                    <a href="ServletAddToCart">
                                         <spam class="glyphicon glyphicon-shopping-cart"></spam>
                                     </a>
                                 </div>

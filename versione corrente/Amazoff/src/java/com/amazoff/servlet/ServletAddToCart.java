@@ -16,25 +16,23 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author Davide Farina
  */
 public class ServletAddToCart extends HttpServlet {
 
     /**
-     * Servlet che permette di memorizzare un prodotto, nel carrello dell'utente, registrato, che lo ha richiesto.
+     * Servlet che permette di memorizzare un prodotto, nel carrello dell'utente, che lo ha richiesto.
      * 
      * @param request contiene l'id dell'oggeto che l'utente vuole aggiungere nel carrello
      * @param session contiene l'id dell'utente registrato che sta richiedendo l'operazione
-     * 
-     * @return response all'interno della quale è contenuto TRUE se l'oggetto è stato memorizzato correttamente nel carrello dell'utente
-     *                  FALSE se si sono verificati errori  
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
+            
+            /** Leggo i dati ricevuti dal client */
             String productReceived = request.getParameter("productID");
             String requested = request.getParameter("requested");
             
@@ -49,15 +47,15 @@ public class ServletAddToCart extends HttpServlet {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 if (session.getAttribute("user") != null) {
-                    //Se sto aggiungendo un prodotto lo aggiungo, altrimenti vado solo alla pagina del carrello senza aggiungere nulla
+                    /** Se sto aggiungendo un prodotto lo aggiungo, altrimenti vado solo alla pagina del carrello senza aggiungere nulla */
                     if(productReceived != null)
                     {
-                        /** Controllo se il prodotto è già presente nel carrello dell'utente. Se si, non faccio nulla, altrimenti lo aggiungo*/
+                        /** Controllo se il prodotto è già presente nel carrello dell'utente. Se si, non faccio nulla, altrimenti lo aggiungo */
                         ResultSet isPresent = MyDatabaseManager.EseguiQuery("SELECT * FROM cart WHERE ID_USER = " + session.getAttribute("userID") + " AND ID_PRODUCT = " + productReceived + ";", connection);
-                        //Se non c'è
+                        /** Se non c'è */
                         if(!isPresent.isBeforeFirst())
                         {
-                            /** Interrogo il per inserire nel carrello dell'utente, l'id del prodotto specificato */
+                            /** Interrogo il db per inserire nel carrello dell'utente, l'id del prodotto specificato */
                             PreparedStatement ps = MyDatabaseManager.EseguiStatement("INSERT INTO cart(ID_USER, ID_PRODUCT, DATE_ADDED, AMOUNT) VALUES ("
                                     + session.getAttribute("userID") + ", "
                                     + productReceived + ", "
@@ -71,8 +69,10 @@ public class ServletAddToCart extends HttpServlet {
                     }                    
                     
                     
-                } else {
-                    /** salva l'elemento selezionato nel carrello */
+                } else { 
+                    /** L'utente NON ha effettuato il login. 
+                     * Quindi salvo l'elemento selezionato in un cookie
+                     */
                     Cookie cookie = new Cookie(productReceived, productReceived);
                     cookie.setMaxAge(60 * 60 * 24 * 7);
                     response.addCookie(cookie);

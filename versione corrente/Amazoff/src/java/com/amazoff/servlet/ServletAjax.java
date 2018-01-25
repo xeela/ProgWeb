@@ -42,11 +42,13 @@ public class ServletAjax extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         String risposta = "-1";
         try (PrintWriter out = response.getWriter()) {
             ResultSet results;
-            String operazione = request.getParameter("op");
             
+            /** Leggo i dati ricevuti dal client */
+            String operazione = request.getParameter("op");
             String emailReceived = request.getParameter("_email");
             String usernameReceived = request.getParameter("_user");
             
@@ -56,10 +58,10 @@ public class ServletAjax extends HttpServlet {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
         
-            /** Chiedi roba al db */
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
+                /** in base al tipo di operazione richiesta, controllo se il parametro ricevuto è una email o un username univoco */
                 switch(operazione) {
                     case "email":
                         results = MyDatabaseManager.EseguiQuery("SELECT email FROM users WHERE email = '" + MyDatabaseManager.EscapeCharacters(emailReceived) + "';", connection);
@@ -68,20 +70,19 @@ public class ServletAjax extends HttpServlet {
                         break;
                 }
 
-
                 if(results.isAfterLast()) //NON SO QUANDO CI ENTRA. se non c'è un utente con quel nome --> ritorno TRUE
                 {
                     risposta = "true";
                 }
                 else {
                     risposta = "true";
-                    while (results.next()) { /** se esiste un utente con quella email, ritorno FALSE. Non devo avere due persone con la stessa email */
+                    while (results.next()) { /** se esiste un utente con quella email/username, predispongo FALSE come risposta. Non devo avere due persone con la stessa email */
                         risposta = "false";
                     }
                 }
                 connection.close();
             }
-            else  /** ritorno FALSE, c'è stato un errore */
+            else  /** predispongo FALSE come risposta, c'è stato un errore */
             {
                 risposta = "false";
             }
