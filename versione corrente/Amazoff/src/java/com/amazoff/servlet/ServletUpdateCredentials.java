@@ -17,7 +17,7 @@ import java.sql.Connection;
 import java.util.UUID;
 
 /**
- * @author Davide Farina
+ * @author Gianluca Pasqua
  * 
  * Questa servlet permette ad un utente di modificare le sue informazioni personali
  *

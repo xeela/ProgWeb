@@ -1,7 +1,7 @@
 <%-- 
     Document   : userPage
-    Created on : 19-set-2017, 10.56.58
-    Author     : Davide Farina
+    Created on : 20-set-2017, 18.30.25
+    Authors     : Gianluca Pasqua - Francesco Bruschetti
 --%>
 
 <%@page import="com.amazoff.classes.Errors"%>
@@ -147,15 +147,10 @@
             // funzione che controlla se la email inserita nel popup di reset password ha le dimensioni corrette
             function checkResetEmail(mail)
             {
-                //OSSSSSS: oltre al controllo sulla lunghezza della email, andrebbe controllato, magari con ajax, se la password esiste nel db
                 var mail = document.getElementById("inputEmail").value;
                 if (mail.length < 6 || !mail.includes("@"))
-                {
-                    // chiama ajax che controlla se la email è presente nel db
-                    //if(checkEmailExists(mail)) {          
+                {      
                     document.getElementById("alertResetPassword").style.visibility = "visible";
-                    //  return false;
-                    // }
                     return false;
                 } else {
                     // chiudo la modal
@@ -216,11 +211,8 @@
             function updateMarkerAddress(str) {
                
             }
+            //aggiorna le coordinate inserite dall'utente
             function sendCoordinates() {
-                //    alert([
-                //    latLng.lat(),
-                //    latLng.lng()
-                //  ].join(';'));
                 var coordinatesshop = document.getElementById('info').innerHTML;
                 //alert(coordinatesshop);
                 document.getElementById('info2').innerHTML = coordinatesshop;
@@ -266,11 +258,8 @@
 
             // Onload handler to fire off the app.
             google.maps.event.addDomListener(window, 'load', initialize);
+            //controlla che i dati inseriti per la vendita di un prodotto siano correttamente inseriti
             function checkProductData() {
-                /*console.log(document.getElementById("prname").value);
-                 console.log(document.getElementById("prdesc").value);
-                 console.log(document.getElementById("prprice").value);
-                 console.log(parseFloat(document.getElementById("prprice").value));*/
                 if (document.getElementById("prname").value !== "" && document.getElementById("prname").value !== undefined &&
                         document.getElementById("prdesc").value !== "" && document.getElementById("prname").value !== undefined &&
                         document.getElementById("prprice").value !== "" && document.getElementById("prname").value !== undefined &&
@@ -490,7 +479,8 @@
                 <div class='tmargin'>
                     <div class="page">
                         <ul class="list-group">
-                            <div class="list-group-item">  
+                            <div class="list-group-item"> 
+                                <!-- gestione dati profilo, visibile a tutti -->
                                 <div id="profilo" role="tablist" aria-multiselectable="true">
                                     Profilo 
                                     <a data-toggle="collapse" data-parent="#accordion"

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : index
-    Created on : 19-set-2017, 10.56.58
-    Author     : Davide
+    Document   : userPage
+    Created on : 20-set-2017, 18.30.25
+    Authors     : Gianluca Pasqua - Francesco Bruschetti
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>

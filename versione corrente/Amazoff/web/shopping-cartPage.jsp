@@ -1,5 +1,5 @@
 <%-- 
-    Document   : shopping-cartPage
+    Document   : shopPage
     Created on : 19-set-2017, 10.56.58
     Author     : Francesco Bruschetti
 --%>

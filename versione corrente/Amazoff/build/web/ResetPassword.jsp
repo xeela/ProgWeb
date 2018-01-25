@@ -1,7 +1,7 @@
 <%-- 
     Document   : ResetPassword
     Created on : Dec 28, 2017, 2:39:06 PM
-    Author     : Fra
+    Author     : Francesco Bruschetti
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

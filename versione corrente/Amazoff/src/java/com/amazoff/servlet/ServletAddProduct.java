@@ -18,7 +18,7 @@ import java.sql.PreparedStatement;
 import javax.servlet.annotation.MultipartConfig;
 /**
  *
- * @author Davide Farina
+ * @author Gianluca Pasqua
  * 
  * Funzione "init"
  *  Si occupa di selezionare la directory in cui sono caricate le immagini sul server (se esiste). Dà errore altrimenti.
