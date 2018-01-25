@@ -19,8 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author Caterina
+ * Recupera i dati delle controversie non ancora risolte se l'utente loggato è admin.
+ * 
+ * @author Caterina Battisti
  */
 public class ServletRecuperaAnomalie extends HttpServlet {
 

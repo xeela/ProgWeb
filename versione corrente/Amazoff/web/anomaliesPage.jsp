@@ -1,7 +1,7 @@
 <%-- 
     Document   : anomaliesPage.jsp
     Created on : 23-gen-2018, 14.18.35
-    Author     : Caterina
+    Author     : Caterina Battisti
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>

@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Recupera i dati dei prodotti inseriti nel carrello per utenti non loggati.
  *
  * @author Caterina Battisti
  */
-@WebServlet(name = "ServletShowCookieCart", urlPatterns = {"/ServletShowCookieCart"})
 public class ServletShowCart extends HttpServlet {
 
     

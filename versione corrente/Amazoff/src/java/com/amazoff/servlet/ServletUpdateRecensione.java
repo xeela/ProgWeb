@@ -18,8 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author Cate
+ * Aggiunge, modifica o elimina una recensione per un'oggetto acquistato dall'utente loggato.
+ * 
+ * @author Caterina Battisti
  */
 public class ServletUpdateRecensione extends HttpServlet {
 

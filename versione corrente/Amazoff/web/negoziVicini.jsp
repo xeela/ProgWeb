@@ -1,3 +1,6 @@
+<%-- 
+    Author: Caterina Battisti
+--%>
 <!DOCTYPE html>
 <html>
     <head>

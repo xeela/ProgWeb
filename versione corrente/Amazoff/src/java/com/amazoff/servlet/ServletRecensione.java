@@ -19,8 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * Recupera i dati della recensione per l'oggetto acquistato 
+ * inserita dall'utente loggato.
  *
- * @author Cate
+ * @author Caterina Battisti
  */
 public class ServletRecensione extends HttpServlet {
 
