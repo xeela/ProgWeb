@@ -63,11 +63,14 @@
                         // Cambiare il tipo di stella in base al numero di stelle tot (global value)
                         toAdd += "             <div class=\"col-xs-12 col-sm-2\" >";
                         /** Cambiare il tipo di stella in base al numero di stelle tot (global value) */
+                        // Cambiare il tipo di stella in base al numero di stelle tot (global value)
                         toAdd += insertStartsInReview(jsonProdotto.result[0].reviews[i].global_value);
                         toAdd += "             </div>";
                         toAdd += "             <p><b>" + jsonProdotto.result[0].reviews[i].name + ":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
                         toAdd += "             <div class=\"col-xs-12 col-sm-10\" >"
                         toAdd += "                  <p><b>" + jsonProdotto.result[0].reviews[i].name + ":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
+                        toAdd += "             <div class=\"col-xs-12 col-sm-10\" >";
+                        toAdd += "                 <p><b>" + jsonProdotto.result[0].reviews[i].name + ":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
                         toAdd += "             </div>";
                         toAdd += "         </div>";
                         toAdd += "</div>";
@@ -103,8 +106,10 @@
                 toAdd += "<p name=\"linkmappa\" ><a href='ServletShowShopOnMap?id=" + jsonProdotto.result[0].id_shop + "'>Vedi negozio su mappa</a></p>";
                 toAdd += "<p name=\"prezzo\">Prezzo: " + jsonProdotto.result[0].price + " €</p>";
                 toAdd += "<p name=\"venditore\" >Venditore: " + jsonProdotto.result[0].first_name + " " + jsonProdotto.result[0].last_name + "</p> <a href=\"" + jsonProdotto.result[0].web_site + "\">Sito web " + jsonProdotto.result[0].shop + "</a><p> Negozio id:" + jsonProdotto.result[0].id_shop + "</a></p>";
+                toAdd += "<h4 name=\"prezzo\">Prezzo: " + jsonProdotto.result[0].price + " €</h4>";
                 // buttons + , - , remove
                 toAdd += " <div class=\"col-xs-12 col-sm-6\" >";
+                toAdd += " <div class=\"row col-xs-12 col-sm-6\" >";
                 toAdd += "    <div>";
                 toAdd += "         <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi(" + id_product + ", " + quantita + ")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
                 toAdd += "         <p class=\"btn col-lg-3\" id=\"quantita" + id_product + "\">" + quantita + "</p>";
@@ -139,9 +144,14 @@
                         toAdd += "<div class=\"active item\" data-slide-number=\"0\">";
                     else
                         toAdd += "<div class=\"item\" data-slide-number=\"" + i + "\">";
+                var toAdd = "";
 
                     toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/" + jsonProdotto.result[0].pictures[i].path + "\"></div>";
                 }
+                if (!(jsonProdotto.result[0].pictures.length > 0 || jsonProdotto.result[0].pictures[0].path == undefined))
+                    toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/default.jsp\ alt=\"Immagine non trovata\"></div>";
+                else
+                    toAdd += "<img class=\"imgResize imgCenter\" src=\"UploadedImages/" + jsonProdotto.result[0].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\"></div>";
 
                 $("#div_carousel").html(toAdd);
                 var toAdd = "";
@@ -198,8 +208,24 @@
                                 </div>
                                 <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
                                     <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
+                            </div>
+                            <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
+                                <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
                                         <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
                                             <spam class="glyphicon glyphicon-user"></spam>
+                                            <spam class="glyphicon glyphicon-user"> 
+                                                <%
+                                                    try {
+                                                        String user = (session.getAttribute("user")).toString();
+                                                    } catch (Exception ex) {
+                                                %>
+                                                Accedi 
+                                                <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
+
+                                                <%
+                                                    }
+                                                %>
+                                            </spam>
                                         </a>
                                         <%
                                             try {
@@ -289,9 +315,13 @@
                             </div>  
                             
                             <div class="col-xs-3 hidden-lg iconSize imgCenter" >
+                                </div>                    
+
+                                <div class="col-xs-3 hidden-lg iconSize imgCenter" >
                                         <a href="ServletAddToCart">
                                             <spam class="glyphicon glyphicon-shopping-cart"></spam>
                                         </a>
+                                </div>
                             </div>
                             <%
                                     }
@@ -300,6 +330,7 @@
                             %> 
                             <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="ServletAddToCart"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                         </div>
+                        </div>        
                     </div>
 
                     <!-- SEARCH BAR -->
@@ -592,6 +623,7 @@
 
                         <!-- div contenente: recensione -->
                         <!--CODICE ESEMPIO 
+                        <!-- codice esempio
                         <div class="row panel panel-default">         
                             <div class="col-lg-12">
                                 <div style="background-color: aqua" >
@@ -629,6 +661,7 @@
                                 </div>
                                 <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
                                 </div>                        
+                                <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale --
 
                             </div>
                         </div>
@@ -644,11 +677,14 @@
                                 </div>
                                 <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
                         </div>-->
+                                <p >recensione</p>
 
                             </div>
                         </div>
                         
                     </div>                    
+                        </div> -->
+                    </div>                  
                 </div>
 
                 <!-- back to top button -->
