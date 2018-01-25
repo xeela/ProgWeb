@@ -19,13 +19,21 @@ import javax.servlet.annotation.MultipartConfig;
 /**
  *
  * @author Davide Farina
+ * 
+ * Funzione "init"
+ *  Si occupa di selezionare la directory in cui sono caricate le immagini sul server (se esiste). Dà errore altrimenti.
+ *  OSS: Lege la directory di upload dal file web.xml
+ * 
+ * Funzione "processRequest"
+ *  Servlet richiamata quando l'utente (venditore) vuole inserire un nuovo prodotto.
+ *   @param request contiene tutti i dati relativi all'oggetto che l'utente sta caricando
+ *                  Quindi: nome, categoria dell'oggetto, descrizione, prezzo e le immagini 
+ * 
  */
 @MultipartConfig
 public class ServletAddProduct extends HttpServlet {
-    private String dirName;
     
-    /** Si occupa di selezionare la directory in cui sono caricate le immagini sul server (se esiste). Dà errore altrimenti.
-     * OSS: Lege la directory di upload dal file web.xml */
+    private String dirName;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         /** legge il nome della cartella in cui memorizzare le immagini, leggendo il campo uploadDir nel file web.xml */
@@ -35,14 +43,6 @@ public class ServletAddProduct extends HttpServlet {
         }
     }
     
-    /**
-     * Servlet richiamata quando l'utente (venditore) vuole inserire un nuovo prodotto.
-     * 
-     * @param request contiene tutti i dati relativi all'oggetto che l'utente sta caricando
-     *              Quindi: nome, categoria dell'oggetto, descrizione, prezzo e le immagini 
-     * 
-     * 
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");

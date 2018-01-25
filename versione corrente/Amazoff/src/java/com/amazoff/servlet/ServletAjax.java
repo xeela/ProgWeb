@@ -13,6 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Francesco
+ * 
+ * Questa servlet viene chiamata dalla pagina loginpage quando un utente si sta registrando.
+ * Ha il compito di verificare che il valore ricevuto (email o username) non sia già presenti nel db.
+ * 
+ * @param request può contenere il dato EMAIL o USERNAME, in base all'operazione che deve eseguire.
+ *                L'operazione che svolge è specificata nella variabile "OP"
+ * @return response all'interno della quale è contenuto TRUE se il valore in ingresso è univoco nel db
+ *                  FALSE se è già presente o se si sono verificati errori                 
  */
 public class ServletAjax extends HttpServlet {
 
@@ -30,15 +38,7 @@ public class ServletAjax extends HttpServlet {
         processRequest(request, response);
     }
     
-    /**
-     * Questa servlet viene chiamata dalla pagina loginpage quando un utente si sta registrando.
-     * Ha il compito di verificare che il valore ricevuto (email o username) non sia già presenti nel db.
-     * 
-     * @param request può contenere il dato EMAIL o USERNAME, in base all'operazione che deve eseguire.
-     *                L'operazione che svolge è specificata nella variabile "OP"
-     * @return response all'interno della quale è contenuto TRUE se il valore in ingresso è univoco nel db
-     *                  FALSE se è già presente o se si sono verificati errori                 
-     */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

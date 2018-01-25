@@ -131,7 +131,6 @@
             function PopolaCarousel() {
                 var toAdd = "";
                 
-                
                 if(!(jsonProdotto.result[0].pictures.length > 0 || jsonProdotto.result[0].pictures[0].path == undefined))
                     toAdd = "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"Immagine non trovata\">";
                 else

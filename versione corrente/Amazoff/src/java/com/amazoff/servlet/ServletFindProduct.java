@@ -16,14 +16,13 @@ import javax.servlet.http.HttpSession;
 
 /**
  * @author Davide Farina
+ *
+ * Questa servlet ha il compito di estrarre dal db tutti i prodotti (e le relative informazioni) che soddisfano il parametro di ricerca specificati dall'utente.
+ * 
+ * @param request contiene i campi con cui l'utente può cercare i prodotti. Compresi gli eventuali tipi di filtri applicati e i dati per applicarli 
  */
 public class ServletFindProduct extends HttpServlet {
 
-    /** 
-     * Questa servlet ha il compito di estrarre dal db tutti i prodotti (e le relative informazioni) che soddisfano il parametro di ricerca specificati dall'utente.
-     * 
-     * @param request contiene i campi con cui l'utente può cercare i prodotti. Compresi gli eventuali tipi di filtri applicati e i dati per applicarli 
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
