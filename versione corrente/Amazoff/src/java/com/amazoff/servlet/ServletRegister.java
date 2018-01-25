@@ -17,24 +17,20 @@ import java.sql.Connection;
 import java.util.UUID;
 
 /**
- *
  * @author Davide Farina
+ * 
+ * Questa servlet permette ad un utente di registrarsi al sito 
+ *
+ * @param request contiene i dati relativi al profilo del nuovo utente 
+ * 
  */
 public class ServletRegister extends HttpServlet {
 
-    /**
-     * ServletRegister
-     * 
-     * Questa servlet permette ad un utente di registrarsi al sito 
-     *
-     * @param request contiene i dati relativi al profilo del nuovo utente 
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
         try (PrintWriter out = response.getWriter()) {
-            
             String nameReceived = request.getParameter("name");
             String surnameReceived = request.getParameter("surname");
             String emailReceived = request.getParameter("email");
@@ -84,8 +80,8 @@ public class ServletRegister extends HttpServlet {
                     
                     String userID = String.valueOf(MyDatabaseManager.GetID_User(userReceived));
                     
+                    /** invio al nuovo utente una notifica di benvenuto */
                     Notifications.SendNotification(userID, "-1", Notifications.NotificationType.NEW_USER, "/Amazoff/userPage.jsp?v=Notifiche", connection);
-                    
                     
                     connection.close();
 
@@ -114,7 +110,7 @@ public class ServletRegister extends HttpServlet {
         }           
     }
     
-    /** Funzione che genera una stringa in modo casuale, da usare come password di recupero */
+    /** Funzione che genera una stringa, in modo casuale, da usare come password di recupero */
     private static String generateString() {
         
         String uuid = UUID.randomUUID().toString();

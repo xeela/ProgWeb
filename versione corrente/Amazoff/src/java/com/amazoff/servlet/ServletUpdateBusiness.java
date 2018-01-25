@@ -17,19 +17,14 @@ import java.sql.Connection;
 import java.util.UUID;
 
 /**
- *
  * @author Gianluca Pasqua
+ * 
+ *  Questa servlet permette ad un utente di registrare il suo negozio al sito 
+ *
+ * @param request contiene i dati relativi al negozio dell'utente
  */
 public class ServletUpdateBusiness extends HttpServlet {
 
-    /**
-     * ServletRegister
-     * 
-     * Questa servlet permette ad un utente di registrarsi al sito 
-     *
-     * @param request contiene i dati relativi al profilo del nuovo utente 
-     * @param response 
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -74,6 +69,7 @@ public class ServletUpdateBusiness extends HttpServlet {
                 connection = MyDatabaseManager.CreateConnection();
                 Boolean invalidename = false;
                 if(!"".equals(name) && name != null && !"".equals(description) && description != null && !"".equals(website) && website != null){
+                    /** ggiorno i dati presenti nel db, inserendo quelli specificati dall'utente */
                     PreparedStatement ps = MyDatabaseManager.EseguiStatement("UPDATE shops SET name = '" + MyDatabaseManager.EscapeCharacters(name)+ "', " + 
                                                                     " description = '"+MyDatabaseManager.EscapeCharacters(description)+ "', " + 
                                                                     "web_site_url= '"+ MyDatabaseManager.EscapeCharacters(website) + 
@@ -101,24 +97,6 @@ public class ServletUpdateBusiness extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/dsf");
         }           
     }
-    
-    /** Funzione che genera una stringa in modo casuale, da usare come password di recupero */
-    private static String generateString() {
-        
-        String uuid = UUID.randomUUID().toString();
-        return uuid;
-    }
-    
-    /******** TMP: 
-    private static void generateNString() {
-        
-        String[] tmp = new String[50];
-        for (int i = 0; i < 50; i++) {
-            String uuid = UUID.randomUUID().toString();
-            tmp[i] = uuid;
-        }
-        tmp = tmp;
-    }*/
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

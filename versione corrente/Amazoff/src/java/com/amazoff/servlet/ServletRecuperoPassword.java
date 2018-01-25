@@ -18,6 +18,10 @@ import javax.servlet.http.HttpSession;
 
 /**
  * @author Francesco
+ * 
+ * Servlet che si occupa di modificare la password dell'utente. Tramite la password temporanea e la sua email, l'utente può specificare una nuova password, che sostituirà quella precedente
+ * 
+ * @param request contiene i dati dell'utente
  */
 public class ServletRecuperoPassword extends HttpServlet {
 
@@ -44,7 +48,7 @@ public class ServletRecuperoPassword extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                /** Cerco nel db se esiste un profilo con l'email specificata */
+                /** Cerco nel db se esiste un profilo con l'email e la password di recupero, specificata */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT email, passrecupero, ID, first_name, last_name, username, usertype FROM users WHERE email = '" + MyDatabaseManager.EscapeCharacters(emailReceived) + "' AND passrecupero = '" + MyDatabaseManager.EscapeCharacters(tmpPwdReceived) + "';", connection);
                 
                 while (results.next()) {
