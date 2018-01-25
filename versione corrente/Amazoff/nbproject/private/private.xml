@@ -3,19 +3,38 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/web/productPage.jsp</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxEmailExists.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjax.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/SerlvetAjaxGetNotifications.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxPayPageCard.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxUpdateProductQuantity.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxCarrello.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletFindProduct.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletDopoRegistrazione.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAddProduct.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxNotifiche.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxPayPage.java</file>
-            <file>file:/C:/Users/Fra/Documents/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletConfirmOrder.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/classes/EmailUtility.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/negoziVicini.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/loginPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/createShop_1.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/payPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/anomaliesPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAddToCart.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/shopPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletShowCart.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/orderCompletedPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/recuperoPasswordPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletPopulateProductPage.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/index.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/lasciaRecensione.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/afterRegistration.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/searchPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxUpdateProductQuantity.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/ResetPassword.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxCarrello.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletLogin.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/loginPage_backup.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletAjaxEmailExists.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/sellNewProduct.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/src/java/com/amazoff/servlet/ServletPayPage.java</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/gestisciAnomalia.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/myOrders.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/userPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/productPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/profilePage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/index_1.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/shopping-cartPage.jsp</file>
+            <file>file:/G:/GitHub/ProgWeb/versione%20corrente/Amazoff/web/payPage_v1_12-01-18.jsp</file>
         </group>
     </open-files>
 </project-private>
