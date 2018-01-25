@@ -61,9 +61,14 @@
                         toAdd += "         <div class=\"col-lg-12\">";
                         toAdd += "             <div class=\"col-xs-12 col-lg-2\" style=\"background-color: aqua\" >";
                         // Cambiare il tipo di stella in base al numero di stelle tot (global value)
+                        toAdd += "             <div class=\"col-xs-12 col-sm-2\" >";
+                        /** Cambiare il tipo di stella in base al numero di stelle tot (global value) */
                         toAdd += insertStartsInReview(jsonProdotto.result[0].reviews[i].global_value);
                         toAdd += "             </div>";
                         toAdd += "             <p><b>" + jsonProdotto.result[0].reviews[i].name + ":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
+                        toAdd += "             <div class=\"col-xs-12 col-sm-10\" >"
+                        toAdd += "                  <p><b>" + jsonProdotto.result[0].reviews[i].name + ":</b> " + jsonProdotto.result[0].reviews[i].description + "</p>";
+                        toAdd += "             </div>";
                         toAdd += "         </div>";
                         toAdd += "</div>";
                     }
@@ -139,6 +144,18 @@
                 }
 
                 $("#div_carousel").html(toAdd);
+                var toAdd = "";
+                
+                console.log("-----");
+                console.log(jsonProdotto.result[0].pictures[0].path);
+                
+                
+                if(!(jsonProdotto.result[0].pictures.length > 0 || jsonProdotto.result[0].pictures[0].path == undefined))
+                    toAdd = "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"Immagine non trovata\">";
+                else
+                    toAdd = "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotto.result[0].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
+                
+                $("#div_productImage").html(toAdd);
             }
         </script> 
         <title>Amazoff</title>
@@ -175,6 +192,16 @@
                                     <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
                                         <spam class="glyphicon glyphicon-user"> 
                                             <% 
+                                    <a href="index.jsp">
+                                        <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
+                                    </a>
+                                </div>
+                                <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
+                                    <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
+                                        <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
+                                            <spam class="glyphicon glyphicon-user"></spam>
+                                        </a>
+                                        <%
                                             try {
                                                 String user = (session.getAttribute("user")).toString();
                                                     String user = (session.getAttribute("user")).toString();
@@ -238,6 +265,33 @@
                             %>
                             <div class="col-xs-2 hidden-lg" style="text-align: right;">
                                 <span class="badge"><a href="notificationPage.jsp"> <spam class="glyphicon glyphicon-inbox"></spam> 11</a></span>
+                            <div class="col-xs-6 hidden-lg">
+                                        <!-- nel caso in cui l'utente sia venditore o admin, visualizzo il btn NOTIFICHE -->
+                                        <%
+                                            String userType = "";
+                                            try {
+                                                userType = (session.getAttribute("categoria_user")).toString();
+                                                if (userType.equals("0") || userType.equals("1") || userType.equals("2")) {
+                                        %>
+                                        <a href="notificationPage.jsp">
+                                        <a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">
+                                            <span class="badge iconSize imgCenter" id="totNotifichexs"> 
+                                                <spam class="glyphicon glyphicon-inbox"></spam>
+
+                                            </span>
+                                        </a>
+
+                                        <%
+                                                }
+                                            } catch (Exception ex) {
+                                            }
+                                        %> 
+                            </div>  
+                            
+                            <div class="col-xs-3 hidden-lg iconSize imgCenter" >
+                                        <a href="ServletAddToCart">
+                                            <spam class="glyphicon glyphicon-shopping-cart"></spam>
+                                        </a>
                             </div>
                             <%
                                     }
@@ -493,6 +547,7 @@
                                             <div class="carousel slide" id="myCarousel">
                                                 <!-- Carousel items -->
                                                 <div class="carousel-inner" id="div_carousel">
+                                                <div class="carousel-inner" id="div_productImage">
 
                                                 </div>
 
@@ -536,6 +591,7 @@
                     <div id="div_reviews">
 
                         <!-- div contenente: recensione -->
+                        <!--CODICE ESEMPIO 
                         <div class="row panel panel-default">         
                             <div class="col-lg-12">
                                 <div style="background-color: aqua" >
@@ -547,6 +603,7 @@
                                 </div>
 
                                 <!-- div con testo espandibile, contenente la recensione -->
+                                <!-- div con testo espandibile, contenente la recensione --
                                 <div class="panel-group" role="tablist" aria-multiselectable="true">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a purus at felis viverra congue. Duis quis cursus ligul
                                     <div id="collapseOne" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
@@ -571,6 +628,7 @@
                                     <span class="glyphicon glyphicon-star-empty"></span> 
                                 </div>
                                 <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
+                                </div>                        
 
                             </div>
                         </div>
@@ -585,9 +643,11 @@
                                     <span class="glyphicon glyphicon-star-empty"></span> 
                                 </div>
                                 <p >recensione</p> <!-- quando vengono cliccate venono sostituite con l'img principale -->
+                        </div>-->
 
                             </div>
                         </div>
+                        
                     </div>                    
                 </div>
 
@@ -739,4 +799,5 @@
 
         </script>
     </body>
+</html>
 </html>
