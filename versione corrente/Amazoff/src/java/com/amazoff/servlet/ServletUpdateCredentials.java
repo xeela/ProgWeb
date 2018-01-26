@@ -17,18 +17,14 @@ import java.sql.Connection;
 import java.util.UUID;
 
 /**
+ * @author Gianluca Pasqua
+ * 
+ * Questa servlet permette ad un utente di modificare le sue informazioni personali
  *
- * @author Davide Farina
+ * @param request contiene i dati relativi al profilo del nuovo utente 
  */
 public class ServletUpdateCredentials extends HttpServlet {
 
-    /**
-     * ServletRegister
-     * 
-     * Questa servlet permette ad un utente di registrarsi al sito 
-     *
-     * @param request contiene i dati relativi al profilo del nuovo utente 
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -153,24 +149,6 @@ public class ServletUpdateCredentials extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/");
         }           
     }
-    
-    /** Funzione che genera una stringa in modo casuale, da usare come password di recupero */
-    private static String generateString() {
-        
-        String uuid = UUID.randomUUID().toString();
-        return uuid;
-    }
-    
-    /******** TMP: 
-    private static void generateNString() {
-        
-        String[] tmp = new String[50];
-        for (int i = 0; i < 50; i++) {
-            String uuid = UUID.randomUUID().toString();
-            tmp[i] = uuid;
-        }
-        tmp = tmp;
-    }*/
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

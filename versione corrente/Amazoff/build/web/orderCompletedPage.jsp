@@ -1,7 +1,7 @@
 <%-- 
     Document   : orderCompletedPage
     Created on : 29-Oct-2017, 10:31:15
-    Author     : Fra
+    Author     : Francesco Bruschetti
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>

@@ -1,7 +1,7 @@
 <%-- 
     Document   : recuperoPasswordPage
     Created on : 22-Jan-2018, 13:35:45
-    Author     : Francesco
+    Author     : Francesco Bruschetti
 --%>
 
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>

@@ -54,7 +54,7 @@
                     id_oggetto = jsonProdotti.products[i].id;
                     toAdd += "<div class=\"col-sm-6 col-md-4\">";
                     toAdd += "<div class=\"thumbnail\">";
-                    if (!(jsonProdotti.products[i].pictures.length > 0) || jsonProdotti.products[i].pictures[0].path == undefined)
+                    if (!(jsonProdotti.products[i].pictures.length > 0) || jsonProdotti.products[i].pictures[0].path === undefined)
                         toAdd += "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"Immagine non trovata\">";
                     else
                         toAdd += "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotti.products[i].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
@@ -266,7 +266,6 @@
                                             %>
                                         <li><a href="userPage.jsp?v=Profile#profilo">Profilo</a></li>
                                         <li><a href="ServletMyOrders">Miei ordini</a></li>
-                                        <li><a href="userPage.jsp?v=Notifiche#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">Notifiche</a></li>
                                         <li><a href="userPage.jsp">Negozio</a></li>
                                         <li><a href="userPage.jsp?v=SellNewProduct#sellNewProduct">Vendi Prodotto</a></li>
@@ -472,7 +471,7 @@
                 <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
 
                 <!-- footer -->
-                <footer style="background-color: #fc5d5d">
+                <footer style="background-color: #dddddd">
                     <div class="row">
                         <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
                             <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>

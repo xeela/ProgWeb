@@ -15,20 +15,15 @@ import com.amazoff.classes.Notifications;
 import java.sql.Connection;
 
 /**
- *
  * @author Francesco Bruschetti
+ * 
+ * Questa servlet restituisce i dati della carta di credito e l'indirizzo associati all'utente.
+ * 
+ * @param request contiene l'id dell'utente, da usare per accedere ai rispettivi dati (carta di credito e indirizzo)
+ * 
  */
 public class ServletPayPage extends HttpServlet {
 
-    /**
-     * 
-     * ServletPayPage
-     * 
-     * Questa servlet restituisce i dati della carta di credito e l'indirizzo associati all'utente.
-     * 
-     * @param request contiene l'id dell'utente, da usare per accedere ai rispettivi dati (carta di credito e indirizzo)
-     * 
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -54,7 +49,7 @@ public class ServletPayPage extends HttpServlet {
                 /** SE non esiste un utente con quell'id */
                 if(results.isAfterLast()) 
                 {
-                    /** ALLORA: memorizzo l'errore in modo da poterlo mostrare all'utente */
+                    /** ALLORA: memorizzo l'errore */
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
                     response.sendRedirect(request.getContextPath() + "/");
                     connection.close();
@@ -88,7 +83,7 @@ public class ServletPayPage extends HttpServlet {
                 /** SE non c'è un utente con quel id */
                 if(results.isAfterLast()) 
                 {
-                    /** ALLORA: ritorno alla pagina solo il json con l'indirizzo. E l'errore riguardo il metodo di pagamento */
+                    /** ALLORA: ritorno alla pagina solo il json con l'indirizzo. E memorizzo l'errore riguardo il metodo di pagamento */
                     session.setAttribute("errorMessage", Errors.usernameDoesntExist);
                     response.sendRedirect(request.getContextPath() + "/");
                     connection.close();
@@ -99,14 +94,13 @@ public class ServletPayPage extends HttpServlet {
                     /** ALTRIMENTI: memorizzo nell'oggetto json anche i dati relativi alla carta di credito */
                     jsonObj += ",\"paymentdata\":[";
                     isFirstTime = true;
-                    // OSS: Per ora restituisco tutto
                     while (results.next()) {
                         if(isFirstTime == false) {
                             jsonObj += ",";
                         }
                         jsonObj += "{";
                         jsonObj += "\"owner\": \"" + results.getString(3) + "\",";
-                        jsonObj += "\"card_number\": \"" + results.getString(4) + "\","; // TO DO: ritornare una stringa di N asterischi e solo le ultime 2 cifre visibili
+                        jsonObj += "\"card_number\": \"" + results.getString(4) + "\","; 
                         jsonObj += "\"exp_month\": \"" + results.getString(5) + "\",";
                         jsonObj += "\"exp_year\": \"" + results.getString(6) + "\"";
                         jsonObj += "}";
@@ -114,15 +108,12 @@ public class ServletPayPage extends HttpServlet {
                     }
                     jsonObj += "]";
                 }
-                                
-                
-                
+                      
                 /** Estraggo dal db tutti i prodotti che l'utente ha salvato nel carrello */
                 results = MyDatabaseManager.EseguiQuery("SELECT products.id, products.name, products.description, products.price, products.ritiro, cart.amount, pictures.path FROM products, cart, pictures "
                     + "WHERE cart.ID_USER = " + session.getAttribute("userID") + " AND cart.ID_PRODUCT = products.ID AND pictures.ID_PRODUCT = products.ID  ORDER BY products.RITIRO DESC;", connection);
                 
                 /** Inserisco i prodotti nel json */
-                //----- jsonObj = MyDatabaseManager.GetJsonOfProductsInSet(results, connection);
                 jsonObj += ",\"products\":[";
                 isFirstTime = true;
                 int amount = 0;
@@ -154,11 +145,10 @@ public class ServletPayPage extends HttpServlet {
                 /** memorizzo i dati in unsa sessione, cosi da visualizzarli come riepilogo ordine, in PayPage */
                 session.setAttribute("jsonPayPage", jsonObj);  
                 
-                
                 /** Memorizzo l'oggetto json in una variabile di sessione da cui recuperare i dati per visualizzarli prima di completare l'acquisto */
                 session.setAttribute("shoppingCartProducts", jsonObj);
                 
-                // creo l'oggetto notifiche aggiornate, da mandare alla pagina
+                /** creo l'oggetto notifiche aggiornate, da mandare alla pagina */
                 if (session.getAttribute("userID") != null) {
                     session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
                 } else {
@@ -171,57 +161,32 @@ public class ServletPayPage extends HttpServlet {
             }
             else
             {
-                /** In caso di errore dovuto alla connessione, lo memorizzo, così da poterlo comunicare all'utente nella pagina corretta */
-                //session.setAttribute("errorMessage", Errors.dbConnection);
+                /** C'è stato un errore dovuto alla connessione con il db */
                 response.sendRedirect(request.getContextPath() + "/payPage"); 
             }
         }catch (SQLException ex) {
-            /** In caso di errore generico non previsto, lo memorizzo, così da poterlo comunicare all'utente nella pagina corretta */
-            
+            /** Errore generico non previsto */
             MyDatabaseManager.LogError(request.getParameter("username"), "ServletPayPage", ex.toString());
             HttpSession session = request.getSession();
-            //session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/payPage"); 
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

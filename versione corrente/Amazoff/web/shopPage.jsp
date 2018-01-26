@@ -513,7 +513,7 @@
                 <!-- footer -->
                 <footer class="col-xs-12">
                     <div class="">
-                        <div class="row" style="background-color: #fc5d5d">
+                        <div class="row" style="background-color: #dddddd">
                             <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
                                 <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
                                 <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Cerca prodotto</a></p> 

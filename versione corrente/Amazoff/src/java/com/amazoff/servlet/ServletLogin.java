@@ -14,30 +14,21 @@ import com.amazoff.classes.MyDatabaseManager;
 import java.sql.Connection;
 
 /**
- *
  * @author Davide Farina
+ * 
+ * Questa servlet riceve i dati specificati dall'utente, tramite la form di login, e controllare che siano validi.
+ * 
+ * @param request contiene l'username/email e l'hash della password da utilizzare per verificare che l'utente abbia un profilo.
+ * 
  */
 public class ServletLogin extends HttpServlet {
 
-    /**
-     * ServletLogin
-     * 
-     * Questa servlet ha il compito di ricevere i dati specificati dall'utente, tramite la form di login, e controllare che siano valide.
-     * 
-     * @param request contiene l'username/email e l'hash della password da utilizzare per verificare che l'utente abbia un profilo.
-     * 
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String userReceived = request.getParameter("username");
             String pwdReceived = request.getParameter("hashedPassword");
-
-           //Connessione al Database
-            //String db_host = "jdbc:mysql://localhost:3306/fantaf1db";
-            //String db_user = "root";
-            //String db_pwd = "root";
             
             /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
             if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */

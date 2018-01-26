@@ -15,18 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author Francesco Bruschetti
+ * 
+ * Questa servlet restituisce tutti i dati (dettagli) relativi ad un determinato negozio
+ *
+ * @param request contiene l'id del negozio, selezionato dall'utente, di cui si vogliono visualizzare i dettagli
  */
 public class ServletPopulateShopPage extends HttpServlet {
 
-    /**
-     * ServletPopulateShopPage
-     * 
-     * Questa servlet restituisce tutti i dati (dettagli) relativi ad un determinato negozio
-     *
-     * @param request contiene l'id del negozio, selezionato dall'utente, di cui si vogliono visualizzare i dettagli
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -45,7 +41,7 @@ public class ServletPopulateShopPage extends HttpServlet {
             if(MyDatabaseManager.cpds != null)
             {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                /** Interrogo il Db per farmi restituire i dettagli del negozio specificato */
+                /** Interrogo il db per farmi restituire i dettagli del negozio specificato */
                 ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM shops WHERE ID = " + idReceived + ";", connection);
                 
                 /** se non c'è il negozio specificato */
@@ -64,7 +60,7 @@ public class ServletPopulateShopPage extends HttpServlet {
                 jsonObj += "{";
                 jsonObj += "\"result\":[";
                 while (results.next()) {
-                    if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
+                    if(!isFirstTime)            /** metto la virgola prima dell'oggetto solo se non è il primo */
                         jsonObj += ", ";
                     isFirstTime = false;
                     
@@ -78,7 +74,56 @@ public class ServletPopulateShopPage extends HttpServlet {
                     jsonObj += "\"id_owner\": \"" + results.getString(6) + "\",";
                     jsonObj += "\"business_days\": \"" + results.getString(8) + "\"";
                     jsonObj += "}";
-                    /** in base al negozio, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
+                }
+                jsonObj += "]}";
+                
+                HttpSession session = request.getSession();
+                
+                /** creo l'oggetto notifiche aggiornate, da mandare alla pagina */
+                if (session.getAttribute("userID") != null) {
+                    session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
+                } else {
+                    session.setAttribute("jsonNotifiche", "{\"notifications\": []}");
+                }
+                
+                connection.close();
+                
+                session.setAttribute("jsonNegozio", jsonObj);
+                response.sendRedirect(request.getContextPath() + "/shopPage.jsp?id="+idReceived+""); 
+            }
+            else
+            {
+                HttpSession session = request.getSession();
+                session.setAttribute("errorMessage", Errors.dbConnection);
+                response.sendRedirect(request.getContextPath() + "/"); 
+            }
+        }catch (SQLException ex) {
+            HttpSession session = request.getSession();
+            session.setAttribute("errorMessage", Errors.dbQuery);
+            response.sendRedirect(request.getContextPath() + "/");
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }
+
+}
+
+/** in base al negozio, ricavo il path delle img a lui associate, così da poterci accedere dalla pagina che usa questo json */                   
                     //ResultSet resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM shoppictures WHERE id_shop = " + results.getString(1) + ";", connection);
                 
                     /** SE non ci sono immagini per questo prodotto */
@@ -149,51 +194,3 @@ public class ServletPopulateShopPage extends HttpServlet {
                                         
                     jsonObj += "\"num_reviews\": \"" + num_reviews + "\",";
                     jsonObj += "\"global_value_avg\": \"" + tot_avg_value / num_reviews + "\"}";*/
-                }
-                jsonObj += "]}";
-                
-                HttpSession session = request.getSession();
-                
-                // creo l'oggetto notifiche aggiornate, da mandare alla pagina
-                if (session.getAttribute("userID") != null) {
-                    session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
-                } else {
-                    session.setAttribute("jsonNotifiche", "{\"notifications\": []}");
-                }
-                
-                connection.close();
-                
-                session.setAttribute("jsonNegozio", jsonObj);
-                response.sendRedirect(request.getContextPath() + "/shopPage.jsp?id="+idReceived+""); 
-            }
-            else
-            {
-                HttpSession session = request.getSession();
-                session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); 
-            }
-        }catch (SQLException ex) {
-            HttpSession session = request.getSession();
-            session.setAttribute("errorMessage", Errors.dbQuery);
-            response.sendRedirect(request.getContextPath() + "/");
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
-
-}

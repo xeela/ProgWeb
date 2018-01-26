@@ -1,3 +1,8 @@
+<%-- 
+    Document   : loginPage.jsp
+    Created on : 19-set-2017, 10.57.35
+    Author     : Francesco Bruschetti
+--%>
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.*" %>
 <!DOCTYPE html>

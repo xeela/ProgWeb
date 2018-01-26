@@ -1,5 +1,5 @@
 <%-- 
-    Document   : shopping-cartPage
+    Document   : shopPage
     Created on : 19-set-2017, 10.56.58
     Author     : Francesco Bruschetti
 --%>
@@ -451,7 +451,7 @@
                         </div> -->
                     </div>  
                     <!-- footer -->
-                    <footer style="background-color: #fc5d5d">
+                    <footer style="background-color: #dddddd">
                         <div class="row">
                             <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
                                 <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>

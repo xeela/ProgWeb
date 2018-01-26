@@ -16,16 +16,14 @@ import javax.servlet.http.HttpSession;
 
 /**
  * @author Francesco Bruschetti
+ *
+ * Questa servlet restituisce tutti i dati (dettagli) relativi ad un determinato prodotto
+ *
+ * @param request contiene l'id del prodotto, selezionato dall'utente, di cui si vogliono visualizzare i dettagli
+ *
  */
 public class ServletPopulateProductPage extends HttpServlet {
 
-    /**
-     * ServletPopulateProductPage
-     * 
-     * Questa servlet restituisce tutti i dati (dettagli) relativi ad un determinato prodotto
-     *
-     * @param request contiene l'id del prodotto, selezionato dall'utente, di cui si vogliono visualizzare i dettagli
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -63,7 +61,7 @@ public class ServletPopulateProductPage extends HttpServlet {
                 jsonObj += "\"result\":[";
                 while (results.next()) {
                     
-                    if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
+                    if(!isFirstTime)            /** metto la virgola prima dell'oggetto solo se non è il primo */
                         jsonObj += ", ";
                     isFirstTime = false;
                     
@@ -163,7 +161,7 @@ public class ServletPopulateProductPage extends HttpServlet {
                 
                 HttpSession session = request.getSession();
                 
-                // creo l'oggetto notifiche aggiornate, da mandare alla pagina
+                /** creo l'oggetto notifiche aggiornate, da mandare alla pagina */
                 if (session.getAttribute("userID") != null) {
                     session.setAttribute("jsonNotifiche", Notifications.GetJson(session.getAttribute("userID").toString(), connection));
                 } else {

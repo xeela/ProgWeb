@@ -14,20 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
  * @author Francesco Bruschetti
+ * 
+ * Questa servlet ha il compito di fornire i 6 prodotti da visualizzare all'interno della home page.
+ * Questi 6 elementi vengono scelti prendendo gli ultimi 6 elementi (i più recenti) inseriti nel database
+ * 
+ * @return jsonProdottiIndex che contiene i prodotti e le relative informazioni
  */
 public class ServletIndexProducts extends HttpServlet {
 
-    /**
-     * ServletIndexProducts
-     * 
-     * Questa servlet ha il compito di fornire i 6 prodotti da visualizzare all'interno della home page.
-     * Questi 6 elementi vengono scelti prendendo gli ultimi 6 elementi (i più recenti) inseriti nel sito
-     * 
-     * @return jsonProdottiIndex che contiene i prodotti e le relative informazioni
-     * 
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -49,10 +44,10 @@ public class ServletIndexProducts extends HttpServlet {
                 
                 if(results.isAfterLast()) /** se non sono presenti prodotti */
                 {
-                    /** allora reindirizzo l'utente alla home */
+                    /** allora reindirizzo l'utente alla pagina specificata */
                     HttpSession session = request.getSession();
                     session.setAttribute("errorMessage", Errors.noProductFound);
-                    response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
+                    response.sendRedirect(request.getContextPath() + "/");
                     connection.close();
                     return;
                 }

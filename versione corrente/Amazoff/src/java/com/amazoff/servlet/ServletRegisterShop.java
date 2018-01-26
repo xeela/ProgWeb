@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Davide Farina
+ * @author Gianluca Pasqua
  */
 public class ServletRegisterShop extends HttpServlet {
 

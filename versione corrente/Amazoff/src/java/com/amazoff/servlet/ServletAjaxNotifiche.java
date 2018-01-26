@@ -13,6 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Francesco Bruschetti
+ * 
+ * Questa servlet, riceve l'id di una notifica e lo utilizza per settarne lo stato, nel db, come "LETTA"
+ * 
+ * @param request variabile all'interno della quale è contenuto l'id della notificha di cui si richiedono maggiori dettagli
+ * @return response all'interno della quale è contenuto TRUE se l'operazione è stata completata correttamente
+ *                  FALSE se si sono verificati errori  
  */
 public class ServletAjaxNotifiche extends HttpServlet {
 
@@ -30,13 +36,7 @@ public class ServletAjaxNotifiche extends HttpServlet {
         processRequest(request, response);	
     }
 
-    /**
-     * Questa servlet, riceve l'id di una notifica e lo utilizza per settarne lo stato, nel db, come "LETTA"
-     * 
-     * @param request variabile all'interno della quale è contenuto l'id della notificha di cui si richiedono maggiori dettagli
-     * @return response all'interno della quale è contenuto TRUE se l'operazione è stata completata correttamente
-     *                  FALSE se si sono verificati errori  
-     */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
