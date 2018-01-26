@@ -351,7 +351,7 @@
                                 <tr><th>Ordina per:</th></tr>
                                 <tr><td id="price_asc"><a href="#">Costo: crescente</a></td></tr>
                                 <tr><td id="price_desc"><a href="#">Costo: decrescente</a></td></tr>
-                                <tr><td id="review_desc"><a href="#">Recensione: crescente</a></td></tr>
+                                <tr><td id="review_asc"><a href="#">Recensione: crescente</a></td></tr>
                                 <tr><td id="review_desc"><a href="#">Recensione: decrescente</a></td></tr>
                             </tbody>
                         </table>
