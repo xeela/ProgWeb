@@ -12,13 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Francesco Bruschetti
+ * 
  * 
  * Questa servlet, riceve l'id di una notifica e lo utilizza per settarne lo stato, nel db, come "LETTA"
  * 
  * request variabile all'interno della quale è contenuto l'id della notificha di cui si richiedono maggiori dettagli
  * response all'interno della quale è contenuto TRUE se l'operazione è stata completata correttamente
  *                  FALSE se si sono verificati errori  
+ * @author Francesco Bruschetti
  */
 public class ServletAjaxNotifiche extends HttpServlet {
 

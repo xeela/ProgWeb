@@ -17,12 +17,12 @@ import java.sql.Connection;
 import java.util.UUID;
 
 /**
- * @author Davide Farina
  * 
  * Questa servlet permette ad un utente di registrarsi al sito 
  *
  * request contiene i dati relativi al profilo del nuovo utente 
  * 
+ * @author Davide Farina
  */
 public class ServletRegister extends HttpServlet {
 

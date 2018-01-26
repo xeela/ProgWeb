@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Francesco Bruschetti
+ * 
  * Questa servlet viene chiamata quando, dalla pagina  PayPage,
  * viene richiesto di aggiornare le informazioni relative all'indirizzo di spedizione per i prodotti che l'utente sta per comprare.
  * Nel caso in cui l'utente non avesse già un indirizzo associato al suo profilo, verrà memorizzato quello nuovo.
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  * request variabile all'interno della quale sono memorizzati tutti i dati di cui l'utente a fatto il submit 
  * response all'interno della quale è contenuto TRUE se il salvataggio dei dati è andato a buon fine,
  *                  FALSE se si sono verificati errori   
+ * @author Francesco Bruschetti
  */
 public class ServletAjaxPayPage extends HttpServlet {
 

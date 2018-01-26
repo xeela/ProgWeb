@@ -15,12 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Francesco Bruschetti
+ * 
  *
  * Questa servlet restituisce tutti i dati (dettagli) relativi ad un determinato prodotto
  *
  * request contiene l'id del prodotto, selezionato dall'utente, di cui si vogliono visualizzare i dettagli
  *
+ * @author Francesco Bruschetti
  */
 public class ServletPopulateProductPage extends HttpServlet {
 

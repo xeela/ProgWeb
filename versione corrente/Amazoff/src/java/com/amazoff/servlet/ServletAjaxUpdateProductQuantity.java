@@ -16,8 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Davide Farina
+ * 
  * Questa servlet si occupa di modificare la quantità richiesta, per un determinato prodotto, da un determinato utente, nella pagina di gestione del carrello
+ * @author Davide Farina
  */
 public class ServletAjaxUpdateProductQuantity extends HttpServlet {
 

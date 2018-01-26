@@ -14,11 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Francesco Bruschetti
+ * 
  * 
  * Restituisce le coordinate del negozio specificato, in modo da poterlo mostrare su una mappa 
  * 
  * request contiene l'id del negozio cercato
+ * 
+ * @author Francesco Bruschetti
+ * 
+ * 
  */
 public class ServletShowShopOnMap extends HttpServlet {
 

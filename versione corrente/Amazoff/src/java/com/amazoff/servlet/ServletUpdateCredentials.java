@@ -17,11 +17,14 @@ import java.sql.Connection;
 import java.util.UUID;
 
 /**
- * @author Gianluca Pasqua
+ * 
  * 
  * Questa servlet permette ad un utente di modificare le sue informazioni personali
  *
  * request contiene i dati relativi al profilo del nuovo utente 
+ * 
+ * @author Gianluca Pasqua
+ * 
  */
 public class ServletUpdateCredentials extends HttpServlet {
 

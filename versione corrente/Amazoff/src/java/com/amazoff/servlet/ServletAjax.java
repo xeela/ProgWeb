@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author Francesco
+ * 
  * 
  * Questa servlet viene chiamata dalla pagina loginpage quando un utente si sta registrando.
  * Ha il compito di verificare che il valore ricevuto (email o username) non sia già presenti nel db.
@@ -20,7 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  * request può contenere il dato EMAIL o USERNAME, in base all'operazione che deve eseguire.
  *                L'operazione che svolge è specificata nella variabile "OP"
  * response all'interno della quale è contenuto TRUE se il valore in ingresso è univoco nel db
- *                  FALSE se è già presente o se si sono verificati errori                 
+ *                  FALSE se è già presente o se si sono verificati errori           
+ * @author Francesco
  */
 public class ServletAjax extends HttpServlet {
 

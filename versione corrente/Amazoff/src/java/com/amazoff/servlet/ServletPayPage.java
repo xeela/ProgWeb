@@ -15,12 +15,13 @@ import com.amazoff.classes.Notifications;
 import java.sql.Connection;
 
 /**
- * @author Francesco Bruschetti
+ * 
  * 
  * Questa servlet restituisce i dati della carta di credito e l'indirizzo associati all'utente.
  * 
  * request contiene l'id dell'utente, da usare per accedere ai rispettivi dati (carta di credito e indirizzo)
  * 
+ * @author Francesco Bruschetti
  */
 public class ServletPayPage extends HttpServlet {
 

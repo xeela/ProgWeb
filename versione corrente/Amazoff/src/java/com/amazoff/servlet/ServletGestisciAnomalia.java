@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
  * Aggiorna lo stato della controversia con l'azione stabilita
  * dall'amministratore.
  *
- * @author Caterina
+ * @author Caterina Battisti
  */
 public class ServletGestisciAnomalia extends HttpServlet {
 
