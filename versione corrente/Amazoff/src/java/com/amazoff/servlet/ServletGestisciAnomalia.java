@@ -64,16 +64,16 @@ public class ServletGestisciAnomalia extends HttpServlet {
 
                         switch (action) {
                             case "1":
-                                Notifications.SendNotification(user_anomaly, objectID, Notifications.NotificationType.RIMBORSO, "/Amazoff/index.jsp?", connection);
-                                Notifications.SendNotification(seller_id, objectID, Notifications.NotificationType.RIMBORSO, "/Amazoff/index.jsp?", connection);
+                                Notifications.SendNotification(user_anomaly, objectID, Notifications.NotificationType.RIMBORSO, "/Amazoff/userPage.jsp?v=Notifiche", connection);
+                                Notifications.SendNotification(seller_id, objectID, Notifications.NotificationType.RIMBORSO, "/Amazoff/userPage.jsp?v=Notifiche", connection);
                                 break;
                             case "2":
-                                Notifications.SendNotification(user_anomaly, objectID, Notifications.NotificationType.NESSUN_ESITO, "/Amazoff/index.jsp?", connection);
-                                Notifications.SendNotification(seller_id, objectID, Notifications.NotificationType.DIFFIDA, "/Amazoff/index.jsp?", connection);
+                                Notifications.SendNotification(user_anomaly, objectID, Notifications.NotificationType.NESSUN_ESITO, "/Amazoff/userPage.jsp?v=Notifiche", connection);
+                                Notifications.SendNotification(seller_id, objectID, Notifications.NotificationType.DIFFIDA, "/Amazoff/userPage.jsp?v=Notifiche", connection);
                                 break;
                             case "3":
-                                Notifications.SendNotification(user_anomaly, objectID, Notifications.NotificationType.RIGETTATA, "/Amazoff/index.jsp?", connection);
-                                Notifications.SendNotification(seller_id, objectID, Notifications.NotificationType.RIGETTATA, "/Amazoff/index.jsp?", connection);
+                                Notifications.SendNotification(user_anomaly, objectID, Notifications.NotificationType.RIGETTATA, "/Amazoff/userPage.jsp?v=Notifiche", connection);
+                                Notifications.SendNotification(seller_id, objectID, Notifications.NotificationType.RIGETTATA, "/Amazoff/userPage.jsp?v=Notifiche", connection);
                                 break;
                             default:
                                 break;

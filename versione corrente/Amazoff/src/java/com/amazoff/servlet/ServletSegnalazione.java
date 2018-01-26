@@ -99,7 +99,7 @@ public class ServletSegnalazione extends HttpServlet {
 
                         if (in_db) {
                             // se l'anomalia è già stata segnalata, notifica l'utente
-                            Notifications.SendNotification(userID, objectID, Notifications.NotificationType.ANOMALY_ERROR, "/Amazoff/index.jsp?", connection);
+                            Notifications.SendNotification(userID, objectID, Notifications.NotificationType.ANOMALY_ERROR, "/Amazoff/userPage.jsp?v=Notifiche", connection);
                         } else {
                             // se l'anomalia non è già stata segnalata, invia segnalazione
                             results = MyDatabaseManager.EseguiQuery("SELECT orders_products.id FROM orders_products WHERE order_id = " + orderID + " AND product_id = " + productID + ";", connection);
@@ -135,10 +135,10 @@ public class ServletSegnalazione extends HttpServlet {
                                 }
 
                                 // notifica il venditore
-                                Notifications.SendNotification(notificaUser, objectID, Notifications.NotificationType.ANOMALY, "/Amazoff/index.jsp?", connection);
+                                Notifications.SendNotification(notificaUser, objectID, Notifications.NotificationType.ANOMALY, "/Amazoff/userPage.jsp?v=Notifiche", connection);
 
                                 // notifica l'utente
-                                Notifications.SendNotification(userID, objectID, Notifications.NotificationType.ANOMALY, "/Amazoff/index.jsp?", connection);
+                                Notifications.SendNotification(userID, objectID, Notifications.NotificationType.ANOMALY, "/Amazoff/userPage.jsp?v=Notifiche", connection);
                             }
                         }
 
