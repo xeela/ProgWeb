@@ -17,11 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Francesco
+ *
  * 
  * Servlet che si occupa di modificare la password dell'utente. Tramite la password temporanea e la sua email, l'utente può specificare una nuova password, che sostituirà quella precedente
  * 
  * request contiene i dati dell'utente
+ * @author Francesco Bruschetti
  */
 public class ServletRecuperoPassword extends HttpServlet {
 

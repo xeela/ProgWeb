@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Gianluca Pasqua
+ * 
  * 
  *  Questa servlet, riceve l'id di un utente e quello del prodotto che è stato selezionato per essere rimosso dal carrello
  *
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
  *                  e quello dell'utente che ha richiesto l'operazione
  *  response all'interno della quale è contenuto TRUE se l'operazione è stata completata correttamente
  *                  FALSE se si sono verificati errori 
+ * @author Gianluca Pasqua
  */
 public class ServletAjaxCarrello extends HttpServlet {
 

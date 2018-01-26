@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Davide Farina
  * 
  * Questa servlet ha il compito di rimuovere tutti i dati salvati nella sessione. Così facendo, l'utente non è più considerato loggato.
  *
  * request contiene la variabile di sessione in cui è memorizzato lo stato dell'utente che deve essere rimosso.
  * 
+ * @author Davide Farina
  */
 public class ServletLogout extends HttpServlet {
 

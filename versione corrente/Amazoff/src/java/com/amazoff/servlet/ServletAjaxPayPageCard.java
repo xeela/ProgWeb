@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Francesco Bruschetti
+ * 
  * Questa servlet viene chiamata quando, dalla pagina Pay page,
  * viene richiesto di aggiornare le informazioni relative alla carta di credito dell'utente.
  * Nel caso in cui l'utente non avesse già dei dati associati al suo profilo, verranno inseriti nel db.
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
  * request variabile all'interno della quale sono memorizzati tutti i dati di cui l'utente a fatto il submit 
  * response all'interno della quale è contenuto TRUE se il salvataggio dei dati è andato a buon fine,
  *                  FALSE se si sono verificati errori 
+ * @author Francesco Bruschetti
  */
 public class ServletAjaxPayPageCard extends HttpServlet {
 

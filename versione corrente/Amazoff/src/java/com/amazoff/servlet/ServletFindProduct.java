@@ -15,11 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Davide Farina
+ *
  *
  * Questa servlet ha il compito di estrarre dal db tutti i prodotti (e le relative informazioni) che soddisfano il parametro di ricerca specificati dall'utente.
  * 
  * request contiene i campi con cui l'utente può cercare i prodotti. Compresi gli eventuali tipi di filtri applicati e i dati per applicarli 
+ *  @author Davide Farina
  */
 public class ServletFindProduct extends HttpServlet {
 

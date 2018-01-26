@@ -14,12 +14,11 @@ import com.amazoff.classes.MyDatabaseManager;
 import java.sql.Connection;
 
 /**
- * @author Davide Farina
- * 
  * Questa servlet riceve i dati specificati dall'utente, tramite la form di login, e controllare che siano validi.
  * 
  * request contiene l'username/email e l'hash della password da utilizzare per verificare che l'utente abbia un profilo.
  * 
+ * @author Davide Farina
  */
 public class ServletLogin extends HttpServlet {
 

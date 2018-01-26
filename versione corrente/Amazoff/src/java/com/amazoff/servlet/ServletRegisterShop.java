@@ -17,21 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
+ * Servlet per l'aggiunta di un nuovo negozio al db. L'utente venditore, 
+ * attraverso la userPage può fare l'upgrade a venditore del proprio profilo, 
+ * inserendo i dati nella form che passando per questo servlet vengono caricati sul DB.
  * @author Gianluca Pasqua
  */
 public class ServletRegisterShop extends HttpServlet {
 
-    /**
-     * ServletDopoRegistrazione 
-     * 
-     * Ha il compito di memorizzari i dati inseriti nella pagina afterRegistration.
-     * Memorizza nel db i dati dell'indirizzo e della carta di credito forniti dall'utente successivamente alla sua registrazione
-     * 
-     * request contiene i dati relativi all'indirizzo e alla carta di credito che l'utente vuole memorizzare
-     * in caso di errore, richiama la pagina afterRegistration, dove l'utente dovrà inserire nuovamente i dati
-     *          in caso di successo, verrà rimandato alla home del sito (index)
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");

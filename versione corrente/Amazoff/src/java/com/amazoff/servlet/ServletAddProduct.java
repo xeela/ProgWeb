@@ -18,7 +18,7 @@ import java.sql.PreparedStatement;
 import javax.servlet.annotation.MultipartConfig;
 /**
  *
- * @author Gianluca Pasqua
+ * 
  * 
  * Funzione "init"
  *  Si occupa di selezionare la directory in cui sono caricate le immagini sul server (se esiste). Dà errore altrimenti.
@@ -29,7 +29,7 @@ import javax.servlet.annotation.MultipartConfig;
  * 
  * request contiene tutti i dati relativi all'oggetto che l'utente sta caricando
  *                  Quindi: nome, categoria dell'oggetto, descrizione, prezzo e le immagini 
- * 
+ * @author Gianluca Pasqua
  */
 @MultipartConfig
 public class ServletAddProduct extends HttpServlet {

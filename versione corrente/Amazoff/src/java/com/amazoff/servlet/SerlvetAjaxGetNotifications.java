@@ -14,10 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Francesco Bruschetti
+ * 
  * Servlet che restituisce tutte le notifiche dell'utente loggato
  * 
  * request contiene l'id dell'utente loggato
+ * @author Francesco Bruschetti
  */
 public class SerlvetAjaxGetNotifications extends HttpServlet {
 

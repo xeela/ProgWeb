@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Davide Farina
+ * 
  * 
  * Ha il compito di memorizzari i dati inseriti nella pagina afterRegistration.
  * Memorizza nel db i dati dell'indirizzo e della carta di credito forniti dall'utente successivamente alla sua registrazione
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
  * request contiene i dati relativi all'indirizzo e alla carta di credito che l'utente vuole memorizzare
  * in caso di errore, richiama la pagina afterRegistration, dove l'utente dovrà inserire nuovamente i dati
  *          in caso di successo, verrà rimandato alla home del sito (index)
+ * @author Davide Farina
  */
 public class ServletDopoRegistrazione extends HttpServlet {
 

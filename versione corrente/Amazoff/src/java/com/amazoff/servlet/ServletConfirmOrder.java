@@ -16,13 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * @author Davide Farina
  * 
  * Questa servlet viene richiamata quando il cliente, dalla pagina del pagamento, procede con l'acquisto dei prodotti.
  * 
  * request contiene la modalità con cui l'utente intente ricevere i prodotti. 
  * modalita è contenuto nel parametro request ed ha memorizzato la modalità di ritiro dei prodotti (spediti a casa o ritirati in negozio) 
  * session contiene l'id dell'utente che sta eseguendo l'acquisto
+ * @author Davide Farina
  */
 public class ServletConfirmOrder extends HttpServlet {
 

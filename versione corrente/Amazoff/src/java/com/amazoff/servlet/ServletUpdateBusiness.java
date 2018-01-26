@@ -17,11 +17,14 @@ import java.sql.Connection;
 import java.util.UUID;
 
 /**
- * @author Gianluca Pasqua
+ *
  * 
- *  Questa servlet permette ad un utente di registrare il suo negozio al sito 
+ *  Questa servlet permette ad un venditore di aggiornare il suo negozio con nuovi dati inseriti nella form apposita nella userPage 
  *
  * request contiene i dati relativi al negozio dell'utente
+ * 
+ * @author Gianluca Pasqua
+ * 
  */
 public class ServletUpdateBusiness extends HttpServlet {
 
