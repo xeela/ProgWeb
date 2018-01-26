@@ -30,7 +30,8 @@
             var cart;
             var jsonNotifiche = ${jsonNotifiche};
             var idUser = "<%= session.getAttribute("userID") %>";
-
+            console.log(idUser);
+            
             function LogCart()
             {
                 cart = ${shoppingCartProducts};
@@ -100,7 +101,10 @@
 
             function removeFromCart(indexElement, idElement)
             {
-                if (idUser !== -1) {
+                if (idUser === "null"){
+                    document.cookie = idElement + '=; Max-Age=0;';
+                    window.location.href = "ServletShowCart";
+                } else {
                     // rimuovo l'elemento dal vettore json di dati
                     console.log("Updated json");
                     cart.products.splice(indexElement, 1); // NON va
@@ -112,7 +116,7 @@
                         _idProdotto: idElement
                     }, function (data) {
                         var estraiDati = data.split("$");
-                        if (estraiDati[0] == "true") {
+                        if (estraiDati[0] === "true") {
                             alert("Elemento rimosso correttamente.");
 
                             cart = JSON.parse(estraiDati[1]);
@@ -128,9 +132,8 @@
 
                     }).fail(function () {
                     });
-                } else {
-                    document.cookie = idElement + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                 }
+                    
             }
         </script>
 
