@@ -565,12 +565,26 @@
                             <%
                                 if (userType.equals("0")) // registrato
                                 { %>
+                            <div id="notifiche" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">
+                                    Notifiche 
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseNotifiche" aria-expanded="true" 
+                                       aria-controls="collapseNotifiche" >
+                                        <span class='glyphicon glyphicon-option-vertical'></span>
+                                    </a>
 
-                            <a href=".jsp" class="list-group-item">
-                                <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
-                                Rimborso / Anomalia
-                            </a>
+                                    <div id="collapseNotifiche" class="panel-collapse collapse out" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="row">
+                                            <div class="col-lg-2"></div>
+                                            <div id="div_notifiche" class="col-lg-8">
 
+                                            </div>    
+                                        </div>
+                                    </div>                                                  
+                                </div>
+                            </div>
+                            
                             <div class="list-group-item">  
                                 <div id="createshop" role="tablist" aria-multiselectable="true">
                                     Crea Negozio 
@@ -928,9 +942,18 @@
                         default:
                             break;
                     }
+                    if (jsonNotifiche.notifications[i].already_read === "0") {
+                        //toAdd += "<p style=\"color: red\">";
+                        toAdd += " <b style=\"color: red\">NEW!</b> </p>";
+                    } else {
+                        toAdd += "</p>";
+
+                    }
+                    toAdd += "<a href=\"" + jsonNotifiche.notifications[i].link + "&notificationId=" + idNotifica + "\">";
                     toAdd += jsonNotifiche.notifications[i].description;
+                    toAdd += "</a>";
                     toAdd += "      <div id=\"collapse" + idNotifica + "\" class=\"panel-collapse collapse out\" role=\"tabpanel\" aria-labelledby=\"heading" + idNotifica + "\">";
-                    toAdd += "tutto il messaggio. per ora non esiste un campo nel db in cui è salvato. E' solo presente una 'descrizione' = " + jsonNotifiche.notifications[i].description;
+                    toAdd += jsonNotifiche.notifications[i].description;
                     toAdd += "      </div>";
                     toAdd += "      <br>";
                     toAdd += "      <a data-toggle=\"collapse\" data-parent=\"#accordion\"";
@@ -953,9 +976,10 @@
             %>
 
             var idNotifica, jsonNotifiche;
+            jsonNotifiche = ${jsonNotifiche};
             <% if (request.getParameter("v") != null && request.getParameter("notificationId") != null) {%>
             jsonNotifiche = ${jsonNotifiche}; // da errore se l'utente non è loggato, perche non ha delle notifiche associate
-            console.log(jsonNotifiche);
+            //console.log(jsonNotifiche);
             $("#div_notifiche").html(inserisciNotifiche());
             idNotifica = <%=request.getParameter("notificationId")%>;
             <% } else { %>
@@ -963,6 +987,8 @@
             {
                 $("#div_notifiche").html("Nessuna notifica trovata.");
             }
+            else
+                $("#div_notifiche").html(inserisciNotifiche());
 
             <% } %>
 
