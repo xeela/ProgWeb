@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * 
+ * controlla le email
+ * 
  * @author Francesco Bruschetti
  */
 public class ServletAjaxEmailExists extends HttpServlet {
@@ -86,7 +89,12 @@ public class ServletAjaxEmailExists extends HttpServlet {
         }
     }
        
-    /** Funzione che si occupa di richiedere l'invio effettivo della email, e che controlla che tutto vada a buon fine */
+    /** Funzione che si occupa di richiedere l'invio effettivo della email, e che controlla che tutto vada a buon fine 
+     * @param request richiesta HTTP
+     * @param email email dell'utente che richiede il ripristino
+     * @param pwd password temporanea di reset
+     * @return true se il tentativo è riuscito, false altrimenti
+     */
     protected boolean sendEmail(HttpServletRequest request, String email, String pwd)
     {
         String recipient = email; 

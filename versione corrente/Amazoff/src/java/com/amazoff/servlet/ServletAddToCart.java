@@ -16,15 +16,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
+ * 
+ * Servlet che permette di memorizzare un prodotto, nel carrello dell'utente, che lo ha richiesto.
+ * 
+ * request contiene l'id dell'oggeto che l'utente vuole aggiungere nel carrello
+ * session contiene l'id dell'utente registrato che sta richiedendo l'operazione
+ * 
  * @author Davide Farina
  */
 public class ServletAddToCart extends HttpServlet {
 
     /**
-     * Servlet che permette di memorizzare un prodotto, nel carrello dell'utente, che lo ha richiesto.
-     * 
-     * request contiene l'id dell'oggeto che l'utente vuole aggiungere nel carrello
-     * session contiene l'id dell'utente registrato che sta richiedendo l'operazione
+     * @param request richiesta HTTP
+     * @param response risposta HTTP
+     * @throws ServletException errore servlet
+     * @throws IOException errore I/O
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

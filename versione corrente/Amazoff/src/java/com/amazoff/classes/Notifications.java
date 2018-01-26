@@ -14,9 +14,13 @@ public class Notifications {
 
     public enum NotificationType {NEW_USER, ORDER_COMPLETE, NEW_REVIEW, ANOMALY, ANOMALY_ERROR, RIMBORSO, DIFFIDA, NESSUN_ESITO, RIGETTATA};
     
-    /** OSSSS: altroID varia in base al tipo di notifica.
-     * vale = -1 se type = New_user oppure = NEW_REVIEW
-     * vale = orderID se type = ORDER_COMPLETE
+    /** 
+     * @param userID id utente che deve ricevere la notifica
+     * @param altroID vale -1 se type = New_user oppure = NEW_REVIEW, vale = orderID se type = ORDER_COMPLETE
+     * @param type tipo di notifica
+     * @param link link al quale dovrà rimandare la notifica
+     * @param connection connessione
+     * @throws SQLException errore SQL
      */
     public static void SendNotification(String userID, String altroID, NotificationType type, String link, Connection connection) throws SQLException
     {
