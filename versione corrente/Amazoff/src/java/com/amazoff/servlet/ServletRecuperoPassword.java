@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
  * 
  * Servlet che si occupa di modificare la password dell'utente. Tramite la password temporanea e la sua email, l'utente può specificare una nuova password, che sostituirà quella precedente
  * 
- * @param request contiene i dati dell'utente
+ * request contiene i dati dell'utente
  */
 public class ServletRecuperoPassword extends HttpServlet {
 

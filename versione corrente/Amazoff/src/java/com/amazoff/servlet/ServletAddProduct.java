@@ -25,8 +25,9 @@ import javax.servlet.annotation.MultipartConfig;
  *  OSS: Lege la directory di upload dal file web.xml
  * 
  * Funzione "processRequest"
- *  Servlet richiamata quando l'utente (venditore) vuole inserire un nuovo prodotto.
- *   @param request contiene tutti i dati relativi all'oggetto che l'utente sta caricando
+ * Servlet richiamata quando l'utente (venditore) vuole inserire un nuovo prodotto.
+ * 
+ * request contiene tutti i dati relativi all'oggetto che l'utente sta caricando
  *                  Quindi: nome, categoria dell'oggetto, descrizione, prezzo e le immagini 
  * 
  */

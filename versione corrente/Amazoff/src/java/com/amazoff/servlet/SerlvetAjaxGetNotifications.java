@@ -16,7 +16,8 @@ import javax.servlet.http.HttpSession;
 /**
  * @author Francesco Bruschetti
  * Servlet che restituisce tutte le notifiche dell'utente loggato
- * @param request contiene l'id dell'utente loggato
+ * 
+ * request contiene l'id dell'utente loggato
  */
 public class SerlvetAjaxGetNotifications extends HttpServlet {
 

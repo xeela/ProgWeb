@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  * Nel caso in cui l'utente non avesse già un indirizzo associato al suo profilo, verrà memorizzato quello nuovo.
  * Se invece, l'utente ha già un indirizzo, i nuovi dati sovrascriveranno quelli vecchi.
  * 
- * @param request variabile all'interno della quale sono memorizzati tutti i dati di cui l'utente a fatto il submit 
- * @return response all'interno della quale è contenuto TRUE se il salvataggio dei dati è andato a buon fine,
+ * request variabile all'interno della quale sono memorizzati tutti i dati di cui l'utente a fatto il submit 
+ * response all'interno della quale è contenuto TRUE se il salvataggio dei dati è andato a buon fine,
  *                  FALSE se si sono verificati errori   
  */
 public class ServletAjaxPayPage extends HttpServlet {

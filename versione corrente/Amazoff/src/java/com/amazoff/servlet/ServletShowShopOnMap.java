@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
  * 
  * Restituisce le coordinate del negozio specificato, in modo da poterlo mostrare su una mappa 
  * 
- * @param request contiene l'id del negozio cercato
+ * request contiene l'id del negozio cercato
  */
 public class ServletShowShopOnMap extends HttpServlet {
 

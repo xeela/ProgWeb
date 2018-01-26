@@ -21,7 +21,7 @@ import java.util.UUID;
  * 
  * Questa servlet permette ad un utente di registrarsi al sito 
  *
- * @param request contiene i dati relativi al profilo del nuovo utente 
+ * request contiene i dati relativi al profilo del nuovo utente 
  * 
  */
 public class ServletRegister extends HttpServlet {

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  *
  * Questa servlet restituisce tutti i dati (dettagli) relativi ad un determinato prodotto
  *
- * @param request contiene l'id del prodotto, selezionato dall'utente, di cui si vogliono visualizzare i dettagli
+ * request contiene l'id del prodotto, selezionato dall'utente, di cui si vogliono visualizzare i dettagli
  *
  */
 public class ServletPopulateProductPage extends HttpServlet {
