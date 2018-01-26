@@ -20,8 +20,8 @@ import javax.servlet.http.HttpSession;
  * Nel caso in cui l'utente non avesse già dei dati associati al suo profilo, verranno inseriti nel db.
  * Se invece, l'utente ha già una carta registrata, i nuovi dati sovrascriveranno quelli vecchi.
  * 
- * @param request variabile all'interno della quale sono memorizzati tutti i dati di cui l'utente a fatto il submit 
- * @return response all'interno della quale è contenuto TRUE se il salvataggio dei dati è andato a buon fine,
+ * request variabile all'interno della quale sono memorizzati tutti i dati di cui l'utente a fatto il submit 
+ * response all'interno della quale è contenuto TRUE se il salvataggio dei dati è andato a buon fine,
  *                  FALSE se si sono verificati errori 
  */
 public class ServletAjaxPayPageCard extends HttpServlet {

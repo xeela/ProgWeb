@@ -18,7 +18,7 @@ import java.sql.Connection;
  * 
  * Questa servlet riceve i dati specificati dall'utente, tramite la form di login, e controllare che siano validi.
  * 
- * @param request contiene l'username/email e l'hash della password da utilizzare per verificare che l'utente abbia un profilo.
+ * request contiene l'username/email e l'hash della password da utilizzare per verificare che l'utente abbia un profilo.
  * 
  */
 public class ServletLogin extends HttpServlet {

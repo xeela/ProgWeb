@@ -15,9 +15,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- * A utility class for sending e-mail messages
  * @author Francesco Bruschetti
  *
+ * Classe che permette l'attivazione di un server SMTP e l'invio di email
  */
 public class EmailUtility {
 	public static void sendEmail(String host, String port,
@@ -25,7 +25,7 @@ public class EmailUtility {
 			String subject, String message) throws AddressException,
 			MessagingException {
 
-		// sets SMTP server properties
+		/** imposta le proprietà per attivare il server SMTP */
 		Properties properties = new Properties();
                 //properties.setProperty("mail.imap.ssl.enable", "true");
 		properties.put("mail.smtp.host", host);
@@ -34,7 +34,7 @@ public class EmailUtility {
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.starttls.enable", "true");
 
-		// creates a new session with an authenticator
+		/** crea una nuova sessione con cui autenticarsi sul server */
 		Authenticator auth = new Authenticator() {
 			public PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(userName, password);
@@ -43,7 +43,7 @@ public class EmailUtility {
 
 		Session session = Session.getInstance(properties, auth);
 
-		// creates a new e-mail message
+		/** crea la mail */
 		Message msg = new MimeMessage(session);
 
 		msg.setFrom(new InternetAddress(userName));
@@ -53,7 +53,7 @@ public class EmailUtility {
 		msg.setSentDate(new Date());
                 msg.setContent(message, "text/html");
                 
-		// sends the e-mail
+		/** invia l'e-mail */
 		Transport.send(msg);
 
 	}

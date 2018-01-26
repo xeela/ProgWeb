@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  * Questa servlet ha il compito di fornire i 6 prodotti da visualizzare all'interno della home page.
  * Questi 6 elementi vengono scelti prendendo gli ultimi 6 elementi (i più recenti) inseriti nel database
  * 
- * @return jsonProdottiIndex che contiene i prodotti e le relative informazioni
+ * ritorna jsonProdottiIndex che contiene i prodotti e le relative informazioni
  */
 public class ServletIndexProducts extends HttpServlet {
 

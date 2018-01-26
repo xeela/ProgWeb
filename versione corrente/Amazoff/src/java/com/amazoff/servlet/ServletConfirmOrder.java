@@ -20,10 +20,9 @@ import javax.servlet.http.HttpSession;
  * 
  * Questa servlet viene richiamata quando il cliente, dalla pagina del pagamento, procede con l'acquisto dei prodotti.
  * 
- * @param request contiene la modalità con cui l'utente intente ricevere i prodotti. 
- * @param modalita è contenuto nel parametro request ed ha memorizzato la modalità di ritiro dei prodotti (spediti a casa o ritirati in negozio) 
- * @param session contiene l'id dell'utente che sta eseguendo l'acquisto
- * @return PER ORA IL CODICE è DA FINIRE. "Variabile che specifica se l'operazione è andata a buon fine (return TRUE) o FLASE in caso di errori
+ * request contiene la modalità con cui l'utente intente ricevere i prodotti. 
+ * modalita è contenuto nel parametro request ed ha memorizzato la modalità di ritiro dei prodotti (spediti a casa o ritirati in negozio) 
+ * session contiene l'id dell'utente che sta eseguendo l'acquisto
  */
 public class ServletConfirmOrder extends HttpServlet {
 

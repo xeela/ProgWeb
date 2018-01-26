@@ -23,8 +23,8 @@ public class ServletAddToCart extends HttpServlet {
     /**
      * Servlet che permette di memorizzare un prodotto, nel carrello dell'utente, che lo ha richiesto.
      * 
-     * @param request contiene l'id dell'oggeto che l'utente vuole aggiungere nel carrello
-     * @param session contiene l'id dell'utente registrato che sta richiedendo l'operazione
+     * request contiene l'id dell'oggeto che l'utente vuole aggiungere nel carrello
+     * session contiene l'id dell'utente registrato che sta richiedendo l'operazione
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

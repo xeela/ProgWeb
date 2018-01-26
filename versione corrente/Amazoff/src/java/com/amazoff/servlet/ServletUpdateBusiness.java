@@ -21,7 +21,7 @@ import java.util.UUID;
  * 
  *  Questa servlet permette ad un utente di registrare il suo negozio al sito 
  *
- * @param request contiene i dati relativi al negozio dell'utente
+ * request contiene i dati relativi al negozio dell'utente
  */
 public class ServletUpdateBusiness extends HttpServlet {
 
