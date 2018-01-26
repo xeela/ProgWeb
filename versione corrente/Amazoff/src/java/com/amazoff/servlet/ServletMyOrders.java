@@ -39,7 +39,7 @@ public class ServletMyOrders extends HttpServlet {
                 Connection connection = MyDatabaseManager.CreateConnection();
                 
                 if (session.getAttribute("userID") != null) {
-                    /** Interrogo il db per farmi restituire i dettagli dei prodotti che fanno parte dell'ordine dell'utente */
+                    // recupera gli ordini
                     ResultSet results = MyDatabaseManager.EseguiQuery("SELECT orders.*, products.*, owner.*, shops.* "
                             + "FROM orders, users AS user, users AS owner, orders_products, products, shops "
                             + "WHERE user.ID = " + session.getAttribute("userID") + " AND orders.who_ordered = user.id AND "

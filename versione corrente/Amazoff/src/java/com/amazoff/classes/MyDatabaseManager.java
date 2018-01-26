@@ -92,7 +92,7 @@ public class MyDatabaseManager {
     static public PreparedStatement EseguiStatement(String query, Connection connection) throws SQLException {
         PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         ps.executeUpdate();
-
+        
         return ps;
     }
 

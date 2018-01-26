@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Recupera i dati della recensione per l'oggetto acquistato 
- * inserita dall'utente loggato.
+ * Recupera i dati della recensione per l'oggetto acquistato inserita
+ * dall'utente loggato.
  *
  * @author Caterina Battisti
  */
@@ -25,31 +25,40 @@ public class ServletRecensione extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String id_prodotto = request.getParameter("id");          
+            String id_prodotto = request.getParameter("id");
             HttpSession session = request.getSession();
             String jsonObj = "";
-            
-            /** se l'oggetto MyDatabaseManager non esiste, vuol dire che la connessione al db non è presente */
-            if(!MyDatabaseManager.alreadyExists) /** se non esiste lo creo */
+
+            /**
+             * se l'oggetto MyDatabaseManager non esiste, vuol dire che la
+             * connessione al db non è presente
+             */
+            if (!MyDatabaseManager.alreadyExists) /**
+             * se non esiste lo creo
+             */
             {
                 MyDatabaseManager mydb = new MyDatabaseManager();
             }
-        
-            if(MyDatabaseManager.cpds != null)
-            {
+
+            if (MyDatabaseManager.cpds != null) {
                 Connection connection = MyDatabaseManager.CreateConnection();
-                
+
                 if (session.getAttribute("userID") != null) {
-                    /** Interrogo il Db per farmi restituire i dettagli del prodotto specificato */
-                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM reviews, products WHERE reviews.id_product = products.id AND reviews.id_creator = "+ session.getAttribute("userID") +" AND products.id = "+ id_prodotto +";", connection);
-                    
-                    /** se non c'è il prodotto specificato */
+                    /**
+                     * Interrogo il Db per farmi restituire i dettagli del
+                     * prodotto specificato
+                     */
+                    ResultSet results = MyDatabaseManager.EseguiQuery("SELECT * FROM reviews, products WHERE reviews.id_product = products.id AND reviews.id_creator = " + session.getAttribute("userID") + " AND products.id = " + id_prodotto + ";", connection);
+
+                    /**
+                     * se non c'è il prodotto specificato
+                     */
                     if (!results.isBeforeFirst()) {
-                        results = MyDatabaseManager.EseguiQuery("SELECT id, name FROM products WHERE id = "+ id_prodotto +";", connection);
-                         
+                        results = MyDatabaseManager.EseguiQuery("SELECT id, name FROM products WHERE id = " + id_prodotto + ";", connection);
+
                         if (!results.isBeforeFirst()) {
                             jsonObj += "{}";
-                        } else{
+                        } else {
                             while (results.next()) {
                                 jsonObj += "{";
                                 jsonObj += "\"data\":[{";
@@ -81,13 +90,13 @@ public class ServletRecensione extends HttpServlet {
                     connection.close();
 
                     session.setAttribute("jsonReview", jsonObj);
-                    response.sendRedirect(request.getContextPath() + "/lasciaRecensione.jsp"); 
+                    response.sendRedirect(request.getContextPath() + "/lasciaRecensione.jsp");
                 }
             } else {
                 session.setAttribute("errorMessage", Errors.dbConnection);
-                response.sendRedirect(request.getContextPath() + "/"); 
+                response.sendRedirect(request.getContextPath() + "/");
             }
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             HttpSession session = request.getSession();
             session.setAttribute("errorMessage", Errors.dbQuery);
             response.sendRedirect(request.getContextPath() + "/");

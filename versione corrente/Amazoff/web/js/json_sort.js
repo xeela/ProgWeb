@@ -51,7 +51,7 @@ function AggiungiProdotti() {
         toAdd += "<div class=\"row thumbnail hovertable\" >";
         toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"form" + id_oggetto + "\" onclick=\"$('#form" + id_oggetto + "').submit();\"> ";
         toAdd += "<div class=\"col-xs-5 col-sm-3 col-md-2\" >";
-        if(jsonProdotti.products[i].pictures.length == 0)
+        if(jsonProdotti.products[i].pictures.length === 0)
             path = "default.jpg";
         else
             path = jsonProdotti.products[i].pictures[0].path; // visualizzo solo la prima immagine del prodotto
@@ -108,7 +108,6 @@ toAdd += "<div class=\"row\">";
 function AggiungiOrdini() {
     var toAdd = "";
     var id_ordine = -1;
-    var id_oggetto = -1;
     var path = "default.jpg";
 
     for (var i = 0; i < jsonProdotti.orders.length; i++)
@@ -130,11 +129,7 @@ function AggiungiOrdini() {
             toAdd += "<p name=\"data_ordine" + id_ordine + "\">Data ordine: " + jsonProdotti.orders[i].products[j].order_date + "</p>";
             toAdd += "<p name=\"prezzo" + id_ordine + "\">Prezzo: " + jsonProdotti.orders[i].products[j].price + " €</p>";
             toAdd += "<p><a href=\"ServletRecensione?id="+jsonProdotti.orders[i].products[j].product_id+"\" class=\"btn btn-primary\" role=\"button\">Lascia recensione</a></p>";
-            if(jsonProdotti.orders[i].products[j].is_solved === "0"){
-                toAdd += "<p><a href=\"ServletSegnalazione?orderId="+id_ordine+"&productId="+jsonProdotti.orders[i].products[j].product_id+"\" class=\"btn btn-primary\" role=\"button\">Segnala non arrivato</a></p>";
-            } else{
-                toAdd += "<p><button class=\"btn btn-primary\" disabled='true'>Segnala non arrivato</button></p>";
-            }
+            toAdd += "<p><a href=\"ServletSegnalazione?orderId="+id_ordine+"&productId="+jsonProdotti.orders[i].products[j].product_id+"\" class=\"btn btn-primary\" role=\"button\">Segnala non arrivato</a></p>";
             toAdd += "</div>";
             toAdd += "</div></form><hr>";
         }

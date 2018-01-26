@@ -34,7 +34,7 @@
                     $('#div_anomalia').append("<p>nessuna segnalazione aperta</p>");
                 } else {
                     for (var i = 0; i < jsonAnomalies.data.length; i++) {
-                        $('#div_anomalia').append("<a href='" + jsonAnomalies.data[i].link + "'>Segnalazione numero " + jsonAnomalies.data[i].id + "</a>");
+                        $('#div_anomalia').append("<p><a href='" + jsonAnomalies.data[i].link + "'>Segnalazione numero " + jsonAnomalies.data[i].id + "</a></p>");
                     }
                 }
             });

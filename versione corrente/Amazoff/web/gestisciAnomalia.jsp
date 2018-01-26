@@ -36,8 +36,9 @@
                 $('#sold_date_text').html(jsonAnomaly.data[0].sold_date);
                 $('#anomaly_date_text').html(jsonAnomaly.data[0].anomaly_date);
                 $('#user_anomaly').val(jsonAnomaly.data[0].user_id);
-                $('#seller').val(jsonAnomaly.data[0].seller_id);
+                $('#seller_id').val(jsonAnomaly.data[0].seller_id);
                 $('#anomaly_id').val(jsonAnomaly.data[0].anomaly_id);
+                $('#object_id').val(jsonAnomaly.data[0].object_id);
                 
                 $('input[name="radio_action"]').change(function() {
                     $('#risolvi').attr('disabled', false);
@@ -373,8 +374,10 @@
                                     <input type="radio" name="radio_action" value="3" /> Rigetta<br/>
                                 </p>
                                 <input type="text" name="user_anomaly" id="user_anomaly" style="display:none" value=""> <!-- utente a cui inviare una notifica di risoluzione -->
-                                <input type="text" name="seller" id="seller" style="display:none" value="">   <!-- venditore dell'oggetto a cui inviare una notifica di risoluzione -->
+                                <input type="text" name="seller_id" id="seller_id" style="display:none" value="">   <!-- venditore dell'oggetto a cui inviare una notifica di risoluzione -->
                                 <input type="text" name="anomaly_id" id="anomaly_id" style="display:none" value="">
+                                <input type="text" name="object_id" id="object_id" style="display:none" value="">
+                                
                                 <p>
                                     <button id="risolvi" class="btn btn-default" type="submit" disabled="true">Risolvi</button>
                                 </p>

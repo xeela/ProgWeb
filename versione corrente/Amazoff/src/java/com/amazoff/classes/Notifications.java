@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class Notifications {
 
-    public enum NotificationType {NEW_USER, ORDER_COMPLETE, NEW_REVIEW, ANOMALY};
+    public enum NotificationType {NEW_USER, ORDER_COMPLETE, NEW_REVIEW, ANOMALY, ANOMALY_ERROR, RIMBORSO, DIFFIDA, NESSUN_ESITO, RIGETTATA};
     
     /** OSSSS: altroID varia in base al tipo di notifica.
      * vale = -1 se type = New_user oppure = NEW_REVIEW
@@ -27,6 +27,8 @@ public class Notifications {
                                         + "'" + MyDatabaseManager.GetCurrentDate() + "',"
                                         + "'" + link + "',"
                                         + 0 + ");", connection);
+        
+        
     }
     
     private static String GetDescriptionFromType(NotificationType type, String ID)
@@ -36,7 +38,12 @@ public class Notifications {
             case NEW_USER: return "Benvenuto!";
             case ORDER_COMPLETE: return "Il tuo ordine è andato a buon fine! (ID: "+ ID +")";
             case NEW_REVIEW: return "E' stata postata una nuova recensione. Leggila ora!";
-            case ANOMALY: return "Anomalia segnalata per l'oggetto venduto con ID: " + ID;
+            case ANOMALY: return "Anomalia segnalata. ID oggetto: " + ID;
+            case ANOMALY_ERROR: return "Hai già segnalato questa anomalia! ID oggetto: " + ID;
+            case RIMBORSO: return "Anomalia risolta con esito: rimborsato. ID oggetto: " + ID;
+            case DIFFIDA: return "ATTENZIONE: oggetto non consegnato. Saranno presi provvedimenti. ID oggetto: " + ID;
+            case NESSUN_ESITO: return "Ci dispiace. Non siamo stati in grado di effettuare il rimborso. ID oggetto: " + ID;
+            case RIGETTATA: return "Anomalia risolta con esito: rigettata. ID oggetto: " + ID;
             default: return "";
         }
     }
@@ -48,7 +55,7 @@ public class Notifications {
         
         boolean isFirstTime = true;
         jsonObj += "{";
-        jsonObj        += "\"notifications\":[";
+        jsonObj += "\"notifications\":[";
         while (results.next()) {
             if(!isFirstTime)            //metto la virgola prima dell'oggetto solo se non è il primo
                 jsonObj += ", ";
@@ -69,5 +76,4 @@ public class Notifications {
         
         return jsonObj;
     }
-    
 }
