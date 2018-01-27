@@ -16,9 +16,12 @@ function impostaRecensione(value){
     }
 }
 
-function impostaDistanza(obj){
-    var dist = obj.value;
-    
+function impostaDistanzaWrapper(obj){
+    var dist = obj.value;    
+    impostaDistanza(dist);
+}
+
+function impostaDistanza(dist){
     if(dist === ""){
         if($("#distanzaRicerca").length){
             $("#distanzaRicerca").remove();
@@ -47,9 +50,13 @@ function impostaDistanza(obj){
     }
 }
 
-function impostaLatLng(position){
+function impostaLatLngWrapper(position){
     var lat = position.coords.latitude;
     var lng = position.coords.longitude;
+    impostaLatLng(lat, lng);
+}
+
+function impostaLatLng(lat, lng){
     
     if($("#latRicerca").length){
         $("#latRicerca").val(lat);
@@ -62,14 +69,18 @@ function impostaLatLng(position){
     }
 }
 
-function impostaMin(obj) {
+function impostaMinWrapper(obj){
     var min = parseInt(obj.value);
+    impostaMin(min);
+}
+
+function impostaMin(min) {
     var remove = false;
 
     if($("#prezzoMaxRicerca").length){
         if(min > parseInt($("#prezzoMaxRicerca").val())){
             alert("Il prezzo minimo deve essere minore del prezzo massimo!");
-            obj.value = "";
+            $('#prezzoDa').value = "";
             remove = true;
         }
     }
@@ -86,14 +97,18 @@ function impostaMin(obj) {
     }
 }
 
-function impostaMax(obj) {
+function impostaMaxWrapper(obj){
     var max = parseInt(obj.value);
+    impostaMax(max);
+}
+
+function impostaMax(max) {
     var remove = false;
 
     if($("#prezzoMinRicerca").length){
         if(max < parseInt($("#prezzoMinRicerca").val())){
             alert("Il prezzo massimo deve essere maggiore del prezzo minimo!");
-            obj.value = "";
+            $('#prezzoA').value = "";
             remove = true;
         }
     }
