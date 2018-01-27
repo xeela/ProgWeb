@@ -138,31 +138,34 @@ function AggiungiOrdini() {
     var id_ordine = -1;
     var path = "default.jpg";
 
-    for (var i = 0; i < jsonProdotti.orders.length; i++)
-    {
-        id_ordine = jsonProdotti.orders[i].products[0].order_id;
-        toAdd += "<div id='" + id_ordine + "'><h3 name=\"id_ordine" + id_ordine + "\">Numero ordine: " + jsonProdotti.orders[i].products[0].order_id + "</h3>";
-        for (var j = 0; j < jsonProdotti.orders[i].products.length; j++) {
-            toAdd += "<div class=\"row\">";
-            toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id=" + id_ordine + "\" id=\"form" + id_ordine + "\" onclick=\"$('#form" + id_ordine + "').submit();\"> ";
-            toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
-            if (jsonProdotti.orders[i].products[j].pictures.length === 0)
-                path = "default.jpg";
-            else
-                path = jsonProdotti.orders[i].products[j].pictures[0].path; // visualizzo solo la prima immagine del prodotto
-            toAdd += "<img src=\"UploadedImages/" + path + "\" style=\"max-height: 100px; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
+    if(jsonProdotti.orders[0].products[0].order_id === "empty"){
+        toAdd += "<h2>Nessun ordine effettuato.</h2>";
+    } else {
+        for (var i = 0; i < jsonProdotti.orders.length; i++)
+        {
+            id_ordine = jsonProdotti.orders[i].products[0].order_id;
+            toAdd += "<div id='" + id_ordine + "'><h3 name=\"id_ordine" + id_ordine + "\">Numero ordine: " + jsonProdotti.orders[i].products[0].order_id + "</h3>";
+            for (var j = 0; j < jsonProdotti.orders[i].products.length; j++) {
+                toAdd += "<div class=\"row\">";
+                toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id=" + id_ordine + "\" id=\"form" + id_ordine + "\" onclick=\"$('#form" + id_ordine + "').submit();\"> ";
+                toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
+                if (jsonProdotti.orders[i].products[j].pictures.length === 0)
+                    path = "default.jpg";
+                else
+                    path = jsonProdotti.orders[i].products[j].pictures[0].path; // visualizzo solo la prima immagine del prodotto
+                toAdd += "<img src=\"UploadedImages/" + path + "\" style=\"max-height: 100px; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
+                toAdd += "</div>";
+                toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
+                toAdd += "<p name=\"nome" + id_ordine + "\" >" + jsonProdotti.orders[i].products[j].name + "</p>";
+                toAdd += "<p name=\"data_ordine" + id_ordine + "\">Data ordine: " + jsonProdotti.orders[i].products[j].order_date + "</p>";
+                toAdd += "<p name=\"prezzo" + id_ordine + "\">Prezzo: " + jsonProdotti.orders[i].products[j].price + " €</p>";
+                toAdd += "<p><a href=\"ServletRecensione?id=" + jsonProdotti.orders[i].products[j].product_id + "\" class=\"btn btn-primary\" role=\"button\">Lascia recensione</a></p>";
+                toAdd += "<p><a href=\"ServletSegnalazione?orderId=" + id_ordine + "&productId=" + jsonProdotti.orders[i].products[j].product_id + "\" class=\"btn btn-primary\" role=\"button\">Segnala non arrivato</a></p>";
+                toAdd += "</div>";
+                toAdd += "</div></form><hr>";
+            }
             toAdd += "</div>";
-            toAdd += "<div class=\"col-xs-8 col-sm-7 col-md-9\">";
-            toAdd += "<p name=\"nome" + id_ordine + "\" >" + jsonProdotti.orders[i].products[j].name + "</p>";
-            toAdd += "<p name=\"data_ordine" + id_ordine + "\">Data ordine: " + jsonProdotti.orders[i].products[j].order_date + "</p>";
-            toAdd += "<p name=\"prezzo" + id_ordine + "\">Prezzo: " + jsonProdotti.orders[i].products[j].price + " €</p>";
-            toAdd += "<p><a href=\"ServletRecensione?id=" + jsonProdotti.orders[i].products[j].product_id + "\" class=\"btn btn-primary\" role=\"button\">Lascia recensione</a></p>";
-            toAdd += "<p><a href=\"ServletSegnalazione?orderId=" + id_ordine + "&productId=" + jsonProdotti.orders[i].products[j].product_id + "\" class=\"btn btn-primary\" role=\"button\">Segnala non arrivato</a></p>";
-            toAdd += "</div>";
-            toAdd += "</div></form><hr>";
         }
-        toAdd += "</div>";
     }
-
     $("#zonaProdotti").html(toAdd);
 }
