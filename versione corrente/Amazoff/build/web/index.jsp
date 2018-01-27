@@ -129,7 +129,7 @@
                                     <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
                                 </a>
                             </div>
-                            <div class="col-xs-7 hidden-lg" > <!-- Stile per centrare i button non va -->
+                            <div class="col-xs-7 hidden-lg" > 
                                 <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
                                     <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
                                         <spam class="glyphicon glyphicon-user"> 

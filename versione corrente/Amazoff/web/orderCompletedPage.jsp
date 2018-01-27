@@ -24,24 +24,10 @@
         <title>Amazoff</title>
     </head>
     <body>
-        <!-- barra verticale vuota -->
-        <div class="hidden-xs col-sm-4"></div>
         <nav class="navbar navbar-light bg-faded">
             <a class="navbar-brand" href="index.jsp"><span class="glyphicon glyphicon-home"></span> Torna alla Home </a>
-        </nav> 
-
-        <div id="bodyPage" class="col-xs-12 col-sm-4" style="background-color: #33cc33">
-            <h1 id="iconaOrdine"></h1>
-            <h1 id="statoOrdine"></h1>
-            <hr>
-            <h4 id="id_ordine">ID ordine: <%=request.getParameter("id")%></h4>
-            <h4 id='emailOrdine'>E' stata mandata una notifica di conferma dell'ordine.</h4>
-            <hr>
-            <div>
-                <p style="display: inline; align: left;"><b>Verrai reindirizzato alla Home tra: </b></p>
-                <p style="display: inline; align: right;"><b id="timer">5 sec</b></p>
-                <div>
-                    <h3><a href="index.jsp" style="color: blue">Torna alla Home <span class="glyphicon glyphicon-home"></span></a></h3>
+        </nav>
+        
         <div class="container-fluid">
             <div class="row" style="text-align: center">
                 <div class="col-lg-12">
@@ -56,8 +42,7 @@
                         <h2 id="statoOrdine" class="alert-heading"></h2>
                         <hr>
                         <p id="id_ordine">ID ordine: <%=request.getParameter("id")%></p>
-                        <h4 id='emailOrdine'>E' stata mandata una notifica di conferma dell'ordine.</h4>
-                        <!-- <h4 class="mb-0" id="emailOrdine">E' stata mandata una notifica di conferma dell'ordine.</h4></h4> -->
+                        <h4 id='messaggioOrdine'></h4>
                     </div>
                 </div>
             </div>
@@ -68,55 +53,22 @@
             /** controllo il parametro in get */
             var stato = "<%=request.getParameter("p")%>";
 
-                <script>
-                    function startTimer()
-                    {
-                        var timeleft = 5;
-                        var downloadTimer = setInterval(function () {
-                            timeleft--;
-                            document.getElementById("timer").textContent = timeleft + " sec";
-                            // appena il tempo rimanente scende sotto lo 0, reindirizzo l'utente
-                            if (timeleft <= 0) {
-                                // fermo il timer
-                                clearInterval(downloadTimer);
-                                window.location = "index.jsp";
-                            } else {
-                            }
-                        }, 1000);
-                    }
-
+                    
                     // controllo il parametro in get
                     var stato = "<%=request.getParameter("p")%>";
 
-                    // in base al parametro, creo il corpo della pagina
+                    /** in base al parametro, creo il corpo della pagina */
                     if (stato == "ok" && (stato != null && stato != "")) {
                         document.getElementById("statoOrdine").innerText = "Ordine completato correttamente";
-                        document.getElementById("iconaOrdine").innerHTML = "<i class=\"fa fa-check\" aria-hidden=\"true\"></i>";
-                        document.getElementById("bodyPage").style.backgroundColor = "#33cc33";
-                        document.getElementById("emailOrdine").style.visibility = "visible";
+                        document.getElementById("messaggioOrdine").innerHTML = "E' stata mandata una notifica di conferma dell'ordine.";
+                        $("#div_alert").attr('class','alert alert-success');      
                     } else
                     {
                         document.getElementById("statoOrdine").innerText = "Errore durante il completamento dell' ordine";
-                        document.getElementById("iconaOrdine").innerHTML = "<i class=\"fa fa-close\" aria-hidden=\"true\"></i>";
-                        document.getElementById("bodyPage").style.backgroundColor = "red";
-                        document.getElementById("emailOrdine").style.visibility = "hidden";
-                        $("#emailOrdine").remove();
+                        document.getElementById("messaggioOrdine").innerHTML = "<a href='index.jsp'><b>Clicca qui</b></a> per tornare alla home e riprovare.";
+                        $("#div_alert").attr('class','alert alert-danger');  
                     }
-            /** in base al parametro, creo il corpo della pagina */
-            if (stato == "ok" && (stato != null && stato != "")) {
-                document.getElementById("statoOrdine").innerText = "Ordine completato correttamente";
-                $("#div_alert").attr('class','alert alert-success');      
-            } else
-            {
-                document.getElementById("statoOrdine").innerText = "Errore durante il completamento dell' ordine";
-                document.getElementById("emailOrdine").style.visibility = "hidden";
-                $("#div_alert").attr('class','alert alert-danger');  
-            }
 
-                    startTimer();
-                </script>
-                </body>
-                </html>
         </script>
     </body>
 </html>

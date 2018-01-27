@@ -1,8 +1,3 @@
-<%-- 
-    Document   : afterRegistration.jsp
-    Created on : 19-set-2017, 10.57.08
-    Author     : Francesco Bruschetti
---%>
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.*,java.text.*;" %>
 
@@ -26,15 +21,12 @@
 
         <script type="text/javascript">
             var condizioniAccettate = false;
-
             function MostraErrore(text)
             {
                 document.getElementById("alertRegistrati").innerHTML = "<strong>Errore!</strong> " + text;
                 document.getElementById("alertRegistrati").style.visibility = "visible";
-
                 console.log(text);
             }
-
             // NON VIENE CHIAMATO CORRETTAMENTE
             function checkDati()
             {
@@ -43,7 +35,6 @@
                 var citta = $("#citta").val();
                 var provincia = $("#provincia").val();
                 var cap = $("#cap").val();
-
                 //Controllo se le password sono valide, lunghezze dei campi etc
                 if (paese.length == 0 || indirizzo.length == 0 || citta.length == 0
                         || provincia.length == 0 || cap.length == 0) {
@@ -51,8 +42,6 @@
                     return false;
                 }
             }
-
-
         </script>
 
         <!-- STYLE STEPS BAR -->
@@ -60,22 +49,18 @@
             .stepwizard-step p {
                 margin-top: 10px;    
             }
-
             .stepwizard-row {
                 display: table-row;
             }
-
             .stepwizard {
                 display: table;     
                 width: 100%;
                 position: relative;
             }
-
             .stepwizard-step button[disabled] {
                 opacity: 1 !important;
                 filter: alpha(opacity=100) !important;
             }
-
             .stepwizard-row:before {
                 top: 14px;
                 bottom: 0;
@@ -85,15 +70,12 @@
                 height: 1px;
                 background-color: #ccc;
                 z-order: 0;
-
             }
-
             .stepwizard-step {    
                 display: table-cell;
                 text-align: center;
                 position: relative;
             }
-
             .btn-circle {
                 width: 30px;
                 height: 30px;
