@@ -81,7 +81,6 @@ function impostaMin(min) {
         if(min > parseInt($("#prezzoMaxRicerca").val())){
             alert("Il prezzo minimo deve essere minore del prezzo massimo!");
             $('#prezzoDa').value = "";
-            $('#prezzoDa_xs').value = "";
             remove = true;
         }
     }
@@ -110,7 +109,6 @@ function impostaMax(max) {
         if(max < parseInt($("#prezzoMinRicerca").val())){
             alert("Il prezzo massimo deve essere maggiore del prezzo minimo!");
             $('#prezzoA').value = "";
-            $('#prezzoA_xs').value = "";
             remove = true;
         }
     }

@@ -306,13 +306,13 @@
                                                 <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
                                                     <li>Vicinanza
                                                         <p>
-                                                            <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax_xs" onchange="impostaDistanzaWrapper(this)" onkeypress="return isNumberKey(event)"> 
+                                                            <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanzaWrapper(this)" onkeypress="return isNumberKey(event)"> 
                                                         </p>
                                                     </li>
                                                     <li>Prezzo 
                                                         <p>
-                                                            <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa_xs" onchange="impostaMinWrapper(this)" onkeypress="return isNumberKey(event)">
-                                                            <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA_xs" onchange="impostaMaxWrapper(this)" onkeypress="return isNumberKey(event)">
+                                                            <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMinWrapper(this)" onkeypress="return isNumberKey(event)">
+                                                            <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMaxWrapper(this)" onkeypress="return isNumberKey(event)">
                                                         </p>
                                                     </li>
                                                     <li>Recensione
