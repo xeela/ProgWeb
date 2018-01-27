@@ -12,18 +12,21 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="js/popper.js"></script>
-        <script src="js/popper-utils.js"></script>
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/bootstrap-theme.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.css">        
         <script src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        
+        <!-- <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script> -->
         <script type="text/javascript" src="js/jquery.autocomplete.min.js"></script>
         <script type="text/javascript" src="js/search-autocomplete.js"></script>
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDofgdH-2Rk2JWl1U_ZWs-yi2gq_U25txY&callback=initMap"></script> 
         <script type="text/javascript" src="js/parametri-ricerca.js"></script>
         <script type="text/javascript" src="js/sjcl.js" ></script>
+        <script src="js/popper.js"></script>
+        <script src="js/popper-utils.js"></script>
+        
         <link rel="stylesheet" href="css/amazoffStyle.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
 
@@ -291,7 +294,8 @@
                         <div class="row">
                             <div class="col-xs-6 col-lg-12"><a href="index.jsp">
                                     <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
-                                </a></div>
+                                </a>
+                            </div>
                             <div class="col-xs-2 hidden-lg" style="text-align: right"> 
                                 <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
                                         <%

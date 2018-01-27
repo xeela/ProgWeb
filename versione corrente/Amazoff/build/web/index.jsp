@@ -11,8 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/bootstrap-theme.css">
-
+        
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-theme.css">
@@ -157,7 +156,6 @@
                                             userType = (session.getAttribute("categoria_user")).toString();
                                             if (userType.equals("0") ||userType.equals("1") || userType.equals("2")) {
                                     %>
-                                    <a href="notificationPage.jsp">
                                     <a href="userPage.jsp?v=Notifiche&notificationId=tutte#notifiche">
                                         <span class="badge iconSize imgCenter" id="totNotifichexs"> 
                                             <spam class="glyphicon glyphicon-inbox"></spam> 

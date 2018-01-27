@@ -96,11 +96,13 @@ public class ServletConfirmOrder extends HttpServlet {
                     /** mando la notifica all'utente, con il collegamento al riepilogo ordine   */
                     Notifications.SendNotification(userID, String.valueOf(orderID), Notifications.NotificationType.ORDER_COMPLETE, "/Amazoff/ServletMyOrders?id="+orderID, connection);
                     
-                    //****** TODO: quando c'è l'errore, questo dovrebbe essere passato tramite la session.setAttribute *******/
+                    session.setAttribute("p","ok"); /** server per dire alla pagina, se è andato tutto bene durante il pagamento */
+                    session.setAttribute("id",orderID);
                     response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=ok&id="+orderID);      
                 }
                 else
                 {
+                    session.setAttribute("p","error");
                     session.setAttribute("shoppingCartProducts", "");
                     response.sendRedirect(request.getContextPath() + "/ServletAddToCart");
                 }
@@ -111,13 +113,14 @@ public class ServletConfirmOrder extends HttpServlet {
             }
             else
             {
-                //session.setAttribute("errorMessage", Errors.dbConnection);
+                session.setAttribute("p","error");
                 response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=err"); 
             }
         }catch (SQLException ex) {
             MyDatabaseManager.LogError(request.getParameter("username"), "ServletConfirmOrder", ex.toString());
             HttpSession session = request.getSession();
-            //session.setAttribute("errorMessage", Errors.dbQuery);
+            
+            session.setAttribute("p","error");
             response.sendRedirect(request.getContextPath() + "/orderCompletedPage.jsp?p=err"); 
         }
     }
