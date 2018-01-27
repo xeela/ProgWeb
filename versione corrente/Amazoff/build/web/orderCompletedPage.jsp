@@ -41,7 +41,7 @@
                     <div class="alert alert-success" id="div_alert" role="alert">
                         <h2 id="statoOrdine" class="alert-heading"></h2>
                         <hr>
-                        <p id="id_ordine">ID ordine: <%=request.getParameter("id")%></p>
+                        <p id="id_ordine">ID ordine: <%=session.getAttribute("id")%></p>
                         <h4 id='messaggioOrdine'></h4>
                     </div>
                 </div>
@@ -49,13 +49,9 @@
         </div>
 
         <script>
-            
-            /** controllo il parametro in get */
-            var stato = "<%=request.getParameter("p")%>";
-
-                    
-                    // controllo il parametro in get
-                    var stato = "<%=request.getParameter("p")%>";
+                                
+                    /** controllo i parametri ricevuti dalla servlet */
+                    var stato = "<%=session.getAttribute("p")%>";
 
                     /** in base al parametro, creo il corpo della pagina */
                     if (stato == "ok" && (stato != null && stato != "")) {
