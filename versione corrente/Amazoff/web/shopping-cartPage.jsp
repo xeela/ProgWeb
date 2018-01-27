@@ -30,7 +30,6 @@
             var cart;
             var jsonNotifiche = ${jsonNotifiche};
             var idUser = "<%= session.getAttribute("userID") %>";
-            console.log(idUser);
             
             function LogCart()
             {
@@ -49,8 +48,7 @@
 
                 $("#zonaProdotti").html(toAdd);
 
-
-                if (!(cart.products.length > 0) || cart == undefined)
+                if (!(cart.products.length > 0) || cart === undefined)
                 {
                     toAdd = "<div>";
                     toAdd += "<h2>Nessun prodotto presente nel carrello.</h2>";
@@ -65,7 +63,7 @@
                         toAdd += "<div class=\"row thumbnail hovertable\">";
                         toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
                         toAdd += "                <div class=\"col-xs-5 col-sm-3 col-md-3\">";
-                        if (!(cart.products[i].pictures.length > 0) || cart.products[i].pictures[0].path == undefined)
+                        if (!(cart.products[i].pictures.length > 0) || cart.products[i].pictures[0].path === undefined)
                             toAdd += "                  <img src=\"UploadedImages/default.jpg\" style=\"max-width:100%; \" alt=\"Immagine non trovata.\">";
                         else
                             toAdd += "                  <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-width:100%; \" onerror=\"this.src='UploadedImages/default.jpg'\">";

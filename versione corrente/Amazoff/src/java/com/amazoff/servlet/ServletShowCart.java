@@ -93,7 +93,6 @@ public class ServletShowCart extends HttpServlet {
                         jsonObj += "\"category\": \"" + results.getString(6) + "\",";
                         jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
                         jsonObj += "\"quantita\": \"" + results.getString(20) + "\",";
-
                         jsonObj += "\"id_shop\": \"" + results.getString(10) + "\",";
                         jsonObj += "\"shop\": \"" + results.getString(11) + "\",";
                         jsonObj += "\"description\": \"" + results.getString(12) + "\",";
@@ -195,7 +194,7 @@ public class ServletShowCart extends HttpServlet {
                              * lui associate, così da poterci accedere dalla
                              * pagina che usa questo json
                              */
-                            resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + value + ";", connection);
+                            resultsPictures = MyDatabaseManager.EseguiQuery("SELECT id, path FROM pictures WHERE id_product = " + name + ";", connection);
 
                             /**
                              * SE non ci sono immagini per questo prodotto

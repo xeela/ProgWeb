@@ -44,6 +44,7 @@ public class ServletFindProduct extends HttpServlet {
             String prezzoMaxRicerca = request.getParameter("prezzoMaxRicerca");
             String userLat = request.getParameter("latRicerca");
             String userLng = request.getParameter("lngRicerca");
+            String sort_by = request.getParameter("sort_by");
 
             /**
              * se l'oggetto MyDatabaseManager non esiste, vuol dire che la
@@ -74,7 +75,7 @@ public class ServletFindProduct extends HttpServlet {
                                 + "users.LAST_NAME, users.FIRST_NAME, "
                                 + "shops.NAME, shops.WEB_SITE_URL, "
                                 + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews, "
-                                + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value, "
+                                + "(SELECT ROUND(AVG(global_value), 1) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value, "
                                 + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                                 + "* COS(RADIANS(" + userLat + ")) "
                                 + "* COS(RADIANS(lng - " + userLng + ")) "
@@ -98,7 +99,7 @@ public class ServletFindProduct extends HttpServlet {
                                 + "users.LAST_NAME, users.FIRST_NAME, "
                                 + "shops.NAME, shops.WEB_SITE_URL, "
                                 + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews, "
-                                + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value "
+                                + "(SELECT ROUND(AVG(global_value), 1) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value "
                                 + "FROM products, shops, users, pictures,"
                                 + "(SELECT products.id, AVG(global_value) AS avg "
                                 + "FROM products, reviews WHERE products.ID = reviews.ID_PRODUCT GROUP BY products.id) as sub "
@@ -112,7 +113,7 @@ public class ServletFindProduct extends HttpServlet {
                             + "users.LAST_NAME, users.FIRST_NAME, "
                             + "shops.NAME, shops.WEB_SITE_URL, "
                             + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews, "
-                            + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value, "
+                            + "(SELECT ROUND(AVG(global_value), 1) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value, "
                             + "(111.111 * DEGREES(ACOS(COS(RADIANS(lat)) "
                             + "* COS(RADIANS(" + userLat + ")) "
                             + "* COS(RADIANS(lng - " + userLng + ")) "
@@ -129,7 +130,7 @@ public class ServletFindProduct extends HttpServlet {
                             + "users.LAST_NAME, users.FIRST_NAME, "
                             + "shops.NAME, shops.WEB_SITE_URL,"
                             + "(SELECT COUNT(*) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as num_reviews, "
-                            + "(SELECT AVG(global_value) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value "
+                            + "(SELECT ROUND(AVG(global_value), 1) FROM reviews WHERE reviews.ID_PRODUCT = products.id) as avg_global_value "
                             + "FROM products, shops, users, pictures "
                             + "WHERE products.ID_SHOP = shops.ID and users.id = shops.ID_OWNER "
                             + "AND products.available > 0 "
@@ -146,16 +147,37 @@ public class ServletFindProduct extends HttpServlet {
 
                 switch (categoriaReceived) {
                     case "product":
-                        query += "products.name LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ORDER BY products.price ASC;";
+                        query += "products.name LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ";
                         break;
                     case "seller":
-                        query += "shops.name LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ORDER BY products.price ASC;";
+                        query += "shops.name LIKE '%" + MyDatabaseManager.EscapeCharacters(productReceived) + "%' ";
                         break;
                     case "category":
-                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ORDER BY products.price ASC;";
+                        query += "products.category = '" + MyDatabaseManager.EscapeCharacters(productReceived) + "' ";
                         break;
                     default:
                         break;
+                }
+                
+                if(sort_by != null){
+                    switch (sort_by) {
+                        case "price_asc":
+                            query += "ORDER BY products.price ASC;";
+                            break;
+                        case "price_desc":
+                            query += "ORDER BY products.price DESC;";
+                            break;
+                        case "review_asc":
+                            query += "ORDER BY avg_global_value ASC;";
+                            break;
+                        case "review_desc":
+                            query += "ORDER BY avg_global_value DESC;";
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    query += "ORDER BY products.name ASC;";
                 }
 
                 results = MyDatabaseManager.EseguiQuery(query, connection);
@@ -206,6 +228,13 @@ public class ServletFindProduct extends HttpServlet {
                         gloabl_value_avg = "0";
                     }
                     jsonObj += "\"global_value_avg\": \"" + gloabl_value_avg + "\",";
+                    jsonObj += "\"categoriaReceived\": \"" + categoriaReceived + "\",";
+                    jsonObj += "\"recensioneReceived\": \"" + recensioneReceived + "\",";
+                    jsonObj += "\"distanzaReceived\": \"" + distanzaReceived + "\",";
+                    jsonObj += "\"prezzoMinRicerca\": \"" + prezzoMinRicerca + "\",";
+                    jsonObj += "\"prezzoMaxRicerca\": \"" + prezzoMaxRicerca + "\",";
+                    jsonObj += "\"userLat\": \"" + userLat + "\",";
+                    jsonObj += "\"userLng\": \"" + userLng + "\",";
                     
                     /**
                      * richiedo le immagini per questo prodotto

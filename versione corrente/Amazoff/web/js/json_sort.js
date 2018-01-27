@@ -23,13 +23,17 @@ $(function () {
 });
 
 function sortResults(param) {
+    $("#parametriRicerca").append('<input id="sort_by" name="sort_by" type="text" style="display:none;" value="' + param + '">');
+    $('#formSearch').submit();
+
+    /*
     jsonProdotti.products = jsonProdotti.products.sort(function (a, b) {
         switch (param) {
             case 'price_asc':
-                return (a.price > b.price);
+                return (a.price - b.price);
                 break;
             case 'price_desc':
-                return (a.price < b.price);
+                return (b.price - a.price);
                 break;
             case 'review_asc':
                 return (a.global_value_avg > b.global_value_avg);
@@ -42,6 +46,7 @@ function sortResults(param) {
         }
     });
     AggiungiProdotti();
+    */
 }
 
 function AggiungiProdotti() {
@@ -83,6 +88,25 @@ function AggiungiProdotti() {
     }
 
     $("#zonaProdotti").html(toAdd);
+    
+    if(jsonProdotti.products[0].categoriaReceived !== "null"){
+        RadioSwitch(jsonProdotti.products[0].categoriaReceived);
+    }
+    if(jsonProdotti.products[0].recensioneReceived !== "null"){
+        impostaRecensione(jsonProdotti.products[0].recensioneReceived);
+    }
+    if(jsonProdotti.products[0].distanzaReceived !== "null"){
+        impostaDistanza(jsonProdotti.products[0].distanzaReceived);
+    }
+    if(jsonProdotti.products[0].prezzoMinRicerca !== "null"){
+        impostaMin(jsonProdotti.products[0].prezzoMinRicerca);
+    }
+    if(jsonProdotti.products[0].prezzoMaxRicerca !== "null"){
+        impostaMax(jsonProdotti.products[0].prezzoMaxRicerca);
+    }
+    if(jsonProdotti.products[0].userLat !== "null"){
+        impostaLatLng(jsonProdotti.products[0].userLat, jsonProdotti.products[0].userLng);   
+    }
 }
 
 /* BACKUP:
