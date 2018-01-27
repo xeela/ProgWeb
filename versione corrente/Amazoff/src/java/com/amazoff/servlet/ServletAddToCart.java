@@ -79,7 +79,7 @@ public class ServletAddToCart extends HttpServlet {
                     /** L'utente NON ha effettuato il login. 
                      * Quindi salvo l'elemento selezionato in un cookie
                      */
-                    Cookie cookie = new Cookie(productReceived, productReceived);
+                    Cookie cookie = new Cookie(productReceived, requested);
                     cookie.setMaxAge(60 * 60 * 24 * 7);
                     response.addCookie(cookie);
                 }

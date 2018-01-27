@@ -154,7 +154,7 @@ public class ServletShowCart extends HttpServlet {
                     Cookie[] cart = request.getCookies();
                     if (cart != null) {
                         ResultSet results, resultsPictures = null;
-                        String value;
+                        String value, name;
                         boolean isFirstTime = true, isFirstTimeImg = true;
 
                         jsonObj += "{";
@@ -170,14 +170,15 @@ public class ServletShowCart extends HttpServlet {
                             }
                             isFirstTime = false;
 
+                            name = cart[i].getName();
                             value = cart[i].getValue();
 
-                            results = MyDatabaseManager.EseguiQuery("SELECT products.*, shops.* FROM shops, products WHERE products.id_shop = shops.id and products.id = " + value + ";", connection);
+                            results = MyDatabaseManager.EseguiQuery("SELECT products.*, shops.* FROM shops, products WHERE products.id_shop = shops.id and products.id = " + name + ";", connection);
 
                             results.next();
 
                             jsonObj += "{";
-                            jsonObj += "\"id\": \"" + value + "\",";
+                            jsonObj += "\"id\": \"" + name + "\",";
                             jsonObj += "\"name\": \"" + results.getString(2) + "\",";
                             jsonObj += "\"description\": \"" + results.getString(3) + "\",";
                             jsonObj += "\"price\": \"" + results.getString(4) + "\",";
@@ -187,7 +188,7 @@ public class ServletShowCart extends HttpServlet {
                             jsonObj += "\"shop\": \"" + results.getString(11) + "\",";
                             jsonObj += "\"description\": \"" + results.getString(12) + "\",";
                             jsonObj += "\"web_site\": \"" + results.getString(13) + "\",";
-                            jsonObj += "\"quantita\": \"1\",";
+                            jsonObj += "\"quantita\": \"" + value + "\",";
 
                             /**
                              * in base al prodotto, ricavo il path delle img a

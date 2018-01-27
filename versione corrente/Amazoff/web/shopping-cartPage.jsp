@@ -605,38 +605,61 @@
 
             function aggiungi(id_prod)
             {
-                $.post('ServletAjaxUpdateProductQuantity', {
-                    _whatToDo: "add",
-                    _idProdotto: id_prod
-                }, function (data) {
-                    var resp = data.split('$');
-                    if (resp[0] == "true")
-                    {
-                        cart = JSON.parse(resp[1]);
-                        console.log(cart);
-                        AggiungiProdotti(cart);
-                    }
-                }).fail(function () {
-                    alert("ERR");
-                });
+                if (idUser === "null"){
+                    var id = 'quantita' + id_prod;
+                    var q = $('#' + id).html();
+                    q++;
+                    document.cookie = id_prod + '=; Max-Age=0;';
+                    document.cookie = id_prod + '=' + q + '; Max-Age=(60 * 60 * 24 * 7);';
+                    window.location.href = "ServletShowCart";
+                } else {
+                    $.post('ServletAjaxUpdateProductQuantity', {
+                        _whatToDo: "add",
+                        _idProdotto: id_prod
+                    }, function (data) {
+                        var resp = data.split('$');
+                        if (resp[0] == "true")
+                        {
+                            cart = JSON.parse(resp[1]);
+                            console.log(cart);
+                            AggiungiProdotti(cart);
+                        }
+                    }).fail(function () {
+                        alert("ERR");
+                    });
+                }
             }
 
             function rimuovi(id_prod)
             {
-                $.post('ServletAjaxUpdateProductQuantity', {
-                    _whatToDo: "remove",
-                    _idProdotto: id_prod
-                }, function (data) {
-                    var resp = data.split('$');
-                    if (resp[0] == "true")
-                    {
-                        cart = JSON.parse(resp[1]);
-                        console.log(cart);
-                        AggiungiProdotti(cart);
+                if (idUser === "null"){
+                    var id = 'quantita' + id_prod;
+                    var q = $('#' + id).html();
+                    
+                    if(q === '1'){
+                        removeFromCart(0, id_prod);
+                    } else {
+                        q--;
+                        document.cookie = id_prod + '=; Max-Age=0;';
+                        document.cookie = id_prod + '=' + q + '; Max-Age=(60 * 60 * 24 * 7);';
+                        window.location.href = "ServletShowCart";
                     }
-                }).fail(function () {
-                    alert("ERR");
-                });
+                } else {
+                    $.post('ServletAjaxUpdateProductQuantity', {
+                        _whatToDo: "remove",
+                        _idProdotto: id_prod
+                    }, function (data) {
+                        var resp = data.split('$');
+                        if (resp[0] === "true")
+                        {
+                            cart = JSON.parse(resp[1]);
+                            console.log(cart);
+                            AggiungiProdotti(cart);
+                        }
+                    }).fail(function () {
+                        alert("ERR");
+                    });
+                }
             }
 
             // gestione POPOVER button notifiche
