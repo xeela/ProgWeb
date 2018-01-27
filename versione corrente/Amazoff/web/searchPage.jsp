@@ -345,7 +345,7 @@
                     </div>
 
                     <!-- barra verticale a sx contentente i metodi di ordinamento-->
-                    <div class="tmargin hidden-xs col-sm-2 col-lg-2">
+                    <div class="tmargin col-sm-2 col-lg-2">
                         <table class="table table-hover">
                             <tbody id="sorting">
                                 <tr><th>Ordina per:</th></tr>
