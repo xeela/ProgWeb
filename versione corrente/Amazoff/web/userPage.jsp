@@ -569,6 +569,13 @@
                             <%
                                 if (userType.equals("0")) // registrato
                                 { %>
+                            <div id="ordini" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">                                     
+                                    <a href="ServletMyOrders">
+                                        Miei ordini
+                                    </a>                                               
+                                </div>
+                            </div>
                             <div id="notifiche" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Notifiche 
@@ -676,6 +683,13 @@
                               <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                               Profilo
                             </a> -->
+                            <div id="ordini" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">                                     
+                                    <a href="ServletMyOrders">
+                                        Miei ordini
+                                    </a>                                               
+                                </div>
+                            </div>
                             <div id="notifiche" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Notifiche 
@@ -716,10 +730,7 @@
                                                 <h3 style="text-align: center">Aggiorna i dati del tuo Business:</h3>
                                                 <form  style="text-align: center" class="form-group" id="ShopForm" name="ShopForm" action="ServletUpdateBusiness" method="POST" >
                                                     <div class="row">
-
                                                     </div>
-
-
                                                     <div class="form-group">
                                                         <b>Nome del Negozio</b>
                                                         <input id="shop_website" type="text" name="shop_name" class="form-control" value="<%if(session.getAttribute("shop_name") != null){%><%= session.getAttribute("shop_name")%><%} else {}%>" placeholder="<%if(session.getAttribute("shop_name") != null){%> <%= session.getAttribute("shop_name")%><% }else{%>Nome negozio<%}%>" aria-describedby="sizing-addon2">
@@ -762,23 +773,6 @@
                                     </div>                                                  
                                 </div>
                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             <div id="sellNewProduct" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Vendi prodotto 
@@ -860,6 +854,20 @@
                             <%
                             } else if (userType.equals("2")) //admin
                             { %>
+                            <div id="ordini" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">                                     
+                                    <a href="ServletMyOrders">
+                                        Miei ordini
+                                    </a>                                               
+                                </div>
+                            </div>
+                            <div id="anomalie" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">                                     
+                                    <a href="ServletRecuperaAnomalie">
+                                        Gestione Anomalie
+                                    </a>                                               
+                                </div>
+                            </div>
                             <div id="notifiche" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Notifiche 
