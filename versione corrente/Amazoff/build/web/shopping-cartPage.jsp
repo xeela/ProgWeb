@@ -30,7 +30,6 @@
             var cart;
             var jsonNotifiche = ${jsonNotifiche};
             var idUser = "<%= session.getAttribute("userID") %>";
-            console.log(idUser);
             
             function LogCart()
             {
@@ -49,8 +48,7 @@
 
                 $("#zonaProdotti").html(toAdd);
 
-
-                if (!(cart.products.length > 0) || cart == undefined)
+                if (!(cart.products.length > 0) || cart === undefined)
                 {
                     toAdd = "<div>";
                     toAdd += "<h2>Nessun prodotto presente nel carrello.</h2>";
@@ -65,7 +63,7 @@
                         toAdd += "<div class=\"row thumbnail hovertable\">";
                         toAdd += "        <a href=\"ServletPopulateProductPage?id=" + id_oggetto + "\" id=\"" + id_oggetto + "\">";
                         toAdd += "                <div class=\"col-xs-5 col-sm-3 col-md-3\">";
-                        if (!(cart.products[i].pictures.length > 0) || cart.products[i].pictures[0].path == undefined)
+                        if (!(cart.products[i].pictures.length > 0) || cart.products[i].pictures[0].path === undefined)
                             toAdd += "                  <img src=\"UploadedImages/default.jpg\" style=\"max-width:100%; \" alt=\"Immagine non trovata.\">";
                         else
                             toAdd += "                  <img src=\"UploadedImages/" + cart.products[i].pictures[0].path + "\" style=\"max-width:100%; \" onerror=\"this.src='UploadedImages/default.jpg'\">";
@@ -337,13 +335,13 @@
                                     <ul class="no_dots"> 
                                         <li>Vicinanza
                                             <p>
-                                                <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanza(this)" onkeypress="return isNumberKey(event)"> 
+                                                <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanzaWrapper(this)" onkeypress="return isNumberKey(event)"> 
                                             </p>
                                         </li>
                                         <li>Prezzo 
                                             <p>
-                                                <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
-                                                <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
+                                                <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMinWrapper(this)" onkeypress="return isNumberKey(event)">
+                                                <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMaxWrapper(this)" onkeypress="return isNumberKey(event)">
                                             </p>
                                         </li>
                                         <li>Recensione
@@ -384,13 +382,13 @@
                                             <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
                                                 <li>Vicinanza
                                                     <p>
-                                                        <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanza(this)" onkeypress="return isNumberKey(event)"> 
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanzaWrapper(this)" onkeypress="return isNumberKey(event)"> 
                                                     </p>
                                                 </li>
                                                 <li>Prezzo 
                                                     <p>
-                                                        <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
-                                                        <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMinWrapper(this)" onkeypress="return isNumberKey(event)">
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMaxWrapper(this)" onkeypress="return isNumberKey(event)">
                                                     </p>
                                                 </li>
                                                 <li>Recensione
