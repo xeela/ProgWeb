@@ -769,8 +769,6 @@
 
                                                         </div>
                                                     </div>
-                                                    <input type="submit" value="aaa"/>
-
                                                 </form>
                                                 <div class="form-group tmargin">
                                                     <button id="btnUpdateShop" class="btn btn-default" onclick="document.getElementById('ShopForm').submit();" >Aggiorna dati</button>
@@ -854,10 +852,12 @@
                                                         <!--<input TYPE='submit' hidden="true" NAME='productPic1' VALUE='Aggiungi prodotto' class="btn btn-default" aria-describedby="basic-addon1">
                                                         --></div>
                                                 </form>
-                                                <button id="btnVendi" type='button' class="btn-primary" onclick="if (checkProductData()) {
-                                                            document.getElementById('vendiForm').submit();
-                                                        }">Aggiungi Prodotto</button>
-
+                                                <div class="form-group tmargin">
+                                                    <button id="btnVendi" type='button' class="btn btn-default" onclick="if (checkProductData()) {
+                                                                document.getElementById('vendiForm').submit();
+                                                            }">Aggiungi Prodotto</button>
+                                                    <a href="index.jsp" type="button" class="btn btn-danger">Annulla</a>
+                                                </div>
                                             </div>    
                                         </div>
                                     </div>                                                  
