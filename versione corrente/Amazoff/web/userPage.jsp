@@ -292,28 +292,40 @@
                     <!-- barra con: login/registrati, cerca, carrello -->
                     <div class="logo col-xs-12 col-lg-1">
                         <div class="row">
-                            <div class="col-xs-6 col-lg-12"><a href="index.jsp">
-                                    <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
+                            <div class="col-xs-5 col-lg-12" >
+                                <a href="index.jsp">
+                                    <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
                                 </a>
                             </div>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"> 
-                                <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
-                                        <%
-                                            try {
-                                                String user = (session.getAttribute("user")).toString();
+                            <div class="col-xs-7 hidden-lg" > 
+                                <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
+                                    <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
+                                        <spam class="glyphicon glyphicon-user"> 
+                                            <%
+                                                try {
+                                                    String user = (session.getAttribute("user")).toString();
 
-                                            } catch (Exception ex) {
-                                        %>
-                                <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
-                                <%
-                                    }
-                                %>
+                                                } catch (Exception ex) {
+                                            %>
+                                            Accedi 
+                                            <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
 
+                                            <%
+                                                }
+                                            %>
+                                        </spam>
+                                    </a>
+                                </div>
+                                <div class="col-xs-3 hidden-lg iconSize imgCenter" >
+                                    <a href="ServletShowCart">
+                                        <spam class="glyphicon glyphicon-shopping-cart"></spam>
+                                    </a>
+                                </div>
 
                             </div>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="ServletAddToCart"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                         </div>
                     </div>
+                                
                     <!-- SEARCH BAR -->
                     <div class="searchBar col-xs-12 col-lg-7">
                         <div>

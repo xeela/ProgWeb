@@ -292,28 +292,40 @@
                     <!-- barra con: login/registrati, cerca, carrello -->
                     <div class="logo col-xs-12 col-lg-1">
                         <div class="row">
-                            <div class="col-xs-6 col-lg-12"><a href="index.jsp">
-                                    <img src="images/logo/logo.png" class="logo2" alt="Amazoff"/>
+                            <div class="col-xs-5 col-lg-12" >
+                                <a href="index.jsp">
+                                    <img class="logo2" src="images/logo/logo.png" alt="Amazoff"/>
                                 </a>
                             </div>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"> 
-                                <a style="none" class="dropdown" href="userPage.jsp" id="iconAccediRegistrati"><spam class="glyphicon glyphicon-user"></spam></a>
-                                        <%
-                                            try {
-                                                String user = (session.getAttribute("user")).toString();
+                            <div class="col-xs-7 hidden-lg" > 
+                                <div class="col-xs-3 hidden-lg iconSize imgCenter" > 
+                                    <a class="dropdown" href="userPage.jsp" id="iconAccediRegistrati">
+                                        <spam class="glyphicon glyphicon-user"> 
+                                            <%
+                                                try {
+                                                    String user = (session.getAttribute("user")).toString();
 
-                                            } catch (Exception ex) {
-                                        %>
-                                <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
-                                <%
-                                    }
-                                %>
+                                                } catch (Exception ex) {
+                                            %>
+                                            Accedi 
+                                            <script>document.getElementById("iconAccediRegistrati").href = "loginPage.jsp";</script>
 
+                                            <%
+                                                }
+                                            %>
+                                        </spam>
+                                    </a>
+                                </div>
+                                <div class="col-xs-3 hidden-lg iconSize imgCenter" >
+                                    <a href="ServletShowCart">
+                                        <spam class="glyphicon glyphicon-shopping-cart"></spam>
+                                    </a>
+                                </div>
 
                             </div>
-                            <div class="col-xs-2 hidden-lg" style="text-align: right"><a href="ServletAddToCart"> <spam class="glyphicon glyphicon-shopping-cart"></spam></a></div>
                         </div>
                     </div>
+                                
                     <!-- SEARCH BAR -->
                     <div class="searchBar col-xs-12 col-lg-7">
                         <div>
@@ -394,13 +406,13 @@
                                     <ul class="no_dots"> 
                                         <li>Vicinanza
                                             <p>
-                                                <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanza(this)" onkeypress="return isNumberKey(event)"> 
+                                                <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanzaWrapper(this)" onkeypress="return isNumberKey(event)"> 
                                             </p>
                                         </li>
                                         <li>Prezzo 
                                             <p>
-                                                <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
-                                                <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
+                                                <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMinWrapper(this)" onkeypress="return isNumberKey(event)">
+                                                <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMaxWrapper(this)" onkeypress="return isNumberKey(event)">
                                             </p>
                                         </li>
                                         <li>Recensione
@@ -441,13 +453,13 @@
                                             <ul class="dropdown-menu dropdown-menu-right hidden-sm hidden-md hidden-lg alignCenter"> <!-- ?????????? sull'ipad non sparisce -->
                                                 <li>Vicinanza
                                                     <p>
-                                                        <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanza(this)" onkeypress="return isNumberKey(event)"> 
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="KM Max" name="distanzaMax" onchange="impostaDistanzaWrapper(this)" onkeypress="return isNumberKey(event)"> 
                                                     </p>
                                                 </li>
                                                 <li>Prezzo 
                                                     <p>
-                                                        <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMin(this)" onkeypress="return isNumberKey(event)">
-                                                        <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMax(this)" onkeypress="return isNumberKey(event)">
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="Da..." id="prezzoDa" onchange="impostaMinWrapper(this)" onkeypress="return isNumberKey(event)">
+                                                        <input class="form-control" type="number" min="0" step="1" placeholder="A..." id="prezzoA" onchange="impostaMaxWrapper(this)" onkeypress="return isNumberKey(event)">
                                                     </p>
                                                 </li>
                                                 <li>Recensione
@@ -569,6 +581,13 @@
                             <%
                                 if (userType.equals("0")) // registrato
                                 { %>
+                            <div id="ordini" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">                                     
+                                    <a href="ServletMyOrders">
+                                        Miei ordini
+                                    </a>                                               
+                                </div>
+                            </div>
                             <div id="notifiche" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Notifiche 
@@ -676,6 +695,13 @@
                               <span class="badge"><span class='glyphicon glyphicon-chevron-right'></span></span>
                               Profilo
                             </a> -->
+                            <div id="ordini" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">                                     
+                                    <a href="ServletMyOrders">
+                                        Miei ordini
+                                    </a>                                               
+                                </div>
+                            </div>
                             <div id="notifiche" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Notifiche 
@@ -716,10 +742,7 @@
                                                 <h3 style="text-align: center">Aggiorna i dati del tuo Business:</h3>
                                                 <form  style="text-align: center" class="form-group" id="ShopForm" name="ShopForm" action="ServletUpdateBusiness" method="POST" >
                                                     <div class="row">
-
                                                     </div>
-
-
                                                     <div class="form-group">
                                                         <b>Nome del Negozio</b>
                                                         <input id="shop_website" type="text" name="shop_name" class="form-control" value="<%if(session.getAttribute("shop_name") != null){%><%= session.getAttribute("shop_name")%><%} else {}%>" placeholder="<%if(session.getAttribute("shop_name") != null){%> <%= session.getAttribute("shop_name")%><% }else{%>Nome negozio<%}%>" aria-describedby="sizing-addon2">
@@ -762,23 +785,6 @@
                                     </div>                                                  
                                 </div>
                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             <div id="sellNewProduct" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Vendi prodotto 
@@ -860,6 +866,20 @@
                             <%
                             } else if (userType.equals("2")) //admin
                             { %>
+                            <div id="ordini" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">                                     
+                                    <a href="ServletMyOrders">
+                                        Miei ordini
+                                    </a>                                               
+                                </div>
+                            </div>
+                            <div id="anomalie" class="list-group-item">
+                                <div role="tablist" aria-multiselectable="true">                                     
+                                    <a href="ServletRecuperaAnomalie">
+                                        Gestione Anomalie
+                                    </a>                                               
+                                </div>
+                            </div>
                             <div id="notifiche" class="list-group-item">
                                 <div role="tablist" aria-multiselectable="true">
                                     Notifiche 
