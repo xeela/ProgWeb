@@ -182,52 +182,12 @@ public class ServletFindProduct extends HttpServlet {
 
                 results = MyDatabaseManager.EseguiQuery(query, connection);
 
-                if (results.isAfterLast()) /**
+                if (!results.isBeforeFirst()) /**
                  * se non c'è un prodotto che rispetta il criterio richiesto
                  */
                 {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("errorMessage", Errors.noProductFound);
-                    response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                    connection.close();
-                    return;
-                }
-
-                /**
-                 * creo un oggetto json, in cui memorizzo i dati
-                 */
-                String gloabl_value_avg = "";
-                boolean isFirstTime = true, isFirstTimeImg = true;
-                String id_product = "";
-                jsonObj += "{";
-                jsonObj += "\"products\":[";
-                while (results.next()) {
-                    isFirstTimeImg = true;
-                    if (!isFirstTime) {
-                        jsonObj += ", ";
-                    }
-                    isFirstTime = false;
-
-                    id_product = results.getString(1);
-                    gloabl_value_avg = results.getString(15);
-                    jsonObj += "{";
-                    jsonObj += "\"id\": \"" + id_product + "\",";
-                    jsonObj += "\"name\": \"" + results.getString(2) + "\",";
-                    jsonObj += "\"description\": \"" + results.getString(3) + "\",";
-                    jsonObj += "\"price\": \"" + results.getString(4) + "\",";
-                    jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
-                    jsonObj += "\"category\": \"" + results.getString(6) + "\",";
-                    jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
-                    /* dati del venditore */
-                    jsonObj += "\"last_name\": \"" + results.getString(10) + "\",";
-                    jsonObj += "\"first_name\": \"" + results.getString(11) + "\",";
-                    jsonObj += "\"shop_name\": \"" + results.getString(12) + "\",";
-                    jsonObj += "\"site_url\": \"" + results.getString(13) + "\",";
-                    jsonObj += "\"num_reviews\": \"" + results.getString(14) + "\",";
-                    if (gloabl_value_avg == null) {
-                        gloabl_value_avg = "0";
-                    }
-                    jsonObj += "\"global_value_avg\": \"" + gloabl_value_avg + "\",";
+                    jsonObj = "{'products': [{";
+                    jsonObj += "'id': 'empty',";
                     jsonObj += "\"categoriaReceived\": \"" + categoriaReceived + "\",";
                     jsonObj += "\"recensioneReceived\": \"" + recensioneReceived + "\",";
                     jsonObj += "\"distanzaReceived\": \"" + distanzaReceived + "\",";
@@ -235,34 +195,79 @@ public class ServletFindProduct extends HttpServlet {
                     jsonObj += "\"prezzoMaxRicerca\": \"" + prezzoMaxRicerca + "\",";
                     jsonObj += "\"userLat\": \"" + userLat + "\",";
                     jsonObj += "\"userLng\": \"" + userLng + "\",";
-                    
+                    jsonObj += "}";
+                } else {
                     /**
-                     * richiedo le immagini per questo prodotto
+                     * creo un oggetto json, in cui memorizzo i dati
                      */
-                    jsonObj += "\"pictures\": [";
-                    resultsImages = MyDatabaseManager.EseguiQuery("SELECT path FROM pictures WHERE ID_PRODUCT = " + id_product + ";", connection);
-
-                    /*if (resultsImages.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
-                    {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("errorMessage", Errors.noProductFound);
-                        response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
-                        connection.close();
-                        return;
-                    }*/
-                    while (resultsImages.next()) {
-                        if (!isFirstTimeImg) {
+                    String gloabl_value_avg = "";
+                    boolean isFirstTime = true, isFirstTimeImg = true;
+                    String id_product = "";
+                    jsonObj += "{";
+                    jsonObj += "\"products\":[";
+                    while (results.next()) {
+                        isFirstTimeImg = true;
+                        if (!isFirstTime) {
                             jsonObj += ", ";
                         }
-                        isFirstTimeImg = false;
+                        isFirstTime = false;
+
+                        id_product = results.getString(1);
+                        gloabl_value_avg = results.getString(15);
                         jsonObj += "{";
-                        jsonObj += "\"path\": \"" + resultsImages.getString(1) + "\"";
-                        jsonObj += "}";
+                        jsonObj += "\"id\": \"" + id_product + "\",";
+                        jsonObj += "\"name\": \"" + results.getString(2) + "\",";
+                        jsonObj += "\"description\": \"" + results.getString(3) + "\",";
+                        jsonObj += "\"price\": \"" + results.getString(4) + "\",";
+                        jsonObj += "\"id_shop\": \"" + results.getString(5) + "\",";
+                        jsonObj += "\"category\": \"" + results.getString(6) + "\",";
+                        jsonObj += "\"ritiro\": \"" + results.getString(7) + "\",";
+                        /* dati del venditore */
+                        jsonObj += "\"last_name\": \"" + results.getString(10) + "\",";
+                        jsonObj += "\"first_name\": \"" + results.getString(11) + "\",";
+                        jsonObj += "\"shop_name\": \"" + results.getString(12) + "\",";
+                        jsonObj += "\"site_url\": \"" + results.getString(13) + "\",";
+                        jsonObj += "\"num_reviews\": \"" + results.getString(14) + "\",";
+                        if (gloabl_value_avg == null) {
+                            gloabl_value_avg = "0";
+                        }
+                        jsonObj += "\"global_value_avg\": \"" + gloabl_value_avg + "\",";
+                        jsonObj += "\"categoriaReceived\": \"" + categoriaReceived + "\",";
+                        jsonObj += "\"recensioneReceived\": \"" + recensioneReceived + "\",";
+                        jsonObj += "\"distanzaReceived\": \"" + distanzaReceived + "\",";
+                        jsonObj += "\"prezzoMinRicerca\": \"" + prezzoMinRicerca + "\",";
+                        jsonObj += "\"prezzoMaxRicerca\": \"" + prezzoMaxRicerca + "\",";
+                        jsonObj += "\"userLat\": \"" + userLat + "\",";
+                        jsonObj += "\"userLng\": \"" + userLng + "\",";
+
+                        /**
+                         * richiedo le immagini per questo prodotto
+                         */
+                        jsonObj += "\"pictures\": [";
+                        resultsImages = MyDatabaseManager.EseguiQuery("SELECT path FROM pictures WHERE ID_PRODUCT = " + id_product + ";", connection);
+
+                        /*if (resultsImages.isAfterLast()) //se non c'è un prodotto che rispetta il criterio richiesto
+                        {
+                            HttpSession session = request.getSession();
+                            session.setAttribute("errorMessage", Errors.noProductFound);
+                            response.sendRedirect(request.getContextPath() + "/searchPage.jsp");
+                            connection.close();
+                            return;
+                        }*/
+                        while (resultsImages.next()) {
+                            if (!isFirstTimeImg) {
+                                jsonObj += ", ";
+                            }
+                            isFirstTimeImg = false;
+                            jsonObj += "{";
+                            jsonObj += "\"path\": \"" + resultsImages.getString(1) + "\"";
+                            jsonObj += "}";
+                        }
+
+                        jsonObj += "]"; // chiusura array images
+
+                        jsonObj += "}"; //chiusura dati prodotto
                     }
-
-                    jsonObj += "]"; // chiusura array images
-
-                    jsonObj += "}"; //chiusura dati prodotto
                 }
                 jsonObj += "]}";
 

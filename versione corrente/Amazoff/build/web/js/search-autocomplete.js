@@ -7,7 +7,6 @@ function Autocomplete(categoria){
     function(data) {
         items = data.split(",");
     }).fail(function () {
-        alert("ajax error");
     });
 }
 
