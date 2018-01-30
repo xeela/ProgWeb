@@ -59,7 +59,6 @@
                     {
                         toAdd += "<div class=\"row panel panel-default\"> ";
                         toAdd += "         <div class=\"col-lg-12\">";
-                        // Cambiare il tipo di stella in base al numero di stelle tot (global value)
                         toAdd += "             <div class=\"col-xs-12 col-sm-2\" >";
                         /** Cambiare il tipo di stella in base al numero di stelle tot (global value) */
                         toAdd += insertStartsInReview(jsonProdotto.result[0].reviews[i].global_value);
@@ -104,9 +103,10 @@
                 // buttons + , - , remove
                 toAdd += " <div class=\"row col-xs-12 col-sm-6\" >";
                 toAdd += "    <div>";
-                toAdd += "         <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi(" + id_product + ", " + quantita + ")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
-                toAdd += "         <p class=\"btn col-lg-3\" id=\"quantita" + id_product + "\">" + quantita + "</p>";
                 toAdd += "         <button class=\"btn btn-danger col-lg-3\" onclick=\"rimuovi(" + id_product + "," + quantita + ")\"><span class=\"glyphicon glyphicon-minus\"></span></button>";
+                toAdd += "         <p class=\"btn col-lg-3\" id=\"quantita" + id_product + "\">" + quantita + "</p>";
+                toAdd += "         <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi(" + id_product + ", " + quantita + ")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
+
                 toAdd += "     </div>";
                 toAdd += "</div>";
 
@@ -131,10 +131,10 @@
             function PopolaCarousel() {
                 var toAdd = "";
                 
-                if(!(jsonProdotto.result[0].pictures.length > 0 || jsonProdotto.result[0].pictures[0].path == undefined))
-                    toAdd = "<img class=\"imgResize\" src=\"UploadedImages/default.jpg\" alt=\"Immagine non trovata\">";
+                if(!(jsonProdotto.result[0].pictures.length > 0) || jsonProdotto.result[0].pictures[0].path == undefined)
+                    toAdd = "<img class=\"thumbnail imgResize imgCenter\" src=\"UploadedImages/default.jpg\" alt=\"Immagine non trovata\">";
                 else
-                    toAdd = "<img class=\"imgResize\" src=\"UploadedImages/" + jsonProdotto.result[0].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
+                    toAdd = "<img class=\"thumbnail imgResize imgCenter\" style=\"border: 0px\" src=\"UploadedImages/" + jsonProdotto.result[0].pictures[0].path + "\" onerror=\"this.src='UploadedImages/default.jpg'\">";
                 
                 $("#div_productImage").html(toAdd);
             }
@@ -493,7 +493,7 @@
                             <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
                                 <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
                                 <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Cerca prodotto</a></p> 
-                                <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
+                                <p><a href="ServletShowCart"><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
                                 <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
                                 <%
                                     if(userType.equals("0")) // registrato
@@ -538,7 +538,7 @@
                                 <p><a href="ServletLogout"><span class="glyphicon glyphicon-menu-right"></span> ESCI</a></p>
                             </div>
                         </div>
-                        <p>&copy; Amazoff 2017 - info@amazoff.com - via di Amazoff 69, Trento, Italia</p>
+                        <p>&copy; Amazoff 2017 - progweb17@gmail.com - via di Amazoff 42, Trento, Italia</p>
                     </div>
                 </footer>
             </div>

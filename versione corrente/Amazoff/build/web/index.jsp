@@ -474,7 +474,7 @@
                         <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
                             <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
                             <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Cerca prodotto</a></p> 
-                            <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
+                            <p><a href="ServletShowCart"><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
                             <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
                             <%
                                 if (userType.equals("0")) // registrato
@@ -517,7 +517,7 @@
                         </div>
                     </div>
                     <div class="row col-xs-12">
-                        <p>&copy; Amazoff 2017 - info@amazoff.com - via di Amazoff 69, Trento, Italia</p>
+                        <p>&copy; Amazoff 2017 - progweb17@gmail.com - via di Amazoff 42, Trento, Italia</p>
                     </div>
                 </footer>
 

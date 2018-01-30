@@ -78,9 +78,9 @@
                         // codice html dei bottoni + , - , remove
                         toAdd += "                            <div class=\"col-xs-12 col-sm-6\" >";
                         toAdd += "                                <div>";
-                        toAdd += "                                    <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi(" + id_oggetto + ")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";
+                        toAdd += "                                    <button class=\"btn btn-danger col-lg-3\" onclick=\"rimuovi(" + id_oggetto + ")\"><span class=\"glyphicon glyphicon-minus\"></span></button>";                        
                         toAdd += "                                    <p class=\"btn col-lg-3\" id=\"quantita" + id_oggetto + "\">" + cart.products[i].quantita + "</p>";
-                        toAdd += "                                    <button class=\"btn btn-danger col-lg-3\" onclick=\"rimuovi(" + id_oggetto + ")\"><span class=\"glyphicon glyphicon-minus\"></span></button>";
+                        toAdd += "                                    <button class=\"btn btn-primary col-lg-3\" onclick=\"aggiungi(" + id_oggetto + ")\"><span class=\"glyphicon glyphicon-plus\"></span></button>";                       
                         toAdd += "                                </div>";
                         toAdd += "                             </div>";
                         toAdd += "                             <div class=\"col-xs-12 tmargin\"><button class=\"btn btn-warning\" onclick=\"removeFromCart(" + i + "," + id_oggetto + ")\"><span class=\"glyphicon glyphicon-trash\"></span> Rimuovi</button></div>";
@@ -456,7 +456,7 @@
                             <div class="col-xs-8 col-sm-4"><h5><b>Pagine</b></h5>
                                 <p><a href="index.jsp"><span class="glyphicon glyphicon-menu-right"></span> Home</a></p>
                                 <p><a href="searchPage.jsp"><span class="glyphicon glyphicon-menu-right"></span> Cerca prodotto</a></p> 
-                                <p><a href="....."><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
+                                <p><a href="ServletShowCart"><span class="glyphicon glyphicon-menu-right"></span> Carrello</a></p> 
                                 <!-- UTENTE SE "REGISTRATO" -> porta alla pag. ALTRIM. passa per la login -->
                                 <%
                                     if(userType.equals("0")) // registrato
@@ -502,18 +502,21 @@
                             </div>
                         </div>
                         <div class="row col-xs-12">
-                            <p>&copy; Amazoff 2017 - info@amazoff.com - via di Amazoff 69, Trento, Italia</p>
+                            <p>&copy; Amazoff 2017 - progweb17@gmail.com - via di Amazoff 42, Trento, Italia</p>
                         </div>
                     </footer>
                 </div>                          
 
-                <!-- button che porta alla pagina fittizia di pagamento -->
-                <a href="ServletPayPage" style="text-decoration: none"><button id="btnAcquista" class="col-lg-1 btnpaga" title="Procedi con l'acquisto.">Paga <i class="fa fa-credit-card"></i></button></a>
-
-                <!-- back to top button -->
-                <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
-
-
+                <div class="row">
+                <div class="col-lg-1 btnPaga">
+                    <!-- button che porta alla pagina fittizia di pagamento -->
+                    <a href="ServletPayPage" style="text-decoration: none"><button id="btnAcquista" class="col-lg-1" title="Procedi con l'acquisto.">Paga <i class="fa fa-credit-card"></i></button></a>
+                </div>
+                <div class="col-lg-1">
+                    <!-- back to top button -->
+                    <button onclick="topFunction()" id="btnTop" title="Go to top"><span class="glyphicon glyphicon-arrow-up"> Top</span></button>
+                </div>
+                    
 
             </div>
             <!-- barra bianca a dx -->

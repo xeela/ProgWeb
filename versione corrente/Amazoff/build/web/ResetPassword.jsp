@@ -56,6 +56,12 @@
                     MostraErrore("La password deve essere di almeno 8 caratteri");
                     return false;
                 }
+                // Serve per controllare che ci sia almeno una maiuscola e minuscala nella password 
+                if ($("#txtPwd").val().toString().toLowerCase() == $("#txtPwd").val() || $("#txtPwd").val().toString().toUpperCase() == $("#txtPwd").val())
+                {
+                    MostraErrore("La password deve avere un misto di maiuscole e minuscole");
+                    return false;
+                } 
                 if ($("#txtPwdConfirm").val() != $("#txtPwd").val())
                 {
                     MostraErrore("Le due password non coincidono.");
