@@ -517,7 +517,7 @@
                         </div>
                     </div>
                     <div class="row col-xs-12">
-                        <p>&copy; Amazoff 2017 - progweb17@gmail.com - via di Amazoff 69, Trento, Italia</p>
+                        <p>&copy; Amazoff 2017 - progweb17@gmail.com - via di Amazoff 42, Trento, Italia</p>
                     </div>
                 </footer>
 
