@@ -151,7 +151,7 @@ function AggiungiOrdini() {
             toAdd += "<div id='" + id_ordine + "'><h3 name=\"id_ordine" + id_ordine + "\">Numero ordine: " + jsonProdotti.orders[i].products[0].order_id + "</h3>";
             for (var j = 0; j < jsonProdotti.orders[i].products.length; j++) {
                 toAdd += "<div class=\"row\">";
-                toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id=" + id_ordine + "\" id=\"form" + id_ordine + "\" onclick=\"$('#form" + id_ordine + "').submit();\"> ";
+                toAdd += "<form method=\"post\" action=\"/Amazoff/ServletPopulateProductPage?id=" + jsonProdotti.orders[i].products[j].product_id + "\" id=\"form" + id_ordine + "-" + j + "\" onclick=\"$('#form" + id_ordine + "-" + j + "').submit();\"> ";
                 toAdd += "<div class=\"thumbnail col-xs-4 col-sm-3 col-md-2\" style=\"min-height:100px;  \">";
                 if (jsonProdotti.orders[i].products[j].pictures.length === 0)
                     path = "default.jpg";
